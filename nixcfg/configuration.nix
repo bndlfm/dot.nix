@@ -155,7 +155,7 @@
           interactiveShellInit = ''
             set PATH $PATH /home/neko/.local/bin
 
-            set fish_greeting "I can't do that Dave."
+            set fish_greeting
 
             ## to load vi-keys and overwrite
             ## shared bindings w/r/t emac binds
