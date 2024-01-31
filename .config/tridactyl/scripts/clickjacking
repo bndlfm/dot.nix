@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+	cat << 'EOF'
+Usage: clickjacking url
+
+Will return a dataurl to open in a browser
+EOF
+	exit 0
+fi
+
+die(){
+	echo "$@"
+	exit 1
+}
+
+# Url of site to put in iframe
+url="$1"
+
+# If no argument is given, get stdin
+[ -z "$url" ] && url="$(cat -)"
+
+# If still no url, bail
+[ -z "$url" ] && die "You need to provide a url"
+
+source="
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<meta name='viewport' content='width=device-width' />
+		<title>Clickjacking example</title>
+		<style type='text/css' media='screen'>
+body{
+	width: 100vw;
+	height: 100vh;
+	border: 2px solid black;
+	margin: 0;
+}
+
+* {
+    scrollbar-width: none;
+	box-sizing: border-box;
+}
+
+iframe{
+	border: 3px solid black;
+	width: 80%;
+	height: 80%;
+	margin: 20px auto;
+	display: block;
+}
+h1, p{
+	text-align: center;
+}
+		</style>
+	</head>
+	<body>
+		<h1>Clickjacking example</h1>
+		<iframe src='$url'>
+		</iframe>
+		<p>If content is rendered above, the site is vulnerable to clickjacking</p>
+	</body>
+</html>
+"
+
+
+echo "data:text/html;base64,$(echo "$source" | base64 -w 0)"

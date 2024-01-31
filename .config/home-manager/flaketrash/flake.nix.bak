@@ -1,0 +1,44 @@
+{
+  description = "My User-level Flake";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      };
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
+  };
+
+  outputs = { self, nixpkgs, nix-flatpak, home-manager, ... }:
+    let
+      username = "nyeko";
+      system = "x86_64-linux";
+      stateVersion = "23.11";
+
+      pkgs = import nixpkgs {
+        inherit system;
+
+        config = {
+          allowUnfree = true;
+          };
+        };
+
+      homeDirPrefix = if pkgs.stdenv.hostPlatform.isDarwin then "/users" else "/home";
+      homeDirectory = "/${homeDirPrefix}/${username}";
+
+      home = (import ./home.nix {
+          inherit homeDirectory pkgs stateVersion system username;
+        });
+    in {
+      homeConfigurations."nyeko" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+
+        modules = [
+          home
+          nix-flatpak.nixosModules.nix-flatpak
+
+        ];
+      };
+    };
+}

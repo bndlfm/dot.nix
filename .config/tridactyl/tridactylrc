@@ -1,0 +1,201 @@
+" WARNING {{{
+" WARNING: This file defines and runs a command called fixamo_quiet. If you
+" also have a malicious addon that operates on `<all_urls>` installed this
+" will allow it to steal your firefox account credentials!
+"
+" With those credentials, an attacker can read anything in your sync account,
+" publish addons to the AMO, etc, etc.
+"
+" Without this command a malicious addon can steal credentials from any site
+" that you visit that is not in the restrictedDomains list.
+"
+" You should comment out the fixamo lines unless you are entirely sure that
+" they are what you want.
+"
+" The advantage of running the command is that you can use the tridactyl
+" interface on addons.mozilla.org and other restricted sites.
+
+" Provided only as an example.
+" Do not install/run without reading through as you may be surprised by some
+" of the settings.
+
+"}}} May require the latest beta builds.
+
+"*******************
+"*** Set Options ***
+"*******************
+  " General  {{{
+      set newtab about:blank
+      set allowautofocus true
+      set editorcmd kitty -e "nvim %f '+normal!%lGzv%c|'"
+      set smoothscroll true
+      set newtabfocus page
+      colourscheme shydactyl
+
+    " Sometimes the status bar in the bottom left corner overlaps the Tridactyl
+    " command line, so set an option to move the status bar to the right.
+      guiset_quiet hoverlink right
+  "}}}
+  " Hint settings  {{{
+     set hintnames short
+     set hintchars arstneioqwfpgjluyzxcvbkm
+
+    "Defaults to 300ms but I'm a 'move fast and close the wrong tabs' kinda chap
+     set hintdelay 100
+  "}}}
+  " Search  {{{
+    "Remove old search urls
+      jsb Object.keys(tri.config.get("searchurls")).reduce((prev, u) => prev.then(_ => tri.config.set("searchurls", u, null)), Promise.resolve())
+    "Aliases for different searches
+      set searchurls.alternativeto https://alternativeto.net/browse/search/?q=%s
+      set searchurls.ddg https://duckduckgo.co.uk/?q=%s
+      set searchurls.aur https://aur.archlinux.org/packages/?O=0&K=%s
+      set searchurls.aw https://wiki.archlinux.org/?search=%s
+      set searchurls.gh https://github.com/search?q=%s
+      set searchurls.wb https://web.archive.org/web/*/%s
+      set searchurls.books https://b-ok.cc/s/%s
+      set searchurls.cve https://www.cvedetails.com/cve-details.php?t=1&cve_id=%s
+      set searchurls.cvep https://www.cvedetails.com/product-search.php?vendor_id=0&search=%s
+      set searchurls.yt https://yewtu.be/search?q=%s
+      set searchurls.bing https://www.bing.com/search?q=%s
+      set searchurls.video https://www.google.com/search?hl=en&q=intext%3A%22%s%22%20intitle%3A%22index.of%22%20%2B(wmv%7Cmpg%7Cavi%7Cmp4%7Cmkv%7Cmov)%20%2Dinurl%3A(jsp%7Cpl%7Cphp%7Chtml%7Caspx%7Chtm%7Ccf%7Cshtml)
+      set searchurls.audio https://www.google.com/search?hl=en&ei=cSj3X5L0HYXykwXRpKvYAg&q=intext%3A%22%s%22+intitle%3A%22index.of.%2F%22+%28ac3%7Cflac%7Cm4a%7Cmp3%7Cogg%7Cwav%7Cwma%29+-inurl%3A%28jsp%7Cpl%7Cphp%7Chtml%7Caspx%7Chtm%7Ccf%7Cshtml%29&oq=intext%3A%22test%22+intitle%3A%22index.of.%2F%22+%28ac3%7Cflac%7Cm4a%7Cmp3%7Cogg%7Cwav%7Cwma%29+-inurl%3A%28jsp%7Cpl%7Cphp%7Chtml%7Caspx%7Chtm%7Ccf%7Cshtml%29&gs_lcp=CgZwc3ktYWIQA1CGD1jzEGDBEmgAcAB4AIABAIgBAJIBAJgBAaABAaoBB2d3cy13aXrAAQE&sclient=psy-ab&ved=0ahUKEwjS8PamkYruAhUF-aQKHVHSCisQ4dUDCAw&uact=5
+  "}}}
+
+"****************
+"*** Commands ***
+"****************
+    command hint_focus hint -;
+    command wayback composite get_current_url | tabopen wb
+  " Tree Style Tab Integration  {{{
+      command ttcollapse js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'collapse-tree', tab: JS_ARGS[1]})€
+      command ttcollapse_recursively js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'collapse-tree', tab: JS_ARGS[1], recursively: true})€
+      command ttexpand js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'expand-tree', tab: JS_ARGS[1]})€
+      command ttexpand_recursively js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'expand-tree', tab: JS_ARGS[1], recursively: true})€
+      command ttcollapse_current_or_parent js browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'get-tree-structure', tab: 'current'}).then(struct => browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'collapse-tree', tab: struct[0].collapsed ? 'parent' : 'current'}))
+      command ttfocus js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'focus', tab: JS_ARGS[1]})€
+      command ttindent js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'indent', tab: JS_ARGS[1]})€
+      command ttindent_recursively js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'indent', tab: JS_ARGS[1], followChildren: true})€
+      command ttoutdent js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'outdent', tab: JS_ARGS[1]})€
+      command ttoutdent_recursively js -d€ browser.runtime.sendMessage("treestyletab@piro.sakura.ne.jp", {type: 'outdent', tab: JS_ARGS[1], followChildren: true})€
+  "}}}
+
+"*************
+"*** Binds ***
+"*************
+  "Colemak Binds {{{
+    "Movement {{{
+      bind n scrollline 7
+      bind e scrollline -7
+      bind N scrollline 12
+      bind E scrollline -12
+      bind h scrollpx -100
+      bind i scrollpx 100
+    "}}}
+
+    "Tabs and Windows {{{
+      bind o fillcmdline open
+      bind c current_url open
+      bind O fillcmdline tabopen
+      bind C current_url tabopen
+      bind << tabmove -1
+      bind >> tabmove +1
+      bind H tabprev
+      bind I tabnext
+    "}}}
+  "}}}
+
+  " History  {{{
+    bind u back
+    bind U forward
+  "}}}
+
+  " Search   {{{
+    "Ctrl-F should use the browser's native 'find' functionality.
+      unbind <C-f>
+
+    bind / fillcmdline find
+    bind ? fillcmdline find -?
+    bind = findnext 1
+    bind - findnext -1
+  "}}}
+
+  " Hint tweaks  {{{
+    bind <space>c composite hint_focus; !s xdotool key Menu
+
+    "hint to select link and open in MPV w/ PiP wayland class id
+      unbind ;v
+      bind ;v composite hint -pipe a href | shellescape | js -p 'PATH="$PATH:/usr/local/bin" mpv --wayland-app-id=mpv_pip ' + JS_ARG | !s
+    "use current webpage to open mpv with wayland PiP class id
+      unbind ;V
+      bind ;V composite js document.location.href | shellescape | js -p 'PATH="$PATH:/usr/local/bin" mpv --wayland-app-id=mpv_pip ' + JS_ARG | !s
+  "}}}
+
+  " Tree Style Tabs bindings  {{{
+    bind zc ttcollapse_current_or_parent
+    bind zx ttcollapse root
+    bind zC ttcollapse_recursively root
+    bind zo ttexpand current
+    bind zO ttexpand_recursively current
+    bind zM ttcollapse *
+    bind zR ttexpand *
+    bind zp ttfocus parent
+    bind zP ttfocus root
+    bind zn ttfocus nextSibling
+    bind zi ttfocus prevSibling
+    bind z< ttoutdent_recursively current
+    bind z> ttindent_recursively current
+  "}}}
+
+  "Close with sanitize for vim like behaviour w/r/t conf changes
+    bind ZZ composite sanitise tridactyllocal; qall
+
+"************************
+"*** disable security ***
+"************************
+  " AMO FIX {{{
+    "Add helper commands that Mozillians think make Firefox irredeemably
+    "insecure. For details, read the comment at the top of this file.
+      command fixamo_quiet jsb tri.excmds.setpref("privacy.resistFingerprinting.block_mozAddonManager", "true").then(tri.excmds.setpref("extensions.webextensions.restrictedDomains", '""'))
+      command fixamo js tri.excmds.setpref("privacy.resistFingerprinting.block_mozAddonManager", "true").then(tri.excmds.setpref("extensions.webextensions.restrictedDomains", '""').then(tri.excmds.fillcmdline_tmp(3000, "Permissions added to user.js. Please restart Firefox to make them take affect.")))
+  "}}}
+  " CLOBBER CSP {{{
+    "Make Tridactyl work on more sites at the expense of some security. For
+    "details, read the comment at the top of this file.
+      fixamo_quiet
+
+    "Equivalent to `set csp clobber` before it was removed. This weakens your
+    "defences against cross-site-scripting attacks and other types of
+    "code-injection by reducing the strictness of Content Security Policy on
+    "every site in a couple of ways.
+    "
+    "You may not wish to run this. Mozilla strongly feels that you shouldn't.
+    "
+    "It allows Tridactyl to function on more pages, e.g. raw GitHub pages.
+    "
+    "We remove the sandbox directive
+    "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/sandbox
+    "which allows our iframe to run (and anyone else's) on any website.
+    "
+    "We weaken the style-src directive
+    "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/style-src
+    "to allow us to theme our elements. This exposes you to 'cross site styling'
+    "attacks.
+    "
+    "Read https://wiki.mozilla.org/Security/CSP#Goals for more information.
+      jsb browser.webRequest.onHeadersReceived.addListener(tri.request.clobberCSP,{urls:["<all_urls>"],types:["main_frame"]},["blocking","responseHeaders"])
+  "}}}
+
+"*********************
+"*** URL redirects ***
+"*********************
+  "New reddit is bad
+"     autocmd DocStart ^http(s?)://www.reddit.com js tri.excmds.urlmodify("-t", "www", "old")
+
+  "autozoom on certain pages {{{
+     autocmd DocStart .*archlinux\.org.* zoom 150
+     autocmd DocStart .*github\.com.* zoom 150
+     autocmd DocStart .*gitlab\.com.* zoom 150
+     autocmd DocStart .*lore\.kernel\.org.* zoom 150
+  "}}}
+" vim: ft=tridactyl fdm=marker fdl=0

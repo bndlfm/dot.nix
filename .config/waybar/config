@@ -1,0 +1,50 @@
+[
+  {
+    "layer": "top",
+    "position": "top",
+    "output": [
+      "DP-3"
+    ],
+    "include": [
+      "~/.config/waybar/default_modules.json"
+    ],
+    "height": 28,
+    "spacing": 3,
+    "modules-left": [
+      "hyprland/workspaces"
+    ],
+    "modules-center": [
+      "tray"
+    ],
+    "modules-right": [
+      "mpd",
+      "idle_inhibitor",
+      "pulseaudio",
+      "cpu",
+      "memory",
+      "temperature",
+      "clock"
+    ]
+  },
+  {
+    "layer": "top",
+    "position": "top",
+    "output": [
+      "HDMI-A-1"
+    ],
+    "include": [
+      "~/.config/waybar/default_modules.json"
+    ],
+    "height": 30,
+    "spacing": 4,
+    "modules-left": [
+      "hyprland/workspaces"
+    ],
+    "modules-center": [],
+    "modules-right": [
+      "clock"
+    ]
+  }
+]
+
+# vim: ft=jsonc
