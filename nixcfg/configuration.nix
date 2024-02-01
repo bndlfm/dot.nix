@@ -577,6 +577,17 @@
         VISUAL = "vim";
         };
 
+    ######### THEMING ########
+      gtk.cursorTheme = {
+        name = "volantes-cursors";
+        package = pkgs.volantes-cursors;
+        };
+      home.pointerCursor = {
+        name = "volantes-cursors";
+        package = pkgs.volantes-cursors;
+        x11.defaultCursor = pkgs.volantes-cursors;
+        };
+
     ######### (HM) WAYLAND HYPRLAND ########
       wayland.windowManager.hyprland = {
         enable = true;
