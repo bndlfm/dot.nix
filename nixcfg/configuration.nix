@@ -291,6 +291,12 @@
         git = {
           userName = "bndlfm";
           userEmail = "firefliesandlightningbugs@gmail.com";
+          extraConfig = {
+            credential = {
+              credentialStore = "secretservice";
+              helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
+              };
+            };
           };
         kitty = {
           enable = true;
