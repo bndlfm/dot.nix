@@ -8,7 +8,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ### <home-manager/nixos>
+    #<home-manager/nixos>
     ];
 
 
@@ -27,63 +27,78 @@
       nixpkgs.config = {
         allowUnfree = true;
         allowUnfreePredicate = (_: true);
+        packageOverrides = pkgs: {
+          nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") 
+          {
+            inherit pkgs;
+          };
+        };
         permittedInsecurePackages = [
           "electron-25.9.0"
-          ];
-        };
+        ];
+      };
 
       home.packages = with pkgs; [
         ## PACKAGE GROUPS
-          ## TERMINAL
-            ## CLI
-              bat
-              btop
-              carapace
-              chafa
-              eza
-              fd
-              fzf
-              gnugrep
-              pulsemixer
-              ripgrep
-              silver-searcher
-              trashy
-            ## TUI
-              joshuto
-              ranger
-            ## EDITORS
+          ## EDITORS
             blender
             gimp
+          ## GAMES
+            crawlTiles
           ## HYPRLAND
             hdrop
             hyprpaper
             hyprshot
           ## MEDIA
-            #freetube
             mpd
             mpd-discord-rpc
             mpv
             ncmpcpp
             yt-dlp
           ## PASSWORDS
-            docker-credential-helpers
             git-credential-manager
             gopass
             pass
             pass-git-helper
-          ## RICE
-            libsForQt5.qt5ct
-            nerdfonts
-            ocs-url
-            plasma5Packages.qtstyleplugin-kvantum
-            volantes-cursors
+          ## PROGRAMMING
+            python3
           ## SWAY TOOLS
             swaybg
             swayidle
             swaylock
             swaynotificationcenter
+          ## TERMINAL
+            ## CLI
+              bat
+              btop
+              carapace
+              chafa
+              devbox
+              eza
+              fd
+              fzf
+              gnugrep
+              libqalculate
+              ollama
+              pulsemixer
+              ripgrep
+              silver-searcher
+              supabase-cli
+              trashy
+            ## TUI
+              joshuto
+              ranger
+              yazi
           ## THEMING
+            nerdfonts
+            ocs-url
+            volantes-cursors
             dracula-theme
+          ## QT
+            plasma5Packages.qtstyleplugin-kvantum
+            libsForQt5.qtstyleplugin-kvantum
+            #libsForQt5.plasma-browser-integration
+            libsForQt5.qt5ct
           ## WAYLAND SPECIFIC
             gammastep
             grimblast
@@ -91,29 +106,30 @@
             nwg-look
             waybar
             wine
-            wl-clipboard
-            wl-clipboard-x11
-            wl-clip-persist
+            #wl-clipboard
+            #wl-clipboard-x11
+            #wl-clip-persist
             wlr-randr
           ## XORG
             xorg.xkill
             xorg.xhost
+            xclip
 
           ## MISC PACKAGES
-            arrpc
-            distrobox
-            evince
-            ( firefox.override { nativeMessagingHosts = [
-              ff2mpv
-              passff-host
-              tridactyl-native
-              ];})
+            #arrpc
+            brave
+            discordchatexporter-cli
+            dotnet-runtime_7
+            #( firefox-devedition-unwrapped.override {
+            #  patches = oldAttrs.patches ++ [
+            #    (builtins.fetchurl "${self}/patches/firefox/ext-tabs.js.patch")
+            #    (builtins.fetchurl "${self}/patches/firefox/tabs.json.patch")
+            #    ];
+            #})
             flatpak
             grc
             gparted
-            #kdeconnect
-            nvidia-podman
-            #nvidia-docker
+            kdeconnect
             lxappearance
             lutris
             obsidian
@@ -122,14 +138,15 @@
             podman-compose
             qbittorrent
             ripcord
-            qutebrowser-qt5
             rofi
             steam-run
-            upscayl
-            vulkan-tools
+            #upscayl
             yadm
             yams
+            yazi
             ydotool
+            web-ext
+            zip
             zoxide
             ];
 
@@ -179,7 +196,7 @@
             { name = "done"; src = pkgs.fishPlugins.done.src; }
             { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
             { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-            { name = "sponge"; src = pkgs.fishPlugins.sponge.src; }
+            #{ name = "sponge"; src = pkgs.fishPlugins.sponge.src; }
             { name = "fish-history-merge";
               src = pkgs.fetchFromGitHub {
                 owner = "2m";
@@ -308,7 +325,7 @@
             italic_font      Inconsolata LGC Nerd Font Mono Italic
             bold_italic_font Inconsolata LGC Nerd Font Mono Bold Italic
 
-            font_size 13.0
+            font_size 14.0
 
             scrollback_lines 100000
 
@@ -509,7 +526,7 @@
           vimAlias = true;
           vimdiffAlias = true;
           extraConfig = ''
-              :luafile ~/.config/nvim/lazy_bootstrap.lua
+            :luafile ~/.config/nvim/lazy_bootstrap.lua
             '';
           extraPackages = with pkgs; [
             dart
@@ -546,7 +563,79 @@
               ]))
             ];
           };
-      };
+        yazi = {
+          enable = true;
+          enableFishIntegration = true;
+          enableBashIntegration = true;
+          keymap = {
+            manager.keymap = [
+              # Navigation
+              { on = [ "e" ]; exec = "arrow -1"; desc = "Move cursor up"; }
+              { on = [ "n" ]; exec = "arrow 1";  desc = "Move cursor down"; }
+              { on = [ "E" ]; exec = "arrow -5"; desc = "Move cursor up 5 lines"; }
+              { on = [ "N" ]; exec = "arrow 5";  desc = "Move cursor down 5 lines"; }
+              { on = [ "h" ]; exec = [ "leave" "escape --visual --select" ]; desc = "Go back to the parent directory"; }
+              { on = [ "i" ]; exec = [ "enter" "escape --visual --select" ]; desc = "Enter the child directory"; }
+              { on = [ "H" ]; exec = "back";    desc = "Go back to the previous directory"; }
+              { on = [ "I" ]; exec = "forward"; desc = "Go forward to the next directory"; }
+
+              { on = [ "<A-e>" ]; exec = "seek -5"; desc = "Seek up 5 units in the preview"; }
+              { on = [ "<A-n>" ]; exec = "seek 5";  desc = "Seek down 5 units in the preview"; }
+              { on = [ "t" ]; exec = "tab_create --current"; desc = "Create a new tab using the current path"; }
+
+              ## Goto
+              { on = [ "g" "h" ];       exec = "cd ~";             desc = "Go to the home directory"; }
+              { on = [ "g" "c" ];       exec = "cd ~/.config";     desc = "Go to the config directory"; }
+              { on = [ "g" "d" ];       exec = "cd ~/Downloads";   desc = "Go to the downloads directory"; }
+              { on = [ "g" "t" ];       exec = "cd /tmp";          desc = "Go to the temporary directory"; }
+              { on = [ "g" "<Space>" ]; exec = "cd --interactive"; desc = "Go to a directory interactively"; }
+              ];
+
+            tasks.keymap = [
+              { on = [ "e" ]; exec = "arrow -1"; desc = "Move cursor up"; }
+              { on = [ "n" ]; exec = "arrow 1";  desc = "Move cursor down"; }
+              ];
+
+            select.keymap = [
+              { on = [ "e" ]; exec = "arrow -1"; desc = "Move cursor up"; }
+              { on = [ "n" ]; exec = "arrow 1";  desc = "Move cursor down"; }
+              { on = [ "E" ]; exec = "arrow -5"; desc = "Move cursor up 5 lines"; }
+              { on = [ "N" ]; exec = "arrow 5";  desc = "Move cursor down 5 lines"; }
+              ];
+
+            input.keymap = [
+              { on = [ "<Esc>" ]; exec = "escape"; desc = "Go back the normal mode, or cancel input"; }
+
+              # Mode
+              { on = [ "k" ]; exec = "insert";                              desc = "Enter insert mode"; }
+              { on = [ "K" ]; exec = [ "move -999" "insert" ];             desc = "Move to the BOL, and enter insert mode"; }
+
+              # Character-wise movement
+              { on = [ "h" ];       exec = "move -1"; desc = "Move back a character"; }
+              { on = [ "i" ];       exec = "move 1";  desc = "Move forward a character"; }
+
+              # Word-wise movement
+              { on = [ "b" ];     exec = "backward";              desc = "Move back to the start of the current or previous word"; }
+              { on = [ "w" ];     exec = "forward";               desc = "Move forward to the start of the next word"; }
+              { on = [ "l" ];     exec = "forward --end-of-word"; desc = "Move forward to the end of the current or next word"; }
+              ];
+
+            help.keymap = [
+              { on = [ "<Esc>" ]; exec = "escape"; desc = "Clear the filter, or hide the help"; }
+              { on = [ "q" ];     exec = "close";  desc = "Exit the process"; }
+              { on = [ "<C-q>" ]; exec = "close";  desc = "Hide the help"; }
+
+              # Navigation
+              { on = [ "e" ]; exec = "arrow -1"; desc = "Move cursor up"; }
+              { on = [ "n" ]; exec = "arrow 1";  desc = "Move cursor down"; }
+
+              { on = [ "E" ]; exec = "arrow -5"; desc = "Move cursor up 5 lines"; }
+              { on = [ "N" ]; exec = "arrow 5";  desc = "Move cursor down 5 lines"; }
+              ];
+            };
+          };
+
+        };
 
     ######### (HM) SERVICES #########
       services = {
@@ -575,7 +664,6 @@
       home.sessionVariables = {
         EDITOR = "nvim";
         MANPAGER = "nvim +Man!";
-        #NIXPKGS_ALLOW_INSECURE = 1;
         NIXOS_OZONE_WL = "1";
         QT_QPA_PLATFORM = "xcb";
         QT_QPA_PLATFORMTHEME = "qt5ct";
@@ -583,7 +671,7 @@
         VISUAL = "vim";
         };
 
-    ######### THEMING ########
+    ######### (HM) THEMING ########
       gtk.cursorTheme = {
         name = "volantes-cursors";
         package = pkgs.volantes-cursors;
@@ -926,19 +1014,55 @@
           source = "${homeDir}/.dotfiles/.config/waybar";
           recursive = true;
           };
+        "yazi" = {
+          source = "${homeDir}/.dotfiles/.config/yazi";
+          recursive = true;
+          };
         };
-    };
+      };
 
+#    services.podman.containers = {
+#      "jellyfin" = {
+#        image = "docker.io/jellyfin/jellyfin:latest";
+#        description = "media server";
+#        labels = {
+#          "io.containers.autoupdate" = "registry";
+#          };
+#        autoStart = true;
+#        ports = [
+#          "8096:8096"
+#          "8920:8920"
+#          "1900:1900"
+#          "7359:7359"
+#          ];
+#        environment = {
+#          NVIDIA_VISIBLE_DEVICES="all";
+#          NVIDIA_DRIVER_CAPABILITIES="all";
+#          JELLYFIN_PublishedServerUrl="192.168.1.5";
+#          };
+#        volumes = [
+#          "/media/.cache:/cache"
+#          "/media/.jellyfin:/config"
+#          "/media:/media"
+#          ];
+#        };
+#      };
 #-------- PACKAGES --------#
   nix.settings.experimental-features = [ "nix-command" "flakes" ];  # Enable Flakes
-  nixpkgs.config.allowUnfree = true;  # Allow non-foss pkgs
+  nixpkgs.config = {
+    allowUnfree = true;  # Allow non-foss pkgs
+    cudaSupport = true;
+    };
+  
   environment.systemPackages = with pkgs; [
     git
     btrfs-progs
-    neovim-unwrapped
+    docker
     home-manager
     hyprland
     hyprland-protocols
+    neovim-unwrapped
+    runc
     sops
     ];
 
@@ -946,9 +1070,11 @@
 programs = {
   firefox = {
     enable = true;
+    #package = firefox-devedition-unwrapped;
     nativeMessagingHosts.packages = with pkgs; [
       tridactyl-native
-      passff-host
+      browserpass
+      #plasma-browser-integration
       ff2mpv
       ];
     };
@@ -956,59 +1082,89 @@ programs = {
     enable = true;
     enableSSHSupport = true;
     };
+  hyprland = {
+    enable = true;
+    xwayland.enable = true;
+    };
+  nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      cmake
+      ];
+    };
   steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports firewall for Source Dedicated Server
     };
-  hyprland = {
-    enable = true;
-    xwayland.enable = true;
-    };
   };
 
 #-------- CONTAINERS / VM --------#
   virtualisation = {
+    containers.enable = true;
+    containers.storage.settings = {
+      storage = {
+        driver = "overlay";
+        runroot = "/run/containers/storage";
+        graphroot = "/var/lib/containers/storage";
+        rootless_storage_path = "/tmp/containers-$USER";
+        options.overlay.mountopt = "nodev,metacopy=on";
+        };
+      };
     docker = {
       enable = true;
       enableNvidia = true;
-      rootless = {
-        enable= true;
-        daemon.settings = {};
-        };
+      enableOnBoot = true;
+      extraOptions = "--default-runtime=nvidia";
+      #listenOptions = [
+      #  "/var/run/docker.sock"
+      #  ];
+      #rootless = {
+      #  enable= true;
+        #setSocketVariable = true;
+      #  };
+      #  storageDriver = "overlay";
       };
     podman = {
       enable = true;
       enableNvidia = true;
-      defaultNetwork.settings.dns_enabled = true;
+      #dockerSocket.enable = true;
+      #defaultNetwork.settings.dns_enabled = true;
       };
-#  oci-containers = {
-#    backend = "podman";
-#    containers."jellyfin" = {
-#      image = "docker.io/jellyfin/jellyfin:latest";
-#      labels = {
-#        "io.containers.autoupdate" = "registry";
-#        };
-#      autoStart = true;
-#      ports = [
-#        "8096:8096"
-#        "8920:8920"
-#        "1900:1900"
-#        "7359:7359"
-#        ];
-#      environment = {
-#        NVIDIA_VISIBLE_DEVICES="all";
-#        NVIDIA_DRIVER_CAPABILITIES="all";
-#        JELLYFIN_PublishedServerUrl="192.168.1.5";
-#        };
-#      volumes = [
-#        "/media/.cache:/cache"
-#        "/media/.jellyfin:/config"
-#        "/media:/media"
-#        ];
-#      };
-#    };
-  };
+    libvirtd.enable = true;
+    oci-containers = {
+      backend = "podman";
+      containers."jellyfin" = {
+        image = "docker.io/jellyfin/jellyfin:latest";
+        labels = {
+          "io.containers.autoupdate" = "registry";
+          };
+        autoStart = true;
+        ports = [
+          "8096:8096"
+          "8920:8920"
+          "1900:1900"
+          "7359:7359"
+          ];
+        environment = {
+          NVIDIA_VISIBLE_DEVICES="all";
+          NVIDIA_DRIVER_CAPABILITIES="all";
+          JELLYFIN_PublishedServerUrl="192.168.1.5";
+          };
+        volumes = [
+          "/media/.cache:/cache"
+          "/media/.jellyfin:/config"
+          "/media:/media"
+          ];
+        };
+      };
+    };
+    #environment.extraInit = ''
+      #if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+        #export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+        #fi
+      #'';
+
 
 
 #-------- GROUPS ---------#
@@ -1023,9 +1179,8 @@ programs = {
   users.users.neko = {
     isNormalUser = true;
     description = "neko";
-    extraGroups = [ "networkmanager" "wheel" "input" ];
+    extraGroups = [ "networkmanager" "wheel" "input" "docker" "libvirtd" ];
     packages = with pkgs; [
-      flatpak
       ];
     };
 
@@ -1049,6 +1204,7 @@ programs = {
       nssmdns4 = true;
       openFirewall = true;
       };
+
     ## Enable Flatpak
     flatpak.enable = true;
 
@@ -1061,18 +1217,13 @@ programs = {
     ## X11
     xserver = {
       enable = true;
-
-      # Enable the GNOME Desktop Environment.
-      displayManager.gdm.enable = true;
-      desktopManager.gnome.enable = true;
-
+      #displayManager.gdm.enable = true;
+      #desktopManager.gnome.enable = true;
+      displayManager.sddm.enable = true;
+      desktopManager.plasma5.enable = true;
       # Configure keymap in X11
-      layout = "us";
-      xkbVariant = "";
-
-      ## Enable the KDE Plasma Desktop Environment.
-      #services.xserver.displayManager.sddm.enable = true;
-      #services.xserver.desktopManager.plasma5.enable = true;
+      xkb.layout = "us";
+      xkb.variant = "";
       };
     };
 
@@ -1082,6 +1233,19 @@ programs = {
     enableUnifiedCgroupHierarchy = false;
     user = {
       services = {
+        polkit-gnome-authentication-agent-1 = {
+          description = "polkit-gnome-authentication-agent-1";
+          wantedBy = [ "graphical-session.target" ];
+          wants = [ "graphical-session.target" ];
+          after = [ "graphical-session.target" ];
+          serviceConfig = {
+            Type = "simple";
+            ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+            Restart = "on-failure";
+            RestartSec = 1;
+            TimeoutStopSec = 10;
+            };
+          };
         ytoold.enable = true;
         };
       };
@@ -1116,11 +1280,24 @@ programs = {
   networking = {
     hostName = "meow";
     networkmanager.enable = true;  # Enable Networking
-    firewall.enable = true;  # Disable the firewall.
-
-    ## Open ports in the firewall.
-    #firewall.allowedTCPPorts = [ ... ];
-    #firewall.allowedUDPPorts = [ ... ];
+    firewall = {
+      enable = true;
+      ## Open ports in the firewall.
+      allowedTCPPorts = [ 8000 8096 ];
+      allowedTCPPortRanges = [
+        {
+          from = 1714;
+          to = 1764;
+        }
+        ];
+      allowedUDPPorts = [];
+      allowedUDPPortRanges = [
+        {
+          from = 1714;
+          to = 1764;
+        }
+        ];
+      };
     };
 
 
@@ -1143,8 +1320,6 @@ programs = {
 
 #-------- GPU --------#
   hardware.nvidia = {
-
-    # Modesetting is required.
     modesetting.enable = true;
 
     # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
@@ -1192,19 +1367,23 @@ programs = {
 
 
 #-------- BOOTLOADER --------#
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  #boot.loader.grub.enable = true;
-  #boot.loader.grub.device = "/dev/nvme0n1p1";
-  #boot.blacklistedKernelModules = [ "nouveau" ];
-  boot.kernelParams = [
-    "nvidia.modesetting=1"
-  ];
-
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+      #grub.enable = true;
+      #grub.device = "/dev/nvme0n1p1";
+      };
+    extraModprobeConfig = ''
+      '';
+    kernelModules = [ "kvm-amd" ];
+    kernelParams = [ "nvidia.modesetting=1" ];
+    kernel.sysctl = { "vm.overcommit_memory" = 1; };
+    #blacklistedKernelModules = [ "nouveau" ];
+    };
 
 #-------- POWER --------#
   powerManagement.enable = false;
-
 
 #-------- XDG PORTALS --------#
   xdg.portal = {
