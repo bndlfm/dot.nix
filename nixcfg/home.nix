@@ -116,6 +116,7 @@
             ## MISC PACKAGES
                #arrpc
                brave
+               direnv
                discordchatexporter-cli
                dotnet-sdk_7
                flatpak
@@ -303,7 +304,7 @@
           extraConfig = {
             credential = {
               credentialStore = "secretservice";
-              helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
+              helper = "${pkgs.git-credential-gopass}/bin/git-credential-manager";
               };
             };
           };
