@@ -1,59 +1,89 @@
 {
-  description = "My First (System) Flake (godspeed)";
 
-  inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
-    home-manager = {
-      url = "github:n-hass/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    flake-utils.url = "github:numtide/flake-utils";
-  };
+   description = "My First (System) Flake (godspeed)";
 
-  outputs = { self, nixpkgs, home-manager, flake-utils, ... }@inputs:
-    #flake-utils.lib.eachDefaultSystem (system: let
-    let
+   inputs = {
+      nixpkgs.url = "nixpkgs/nixos-unstable";
+      home-manager = {
+         url = "github:n-hass/home-manager";
+         inputs.nixpkgs.follows = "nixpkgs";
+         };
+      flake-utils.url = "github:numtide/flake-utils";
+      nix-otel = {
+         url = "github:lf-/nix-otel";
+         inputs.flake-utils.follows = "flake-utils";
+         };
+      spicetify-nix.url = "github:the-argus/spicetify-nix";
+      };
+
+
+  outputs = { nixpkgs, home-manager, flake-utils, spicetify-nix, ... }: let
       system = "x86_64-linux";
-      overlays = [
-        (self: super: {
-          firefox-dev-custom = super.firefox-devedition.overrideAttrs (oldAttrs: rec {
-            name = "firefox-dev-custom";
-            patches = oldAttrs.patches ++ [
-              (super.fetchPatch "${self}/patches/ext-tabs.js.patch")
-              (super.fetchPatch "${self}/patches/tabs.json.patch")
-            ];
-          });
-        })
-      ];
       pkgs = import nixpkgs {
-        inherit system overlays;
-      };
-      hmPkgs = import home-manager {
-          inherit pkgs;
-      };
-    in {
-      nixosConfigurations = {
-        meow = nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = [
-            ./configuration.nix
-            home-manager.nixosModules.home-manager
-            # Uncomment and adjust the path to include sops-nix if needed
-            # "${self}/modules/sops.nix"
-          ];
-        };
+          };
+
+  in {
+
+    firefox-GPT = pkgs.firefox-devedition.unwrapped.overrideAttrs (oldAttrs: {
+      name = "firefox-GPT";
+      patches = [
+        (pkgs.fetchpatch {
+           url = "https://raw.githubusercontent.com/bndlfm/ffMemoryCache/main/ext-tabs.js.patch";
+           sha256 = "sha256-Kp21VA4d9RRdP3wwyiu54E4w5b3qbcZBz5YlqAM1Q7I=";
+           })
+        (pkgs.fetchpatch {
+           url = "https://raw.githubusercontent.com/bndlfm/ffMemoryCache/main/tabs.json.patch";
+           sha256 = "sha256-jXBmT/LUfwYXT+GKb1cj9g7aIFQDTN24nRceBnwoCOA=";
+           })
+        ];
+      });
+
+    nixosConfigurations."meow" = nixpkgs.lib.nixosSystem {
+      modules = [
+        ./configuration.nix
+        ./hardware-configuration.nix
+        #home-manager.nixosModules.home-manager {
+        #  home-manager = {
+        #    users."neko" = {
+        #      imports = [
+        #        ./home.nix
+        #        spicetify-nix.homeManagerModule
+        #        ];
+        #      };
+        #    };
+        #  }
+        ];
       };
-      homeConfigurations.neko = hmPkgs.lib.homeManagerConfiguration {
-          inherit system pkgs;
-          username = "neko";
-          homeDirectory = "/home/neko";
-          configuration = { config, lib, pkgs, ... }: {
-            programs.home-manager.enable = true;
-            home.packages = with pkgs; [
-              firefox-dev-custom # Use the customized Firefox package
+
+    homeConfigurations."neko" =  home-manager.lib.homeManagerModule {
+      neko = home-manager.lib.homeManagerConfiguration {
+        system = "x86_64-linux";
+        homeDirectory = "/home/neko";
+        username = "neko";
+        stateVersion = "21.05"; # Adjust according to your Home Manager version
+        configuration = { pkgs, ... }: {
+          imports = [
+            ./home.nix
+            spicetify-nix.homeManagerModule
             ];
+
+          programs.spicetify = {
+            enable = true;
+            theme = spicetify-nix.packages.${system}.default.themes.catppuccin;
+            colorScheme = "mocha";
+            enabledExtensions = with spicetify-nix.packages.${system}.default.extensions; [
+              fullAppDisplay
+              shuffle
+              hidePodcasts
+              ];
+            enabledCustomApps = with spicetify-nix.packages.${system}.default.apps; [ 
+              marketplace
+              ];
+            };
+
           };
         };
       };
-
+    };
 }
