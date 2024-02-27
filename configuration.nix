@@ -2,59 +2,56 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, ... }:
 
 
 {
+
   imports = [
-    #./hardware-configuration.nix
-    #home-manager.nixosModules.home-manager
-    #<home-manager/nixos>
     ];
 
-#-------- PACKAGES --------#
-   nix.settings.experimental-features = [ "nix-command" "flakes" ];  # Enable Flakes
-   nixpkgs.config = {
-     allowUnfree = true;  # Allow non-foss pkgs
-     cudaSupport = true;
-     };
- 
-   environment.systemPackages = with pkgs; [
-      git
-      btrfs-progs
-      docker
-      home-manager
-      hyprland
-      hyprland-protocols
-      neovim-unwrapped
-      runc
-      sops
-      ];
+  #-------- PACKAGES --------#
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config = {
+    allowUnfree = true;
+    cudaSupport = true;
+    };
 
-#-------- PACKAGE MODULES --------#
-programs = {
-  gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    };
-  hyprland = {
-    enable = true;
-    xwayland.enable = true;
-    };
-  nix-ld = {
-    enable = true;
-    libraries = with pkgs; [
-      cmake
-      ];
-    };
-  steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports firewall for Source Dedicated Server
-    };
-  };
+  environment.systemPackages = with pkgs; [
+     git
+     btrfs-progs
+     docker
+     home-manager
+     hyprland
+     hyprland-protocols
+     neovim-unwrapped
+     runc
+     sops
+     ];
 
-#-------- CONTAINERS / VM --------#
+  #-------- PACKAGE MODULES --------#
+  programs = {
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+      };
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+      };
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        cmake
+        ];
+      };
+    steam = {
+      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+      dedicatedServer.openFirewall = true; # Open ports firewall for Source Dedicated Server
+      };
+    };
+
+  #-------- CONTAINERS / VM --------#
   virtualisation = {
     containers.enable = true;
     containers.storage.settings = {
@@ -65,6 +62,8 @@ programs = {
         rootless_storage_path = "/tmp/containers-$USER";
         options.overlay.mountopt = "nodev,metacopy=on";
         };
+      #cdi.dynamic.nvidia.enable = true;
+      #cdi.dynamic.enableNvidia = true;
       };
     podman = {
       enable = true;
@@ -73,33 +72,34 @@ programs = {
       defaultNetwork.settings.dns_enabled = true;
       };
     libvirtd.enable = true;
-    #oci-containers = {
-    #  backend = "podman";
-    #  containers."jellyfin" = {
-    #    image = "docker.io/jellyfin/jellyfin:latest";
-    #    labels = {
-    #      "io.containers.autoupdate" = "registry";
-    #      };
-    #    autoStart = true;
-    #    ports = [
-    #      "8096:8096"
-    #      "8920:8920"
-    #      "1900:1900"
-    #      "7359:7359"
-    #      ];
-    #    environment = {
-    #      NVIDIA_VISIBLE_DEVICES="all";
-    #      NVIDIA_DRIVER_CAPABILITIES="all";
-    #      JELLYFIN_PublishedServerUrl="192.168.1.5";
-    #      };
-    #    volumes = [
-    #      "/media/.cache:/cache"
-    #      "/media/.jellyfin:/config"
-    #      "/media:/media"
-    #      ];
-    #    };
-    #  };
-    };
+    oci-containers = {
+      #backend = "podman";
+      #containers."jellyfin" = {
+      #  image = "docker.io/jellyfin/jellyfin:latest";
+      #  labels = {
+      #    "io.containers.autoupdate" = "registry";
+      #    };
+      #  autoStart = true;
+      #  ports = [
+      #    "8096:8096"
+      #    "8920:8920"
+      #    "1900:1900"
+      #    "7359:7359"
+      #    ];
+      #  environment = {
+      #    NVIDIA_VISIBLE_DEVICES="all";
+      #    NVIDIA_DRIVER_CAPABILITIES="all";
+      #    JELLYFIN_PublishedServerUrl="192.168.1.5";
+      #    };
+      #  volumes = [
+      #    "/media/.cache:/cache"
+      #    "/media/.jellyfin:/config"
+      #    "/media:/media"
+      #    ];
+      #  };
+      };
+  };
+
     environment.extraInit = ''
       if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
         export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
@@ -108,12 +108,12 @@ programs = {
 
 
 
-#-------- GROUPS ---------#
+  #-------- GROUPS ---------#
   users.groups.distrobox = {};
   users.groups.steamhead = {};
 
 
-#-------- USERS --------#
+  #-------- USERS --------#
   ##########################
   # Don't forget password! #
   ##########################
@@ -135,8 +135,7 @@ programs = {
     group = "steamhead";
     };
 
-
-#-------- SERVICES --------#
+  #-------- SERVICES --------#
   services = {
     avahi = {
       enable = true;
@@ -156,18 +155,15 @@ programs = {
     ## X11
     xserver = {
       enable = true;
-      #displayManager.gdm.enable = true;
-      #desktopManager.gnome.enable = true;
       displayManager.sddm.enable = true;
       desktopManager.plasma5.enable = true;
-      # Configure keymap in X11
       xkb.layout = "us";
       xkb.variant = "";
       };
     };
 
 
-#-------- SYSTEM --------#
+  #-------- SYSTEM --------#
   systemd = {
     enableUnifiedCgroupHierarchy = false;
     user = {
@@ -193,7 +189,7 @@ programs = {
       '';
     };
 
-#-------- FILESYSTEM --------#
+  #-------- FILESYSTEM --------#
   fileSystems."/mnt/data" = {
     device = "/dev/disk/by-uuid/627b1de1-05e5-4596-8b3a-a009597f5ed6";
     fsType = "btrfs";
@@ -215,13 +211,12 @@ programs = {
     };
 
 
-#-------- NETWORKING --------#
+  #-------- NETWORKING --------#
   networking = {
     hostName = "meow";
     networkmanager.enable = true;  # Enable Networking
     firewall = {
       enable = true;
-      ## Open ports in the firewall.
       allowedTCPPorts = [ 8000 8096 ];
       allowedTCPPortRanges = [
         {
@@ -240,7 +235,7 @@ programs = {
     };
 
 
-#-------- AUDIO --------#
+  #-------- AUDIO --------#
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -257,7 +252,7 @@ programs = {
     };
 
 
-#-------- GPU --------#
+  #-------- GPU --------#
   hardware.nvidia = {
     modesetting.enable = true;
 
@@ -291,7 +286,6 @@ programs = {
     driSupport32Bit = true;
     };
 
-  # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
 
   # Setup displays
@@ -305,26 +299,25 @@ programs = {
     '';
 
 
-#-------- BOOTLOADER --------#
+  #-------- BOOTLOADER --------#
   boot = {
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
-      #grub.enable = true;
-      #grub.device = "/dev/nvme0n1p1";
       };
     extraModprobeConfig = ''
       '';
     kernelModules = [ "kvm-amd" ];
     kernelParams = [ "nvidia.modesetting=1" ];
+    kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = { "vm.overcommit_memory" = 1; };
     #blacklistedKernelModules = [ "nouveau" ];
     };
 
-#-------- POWER --------#
+  #-------- POWER --------#
   powerManagement.enable = false;
 
-#-------- XDG PORTALS --------#
+  #-------- XDG PORTALS --------#
   xdg.portal = {
     enable = true;
     wlr.enable = true;
@@ -360,7 +353,7 @@ programs = {
     };
 
 
-#-------- TZ/i18n --------#
+  #-------- TZ/i18n --------#
   # Set your time zone.
   time.timeZone = "America/Chicago";
   # Select internationalisation properties.
@@ -380,13 +373,14 @@ programs = {
 
 
 
-##############################################################################
-## This value determines the NixOS release from which the default           ##
-## settings for stateful data, like file locations and database versions    ##
-## on your system were taken. It‘s perfectly fine and recommended to leave  ##
-## this value at the release version of the first install of this system.   ##
-## Before changing this value read the documentation for this option        ##
-## (e.g. man configuration.nix or on https://nixos.org/nixos/options.html). ##
-##############################################################################
+  ##############################################################################
+  ## This value determines the NixOS release from which the default           ##
+  ## settings for stateful data, like file locations and database versions    ##
+  ## on your system were taken. It‘s perfectly fine and recommended to leave  ##
+  ## this value at the release version of the first install of this system.   ##
+  ## Before changing this value read the documentation for this option        ##
+  ## (e.g. man configuration.nix or on https://nixos.org/nixos/options.html). ##
+  ##############################################################################
   system.stateVersion = "23.11"; # Did you read the comment?
+
 }
