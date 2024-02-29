@@ -14,7 +14,7 @@ inputs = {
   };
 
 
-outputs = { nixpkgs, home-manager, flake-utils, spicetify-nix,  ... }: let
+outputs = { nixpkgs, home-manager, flake-utils, spicetify-nix, nix-flatpak,  ... }: let
   system = "x86_64-linux";
   pkgs = import nixpkgs {
     inherit system;
@@ -46,7 +46,7 @@ in {
             imports = [
               ./home.nix
               spicetify-nix.homeManagerModule
-              #nix-flatpak.homeManagerModules.nix-flatpak
+              nix-flatpak.homeManagerModules.nix-flatpak
               ];
             programs.spicetify = {
               enable = true;

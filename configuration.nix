@@ -73,30 +73,30 @@
       };
     libvirtd.enable = true;
     oci-containers = {
-      #backend = "podman";
-      #containers."jellyfin" = {
-      #  image = "docker.io/jellyfin/jellyfin:latest";
-      #  labels = {
-      #    "io.containers.autoupdate" = "registry";
-      #    };
-      #  autoStart = true;
-      #  ports = [
-      #    "8096:8096"
-      #    "8920:8920"
-      #    "1900:1900"
-      #    "7359:7359"
-      #    ];
-      #  environment = {
-      #    NVIDIA_VISIBLE_DEVICES="all";
-      #    NVIDIA_DRIVER_CAPABILITIES="all";
-      #    JELLYFIN_PublishedServerUrl="192.168.1.5";
-      #    };
-      #  volumes = [
-      #    "/media/.cache:/cache"
-      #    "/media/.jellyfin:/config"
-      #    "/media:/media"
-      #    ];
-      #  };
+      backend = "podman";
+      containers."jellyfin" = {
+        image = "docker.io/jellyfin/jellyfin:latest";
+        labels = {
+          "io.containers.autoupdate" = "registry";
+          };
+        autoStart = true;
+        ports = [
+          "8096:8096"
+          "8920:8920"
+          "1900:1900"
+          "7359:7359"
+          ];
+        environment = {
+          NVIDIA_VISIBLE_DEVICES="all";
+          NVIDIA_DRIVER_CAPABILITIES="all";
+          JELLYFIN_PublishedServerUrl="192.168.1.5";
+          };
+        volumes = [
+          "/media/.cache:/cache"
+          "/media/.jellyfin:/config"
+          "/media:/media"
+          ];
+        };
       };
   };
 
@@ -121,6 +121,7 @@
     isNormalUser = true;
     description = "neko";
     extraGroups = [ "networkmanager" "wheel" "input" "docker" "libvirtd" ];
+    linger = true;
     };
 
   users.users.distrobox = {
@@ -157,11 +158,14 @@
       enable = true;
       displayManager.sddm.enable = true;
       desktopManager.plasma5.enable = true;
+      windowManager.bspwm.enable = true;
       xkb.layout = "us";
       xkb.variant = "";
       };
     };
-
+    users.users.neko.packages = with pkgs; [
+      sxhkd
+    ];
 
   #-------- SYSTEM --------#
   systemd = {
@@ -217,14 +221,21 @@
     networkmanager.enable = true;  # Enable Networking
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 8000 8096 ];
+      allowedTCPPorts = [
+        8000
+        8096 # Jellyfin HTTP
+        8920 # Jellyfin HTTPS
+        ];
       allowedTCPPortRanges = [
         {
           from = 1714;
           to = 1764;
         }
         ];
-      allowedUDPPorts = [];
+      allowedUDPPorts = [
+        1900 # Jellyfin service autodiscovery
+        7359 # Also Jellyfin service autodiscovery
+        ];
       allowedUDPPortRanges = [
         {
           from = 1714;

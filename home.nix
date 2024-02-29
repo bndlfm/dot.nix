@@ -1,8 +1,10 @@
-{ pkgs, ...  /*config,home-manager, flake-inputs, nix-flatpak, */ }:
+{ pkgs, nix-flatpak, ...  /*config,home-manager, flake-inputs,  */ }:
 
-{
+let
+  homeDir = "/home/neko";
+in {
 
-  #imports = [ flake-inputs.nix-flatpak.homeManagerModules.nix-flatpak ];
+  #imports = [ nix-flatpak.homeManagerModule.nix-flatpak ];
 
   home.stateVersion = "23.11";
   home.username = "neko";
@@ -20,6 +22,9 @@
         "electron-25.9.0"
         ];
       };
+    overlays = [
+      #(import ./overlays/overlays.nix)
+      ];
     };
 
   home.packages = with pkgs; [
@@ -41,7 +46,9 @@
       streamlink-twitch-gui-bin
       yt-dlp
     ### PASSWORDS
-      git-credential-manager
+      #git-credential-manager
+        #fontconfig
+        #dotnet-sdk_7
       git-credential-gopass
       gopass
     ### PROGRAMMING
@@ -56,7 +63,6 @@
         bat
         btop
         chafa
-        devbox
         eza
         fd
         fzf
@@ -66,8 +72,8 @@
         pulsemixer
         ripgrep
         silver-searcher
-        supabase-cli
         trashy
+        xdragon
       ### TUI
         joshuto
         ranger
@@ -91,21 +97,21 @@
       nwg-look
       waybar
       wine
-      wl-clipboard
+      #wl-clipboard
       wl-clipboard-x11
-      wl-clip-persist
+      #wl-clip-persist
       wlr-randr
     ### XORG
       xorg.xkill
       xorg.xhost
+      #xclip
 
     ### MISC PACKAGES
       #arrpc
       brave
       direnv
       discordchatexporter-cli
-      dotnet-sdk_7
-      firefox
+      firefox-devedition
       flatpak
       grc
       gparted
@@ -121,11 +127,8 @@
       rofi
       steam-run
       #upscayl
-      yadm
-      yams
       yazi
       ydotool
-      web-ext
       zip
       zoxide
       ];
@@ -212,40 +215,40 @@
         shellAbbrs = {
           #_________ EDIT CONFIG ________#
             ## FISH SHELL
-              rcfshplug = "nvim ~/fish/fundle-plugins.fish";
-              rcfsh = "nvim ~/fish/config.fish";
-              rcfshabbr = "nvim ~/fish/abbr.fish";
-              rcfshalias = "nvim ~/fish/alias.fish";
+              rcfshplug = "nvim ~/.nixcfg/.config/fish/fundle-plugins.fish";
+              rcfsh = "nvim ~/.nixcfg/.config/fish/config.fish";
+              rcfshabbr = "nvim ~/.nixcfg/.config/fish/abbr.fish";
+              rcfshalias = "nvim ~/.nixcfg/.config/fish/alias.fish";
 
             ## WINDOW MANAGERS
               ## HYPRLAND
-                rhyp = "nvim ~/hypr/hyprland.conf";
-                rhppr = "nvim ~/hypr/hyprpaper.conf";
-                rhdd = "nvim ~/hypr/dropdown.conf";
-                rhddsh = "nvim ~/hypr/dropdown.sh";
+                rhyp = "nvim ~/.nixcfg/.config/hypr/hyprland.conf";
+                rhppr = "nvim ~/.nixcfg/.config/hypr/hyprpaper.conf";
+                rhdd = "nvim ~/.nixcfg/.config/hypr/dropdown.conf";
+                rhddsh = "nvim ~/.nixcfg/.config/hypr/dropdown.sh";
 
               ## X WINDOW MANGERS
-                rhlwm = "nvim ~/herbstluftwm/autostart";
-                rbspwm = "nvim ~/bspwm/bspwmrc";
-                rsxh = "nvim ~/sxhkd/sxhkdrc";
+                rhlwm = "nvim ~/.nixcfg/.config/herbstluftwm/autostart";
+                rbspwm = "nvim ~/.nixcfg/.config/bspwm/bspwmrc";
+                rsxh = "nvim ~/.nixcfg/.config/sxhkd/sxhkdrc";
 
             ## OTHER CONFIG ABBR
-              rpicom = "nvim ~/picom/picom-kawase.conf";
-              rkt = "nvim ~/kitty/kitty.conf";
-              rvm = "nvim ~/nvim/init.vim";
-              rnvm = "nvim ~/nvim/init.vim";
-              rsway = "nvim ~//.nixcfg/.configsway/config";
+              rpicom = "nvim ~/.nixcfg/.config/picom/picom-kawase.conf";
+              rkt = "nvim ~/.nixcfg/.config/kitty/kitty.conf";
+              rvm = "nvim ~/.nixcfg/.config/nvim/init.vim";
+              rnvm = "nvim ~/.nixcfg/.config/nvim/init.vim";
+              rsway = "nvim ~/.nixcfg/.config/sway/config";
               rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
               rwb = "nvim ~/.nixcfg/.config/waybar/config";
 
             ## NIX SPECIFIC
               ## EDIT CONFIGS
-              rhm = "nvim ~/.nixcfg/nixcfg/home.nix";
-              rnf = "nvim ~/.nixcfg/nixcfg/flake.nix";
-              rnc = "nvim ~/.nixcfg/nixcfg/configuration.nix";
+              rhm = "nvim ~/.nixcfg/home.nix";
+              rnf = "nvim ~/.nixcfg/flake.nix";
+              rnc = "nvim ~/.nixcfg/configuration.nix";
 
               ## ALIASES
-              nxrb = "sudo nixos-rebuild switch --upgrade --impure --flake ~/.nixcfg/nixcfg/";
+              nxrb = "sudo nixos-rebuild switch --upgrade --impure --flake ~/.nixcfg";
 
           #________ (G)O TO DIR ________# 
             gfsh = { position = "anywhere"; setCursor = true; expansion = "~/.config/fish/%"; };
@@ -351,8 +354,9 @@
 
         ### kitty-scrollback.nvim Kitten alias
           action_alias kitty_scrollback_nvim kitten ~/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py
+
           ### Browse scrollback buffer in nvim
-          map ctrl+h kitty_scrollback_nvim
+          map ctrl+h kitten ~/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py
 
           ### Browse output of the last shell command in nvim
           map kitty_mod+g kitty_scrollback_nvim --config ksb_builtin_last_cmd_output
@@ -511,9 +515,9 @@
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
-      extraConfig = ''
-        :luafile ~/.config/nvim/lazy_bootstrap.lua
-        '';
+      #extraConfig = ''
+        #:luafile ~/.config/nvim/lazy_bootstrap.lua
+        #'';
       extraPackages = with pkgs; [
         cargo
         dart
@@ -879,7 +883,7 @@
           count_selected = { fg = "black"; bg = "lightblue"; };
 
           # Border
-          border_symbol = " ";
+          border_symbol = "*";
           border_style  = { fg = "gray"; };
 
           # Highlighting
@@ -1156,13 +1160,13 @@
       musicDirectory = "~/Music";
       };
     mpd-discord-rpc.enable = true;
-    #flatpack = {
-      #packages = [
+    flatpak = {
+      packages = [
         #"com.discordapp.Discord"
         #"com.github.tchx84.Flatseal"
         #"io.github.dvlv.boxbuddyrs"
-        #];
-      #};
+        ];
+      };
     };
 
   ######### (HM) ENVIRONMENT VARIABLES #########
@@ -1318,7 +1322,6 @@
             ];
          };
     extraConfig = ''
-      plugin = /home/neko/.config/hypr/plugins/hyprslidr.so
       #-------- Displays --------#
         monitor = HDMI-A-1, 1920x1080, 322x0, 1
         monitor = DP-1, disable
@@ -1476,49 +1479,54 @@
            windowrulev2 = immediate, class:^(steam_app_(.*))
         ## qBittorrent
           windowrulev2 = workspace 9 silent, class:org.qbittorrent.qBittorrent
+
       '';
     };
 
   ######### (HM) DOTFILES ########
   xdg.configFile = {
     "hypr" = {
-      source = "/home/neko/.nixcfg/.config/hypr";
+      source = "${homeDir}/.nixcfg/.config/hypr";
       recursive = true;
       };
     "joshuto" = {
-      source = "/home/neko/.nixcfg/.config/joshuto";
+      source = "${homeDir}/.nixcfg/.config/joshuto";
       recursive = true;
       };
     "mutt" = {
-      source = "/home/neko/.nixcfg/.config/mutt";
+      source = "${homeDir}/.nixcfg/.config/mutt";
       recursive = true;
       };
+    #"nvim" = {
+      #source = "${homeDir}/.nixcfg/.config/nvim";
+      #recursive = true;
+      #};
     "pulsemixer.cfg" = {
-      source = "/home/neko/.nixcfg/.config/pulsemixer.cfg";
-      recursive = true;
+      source = "${homeDir}/.nixcfg/.config/pulsemixer.cfg";
+      recursive = false;
       };
     "ranger" = {
-      source = "/home/neko/.nixcfg/.config/ranger";
+      source = "${homeDir}/.nixcfg/.config/ranger";
       recursive = true;
       };
     "rofi" = {
-      source = "/home/neko/.nixcfg/.config/rofi";
+      source = "${homeDir}/.nixcfg/.config/rofi";
       recursive = true;
       };
     "tridactyl" = {
-      source = "/home/neko/.nixcfg/.config/tridactyl";
+      source = "${homeDir}/.nixcfg/.config/tridactyl";
       recursive = true;
       };
     "qutebrowser" = {
-      source = "/home/neko/.nixcfg/.config/qutebrowser";
+      source = "${homeDir}/.nixcfg/.config/qutebrowser";
       recursive = true;
       };
     "waybar" = {
-      source = "/home/neko/.nixcfg/.config/waybar";
+      source = "${homeDir}/.nixcfg/.config/waybar";
       recursive = true;
       };
     "yazi" = {
-      source = "/home/neko/.nixcfg/.config/yazi";
+      source = "${homeDir}/.nixcfg/.config/yazi";
       recursive = true;
       };
     };
