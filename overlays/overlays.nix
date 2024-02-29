@@ -7,6 +7,24 @@
          #})
 
 self: super: {
+  xorg.xorgproto = super.xorg.xorgproto.overrideAttrs (oldAttrs: {
+    patches = oldAttrs.patches ++ [
+      ../packages/mesa-explicit-sync/59.patch
+      ];
+    });
+
+  wayland-protocols = super.wayland-protocols.overrideAttrs (oldAttrs:{
+    patches = oldAttrs.patches ++ [
+      ../packages/mesa-explicit-sync/90.patch
+      ];
+    });
+
+  xwayland = super.xwayland.overrideAttrs (oldAttrs: {
+    patches = oldAttrs.patches ++ [
+      ../packages/mesa-explicit-sync/967.patch
+      ];
+    });
+
   #firefox-devedition = super.firefox-devedition.overrideAttrs (oldAttrs: {
     #patches = oldAttrs.patches ++ [
     #  (super.fetchpatch {
@@ -19,15 +37,5 @@ self: super: {
     #  })
     #];
   #});
-
-  discord = super.discord.overrideAttrs (oldAttrs: {
-    args = oldAttrs.args ++ [ "--enable-features=UseOzonePlatform" "--ozone-platform=wayland" ];
-    }
-  );
-
-  obsidian = super.obsidian.overrideAttrs (oldAttrs: {
-    args = oldAttrs.args ++ [ "--enable-features=UseOzonePlatform" "--ozone-platform=wayland" ];
-    }
-  );
 }
 

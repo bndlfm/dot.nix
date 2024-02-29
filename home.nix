@@ -46,9 +46,6 @@ in {
       streamlink-twitch-gui-bin
       yt-dlp
     ### PASSWORDS
-      #git-credential-manager
-        #fontconfig
-        #dotnet-sdk_7
       git-credential-gopass
       gopass
     ### PROGRAMMING
@@ -97,7 +94,6 @@ in {
       nwg-look
       waybar
       wine
-      #wl-clipboard
       wl-clipboard-x11
       #wl-clip-persist
       wlr-randr
@@ -118,7 +114,6 @@ in {
       kdeconnect
       lxappearance
       lutris
-      obsidian
       pavucontrol
       podman
       podman-compose
@@ -249,6 +244,8 @@ in {
 
               ## ALIASES
               nxrb = "sudo nixos-rebuild switch --upgrade --impure --flake ~/.nixcfg";
+
+              cb = "flatpak run app.getclipboard.Clipboard";
 
           #________ (G)O TO DIR ________# 
             gfsh = { position = "anywhere"; setCursor = true; expansion = "~/.config/fish/%"; };
@@ -1161,11 +1158,19 @@ in {
       };
     mpd-discord-rpc.enable = true;
     flatpak = {
+      enable = true;
       packages = [
-        #"com.discordapp.Discord"
-        #"com.github.tchx84.Flatseal"
-        #"io.github.dvlv.boxbuddyrs"
+        { appId = "com.discordapp.Discord"; origin = "flathub"; }
+        "md.obsidian.Obsidian"
+        "com.github.tchx84.Flatseal"
+        "io.github.dvlv.boxbuddyrs"
+        "app.getclipboard.Clipboard"
         ];
+      uninstallUnmanagedPackages = true;
+      update.auto = {
+        enable = true;
+        onCalendar = "weekly";
+        };
       };
     };
 

@@ -145,7 +145,7 @@
       };
 
     ## Enable Flatpak
-    flatpak.enable = true;
+    #flatpak.enable = true;
 
     ## Enable the OpenSSH daemon.
     openssh.enable = true;
