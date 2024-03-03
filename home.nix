@@ -1,10 +1,11 @@
-{ pkgs, nix-flatpak, ...  /*config,home-manager, flake-inputs,  */ }:
+{ pkgs, ... }:
 
 let
   homeDir = "/home/neko";
+  system = "x86_64-linux";
 in {
 
-  #imports = [ nix-flatpak.homeManagerModule.nix-flatpak ];
+  imports = [];
 
   home.stateVersion = "23.11";
   home.username = "neko";
@@ -28,15 +29,42 @@ in {
     };
 
   home.packages = with pkgs; [
+    ### CLI
+      bat
+      btop
+      chafa
+      eza
+      fd
+      file
+      fzf
+      gnugrep
+      libqalculate
+      libnotify
+      ollama
+      pulsemixer
+      ripgrep
+      silver-searcher
+      trashy
+      xdragon
+      winePackages.full
+
     ### EDITORS
       gimp
+
+    ### ELECTRON
+      discord
+      obsidian
+
     ### GAMES
       crawlTiles
+      lutris
       steam
+
     ### HYPRLAND
       hdrop
       hyprpaper
       hyprshot
+
     ### MEDIA
       mpd
       mpd-discord-rpc
@@ -45,62 +73,65 @@ in {
       streamlink
       streamlink-twitch-gui-bin
       yt-dlp
+      zathura
+
     ### PASSWORDS
       git-credential-gopass
       gopass
+
     ### PROGRAMMING
       python3
+
     ### SWAY TOOLS
       swaybg
       swayidle
       swaylock
       swaynotificationcenter
-    ### TERMINAL
-      ### CLI
-        bat
-        btop
-        chafa
-        eza
-        fd
-        fzf
-        gnugrep
-        libqalculate
-        ollama
-        pulsemixer
-        ripgrep
-        silver-searcher
-        trashy
-        xdragon
-      ### TUI
-        joshuto
-        ranger
-          highlight
+
+    ### TUI
+      joshuto
+      nvimpager
+      ranger
+        highlight
+
     ### THEMING
       nerdfonts
+      font-awesome
       ocs-url
       volantes-cursors
       dracula-theme
+
     ### Plasma5/QT5
       plasma5Packages.kio-gdrive
       plasma5Packages.qtstyleplugin-kvantum
       libsForQt5.qtstyleplugin-kvantum
       libsForQt5.qt5ct
+
     ### SYSTEM
       google-drive-ocamlfuse
+
     ### WAYLAND SPECIFIC
       gammastep
       grimblast
       slurp
       nwg-look
       waybar
-      wine
-      wl-clipboard-x11
+      #wl-clipboard-x11
       #wl-clip-persist
       wlr-randr
+
     ### XORG
+      dunst
+      eww
+      feh
+      jgmenu
+      polybar
+      nitrogen
+      scrot
+      tdrop
       xorg.xkill
       xorg.xhost
-      #xclip
+      xclip
 
     ### MISC PACKAGES
       #arrpc
@@ -108,12 +139,12 @@ in {
       direnv
       discordchatexporter-cli
       firefox-devedition
+        speechd
       flatpak
       grc
       gparted
       kdeconnect
       lxappearance
-      lutris
       pavucontrol
       podman
       podman-compose
@@ -126,6 +157,7 @@ in {
       ydotool
       zip
       zoxide
+
       ];
 
   programs = {
@@ -505,7 +537,7 @@ in {
         ''; };
     ncmpcpp = {
       enable = true;
-        };
+      };
     neovim = {
       enable = true;
       defaultEditor = true;
@@ -1158,19 +1190,24 @@ in {
       };
     mpd-discord-rpc.enable = true;
     flatpak = {
-      enable = true;
+      #enable = true;
       packages = [
-        { appId = "com.discordapp.Discord"; origin = "flathub"; }
-        "md.obsidian.Obsidian"
-        "com.github.tchx84.Flatseal"
-        "io.github.dvlv.boxbuddyrs"
-        "app.getclipboard.Clipboard"
+        #{ appId = "com.discordapp.Discord"; origin = "flathub"; }
+        #"md.obsidian.Obsidian"
+        "flathub:app/com.github.tchx84.Flatseal//stable"
+        "flathub:app/app.getclipboard.Clipboard//stable"
+        "flathub:app/md.obsidian.Obsidian//stable"
+        "flathub:app/com.discordapp.Discord//stable"
         ];
-      uninstallUnmanagedPackages = true;
-      update.auto = {
-        enable = true;
-        onCalendar = "weekly";
+      remotes = {
+        "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+        "flathub-beta" = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
         };
+      #uninstallUnmanagedPackages = true;
+      #update.auto = {
+        #enable = true;
+        #onCalendar = "weekly";
+        #};
       };
     };
 
@@ -1178,9 +1215,9 @@ in {
   home.sessionVariables = {
     DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
     EDITOR = "nvim";
-    GEMINI_API_KEY = "AIzaSyDCa4jeTXUsBsRlv5FTyAfdwIjlAnRfm4c";
     MANPAGER = "nvim +Man!";
     NIXOS_OZONE_WL = "1";
+    OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a";
     QT_QPA_PLATFORM = "xcb";
     QT_QPA_PLATFORMTHEME = "qt5ct";
     SUDOEDITOR = "vim";
@@ -1490,6 +1527,10 @@ in {
 
   ######### (HM) DOTFILES ########
   xdg.configFile = {
+    "bspwm" = {
+      source = "${homeDir}/.nixcfg/.config/bspwm";
+      recursive = true;
+      };
     "hypr" = {
       source = "${homeDir}/.nixcfg/.config/hypr";
       recursive = true;
@@ -1506,6 +1547,10 @@ in {
       #source = "${homeDir}/.nixcfg/.config/nvim";
       #recursive = true;
       #};
+    "polybar" = {
+      source = "${homeDir}/.nixcfg/.config/polybar";
+      recursive = true;
+      };
     "pulsemixer.cfg" = {
       source = "${homeDir}/.nixcfg/.config/pulsemixer.cfg";
       recursive = false;
@@ -1516,6 +1561,10 @@ in {
       };
     "rofi" = {
       source = "${homeDir}/.nixcfg/.config/rofi";
+      recursive = true;
+      };
+    "sxhkd" = {
+      source = "${homeDir}/.nixcfg/.config/sxhkd";
       recursive = true;
       };
     "tridactyl" = {
@@ -1534,8 +1583,10 @@ in {
       source = "${homeDir}/.nixcfg/.config/yazi";
       recursive = true;
       };
+    "zathura" = {
+        source = "${homeDir}/.nixcfg/.config/zathura";
+        recursive = true;
+      };
     };
-
 }
-
 

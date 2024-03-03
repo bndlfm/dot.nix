@@ -12,9 +12,14 @@
 
   #-------- PACKAGES --------#
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nixpkgs.config = {
-    allowUnfree = true;
-    cudaSupport = true;
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      cudaSupport = true;
+      };
+    overlays = [
+      (import ./overlays/overlays.nix)
+      ];
     };
 
   environment.systemPackages = with pkgs; [
@@ -62,7 +67,7 @@
         rootless_storage_path = "/tmp/containers-$USER";
         options.overlay.mountopt = "nodev,metacopy=on";
         };
-      #cdi.dynamic.nvidia.enable = true;
+      cdi.dynamic.nvidia.enable = true;
       #cdi.dynamic.enableNvidia = true;
       };
     podman = {
@@ -145,7 +150,7 @@
       };
 
     ## Enable Flatpak
-    #flatpak.enable = true;
+    flatpak.enable = true;
 
     ## Enable the OpenSSH daemon.
     openssh.enable = true;
@@ -299,14 +304,32 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text = ''
+    Section "Screen"
+      Identifier "Screen0"
+      Device "Device0"
+      Monitor "Monitor0"
+      DefaultDepth 24
+      Option "Stereo" "0"
+      Option "nvidiaXineramaInfoOrder" "DFP-7" 
+      Option "metamodes" "HDMI-0: nvidia-auto-select +322+0, DP-4: nvidia-auto-select +0+1080, DP-0: off"
+      Option "SLI" "Off"
+      Option "MultiGPU" "Off"
+      Option "BaseMosaic" "off"
+      SubSection "Display"
+        Depth 24
+      EndSubSection
+    EndSection
+    '';
+
   # Setup displays
   services.xserver.displayManager.setupCommands =
     let
       monitor-center = "DP-4";
-      monitor-top = "HDMI-A-1";
+      monitor-top = "HDMI-0";
     in
     ''
-      ${pkgs.xorg.xrandr}/bin/xrandr --output ${monitor-center} --primary --mode 2560x1440 --pos 0x1080 --rate 144.00 --rotate normal --output ${monitor-top} --mode 1920x1080 --rate 60.00 --pos 322x0 ${monitor-center}
+      ${pkgs.xorg.xrandr}/bin/xrandr --output ${monitor-center} --primary --mode 2560x1440 --pos 0x1080 --rate 144.00 --rotate normal --output ${monitor-top} --mode 1920x1080 --rate 60.00 --pos 322x0
     '';
 
 

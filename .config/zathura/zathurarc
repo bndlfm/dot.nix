@@ -1,0 +1,22 @@
+map h scroll left
+map n scroll down
+map e scroll up
+map i scroll right
+
+map N scroll half-down
+map E scroll half-up
+
+map k search forward
+map K search backward
+
+# For TOC navigation
+map [index] o toggle_index
+
+# hjkl →  neui
+map [index] n navigate_index down
+map [index] e navigate_index up
+map [index] h navigate_index collapse
+map [index] i navigate_index expand
+
+map [index] H navigate_index collapse-all
+map [index] I navigate_index expand-all

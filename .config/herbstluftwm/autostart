@@ -1,0 +1,252 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2046,2016
+hc() {
+	herbstclient "$@"
+}
+hc emit_hook reload
+
+###############
+# KEYBINDINGS #
+###############
+# REMOVE ALL EXISTING KEYBINDINGS
+hc keyunbind --all
+Mod=Mod4
+
+# BASIC & MISC KEYBINDS {{{
+hc keybind $Mod-Alt-Escape quit
+hc keybind $Mod-Alt-r reload #&& notify-send "Herbstluftwm Configuration Reloaded"
+hc keybind $Mod-q close
+hc keybind $Mod-x remove
+hc keybind $Mod-BackSpace spawn kitty
+hc keybind $Mod-grave spawn tdrop -mat -w -4 -y "$PANEL_HEIGHT" kitty
+
+# TOGGLE PICOM
+hc keybind $Mod-z spawn pgrep picom || picom --config ~/.config/picom/picom-kawase.conf &
+
+# I3LOCK
+hc keybind $Mod-Alt-l spawn ~/.local/bin/i3lock-fancy-rapid 6 5
+hc keybind $Mod-Control-c spawn rofi modi calc -show calc
+
+# ROFI
+hc keybind $Mod-space spawn rofi -combi-modi window,drun,run,ssh -show combi -modi combi -show-icons
+hc keybind $Mod-Alt-c spawn pkill greenclip && greenclip clear && greenclip daemon &
+hc keybind $Mod-w spawn ~/.local/bin/rofiwins
+hc keybind $Mod-Shift-v spawn rofi -modi "clipboard:greenclip print" -show clipboard -run '{cmd}' -show-icons
+
+# KAOMOJI/EMOJI
+hc keybind $Mod-k spawn /usr/bin/splatmoji copy # emoji/kaomoji picker
+
+# NOTIFICATIONS
+hc keybind $Mod-v spawn kill -s USR1 $(pidof deadd-notification-center)
+
+# SPEECH-TO-TEXT
+hc keybind $Mod-m spawn nerd-dict-toggle.sh /tmp/nerd-dict.log 2>&1
+#}}}
+
+# PRINT SCREEN {{{
+hc keybind Print spawn scrot ~/%b%d::%H%M%S.png --multidisp --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+hc keybind $Mod-Print spawn scrot ~/%b%d::%H%M%S.png --freeze --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+hc keybind Control-Print spawn scrot ~/%b%d::%H%M%S.png --select --freeze --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+hc keybind Shift-Print spawn scrot ~/%b%d::%H%M%S.png --focused --border --delay 5 --count --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+#}}}
+# VOLUME {{{
+hc keybind XF86AudioRaiseVolume spawn ponymix -N increase 10
+hc keybind XF86AudioLowerVolume spawn ponymix -N decrease 10
+hc keybind Shift-XF86AudioRaiseVolume spawn ponymix -N increase 5
+hc keybind Shift-XF86AudioLowerVolume spawn ponymix -N decrease 5
+hc keybind XF86AudioMute spawn ponymix toggle
+#}}}
+# FOCUSING CLIENTS {{{
+hc keybind $Mod-Left focus left
+hc keybind $Mod-Down focus down
+hc keybind $Mod-Up focus up
+hc keybind $Mod-Right focus right
+hc keybind $Mod-h focus left
+hc keybind $Mod-n focus down
+hc keybind $Mod-e focus up
+hc keybind $Mod-i focus right
+#}}}
+# MOVING CLIENTS {{{
+hc keybind $Mod-Shift-Left shift left
+hc keybind $Mod-Shift-Down shift down
+hc keybind $Mod-Shift-Up shift up
+hc keybind $Mod-Shift-Right shift right
+hc keybind $Mod-Shift-h shift left
+hc keybind $Mod-Shift-n shift down
+hc keybind $Mod-Shift-e shift up
+hc keybind $Mod-Shift-i shift right
+#}}}
+# SPLITTING FRAMES {{{
+hc keybind $Mod-b split bottom 0.5
+hc keybind $Mod-o split right 0.5
+
+# EXPLODE INTO SUBFRAMES
+hc keybind $Mod-Control-space split explode
+#}}}
+# RESIZING FRAMES {{{
+resizestep=0.02
+hc keybind $Mod-Control-h resize left +$resizestep
+hc keybind $Mod-Control-n resize down +$resizestep
+hc keybind $Mod-Control-e resize up +$resizestep
+hc keybind $Mod-Control-i resize right +$resizestep
+hc keybind $Mod-Control-Left resize left +$resizestep
+hc keybind $Mod-Control-Down resize down +$resizestep
+hc keybind $Mod-Control-Up resize up +$resizestep
+hc keybind $Mod-Control-Right resize right +$resizestep
+#}}}
+# CYCLE THROUGH TAGS {{{
+hc keybind $Mod-period use_index +1 --skip-visible
+hc keybind $Mod-comma use_index -1 --skip-visible
+hc keybind $Mod-Shift-period use_index +1 --skip-visible
+hc keybind $Mod-Shift-comma use_index -1 --skip-visible
+#}}}
+# LAYOUT {{{
+hc keybind $Mod-r rotate
+hc keybind $Mod-Control-v mirror
+hc keybind $Mod-s floating toggle
+hc keybind $Mod-f fullscreen toggle
+hc keybind $Mod-Shift-f set_attr clients.focus.floating toggle
+hc keybind $Mod-Shift-z spawn xdotool getactivewindow windowminimize
+hc keybind $Mod-p pseudotile toggle
+
+# the following cycles through the available layouts within a frame, but skips
+# layouts, if the layout change wouldn't affect the actual window positions.
+# i.e. if there are two windows within a frame, the grid layout is skipped.
+hc keybind $Mod-c \
+	or , and . compare tags.focus.curframe_wcount = 2 \
+	. cycle_layout +1 vertical horizontal max vertical grid \
+	, cycle_layout +1
+#}}}
+# FOCUS {{{
+hc keybind $Mod-Tab cycle_all +1
+hc keybind $Mod-Shift-Tab cycle_all -1
+hc keybind $Mod-l jumpto urgent
+hc keybind $Mod-minus cycle_value frame_gap 0 5 7 10 13
+#}}}
+# MOUSE {{{
+hc mouseunbind --all
+hc mousebind $Mod-Button1 move
+hc mousebind $Mod-Button2 zoom
+hc mousebind $Mod-Button3 resize
+#}}}
+
+#######
+# ETC #
+#######
+### TAGS ### {{{
+tag_names=({1..9} 0)
+tag_keys=({1..9} 0)
+
+hc rename default "${tag_names[0]}" || true
+for i in "${!tag_names[@]}"; do
+	hc add "${tag_names[$i]}"
+	key="${tag_keys[$i]}"
+	if ! [ -z "$key" ]; then
+		hc keybind "$Mod-$key" use_index "$i"
+		hc keybind "$Mod-Shift-$key" move_index "$i"
+	fi
+done
+#}}}
+### THEME ## {{{
+hc attr theme.tiling.reset 1
+hc attr theme.floating.reset 1
+
+# FRAME COLOR
+hc set frame_border_normal_color '#242424'
+hc set frame_border_active_color '#545454'
+hc set frame_bg_normal_color '#1e1f28'
+hc set frame_bg_active_color '#1e1f28'
+
+# FRAME OPACITY/TRANSPARENCY
+hc set frame_normal_opacity 0
+hc set frame_active_opacity 30
+hc set frame_border_width 0
+hc set always_show_frame on
+hc set frame_bg_transparent on
+hc set frame_transparent_width 0
+
+# THEME COLORS
+hc attr theme.active.color '#249d93'
+hc attr theme.normal.color '#293e42'
+hc attr theme.urgent.color '#b6aa21'
+hc attr theme.inner_width 2
+hc attr theme.inner_color '#293e42'
+hc attr theme.border_width 4
+hc attr theme.floating.border_width 4
+hc attr theme.floating.outer_width 2
+hc attr theme.floating.outer_color '#57628d'
+hc attr theme.active.inner_color '#293e42'
+hc attr theme.active.outer_color '#249d93'
+hc attr theme.background_color '#293e42'
+
+# FRAME/WINDOW PADDING
+hc set frame_gap 7
+hc set frame_padding 0
+hc set smart_frame_surroundings off
+
+hc set window_gap 1
+hc set smart_window_surroundings off
+
+hc set mouse_recenter_gap 1
+#}}}
+
+### RULES ### {{{
+hc unrule -F
+hc rule focus=on # normally focus new clients
+
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' floating=on
+hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' manage=off
+hc rule instance='espanso' manage=off
+
+hc rule title='dragon' floating=on
+hc rule instance='ark' floating=on
+hc rule instance='nvidia-settings' floating=on
+
+hc rule instance='qbittorrent' tag=0
+hc rule instance='jdownloader 2' manage=off
+
+hc rule instance='kdeconnect-app' floating=on
+hc rule instance='kdeconnect-sms' floating=on
+
+hc rule instance='streamlink-twitch-gui' floating=on
+hc rule title='Steam' tag=7 floating=on
+#hc rule title='Steam Big Picture Mode' tag=7 fullscreen=on
+
+hc rule instance='Lutris' tag=5
+hc rule instance='Heroic' tag=5
+
+hc set attr.
+hc set tree_style '╾│ ├└╼─┐'
+hc set_attr tags.5.floating on
+
+# unlock, just to be sure
+hc unlock
+#}}}
+
+### MONITORS ### {{{
+# hc set_monitors 1280x1024+0+0 1280x1024+1280+0
+# or simply: 1280x1024+0+1225
+hc set_monitors 1080x1920+0+0 2560x1440+1080+240 1080x1920+3640+0
+#}}}
+
+#############
+# AUTOSTART #
+#############
+xset r rate 340 70
+xset m 0 0
+
+pgrep polkit-kde-authentication-agent-1 || /usr/lib/polkit-kde-authentication-agent-1 &
+pgrep ibus-daemon || ibus-daemon -d &
+pgrep dunst || dunst &
+#pgrep picom || picom --config ~/.config/picom/picom-kawase.conf &
+pgrep blueman-applet || blueman-applet &
+pgrep deej || exec /home/neko/.bin/deej.sh &
+pgrep greenclip daemon || greenclip daemon &
+pgrep kdeconnect-indicator || kdeconnect-indicator &
+pgrep steam || steam-native &
+pgrep ydotoold || ydotoold &
+nitrogen --restore &
+~/.config/polybar/blocks/launch-herbstluftwm.sh &
+
+# vim: fdm=marker fdl=0 ft=bash
