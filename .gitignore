@@ -1,3 +1,4 @@
 .mozilla
-/.config/nvim/tmp
+.config/nvim/tmp
 .bin
+.config/nvim/lazy-lock.json

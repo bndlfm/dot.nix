@@ -11,7 +11,11 @@
     ];
 
   #-------- PACKAGES --------#
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    trusted-substituters = [ "https://ai.cachix.org"];
+    trusted-public-keys = ["ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="];
+    };
   nixpkgs = {
     config = {
       allowUnfree = true;
@@ -51,6 +55,7 @@
         ];
       };
     steam = {
+      enable = true;
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports firewall for Source Dedicated Server
       };

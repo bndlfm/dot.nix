@@ -58,7 +58,6 @@ in {
     ### GAMES
       crawlTiles
       lutris
-      steam
 
     ### HYPRLAND
       hdrop
@@ -90,7 +89,8 @@ in {
 
     ### TUI
       joshuto
-      nvimpager
+      page
+      #nvimpager
       ranger
         highlight
 
@@ -140,7 +140,6 @@ in {
       discordchatexporter-cli
       firefox-devedition
         speechd
-      flatpak
       grc
       gparted
       kdeconnect
@@ -151,7 +150,6 @@ in {
       qbittorrent
       ripcord
       rofi
-      steam-run
       #upscayl
       yazi
       ydotool

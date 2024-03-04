@@ -9,7 +9,6 @@
       };
     flake-utils.url = "github:numtide/flake-utils";
     flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
-    #nix-flatpak.url = "github:gmodena/nix-flatpak";
     spicetify-nix.url = "github:the-argus/spicetify-nix";
     };
 
