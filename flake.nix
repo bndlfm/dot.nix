@@ -37,7 +37,7 @@
         modules = [
           ./configuration.nix
           ./hardware-configuration.nix
-          stylix.nixosModules.stylix
+          /* stylix.nixosModules.stylix */
           base16.nixosModule {
               scheme = "${inputs.tt-schemes}/base16/nord.yaml";
             }
