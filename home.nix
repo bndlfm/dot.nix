@@ -80,6 +80,8 @@ in {
 
     ### PROGRAMMING
       python3
+      nixd
+      codeium
 
     ### SWAY TOOLS
       swaybg
@@ -1526,63 +1528,63 @@ in {
   ######### (HM) DOTFILES ########
   xdg.configFile = {
     "bspwm" = {
-      source = "${homeDir}/.nixcfg/.config/bspwm";
+      source = ./.config/bspwm;
       recursive = true;
       };
     "hypr" = {
-      source = "${homeDir}/.nixcfg/.config/hypr";
+      source = ./.config/hypr;
       recursive = true;
       };
     "joshuto" = {
-      source = "${homeDir}/.nixcfg/.config/joshuto";
+      source = ./.config/joshuto;
       recursive = true;
       };
     "mutt" = {
-      source = "${homeDir}/.nixcfg/.config/mutt";
+      source = ./.nixcfg/.config/mutt;
       recursive = true;
       };
     #"nvim" = {
-      #source = "${homeDir}/.nixcfg/.config/nvim";
+      #source = ./.config/nvim;
       #recursive = true;
       #};
     "polybar" = {
-      source = "${homeDir}/.nixcfg/.config/polybar";
+      source = ./.nixcfg/.config/polybar;
       recursive = true;
       };
     "pulsemixer.cfg" = {
-      source = "${homeDir}/.nixcfg/.config/pulsemixer.cfg";
+      source = ./.config/pulsemixer.cfg;
       recursive = false;
       };
     "ranger" = {
-      source = "${homeDir}/.nixcfg/.config/ranger";
+      source = ./.config/ranger;
       recursive = true;
       };
     "rofi" = {
-      source = "${homeDir}/.nixcfg/.config/rofi";
+      source = ./.config/rofi;
       recursive = true;
       };
     "sxhkd" = {
-      source = "${homeDir}/.nixcfg/.config/sxhkd";
+      source = ./.config/sxhkd;
       recursive = true;
       };
     "tridactyl" = {
-      source = "${homeDir}/.nixcfg/.config/tridactyl";
+      source = ./.config/tridactyl;
       recursive = true;
       };
     "qutebrowser" = {
-      source = "${homeDir}/.nixcfg/.config/qutebrowser";
+      source = ./.config/qutebrowser;
       recursive = true;
       };
     "waybar" = {
-      source = "${homeDir}/.nixcfg/.config/waybar";
+      source = ./.config/waybar;
       recursive = true;
       };
     "yazi" = {
-      source = "${homeDir}/.nixcfg/.config/yazi";
+      source = ./.config/yazi;
       recursive = true;
       };
     "zathura" = {
-        source = "${homeDir}/.nixcfg/.config/zathura";
+        source = ./.config/zathura;
         recursive = true;
       };
     };

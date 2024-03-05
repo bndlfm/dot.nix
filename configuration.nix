@@ -73,7 +73,6 @@
         options.overlay.mountopt = "nodev,metacopy=on";
         };
       cdi.dynamic.nvidia.enable = true;
-      #cdi.dynamic.enableNvidia = true;
       };
     podman = {
       enable = true;

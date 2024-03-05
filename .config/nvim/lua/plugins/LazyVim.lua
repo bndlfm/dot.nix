@@ -28,19 +28,33 @@ return {
     keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
     config = true,
   },
-
   -- override nvim-cmp and add cmp-emoji
   {
     "hrsh7th/nvim-cmp",
-    dependencies = { "hrsh7th/cmp-emoji" },
+    dependencies = {
+      "hrsh7th/cmp-emoji",
+      "onsails/lspkind.nvim",
+    },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
       local cmp = require("cmp")
-      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, { { name = "emoji" }, { name = "crates" } }))
+      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
+        { name = "codium" },
+        { name = "emoji" },
+        { name = "crates" },
+      }))
+      cmp.setup({
+        formatting = {
+          format = require("lspkind").cmp_format({
+            mode = "symbol",
+            maxwidth = 50,
+            ellipsis_char = "...",
+            symbol_map = { Codeium = "" },
+          }),
+        },
+      })
     end,
   },
-
-  -- change some telescope options and a keymap to browse plugin files
   -- add tsserver, pyright and setup with typescript.nvim instead of lspconfig
   {
     "neovim/nvim-lspconfig",
@@ -71,7 +85,8 @@ return {
             },
           },
         },
-        nil_ls = {},
+        --nil_ls = {},
+        nixd = {},
         pyright = {},
         rust_analyzer = {
           keys = {

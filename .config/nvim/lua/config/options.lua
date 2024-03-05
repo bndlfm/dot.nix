@@ -44,19 +44,44 @@ vim.o.virtualedit = "block"
 vim.wo.wrap = true
 vim.o.undolevels = 10000
 
+--vim.g.clipboard = {
+--  name = "myClipboard",
+--  copy = {
+--    ["+"] = {"tmux", "load-buffer", "-"},
+--    ["*"] = {"tmux", "load-buffer", "-"},
+--  },
+--  paste = {
+--    ["+"] = {"tmux", "save-buffer", "-"},
+--    ["*"] = {"tmux", "save-buffer", "-"},
+--  },
+--  cache_enabled = 1,
+--}
+
 vim.cmd([[
-    silent !mkdir -p $home/.config/nvim/tmp/backup
-    silent !mkdir -p $HOME/.config/nvim/tmp/undo
-    set backupdir=$HOME/.config/nvim/tmp/backup,.
-    set directory=$HOME/.config/nvim/tmp/backup,.
-    if has ('persistent_undo' )
-        set undofile
-        set undodir=$HOME/.config/nvim/tmp/undo,.
-    endif
+  silent !mkdir -p $home/.config/nvim/tmp/backup
+  silent !mkdir -p $HOME/.config/nvim/tmp/undo
+  set backupdir=$HOME/.config/nvim/tmp/backup,.
+  set directory=$HOME/.config/nvim/tmp/backup,.
+  if has ('persistent_undo' )
+    set undofile
+    set undodir=$HOME/.config/nvim/tmp/undo,.
+  endif
 ]])
 
 vim.cmd([[
   set formatoptions-=tc
   set shortmess+=c
   let &t_ut=''
+  "let g:clipboard = {
+  "      \   'name': 'clipBoard',
+  "      \   'copy': {
+  "      \      '+': ['tmux', 'load-buffer', '-'],
+  "      \      '*': ['tmux', 'load-buffer', '-'],
+  "      \    },
+  "      \   'paste': {
+  "      \      '+': ['tmux', 'save-buffer', '-'],
+  "      \      '*': ['tmux', 'save-buffer', '-'],
+  "      \   },
+  "      \   'cache_enabled': 1,
+  "      \ }
 ]])
