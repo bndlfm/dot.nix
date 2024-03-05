@@ -26,51 +26,50 @@
 
 
   outputs = { nixpkgs, home-manager, flatpaks, base16, spicetify-nix, stylix,  ... }@inputs:
-      let
-        system = "x86_64-linux";
-        pkgs = import nixpkgs {
-          inherit system;
-          };
-        lib = nixpkgs.lib;
-      in {
-        nixosConfigurations."meow" = lib.nixosSystem {
-          modules = [
-            ./configuration.nix
-            ./hardware-configuration.nix
-            stylix.nixosModules.stylix
-            base16.nixosModule {
-                scheme = "${inputs.tt-schemes}/base16/nord.yaml";
-              }
-            home-manager.nixosModules.home-manager {
-              home-manager = {
-                useUserPackages = true;
-                users."neko" = {
-                  imports = [
-                    spicetify-nix.homeManagerModule
-                    flatpaks.homeManagerModules.default
-                    ./home.nix
-                    ./stylix.nix
-                    ];
-                  programs = {
-                    spicetify = {
-                      enable = true;
-                      theme = spicetify-nix.packages.${system}.default.themes.catppuccin;
-                      colorScheme = "catppuccin";
-                      enabledExtensions = with spicetify-nix.packages.${system}.default.extensions; [
-                        fullAppDisplay
-                        hidePodcasts
-                        ];
-                      enabledCustomApps = with spicetify-nix.packages.${system}.default.apps; [
-                        marketplace
-                        ];
-                      };
+    let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        };
+      lib = nixpkgs.lib;
+    in {
+      nixosConfigurations."meow" = lib.nixosSystem {
+        modules = [
+          ./configuration.nix
+          ./hardware-configuration.nix
+          stylix.nixosModules.stylix
+          base16.nixosModule {
+              scheme = "${inputs.tt-schemes}/base16/nord.yaml";
+            }
+          home-manager.nixosModules.home-manager {
+            home-manager = {
+              useUserPackages = true;
+              users."neko" = {
+                imports = [
+                  spicetify-nix.homeManagerModule
+                  flatpaks.homeManagerModules.default
+                  ./home.nix
+                  ];
+                programs = {
+                  spicetify = {
+                    enable = true;
+                    theme = spicetify-nix.packages.${system}.default.themes.catppuccin;
+                    colorScheme = "catppuccin";
+                    enabledExtensions = with spicetify-nix.packages.${system}.default.extensions; [
+                      fullAppDisplay
+                      hidePodcasts
+                      ];
+                    enabledCustomApps = with spicetify-nix.packages.${system}.default.apps; [
+                      marketplace
+                      ];
                     };
                   };
                 };
-              }
-            ];
-          };
+              };
+            }
+          ];
         };
+      };
 }
 
     #firefox-GPT = pkgs.firefox-devedition.unwrapped.overrideAttrs (oldAttrs: {
