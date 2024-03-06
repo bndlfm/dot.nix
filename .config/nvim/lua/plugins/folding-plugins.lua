@@ -32,13 +32,13 @@ end
 return {
   {
     "chrisgrieser/nvim-origami",
-    enabled = false,
+    enabled = true,
     event = "BufReadPost", -- later will not save folds
     opts = true,
   },
   { -- UFO
     "kevinhwang91/nvim-ufo",
-    enabled = false,
+    enabled = true,
     dependencies = "kevinhwang91/promise-async",
     event = "BufReadPost", -- needed for folds to load in time
     keys = {
@@ -83,6 +83,34 @@ return {
           require("ufo").closeFoldsWith(4)
         end,
         desc = " 󱃄 Close L4 Folds",
+      },
+      {
+        "z5",
+        function()
+          require("ufo").closeFoldsWith(5)
+        end,
+        desc = " 󱃄 Close L1 Folds",
+      },
+      {
+        "z6",
+        function()
+          require("ufo").closeFoldsWith(6)
+        end,
+        desc = " 󱃄 Close L6 Folds",
+      },
+      {
+        "z7",
+        function()
+          require("ufo").closeFoldsWith(7)
+        end,
+        desc = " 󱃄 Close L7 Folds",
+      },
+      {
+        "z8",
+        function()
+          require("ufo").closeFoldsWith(8)
+        end,
+        desc = " 󱃄 Close L8 Folds",
       },
     },
     init = function()

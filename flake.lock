@@ -406,6 +406,21 @@
         "type": "github"
       }
     },
+    "nur": {
+      "locked": {
+        "lastModified": 1709687443,
+        "narHash": "sha256-WVMEDB42qE5O6T0kqwauG0E8G8jmY/DLnWdtUFfeiFw=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "d6580e52fa6582bd490f2b5014b505129891419f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NUR",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "base16": "base16",
@@ -414,6 +429,7 @@
         "flatpaks": "flatpaks",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs_2",
+        "nur": "nur",
         "spicetify-nix": "spicetify-nix",
         "stylix": "stylix",
         "tt-schemes": "tt-schemes"
