@@ -147,22 +147,6 @@
         "type": "github"
       }
     },
-    "base16-zathura": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1643130739,
-        "narHash": "sha256-nVJoygnytYN40VHXpAFwO7ruVbaSydeR547MU45VSuY=",
-        "owner": "haozeke",
-        "repo": "base16-zathura",
-        "rev": "9f148b4001dc67d399e645919225943d47e50125",
-        "type": "github"
-      },
-      "original": {
-        "owner": "haozeke",
-        "repo": "base16-zathura",
-        "type": "github"
-      }
-    },
     "base16_2": {
       "inputs": {
         "fromYaml": "fromYaml_2"
@@ -363,15 +347,16 @@
       "locked": {
         "lastModified": 1709479366,
         "narHash": "sha256-n6F0n8UV6lnTZbYPl1A9q1BS0p4hduAv1mGAP17CVd0=",
-        "owner": "NixOS",
+        "owner": "nixos",
         "repo": "nixpkgs",
         "rev": "b8697e57f10292a6165a20f03d2f42920dfaf973",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
+        "owner": "nixos",
         "ref": "nixos-unstable",
-        "type": "indirect"
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs_3": {
@@ -408,11 +393,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1709687443,
-        "narHash": "sha256-WVMEDB42qE5O6T0kqwauG0E8G8jmY/DLnWdtUFfeiFw=",
+        "lastModified": 1709757987,
+        "narHash": "sha256-NEWyao1FX6MOirDKtKN5ceOhbxpDNUoHZPOjQOA+jFE=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "d6580e52fa6582bd490f2b5014b505129891419f",
+        "rev": "a7d5f1e07e7883c3e064ec87470e7e9c3840f762",
         "type": "github"
       },
       "original": {
@@ -424,15 +409,13 @@
     "root": {
       "inputs": {
         "base16": "base16",
-        "base16-zathura": "base16-zathura",
         "flake-utils": "flake-utils",
         "flatpaks": "flatpaks",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs_2",
         "nur": "nur",
         "spicetify-nix": "spicetify-nix",
-        "stylix": "stylix",
-        "tt-schemes": "tt-schemes"
+        "stylix": "stylix"
       }
     },
     "spicetify-nix": {
@@ -526,22 +509,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "tt-schemes": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1707678373,
-        "narHash": "sha256-1s6L7vkHKC+eFhDnvFTl1aAjKnTE407MWmMS6gvVg74=",
-        "owner": "tinted-theming",
-        "repo": "schemes",
-        "rev": "ae4ce8b0d1f9b247d3add88a23aec3d833ae76d1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tinted-theming",
-        "repo": "schemes",
         "type": "github"
       }
     },

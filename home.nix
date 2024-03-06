@@ -38,6 +38,7 @@ in
     fd
     file
     fzf
+    git-lfs
     gnugrep
     libqalculate
     libnotify
@@ -51,10 +52,6 @@ in
 
     ### EDITORS
     gimp
-
-    ### ELECTRON
-    discord
-    obsidian
 
     ### GAMES
     crawlTiles
