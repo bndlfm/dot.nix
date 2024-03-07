@@ -147,6 +147,22 @@
         "type": "github"
       }
     },
+    "base16-zathura": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1643130739,
+        "narHash": "sha256-nVJoygnytYN40VHXpAFwO7ruVbaSydeR547MU45VSuY=",
+        "owner": "haozeke",
+        "repo": "base16-zathura",
+        "rev": "9f148b4001dc67d399e645919225943d47e50125",
+        "type": "github"
+      },
+      "original": {
+        "owner": "haozeke",
+        "repo": "base16-zathura",
+        "type": "github"
+      }
+    },
     "base16_2": {
       "inputs": {
         "fromYaml": "fromYaml_2"
@@ -393,11 +409,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1709757987,
-        "narHash": "sha256-NEWyao1FX6MOirDKtKN5ceOhbxpDNUoHZPOjQOA+jFE=",
+        "lastModified": 1709780742,
+        "narHash": "sha256-mJXQZLSI/zgQ98nHMSdmJ0l0YL3n38FWsdE9OiKPcWk=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "a7d5f1e07e7883c3e064ec87470e7e9c3840f762",
+        "rev": "3428e6cf4521df6254ff5b8bcf31df84fc1dd0d2",
         "type": "github"
       },
       "original": {
@@ -409,13 +425,15 @@
     "root": {
       "inputs": {
         "base16": "base16",
+        "base16-zathura": "base16-zathura",
         "flake-utils": "flake-utils",
         "flatpaks": "flatpaks",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs_2",
         "nur": "nur",
         "spicetify-nix": "spicetify-nix",
-        "stylix": "stylix"
+        "stylix": "stylix",
+        "tt-schemes": "tt-schemes"
       }
     },
     "spicetify-nix": {
@@ -509,6 +527,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tt-schemes": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1707678373,
+        "narHash": "sha256-1s6L7vkHKC+eFhDnvFTl1aAjKnTE407MWmMS6gvVg74=",
+        "owner": "tinted-theming",
+        "repo": "schemes",
+        "rev": "ae4ce8b0d1f9b247d3add88a23aec3d833ae76d1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tinted-theming",
+        "repo": "schemes",
         "type": "github"
       }
     },

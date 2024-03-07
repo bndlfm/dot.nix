@@ -188,7 +188,6 @@ return {
         "shfmt",
         "flake8",
         "codelldb",
-        "nil",
       },
     },
   },

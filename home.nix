@@ -95,6 +95,7 @@ in
 
     ### THEMING
     nerdfonts
+    iosevka
     font-awesome
     ocs-url
     volantes-cursors
@@ -203,7 +204,7 @@ in
         { name = "colored-man-pages"; src = pkgs.fishPlugins.colored-man-pages.src; }
         { name = "done"; src = pkgs.fishPlugins.done.src; }
         { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
-        #{ name = "grc"; src = pkgs.fishPlugins.grc.src; }
+        { name = "grc"; src = pkgs.fishPlugins.grc.src; }
         {
           name = "fish-history-merge";
           src = pkgs.fetchFromGitHub {

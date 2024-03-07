@@ -8,58 +8,58 @@
 {
 
   imports = [
-    ];
+  ];
 
   #-------- PACKAGES --------#
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
-    trusted-substituters = [ "https://ai.cachix.org"];
-    trusted-public-keys = ["ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="];
-    };
+    trusted-substituters = [ "https://ai.cachix.org" ];
+    trusted-public-keys = [ "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc=" ];
+  };
   nixpkgs = {
     config = {
       allowUnfree = true;
       cudaSupport = true;
-      };
+    };
     overlays = [
       (import ./overlays/overlays.nix)
-      ];
-    };
+    ];
+  };
 
   environment.systemPackages = with pkgs; [
-     git
-     btrfs-progs
-     docker
-     home-manager
-     hyprland
-     hyprland-protocols
-     neovim-unwrapped
-     runc
-     sops
-     ];
+    git
+    btrfs-progs
+    docker
+    home-manager
+    hyprland
+    hyprland-protocols
+    neovim-unwrapped
+    runc
+    sops
+  ];
 
   #-------- PACKAGE MODULES --------#
   programs = {
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
-      };
+    };
     hyprland = {
       enable = true;
       xwayland.enable = true;
-      };
+    };
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
         cmake
-        ];
-      };
+      ];
+    };
     steam = {
       enable = true;
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports firewall for Source Dedicated Server
-      };
     };
+  };
 
   #-------- CONTAINERS / VM --------#
   virtualisation = {
@@ -71,15 +71,15 @@
         graphroot = "/var/lib/containers/storage";
         rootless_storage_path = "/tmp/containers-$USER";
         options.overlay.mountopt = "nodev,metacopy=on";
-        };
-      cdi.dynamic.nvidia.enable = true;
       };
+      cdi.dynamic.nvidia.enable = true;
+    };
     podman = {
       enable = true;
       enableNvidia = true;
       dockerSocket.enable = true;
       defaultNetwork.settings.dns_enabled = true;
-      };
+    };
     libvirtd.enable = true;
     oci-containers = {
       backend = "podman";
@@ -87,39 +87,39 @@
         image = "docker.io/jellyfin/jellyfin:latest";
         labels = {
           "io.containers.autoupdate" = "registry";
-          };
+        };
         autoStart = true;
         ports = [
           "8096:8096"
           "8920:8920"
           "1900:1900"
           "7359:7359"
-          ];
+        ];
         environment = {
-          NVIDIA_VISIBLE_DEVICES="all";
-          NVIDIA_DRIVER_CAPABILITIES="all";
-          JELLYFIN_PublishedServerUrl="192.168.1.5";
-          };
+          NVIDIA_VISIBLE_DEVICES = "all";
+          NVIDIA_DRIVER_CAPABILITIES = "all";
+          JELLYFIN_PublishedServerUrl = "192.168.1.5";
+        };
         volumes = [
           "/media/.cache:/cache"
           "/media/.jellyfin:/config"
           "/media:/media"
-          ];
-        };
+        ];
       };
+    };
   };
 
-    environment.extraInit = ''
-      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-        fi
-      '';
+  environment.extraInit = ''
+    if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+      export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+      fi
+  '';
 
 
 
   #-------- GROUPS ---------#
-  users.groups.distrobox = {};
-  users.groups.steamhead = {};
+  users.groups.distrobox = { };
+  users.groups.steamhead = { };
 
 
   #-------- USERS --------#
@@ -131,19 +131,19 @@
     description = "neko";
     extraGroups = [ "networkmanager" "wheel" "input" "docker" "libvirtd" ];
     linger = true;
-    };
+  };
 
   users.users.distrobox = {
     isSystemUser = true;
     description = "distrobox user";
     group = "distrobox";
-    };
+  };
 
   users.users.steamhead = {
     isSystemUser = true;
     description = "What it says on the can bitch!";
     group = "steamhead";
-    };
+  };
 
   #-------- SERVICES --------#
   services = {
@@ -151,7 +151,7 @@
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
-      };
+    };
 
     ## Enable Flatpak
     flatpak.enable = true;
@@ -170,11 +170,11 @@
       windowManager.bspwm.enable = true;
       xkb.layout = "us";
       xkb.variant = "";
-      };
     };
-    users.users.neko.packages = with pkgs; [
-      sxhkd
-    ];
+  };
+  users.users.neko.packages = with pkgs; [
+    sxhkd
+  ];
 
   #-------- SYSTEM --------#
   systemd = {
@@ -192,15 +192,15 @@
             Restart = "on-failure";
             RestartSec = 1;
             TimeoutStopSec = 10;
-            };
           };
-        ytoold.enable = true;
         };
+        ytoold.enable = true;
       };
+    };
     extraConfig = ''
       DefaultTimeoutStopSec = 10s
-      '';
-    };
+    '';
+  };
 
   #-------- FILESYSTEM --------#
   fileSystems."/mnt/data" = {
@@ -210,8 +210,8 @@
       "noatime"
       "nodiratime"
       "discard"
-      ];
-    };
+    ];
+  };
   fileSystems."/media" = {
     device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
     fsType = "btrfs";
@@ -220,39 +220,39 @@
       "noatime"
       "nodiratime"
       "discard"
-      ];
-    };
+    ];
+  };
 
 
   #-------- NETWORKING --------#
   networking = {
     hostName = "meow";
-    networkmanager.enable = true;  # Enable Networking
+    networkmanager.enable = true; # Enable Networking
     firewall = {
       enable = true;
       allowedTCPPorts = [
         8000
         8096 # Jellyfin HTTP
         8920 # Jellyfin HTTPS
-        ];
+      ];
       allowedTCPPortRanges = [
         {
           from = 1714;
           to = 1764;
         }
-        ];
+      ];
       allowedUDPPorts = [
         1900 # Jellyfin service autodiscovery
         7359 # Also Jellyfin service autodiscovery
-        ];
+      ];
       allowedUDPPortRanges = [
         {
           from = 1714;
           to = 1764;
         }
-        ];
-      };
+      ];
     };
+  };
 
 
   #-------- AUDIO --------#
@@ -269,7 +269,7 @@
     ## use the example session manager (no others are packaged yet so this is
     ## enabled by default, no need to redefine it in your config for now)
     #media-session.enable = true;
-    };
+  };
 
 
   #-------- GPU --------#
@@ -298,13 +298,13 @@
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    };
+  };
 
   hardware.opengl = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
-    };
+  };
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -324,7 +324,7 @@
         Depth 24
       EndSubSection
     EndSection
-    '';
+  '';
 
   # Setup displays
   services.xserver.displayManager.setupCommands =
@@ -342,7 +342,7 @@
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
-      };
+    };
     extraModprobeConfig = ''
       '';
     kernelModules = [ "kvm-amd" ];
@@ -350,7 +350,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = { "vm.overcommit_memory" = 1; };
     #blacklistedKernelModules = [ "nouveau" ];
-    };
+  };
 
   #-------- POWER --------#
   powerManagement.enable = false;
@@ -361,7 +361,7 @@
     wlr.enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-kde
-      ];
+    ];
     config = {
       common = {
         default = [
@@ -385,10 +385,10 @@
         default = [
           "hyprland"
           "kde"
-          ];
-        };
+        ];
       };
     };
+  };
 
 
   #-------- TZ/i18n --------#
@@ -406,7 +406,7 @@
     LC_PAPER = "en_US.UTF-8";
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
-    };
+  };
 
 
 

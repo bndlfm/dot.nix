@@ -10,9 +10,15 @@
     spicetify-nix.url = "github:the-argus/spicetify-nix";
 
     ### THEMING:
-    tt-schemes.url = "github:tinted-theming/schemes";
     base16.url = "github:SenchoPens/base16.nix";
-    base16-zathura.url = "github:haozeke/base16-zathura";
+    tt-schemes = {
+      url = "github:tinted-theming/schemes";
+      flake = false;
+    };
+    base16-zathura = {
+      url = "github:haozeke/base16-zathura";
+      flake = false;
+    };
     stylix.url = "github:danth/stylix";
   };
 
@@ -51,49 +57,24 @@
             {
               scheme = "${inputs.tt-schemes}/base16/nord.yaml";
             }
-            stylix.homeManagerModule
-            {
-              stylix = {
-                base16Scheme = "${inputs.tt-schemes}/base16/nord.yaml";
-                image = ./Wallpaper/2016-05-02-1462223680-7138559-BD_PRESS_KIT__1.326.1.jpg;
-                polarity = "dark";
-                #fonts = rec {
-                #monospace = {
-                #  name = "Iosevka";
-                #  package = pkgs.iosevka;
-                #};
-                #sansSerif = {
-                #  name = "Inconsolata Nerd Font:style=Regular";
-                #  package = pkgs.inconsolata-nerdfont;
-                #};
-                #serif = sansSerif;
-                #};
-                #cursor = {
-                #  package = pkgs.volantes-cursors;
-                #  name = "volantes-cursors";
-                #  size = 32;
-                #};
-                autoEnable = false;
-                targets = {
-                  /* chromium.enable = true; */
-                  gtk.enable = true;
-                };
-              };
-            }
+            stylix.homeManagerModules.stylix
           ];
         };
 
-        nixosConfigurations."meow" = nixpkgs.lib.nixosSystem {
-          modules = [
-            ./configuration.nix
-            ./hardware-configuration.nix
-            nur.nixosModules.nur
-            base16.nixosModule
-            {
-              scheme = "${inputs.tt-schemes}/base16/nord.yaml";
-            }
-          ];
-        };
+        nixosConfigurations."meow" = nixpkgs.lib.nixosSystem
+          {
+            modules = [
+              ./configuration.nix
+              ./hardware-configuration.nix
+              nur.nixosModules.nur
+              base16.nixosModule
+              {
+                scheme = "${inputs.tt-schemes}/base16/nord.yaml";
+              }
+              stylix.nixosModules.stylix
+              ./modules/stylix.nix
+            ];
+          };
       };
     };
 }
