@@ -39,6 +39,7 @@ return {
     opts = function(_, opts)
       local cmp = require("cmp")
       opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
+        { name = "nixd" },
         { name = "codium" },
         { name = "emoji" },
         { name = "crates" },
@@ -85,8 +86,8 @@ return {
             },
           },
         },
-        nil_ls = {},
-        --nixd = {},
+        --nil_ls = {},
+        nixd = {},
         pyright = {},
         rust_analyzer = {
           keys = {

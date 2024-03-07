@@ -5,7 +5,6 @@ let
   system = "x86_64-linux";
 in
 {
-
   imports = [ ];
 
   home.stateVersion = "23.11";
@@ -81,7 +80,6 @@ in
     nixd
     codeium
     direnv
-    #niv
 
     ### SWAY TOOLS
     swaybg
@@ -1175,6 +1173,7 @@ in
 
   ######### (HM) SERVICES #########
   services = {
+    arrpc.enable = true;
     espanso = {
       enable = true;
       matches = {
@@ -1214,6 +1213,7 @@ in
       #onCalendar = "weekly";
       #};
     };
+    wob.enable = true;
   };
 
   ######### (HM) ENVIRONMENT VARIABLES #########
