@@ -1,9 +1,19 @@
 {
+  nixConfig = {
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-    home-manager.url = "github:n-hass/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:n-hass/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nur.url = "github:nix-community/NUR";
 
     flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
@@ -22,11 +32,10 @@
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { flake-utils, home-manager, nixpkgs, nur, flatpaks, spicetify-nix, base16, stylix, ... }@inputs:
+  outputs = { home-manager, nixpkgs, nur, flatpaks, spicetify-nix, base16, tt-schemes, stylix, ... }@inputs:
     let
       username = "neko";
       system = "x86_64-linux";
-      pkgs = nixpkgs;
       spicePkgs = spicetify-nix.packages.${system}.default;
     in
     {
@@ -34,15 +43,17 @@
         homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-            spicetify-nix.homeManagerModule
             flatpaks.homeManagerModules.default
+            spicetify-nix.homeManagerModule
             ./home.nix
+            ./modules/hmProgramMods.nix
+            ./packages/packages.nix
             {
               programs = {
                 spicetify = {
                   enable = true;
-                  theme = spicePkgs.themes.catppuccin;
-                  colorScheme = "catppuccin";
+                  theme = spicePkgs.themes.Matte;
+                  colorScheme = "Matte";
                   enabledExtensions = with spicePkgs.extensions; [
                     fullAppDisplay
                     hidePodcasts
@@ -58,6 +69,7 @@
               scheme = "${inputs.tt-schemes}/base16/nord.yaml";
             }
             stylix.homeManagerModules.stylix
+            ( import ./theme/stylix.nix { inherit nixpkgs; })
           ];
         };
 
@@ -72,7 +84,7 @@
                 scheme = "${inputs.tt-schemes}/base16/nord.yaml";
               }
               stylix.nixosModules.stylix
-              ./modules/stylix.nix
+              ( import ./theme/stylix.nix { inherit nixpkgs; })
             ];
           };
       };

@@ -22,7 +22,7 @@ return {
       desc = "Find Plugin File",
     },
     {
-      "<LEADER>fu",
+      "U",
       "<CMD>Telescope undo<CR>",
       desc = "Find in Undo History",
     },

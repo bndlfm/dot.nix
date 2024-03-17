@@ -15,6 +15,7 @@
     gnugrep
     libqalculate
     libnotify
+    nix-index
     ollama
     pulsemixer
     ripgrep

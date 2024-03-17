@@ -1,7 +1,7 @@
 { nixpkgs, ... }:
 
 let
-  pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
+  pkgs = nixpkgs.legacyPackages.x86_64-linux;
 in {
   stylix = {
     autoEnable = false;
@@ -14,7 +14,7 @@ in {
       serif = {
         package = pkgs.inconsolata-nerdfont;
         name = "Inconsolata Nerd Font";
-        };
+      };
 
       sansSerif = {
         package = pkgs.gyre-fonts;
@@ -32,14 +32,17 @@ in {
       };
     };
 
-    cursor = {
-      package = pkgs.volantes-cursors;
-      name = "volantes-cursors";
-      size = 32;
-    };
+      cursor = {
+        package = pkgs.volante-cursors;
+        name = "Volante's Cursors";
+      };
 
     targets = {
+      /*cursor.enable = false;*/
+      fish.enable = true;
+      chromium.enable = true;
       gtk.enable = true;
+      qt.enable = true;
     };
   };
 }

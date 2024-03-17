@@ -3,19 +3,35 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
-
 {
-
   imports = [
   ];
 
   #-------- PACKAGES --------#
-  nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    trusted-substituters = [ "https://ai.cachix.org" ];
-    trusted-public-keys = [ "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc=" ];
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      trusted-users = [ "root" "@wheel" ];
+      trusted-substituters = [
+        "https://cache.nixos.org"
+        "https://nix-community.cachix.org"
+        #"https://ai.cachix.org"
+        "https://nix-gaming.cachix.org"
+        #"https://chaotic-nyx.cachix.org"
+        #"https://ezkea.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        #"ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
+        "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+        #"nyx.chaotic.cx-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+        #"chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+        #"ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
+      ];
+    };
   };
+
   nixpkgs = {
     config = {
       allowUnfree = true;
@@ -72,7 +88,7 @@
         rootless_storage_path = "/tmp/containers-$USER";
         options.overlay.mountopt = "nodev,metacopy=on";
       };
-      cdi.dynamic.nvidia.enable = true;
+      #cdi.dynamic.nvidia.enable = true;
     };
     podman = {
       enable = true;
@@ -137,12 +153,6 @@
     isSystemUser = true;
     description = "distrobox user";
     group = "distrobox";
-  };
-
-  users.users.steamhead = {
-    isSystemUser = true;
-    description = "What it says on the can bitch!";
-    group = "steamhead";
   };
 
   #-------- SERVICES --------#
@@ -308,7 +318,7 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text = ''
+  environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text = /* sh */ ''
     Section "Screen"
       Identifier "Screen0"
       Device "Device0"
@@ -333,9 +343,10 @@
       monitor-top = "HDMI-0";
     in
     ''
-      ${pkgs.xorg.xrandr}/bin/xrandr --output ${monitor-center} --primary --mode 2560x1440 --pos 0x1080 --rate 144.00 --rotate normal --output ${monitor-top} --mode 1920x1080 --rate 60.00 --pos 322x0
+      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="DP-4: nvidia-auto-select +0+1080, HDMI-0: nvidia-auto-select +322+0, DP-0: off"
     '';
-
+  # old:
+  #${pkgs.xorg.xrandr}/bin/xrandr --output ${monitor-center} --primary --mode 2560x1440 --pos 0x1080 --rate 144.00 --rotate normal --output ${monitor-top} --mode 1920x1080 --rate 60.00 --pos 322x0
 
   #-------- BOOTLOADER --------#
   boot = {
@@ -343,13 +354,11 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    extraModprobeConfig = ''
-      '';
+    extraModprobeConfig = '''';
     kernelModules = [ "kvm-amd" ];
     kernelParams = [ "nvidia.modesetting=1" ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = { "vm.overcommit_memory" = 1; };
-    #blacklistedKernelModules = [ "nouveau" ];
   };
 
   #-------- POWER --------#

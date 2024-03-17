@@ -10,7 +10,7 @@ polybar-msg cmd quit
 echo "---" | tee -a /tmp/polybar1.log /tmp/polybar2.log
 MONITOR=DP-4 polybar bar 2>&1 | tee -a /tmp/polybar1.log &
 disown
-MONITOR=HDMI-0 polybar bar >&1 | tee -a /tmp/polybar2.log &
+MONITOR=HDMI-0 polybar top >&1 | tee -a /tmp/polybar2.log &
 disown
 
 echo "Bars launched..."
