@@ -2,6 +2,10 @@ let
   pkgs = import <nixpkgs>;
 in
 self: super: {
+  lutris = super.lutris.override (oldAttrs: {
+    extraPkgs = oldAttrs.extraPkgs ++ [ pkgs.libnghttp2 ];
+  });
+
   #xorg = super.xorg.overrideScope (xself: xsuper: {
   #  xorgproto = xsuper.xorgproto.overrideAttrs (oldAttrs: {
   #    patches = ( oldAttrs.patches or [] ) ++ [

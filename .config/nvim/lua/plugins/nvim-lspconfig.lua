@@ -29,7 +29,7 @@ return {
         },
       },
       nil_ls = {},
-      nixd = {},
+      --nixd = {},
       pyright = {},
       rust_analyzer = {
         keys = {

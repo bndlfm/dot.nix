@@ -2,16 +2,16 @@
 let
   pkgs = nixpkgs.legacyPackages.x86_64-linux;
   theme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
-  wallpaper = pkgs.runCommand "image.png" {} ''
+  /*wallpaper = pkgs.runCommand "image.png" {} ''
         COLOR=$(${pkgs.yq}/bin/yq -r .base00 ${theme})
         COLOR="#"$COLOR
         ${pkgs.imagemagick}/bin/magick convert -size 1920x1080 xc:$COLOR $out
-  '';
+  ''; */
 in {
   stylix = {
     autoEnable = false;
 
-    image =  wallpaper;
+    image =  ./wallpapers/vampire-hunter-d-yoshitaka-amano.jpg;
     base16Scheme = theme;
     polarity = "dark";
 
@@ -22,9 +22,9 @@ in {
     };
 
     cursor = {
+      name = "volantes_light_cursors";
       package = pkgs.volantes-cursors;
-      name = "Volantes Light Cursors";
-      size = 24;
+      size = 32;
     };
 
     targets = {
@@ -37,11 +37,8 @@ in {
       fzf.enable = true;
       gtk.enable = true;
       hyprland.enable = true;
-      kde.enable = false;
-      kitty = {
-        enable = true;
-        variant256Colors = true;
-      };
+      kde.enable = true;
+      kitty.enable = true;
       lazygit.enable = true;
       qutebrowser.enable = true;
       rofi.enable = true;
@@ -55,6 +52,7 @@ in {
         enableLeftBackColors = false;
         enableRightBackColors = false;
       };
+      xresources.enable = true;
       yazi.enable = true;
       zathura.enable = true;
       zellij.enable = true;

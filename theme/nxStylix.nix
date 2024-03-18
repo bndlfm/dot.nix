@@ -8,7 +8,13 @@ in {
     polarity = "dark";
     image = ./wallpapers/vampire-hunter-d-yoshitaka-amano.jpg;
 
-    base16Scheme =  "${pkgs.base16-schemes}/share/themes/nord.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
+
+    cursor = {
+      name = "volantes_light_cursors";
+      package = pkgs.volantes-cursors;
+      size = 32;
+    };
 
     fonts = {
       serif = {
@@ -32,15 +38,7 @@ in {
       };
     };
 
-      cursor = {
-        package = pkgs.volantes-cursors;
-        name = "Volantes Light Cursors";
-        size = 24;
-      };
-
     targets = {
-      /*cursor.enable = false;*/
-      fish.enable = true;
       chromium.enable = true;
       gtk.enable = true;
     };

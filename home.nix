@@ -77,15 +77,15 @@
   };
 
   ######### (HM) THEMING ########
-  gtk.cursorTheme = {
-    name = "Volantes Light Cursors";
-    package = pkgs.volantes-cursors;
-  };
-  #home.pointerCursor = {
-  #  name = "volantes-cursors";
-  #  package = pkgs.volantes-cursors;
-  #  x11.defaultCursor = "volantes-cursors";
-  #};
+ # gtk.cursorTheme = {
+ #   name = "Volantes Light Cursors";
+ #   package = pkgs.volantes-cursors;
+ # };
+ # home.pointerCursor = {
+ #   name = "volantes-cursors";
+ #   package = pkgs.volantes-cursors;
+ #   x11.defaultCursor = "volantes-cursors";
+ # };
 
   ######### (HM) WAYLAND HYPRLAND ########
   wayland.windowManager.hyprland = {
@@ -111,7 +111,7 @@
         "$mainMod, P, pseudo" # dwindle
         "$mainMod, J, togglesplit" # dwindle
 
-        # ofi
+        # Rofi
         "$mainMod, SPACE, exec, rofi -show combi -combi-modi window,drun,run,ssh,combi -show-icons -monitor -1"
         "$mainMod SHIFT, C, exec, rofi -show calc"
         "$mainMod SHIFT, V, exec, rofi -modi 'clipboard:greenclip print' -show clipboard -run '{cmd}' -show-icons"

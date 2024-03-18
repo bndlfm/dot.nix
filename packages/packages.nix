@@ -22,7 +22,6 @@
     silver-searcher
     trashy
     xdragon
-    winePackages.full
 
     ### EDITORS
     gimp
@@ -30,6 +29,8 @@
     ### GAMES
     crawlTiles
     lutris
+    protonup
+    winetricks
 
     ### HYPRLAND
     hdrop
@@ -88,6 +89,8 @@
     ### SYSTEM
     google-drive-ocamlfuse
     qdirstat
+    wineWowPackages.full
+    wineWow64Packages.full
 
     ### WAYLAND SPECIFIC
     gammastep

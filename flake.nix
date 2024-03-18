@@ -2,11 +2,11 @@
   nixConfig = {
     extra-substituters = [
       "https://nix-community.cachix.org"
-    ];
+      ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    ];
-  };
+      ];
+    };
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -15,16 +15,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/NUR";
-
     flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
     spicetify-nix.url = "github:the-argus/spicetify-nix";
 
+    agenix.url = "github:ryantm/agenix";
+
     ### THEMING:
     base16.url = "github:SenchoPens/base16.nix";
-    tt-schemes = {
-      url = "github:tinted-theming/schemes";
-      flake = false;
-    };
     base16-zathura = {
       url = "github:haozeke/base16-zathura";
       flake = false;
@@ -32,10 +29,11 @@
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { home-manager, nixpkgs, nur, flatpaks, spicetify-nix, base16, tt-schemes, stylix, ... }@inputs:
+  outputs = { home-manager, nixpkgs, agenix, nur, flatpaks, spicetify-nix, base16, stylix, ... }:
     let
       username = "neko";
       system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
       spicePkgs = spicetify-nix.packages.${system}.default;
     in
     {
@@ -46,8 +44,9 @@
             flatpaks.homeManagerModules.default
             spicetify-nix.homeManagerModule
             ./home.nix
-            ./modules/hmProgramModules.nix
             ./packages/packages.nix
+            ./modules/hmProgramModules.nix
+            agenix.homeManagerModules.default
             {
               programs = {
                 spicetify = {
@@ -66,7 +65,7 @@
             }
             base16.homeManagerModule
             {
-              scheme = "${inputs.tt-schemes}/base16/nord.yaml";
+              scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
             }
             stylix.homeManagerModules.stylix
             ( import ./theme/hmStylix.nix { inherit nixpkgs; })
@@ -78,10 +77,11 @@
             modules = [
               ./configuration.nix
               ./hardware-configuration.nix
+              agenix.nixosModules.default
               nur.nixosModules.nur
               base16.nixosModule
               {
-                scheme = "${inputs.tt-schemes}/base16/nord.yaml";
+                scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
               }
               stylix.nixosModules.stylix
               ( import ./theme/nxStylix.nix { inherit nixpkgs; })
