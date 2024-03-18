@@ -33,8 +33,9 @@ in {
     };
 
       cursor = {
-        package = pkgs.volante-cursors;
-        name = "Volante's Cursors";
+        package = pkgs.volantes-cursors;
+        name = "Volantes Light Cursors";
+        size = 24;
       };
 
     targets = {
@@ -42,7 +43,6 @@ in {
       fish.enable = true;
       chromium.enable = true;
       gtk.enable = true;
-      qt.enable = true;
     };
   };
 }

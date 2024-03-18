@@ -48,7 +48,6 @@
     };
     mpd-discord-rpc.enable = true;
     flatpak = {
-      #enable = true;
       packages = [
         "flathub:app/com.github.tchx84.Flatseal//stable"
         "flathub:app/app.getclipboard.Clipboard//stable"
@@ -59,11 +58,6 @@
         "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
         "flathub-beta" = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
       };
-      #uninstallUnmanagedPackages = true;
-      #update.auto = {
-      #enable = true;
-      #onCalendar = "weekly";
-      #};
     };
     wob.enable = true;
   };
@@ -84,7 +78,7 @@
 
   ######### (HM) THEMING ########
   gtk.cursorTheme = {
-    name = "volantes-cursors";
+    name = "Volantes Light Cursors";
     package = pkgs.volantes-cursors;
   };
   #home.pointerCursor = {
