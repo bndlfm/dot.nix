@@ -6,7 +6,7 @@ in {
   stylix = {
     autoEnable = false;
     polarity = "dark";
-    image = ../wallpapers/2016-05-02-1462223680-7138559-BD_PRESS_KIT__1.326.1.jpg;
+    image = ./wallpapers/vampire-hunter-d-yoshitaka-amano.jpg;
 
     base16Scheme =  "${pkgs.base16-schemes}/share/themes/nord.yaml";
 
@@ -42,7 +42,6 @@ in {
       fish.enable = true;
       chromium.enable = true;
       gtk.enable = true;
-      qt.enable = true;
     };
   };
 }

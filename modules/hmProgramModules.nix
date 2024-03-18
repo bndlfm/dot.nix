@@ -1,6 +1,6 @@
 {  pkgs, ... }:{
 
-  home.programs = {
+  programs = {
     bash = {
       bashrcExtra = "exec fish";
     };

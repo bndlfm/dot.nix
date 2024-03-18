@@ -46,7 +46,7 @@
             flatpaks.homeManagerModules.default
             spicetify-nix.homeManagerModule
             ./home.nix
-            ./modules/hmProgramMods.nix
+            ./modules/hmProgramModules.nix
             ./packages/packages.nix
             {
               programs = {
@@ -69,7 +69,7 @@
               scheme = "${inputs.tt-schemes}/base16/nord.yaml";
             }
             stylix.homeManagerModules.stylix
-            ( import ./theme/stylix.nix { inherit nixpkgs; })
+            ( import ./theme/hmStylix.nix { inherit nixpkgs; })
           ];
         };
 
@@ -84,7 +84,7 @@
                 scheme = "${inputs.tt-schemes}/base16/nord.yaml";
               }
               stylix.nixosModules.stylix
-              ( import ./theme/stylix.nix { inherit nixpkgs; })
+              ( import ./theme/nxStylix.nix { inherit nixpkgs; })
             ];
           };
       };
