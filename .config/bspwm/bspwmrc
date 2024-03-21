@@ -16,7 +16,7 @@ bspc rule -a steam state=floating
 pgrep sxhkd || sxhkd &
 "$HOME"/.config/polybar/polybar.sh &
 pgrep dunst || dunst &
-nitrogen --restore &
-xsetroot -xcf /nix/store/awf0dvvqr550nn34q4v2jjzjsh5s637h-volantes-cursors-2022-08-27/share/icons/volantes_light_cursors/cursors/left_ptr 32 &
 xset r rate 325 70
 xset m 0 0
+nitrogen --restore &
+xsetroot -xcf /nix/store/xfi2afsmxm7k2g7a22rl3z0m7icaisgk-volantes-cursors-2022-08-27/share/icons/volantes_light_cursors/cursors/left_ptr 32 &

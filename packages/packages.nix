@@ -28,7 +28,7 @@
 
     ### GAMES
     crawlTiles
-    lutris
+    lutris-unwrapped
     protonup
     winetricks
 
@@ -89,8 +89,7 @@
     ### SYSTEM
     google-drive-ocamlfuse
     qdirstat
-    wineWowPackages.full
-    wineWow64Packages.full
+    wineWow64Packages.staging
 
     ### WAYLAND SPECIFIC
     gammastep

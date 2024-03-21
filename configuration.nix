@@ -177,7 +177,7 @@
       enable = true;
       displayManager.sddm.enable = true;
       desktopManager.plasma5.enable = true;
-      windowManager.bspwm.enable = true;
+      #windowManager.bspwm.enable = true;
       xkb.layout = "us";
       xkb.variant = "";
     };

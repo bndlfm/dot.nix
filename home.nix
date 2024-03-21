@@ -77,15 +77,15 @@
   };
 
   ######### (HM) THEMING ########
- # gtk.cursorTheme = {
- #   name = "Volantes Light Cursors";
- #   package = pkgs.volantes-cursors;
- # };
- # home.pointerCursor = {
- #   name = "volantes-cursors";
- #   package = pkgs.volantes-cursors;
- #   x11.defaultCursor = "volantes-cursors";
- # };
+  # gtk.cursorTheme = {
+  #   name = "Volantes Light Cursors";
+  #   package = pkgs.volantes-cursors;
+  # };
+  # home.pointerCursor = {
+  #   name = "volantes-cursors";
+  #   package = pkgs.volantes-cursors;
+  #   x11.defaultCursor = "volantes-cursors";
+  # };
 
   ######### (HM) WAYLAND HYPRLAND ########
   wayland.windowManager.hyprland = {
@@ -374,6 +374,28 @@
         ## qBittorrent
           windowrulev2 = workspace 9 silent, class:org.qbittorrent.qBittorrent
     '';
+    };
+
+  ########## XSESSION - BSPWM ##########
+  xsession.windowManager.bspwm = {
+    alwaysResetDesktops = true;
+    monitors = { HDMI-0 = [ 1 2 3 ]; DP-4 = [ 4 5 6 7 8 9 ];};
+    settings = {
+      border_width = 2;
+      window_gap = 12;
+      split_ratio = 0.52;
+      borderless_monocle = true;
+      gapless_monocle = true;
+    };
+    startupPrograms = [
+      "sxhkd &"
+      "~/.config/polybar/polybar.sh &"
+      "dunst &"
+      "xset r rate 325 70"
+      "xset m 0 0"
+      "nitrogen --restore"
+      "xsetroot -xcf ${pkgs.volantes-cursors}/share/icons/volantes_light_cursors/cursors/left_ptr 32 &"
+    ];
   };
 
   ######### (HM) DOTFILES ########
@@ -385,10 +407,10 @@
       '';
   };
   xdg.configFile = {
-    "bspwm" = {
-      source = ./.config/bspwm;
-      recursive = true;
-    };
+    #"bspwm" = {
+      #source = ./.config/bspwm;
+      #recursive = true;
+    #};
     "hypr" = {
       source = ./.config/hypr;
       recursive = true;
