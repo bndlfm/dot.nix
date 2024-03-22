@@ -1,18 +1,9 @@
-{ nixpkgs, ... }:
-let
-  pkgs = nixpkgs.legacyPackages.x86_64-linux;
-  theme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
-  /*wallpaper = pkgs.runCommand "image.png" {} ''
-        COLOR=$(${pkgs.yq}/bin/yq -r .base00 ${theme})
-        COLOR="#"$COLOR
-        ${pkgs.imagemagick}/bin/magick convert -size 1920x1080 xc:$COLOR $out
-  ''; */
-in {
+{ pkgs, ... }: {
   stylix = {
     autoEnable = false;
 
     image =  ./wallpapers/vampire-hunter-d-yoshitaka-amano.jpg;
-    base16Scheme = theme;
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
     polarity = "dark";
 
     opacity = {

@@ -14,61 +14,42 @@
       url = "github:n-hass/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nur.url = "github:nix-community/NUR";
     flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
     spicetify-nix.url = "github:the-argus/spicetify-nix";
 
+    ### SECRETS
     agenix.url = "github:ryantm/agenix";
 
     ### THEMING:
-    base16.url = "github:SenchoPens/base16.nix";
-    base16-zathura = {
-      url = "github:haozeke/base16-zathura";
-      flake = false;
-    };
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { home-manager, nixpkgs, agenix, nur, flatpaks, spicetify-nix, base16, stylix, ... }:
+  outputs = { home-manager, nixpkgs, agenix, flatpaks, spicetify-nix, stylix, ... }:
     let
       username = "neko";
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-      spicePkgs = spicetify-nix.packages.${system}.default;
     in
     {
       packages.${system} = {
         homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-            flatpaks.homeManagerModules.default
-            spicetify-nix.homeManagerModule
             ./home.nix
-            ./packages/packages.nix
-            ./modules/hmProgramModules.nix
+            ./modules/hmPkgs.nix
+            ./modules/hmPrograms.nix
+            ./modules/hmServices.nix
+
+            flatpaks.homeManagerModules.default
+            ( import ./modules/hmFlatpak.nix {inherit flatpaks;})
+
+            spicetify-nix.homeManagerModule
+            ( import ./modules/theme/spicetify.nix {inherit spicetify-nix;})
+
             agenix.homeManagerModules.default
-            {
-              programs = {
-                spicetify = {
-                  enable = true;
-                  theme = spicePkgs.themes.Matte;
-                  colorScheme = "Matte";
-                  enabledExtensions = with spicePkgs.extensions; [
-                    fullAppDisplay
-                    hidePodcasts
-                  ];
-                  enabledCustomApps = with spicePkgs.apps; [
-                    marketplace
-                  ];
-                };
-              };
-            }
-            base16.homeManagerModule
-            {
-              scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
-            }
+
             stylix.homeManagerModules.stylix
-            ( import ./theme/hmStylix.nix { inherit nixpkgs; })
+            ( import ./modules/theme/hmStylix.nix )
           ];
         };
 
@@ -77,14 +58,11 @@
             modules = [
               ./configuration.nix
               ./hardware-configuration.nix
+
               agenix.nixosModules.default
-              nur.nixosModules.nur
-              base16.nixosModule
-              {
-                scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
-              }
+
               stylix.nixosModules.stylix
-              ( import ./theme/nxStylix.nix { inherit nixpkgs; })
+              ( import ./modules/theme/hmStylix.nix )
             ];
           };
       };

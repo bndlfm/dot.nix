@@ -38,17 +38,14 @@
       cudaSupport = true;
     };
     overlays = [
-      (import ./overlays/overlays.nix)
+      #(import ./overlays/overlays.nix)
     ];
   };
 
   environment.systemPackages = with pkgs; [
     git
     btrfs-progs
-    docker
     home-manager
-    hyprland
-    hyprland-protocols
     neovim-unwrapped
     runc
     sops
@@ -59,6 +56,7 @@
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
+      pinentryPackage = pkgs.pinentry_qt5;
     };
     hyprland = {
       enable = true;
@@ -177,7 +175,7 @@
       enable = true;
       displayManager.sddm.enable = true;
       desktopManager.plasma5.enable = true;
-      #windowManager.bspwm.enable = true;
+      windowManager.bspwm.enable = true;
       xkb.layout = "us";
       xkb.variant = "";
     };
@@ -191,14 +189,14 @@
     enableUnifiedCgroupHierarchy = false;
     user = {
       services = {
-        polkit-gnome-authentication-agent-1 = {
-          description = "polkit-gnome-authentication-agent-1";
+        polkit-kde-agent = {
+          description = "polkit-kde-agent";
           wantedBy = [ "graphical-session.target" ];
           wants = [ "graphical-session.target" ];
           after = [ "graphical-session.target" ];
           serviceConfig = {
             Type = "simple";
-            ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+            ExecStart = "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
             Restart = "on-failure";
             RestartSec = 1;
             TimeoutStopSec = 10;

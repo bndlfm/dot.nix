@@ -40,7 +40,7 @@ vim.keymap.set("v", "<LEADER>tt", "<CMD>s/    /\t/g<CR>", { desc = "space to tab
 
 -- MISC {{{
 vim.keymap.set("n", "<LEADER>o", "za", { desc = "folding" })
-vim.keymap.set("i", "<C-y>", "<ESC>A {}<ESC>i<CR><ESC>ko", { desc = "insert a pair of {} and goto next line" })
+--vim.keymap.set("i", "<C-y>", "<ESC>A {}<ESC>i<CR><ESC>ko", { desc = "insert a pair of {} and goto next line" })
 --}}}
 
 -- ================= CURSOR MOVEMENT ===================== {{{

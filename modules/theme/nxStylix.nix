@@ -1,8 +1,4 @@
-{ nixpkgs, ... }:
-
-let
-  pkgs = nixpkgs.legacyPackages.x86_64-linux;
-in {
+{ pkgs, ... }: {
   stylix = {
     autoEnable = false;
     polarity = "dark";

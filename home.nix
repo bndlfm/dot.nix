@@ -24,44 +24,6 @@
   };
 
 
-  ######### (HM) SERVICES #########
-  services = {
-    arrpc.enable = true;
-    espanso = {
-      enable = true;
-      package = pkgs.espanso;
-      matches = {
-        base = {
-          matches = [
-            { trigger = ":fflb"; replace = "firefliesandlightningbugs@gmail.com"; }
-          ];
-        };
-      };
-    };
-    kdeconnect = {
-      enable = true;
-      indicator = true;
-    };
-    mpd = {
-      enable = true;
-      musicDirectory = "~/Music";
-    };
-    mpd-discord-rpc.enable = true;
-    flatpak = {
-      packages = [
-        "flathub:app/com.github.tchx84.Flatseal//stable"
-        "flathub:app/app.getclipboard.Clipboard//stable"
-        "flathub:app/md.obsidian.Obsidian//stable"
-        "flathub:app/com.discordapp.Discord//stable"
-      ];
-      remotes = {
-        "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-        "flathub-beta" = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
-      };
-    };
-    wob.enable = true;
-  };
-
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
     DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
@@ -76,17 +38,6 @@
     VISUAL = "vim";
   };
 
-  ######### (HM) THEMING ########
-  # gtk.cursorTheme = {
-  #   name = "Volantes Light Cursors";
-  #   package = pkgs.volantes-cursors;
-  # };
-  # home.pointerCursor = {
-  #   name = "volantes-cursors";
-  #   package = pkgs.volantes-cursors;
-  #   x11.defaultCursor = "volantes-cursors";
-  # };
-
   ######### (HM) WAYLAND HYPRLAND ########
   wayland.windowManager.hyprland = {
     enable = true;
@@ -96,6 +47,139 @@
     #plugins = with pkgs; [];
     settings = {
       "$mainMod" = "SUPER";
+
+      monitor = [
+        "HDMI-A-1, 1920x1080, 322x0, 1"
+        "DP-1, disable"
+        "DP-3, 2560x1440@144, 0x1080, 1, bitdepth, 10"
+      ];
+
+      workspace = [
+        "10, monitor:HDMI-A-1, default:true"
+        "1, monitor:DP-3, default:true"
+        "7, monitor:DP-3"
+      ];
+
+      misc = {
+        vrr=1;
+        vfr=true;
+        };
+
+      #-------- Hyprland Variables --------#
+      general = {
+        #See https://wiki.hyprland.org/Configuring/Variables/ for more
+        allow_tearing = true;
+        gaps_in = 5;
+        gaps_out = 10;
+        border_size = 4;
+        #layout = slidr;
+        layout = "dwindle";
+        };
+
+      animations = {
+        enabled = "yes";
+        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
+        animation = [
+          "windows, 1, 2, myBezier"
+          "windowsOut, 1, 2, default, popin 80%"
+          "border, 1, 2, default"
+          "borderangle, 1, 2, default"
+          "fade, 1, 2, default"
+          "workspaces, 1, 2, default"
+          ];
+        };
+
+      decoration = {
+        rounding = 7;
+        #"blur"= true;
+        #"blur_size" = 3;
+        #"blur_passes" = 2;
+        drop_shadow = true;
+        shadow_range = 4;
+        shadow_render_power = 3;
+        #"col.shadow" = "rgba(1a1a1aee)";
+        #"col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        #"col.shadow_inactive_border" = "rgba(595959aa)";
+      };
+
+      env = [
+        "GBM_BACKEND,nvidia-drm"
+        "GDK_BACKEND,wayland"
+        "__GL_GSYNC_ALLOWED,1"
+        "__GL_VRR_ALLOWED,1"
+        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+        "LIBVA_DRIVER_NAME,nvidia"
+        "MOZ_ENABLE_WAYLAND,1"
+        "QT_AUTO_SCREEN_SCALE_FACTOR,1"
+        "QT_QPA_PLATFORM,wayland"
+        "VRR,1"
+        "vrr,1"
+        "WLR_NO_HARDWARE_CURSORS,1"
+        "WLR_DRM_NO_ATOMIC,1"
+        "XCURSOR_SIZE,24"
+        "XDG_SESSION_DESKTOP,hyprland"
+        "XDG_SESSION_TYPE,wayland"
+        "XDG_CURRENT_DESKTOP,hyprland"
+      ];
+
+      input = {
+        kb_layout = "us";
+        repeat_rate = 80;
+        repeat_delay = 280;
+        follow_mouse = 2;
+        mouse_refocus = false;
+        float_switch_override_focus = 0;
+        numlock_by_default = true;
+        sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
+        };
+
+      #-------- Window Rules --------#
+      windowrule = [
+        ## Chatterino/Streamlink-Twitch-GUI
+          "workspace 10 silent, streamlink-twitch-gui"
+          "workspace 10 silent, chatterino"
+        ## Discord
+          "workspace 10 silent, vencorddesktop"
+        ## MPV Picture-in-Picture
+          "workspace 10, mpv_pip"
+          "float, mpv_pip"
+          "size 659 369, mpv_pip"
+          "move 416 33, mpv_pip"
+          "pin, mpv_pip"
+        ## Steam
+          "workspace 7 silent, steam"
+          "float, steam"
+        ];
+      windowrulev2 = [
+        ## File Pickers
+          "float, class:xdg-desktop-portal(.*)"
+          "size 1060 960, title:(.*)(Select a)(.*)"
+          "center, title:(.*)(Select a)(.*)"
+        ## Pin Entry (GPG)
+          "float, class:Pinentry(.*)"
+          "center, class:Pinentry(.*)"
+        ## Steam
+          "immediate, class:^(steam_app_(.*))"
+        ## qBittorrent
+          "workspace 9 silent, class:org.qbittorrent.qBittorrent"
+      ];
+
+      "exec-once" = [
+        "waybar"
+        "ibus-daemon"
+        "blueman-applet"
+        "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all"
+        "gammastep-indicator -l 38.0628:-91.4035 -t 6500:4800"
+        "${pkgs.kdeconnect}/libexec/kdeconnectd"
+        "kdeconnect-indicator"
+        "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
+        "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
+        "swaybg"
+        "xrandr --output DP-3 --primary"
+        "ydotoold"
+        "export $(dbus-launch)"
+        "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE"
+        ];
       bind = [
         # Misc Binds (kitty, close window, quit session, rofi, etc)
         "$mainMod, BACKSPACE, exec, kitty"
@@ -215,171 +299,15 @@
         "$mainMod, mouse:273, resizewindow"
       ];
     };
-    extraConfig = /* sh */ ''
-      #-------- Displays --------#
-        monitor = HDMI-A-1, 1920x1080, 322x0, 1
-        monitor = DP-1, disable
-        monitor = DP-3, 2560x1440@144, 0x1080, 1, bitdepth, 10
-        workspace = 10, monitor:HDMI-A-1, default:true
-        workspace = 1, monitor:DP-3, default:true
-        workspace = 7, monitor:DP-3
-
-
-      #-------- Input --------#
-        input {
-          kb_layout = us
-          kb_variant =
-          kb_model =
-          kb_options =
-          kb_rules =
-          repeat_rate = 80
-          repeat_delay = 280
-          follow_mouse = 2
-          mouse_refocus = false
-          float_switch_override_focus = 0
-          numlock_by_default = true
-          sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
-          touchpad {
-            natural_scroll = no
-            }
-          }
-
-
-      #-------- ENV Variables --------#
-        env = GBM_BACKEND, nvidia-drm
-        env = GDK_BACKEND, wayland
-        env = __GL_GSYNC_ALLOWED, 1
-        env = __GL_VRR_ALLOWED, 1
-        env = __GLX_VENDOR_LIBRARY_NAME, nvidia
-        env = LIBVA_DRIVER_NAME, nvidia
-        env = MOZ_ENABLE_WAYLAND, 1
-        env = QT_AUTO_SCREEN_SCALE_FACTOR, 1
-        env = QT_QPA_PLATFORM, wayland
-        env = VRR, 1
-        env = vrr, 1
-        env = WLR_NO_HARDWARE_CURSORS, 1
-        env = WLR_DRM_NO_ATOMIC, 1
-        env = XCURSOR_SIZE, 24
-        env = XDG_SESSION_DESKTOP, hyprland
-        env = XDG_SESSION_TYPE, wayland
-        env = XDG_CURRENT_DESKTOP, hyprland
-
-
-      #-------- Hyprland Variables --------#
-        general {
-          #See https://wiki.hyprland.org/Configuring/Variables/ for more
-          allow_tearing = true
-          gaps_in = 5
-          gaps_out = 10
-          border_size = 4
-          col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
-          col.inactive_border = rgba(595959aa)
-          #layout = slidr
-          layout = dwindle
-          }
-        decoration {
-          rounding = 10
-          drop_shadow = yes
-          shadow_range = 4
-          shadow_render_power = 3
-          col.shadow = rgba(1a1a1aee)
-          }
-        animations {
-          enabled = yes
-          # Default, see https://wiki.hyprland.org/Configuring/Animations/
-          bezier = myBezier, 0.05, 0.9, 0.1, 1.05
-          animation = windows, 1, 2, myBezier
-          animation = windowsOut, 1, 2, default, popin 80%
-          animation = border, 1, 2, default
-          animation = borderangle, 1, 2, default
-          animation = fade, 1, 2, default
-          animation = workspaces, 1, 2, default
-          }
-        misc {
-          vrr=1
-          vfr=true
-          }
-
-
-      #-------- Core Autostart --------#
-        exec-once = waybar
-        exec-once = ibus-daemon
-        exec-once = blueman-applet
-        #exec-once = /usr/lib/polkit-kde-authentication-agent-1
-        #exec-once = greenclip daemon
-        #exec-once = /opt/safing/portmaster/portmaster-start core
-        #exec-once = /opt/safing/portmaster/portmaster-start notifier
-        exec-once = ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
-
-
-      #-------- User Autostart --------#
-        #exec-once = gammastep -l 38.0628:-91.4035 -t 6500:4800
-        exec-once = gammastep-indicator -l 38.0628:-91.4035 -t 6500:4800
-        exec-once = ${pkgs.kdeconnect}/libexec/kdeconnectd
-        exec-once = kdeconnect-indicator
-
-        ## Power Saving (DPMS)
-          ## Turn monitors off if locked (swaylock running) & idle for 10m
-          exec-once = swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'
-
-          ## Lock screen after idle for 900s and turn monitors off after 930
-            exec-once = swayidle -w timeout 900 \
-              'swaylock -f \
-              --screenshots \
-              --clock --indicator \
-              --indicator-radius 100 \
-              --indicator-thickness 7 \
-              --effect-blur 7x5 \
-              --effect-vignette 0.5:0.5 \
-              --ring-color bb00cc \
-              --key-hl-color 880033 \
-              --line-color 00000000 \
-              --inside-color 00000088 \
-              --separator-color 00000000 \
-              --grace 2 \
-              --fade-in 0.2' \
-              timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'
-
-        exec-once = swaybg
-        exec-once = xrandr --output DP-3 --primary
-        exec-once = ydotoold
-        #exec-once = dbus-daemon --session --nofork --nopidfile --address=unix:path=/run/user/1000/bus
-        exec-once = export $(dbus-launch)
-        exec-once = systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE
-
-
-      #-------- Window Rules --------#
-        ## Chatterino/Streamlink-Twitch-GUI
-          windowrule = workspace 10 silent, streamlink-twitch-gui
-          windowrule = workspace 10 silent, chatterino
-        ## Discord
-          windowrule = workspace 10 silent, vencorddesktop
-        ## File Pickers
-          windowrulev2 = float, class:xdg-desktop-portal(.*)
-          windowrulev2 = size 1060 960, title:(.*)(Select a)(.*)
-          windowrulev2 = center, title:(.*)(Select a)(.*)
-        ## MPV Picture-in-Picture
-           windowrule = workspace 10, mpv_pip
-           windowrule = float, mpv_pip
-           windowrule = size 659 369, mpv_pip
-           windowrule = move 416 33, mpv_pip
-           windowrule = pin, mpv_pip
-        ## Pin Entry (GPG)
-          windowrulev2 = float, class:Pinentry(.*)
-          windowrulev2 = center, class:Pinentry(.*)
-        ## Steam
-           windowrule = workspace 7 silent, steam
-           windowrule = float, steam
-           windowrulev2 = immediate, class:^(steam_app_(.*))
-        ## qBittorrent
-          windowrulev2 = workspace 9 silent, class:org.qbittorrent.qBittorrent
+    extraConfig = ''
     '';
     };
 
   ########## XSESSION - BSPWM ##########
   xsession.windowManager.bspwm = {
+    enable = true;
     alwaysResetDesktops = true;
-    monitors = { HDMI-0 = [ 1 2 3 ]; DP-4 = [ 4 5 6 7 8 9 ];};
+    monitors = { HDMI-0 = [ "1" "2" "3" ]; DP-4 = [ "4" "5" "6" "7" "8" "9" ];};
     settings = {
       border_width = 2;
       window_gap = 12;
@@ -388,13 +316,13 @@
       gapless_monocle = true;
     };
     startupPrograms = [
-      "sxhkd &"
-      "~/.config/polybar/polybar.sh &"
-      "dunst &"
+      "sxhkd"
+      "~/.config/polybar/polybar.sh"
+      "dunst"
       "xset r rate 325 70"
       "xset m 0 0"
       "nitrogen --restore"
-      "xsetroot -xcf ${pkgs.volantes-cursors}/share/icons/volantes_light_cursors/cursors/left_ptr 32 &"
+      "xsetroot -xcf ${pkgs.volantes-cursors}/share/icons/volantes_light_cursors/cursors/left_ptr 32"
     ];
   };
 
@@ -407,10 +335,10 @@
       '';
   };
   xdg.configFile = {
-    #"bspwm" = {
-      #source = ./.config/bspwm;
-      #recursive = true;
-    #};
+    /*"bspwm" = {
+      source = ./.config/bspwm;
+      recursive = true;
+    };*/
     "hypr" = {
       source = ./.config/hypr;
       recursive = true;

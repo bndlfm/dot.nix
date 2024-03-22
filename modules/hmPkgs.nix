@@ -1,7 +1,6 @@
-{ pkgs, ... }:{
+{ pkgs,  ... }:{
 
   home.packages = with pkgs; [
-
     ### CLI
     bat
     btop
@@ -28,7 +27,7 @@
 
     ### GAMES
     crawlTiles
-    lutris-unwrapped
+    #lutris-unwrapped
     protonup
     winetricks
 
@@ -45,6 +44,7 @@
     streamlink
     streamlink-twitch-gui-bin
     chatterino2
+    yams
     yt-dlp
     zathura
 
@@ -96,8 +96,11 @@
     grimblast
     slurp
     nwg-look
-    waybar
-    #wl-clipboard-x11
+      waybar
+      waybar-mpris
+      wttrbar
+    wl-clipboard
+    wl-clipboard-x11
     #wl-clip-persist
     wlr-randr
 
@@ -112,7 +115,7 @@
     tdrop
     xorg.xkill
     xorg.xhost
-    xclip
+    #xclip
 
     ### MISC PACKAGES
     appimage-run
@@ -132,8 +135,8 @@
     speechd
     #upscayl
     yazi
-    ydotool
+    #ydotool
     zip
     zoxide
-    ];
+  ];
 }

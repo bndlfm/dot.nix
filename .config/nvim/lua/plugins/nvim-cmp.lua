@@ -114,6 +114,11 @@ return {
           fallback()
         end
       end, { "i", "s" }),
+      ["<CR>"] = cmp.config.disable,
+      ["<C-p>"] = cmp.mapping.select_prev_item(),
+      ["<C-n>"] = cmp.mapping.select_next_item(),
+      ["<C-e>"] = cmp.mapping.abort(),
+      ["<C-y>"] = cmp.mapping.confirm(),
     })
   end,
 }
