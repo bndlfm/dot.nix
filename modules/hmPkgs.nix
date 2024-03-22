@@ -27,7 +27,6 @@
 
     ### GAMES
     crawlTiles
-    #lutris-unwrapped
     protonup
     winetricks
 
@@ -72,10 +71,8 @@
 
     ### THEMING
     base16-schemes
-    dracula-theme
     font-awesome
     gyre-fonts
-    iosevka
     nerdfonts
     ocs-url
     volantes-cursors

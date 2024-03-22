@@ -14,7 +14,7 @@
       url = "github:n-hass/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
+    flatpak.url = "github:GermanBread/declarative-flatpak/stable";
     spicetify-nix.url = "github:the-argus/spicetify-nix";
 
     ### SECRETS
@@ -24,7 +24,7 @@
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { home-manager, nixpkgs, agenix, flatpaks, spicetify-nix, stylix, ... }:
+  outputs = { home-manager, nixpkgs, agenix, flatpak, spicetify-nix, stylix, ... }:
     let
       username = "neko";
       system = "x86_64-linux";
@@ -40,8 +40,8 @@
             ./modules/hmPrograms.nix
             ./modules/hmServices.nix
 
-            flatpaks.homeManagerModules.default
-            ( import ./modules/hmFlatpak.nix {inherit flatpaks;})
+            flatpak.homeManagerModules.default
+            ( import ./modules/hmFlatpak.nix {inherit flatpak;})
 
             spicetify-nix.homeManagerModule
             ( import ./modules/theme/spicetify.nix {inherit spicetify-nix;})
@@ -62,7 +62,7 @@
               agenix.nixosModules.default
 
               stylix.nixosModules.stylix
-              ( import ./modules/theme/hmStylix.nix )
+              ( import ./modules/theme/nxStylix.nix )
             ];
           };
       };

@@ -224,7 +224,7 @@
         "type": "github"
       }
     },
-    "flatpaks": {
+    "flatpak": {
       "inputs": {
         "nixpkgs": "nixpkgs_2",
         "utils": "utils"
@@ -422,7 +422,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "flatpaks": "flatpaks",
+        "flatpak": "flatpak",
         "home-manager": "home-manager_2",
         "nixpkgs": "nixpkgs_3",
         "spicetify-nix": "spicetify-nix",
