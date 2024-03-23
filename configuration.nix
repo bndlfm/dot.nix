@@ -36,7 +36,15 @@
     config = {
       allowUnfree = true;
       cudaSupport = true;
-    };
+      qt6 = {
+        enable = true;
+        platformTheme  = "qt6ct";
+          style = {
+            package = pkgs.utterly-nord-plasma;
+            name = "Utterly Nord Plasma";
+          };
+        };
+      };
     overlays = [
       #(import ./overlays/overlays.nix)
     ];
@@ -48,11 +56,27 @@
     home-manager
     neovim-unwrapped
     runc
-    sops
   ];
+
+  environment.variables= {
+    "QT_QPA_PLATFORMTHEME" = pkgs.lib.mkForce "qt6ct";
+    "QT_STYLE_PLUGIN" = pkgs.lib.mkForce "qtstyleplugin-kvantum";
+  };
+
+  environment.sessionVariables = {
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_STATE_HOME = "$HOME/.local/state";
+    XDG_BIN_HOME = "$HOME/.local/bin";
+    XDG_RUNTIME_DIR = "/run/user/$(id -u)";
+  };
 
   #-------- PACKAGE MODULES --------#
   programs = {
+    dconf = {
+      enable = true;
+    };
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
@@ -133,7 +157,6 @@
 
   #-------- GROUPS ---------#
   users.groups.distrobox = { };
-  users.groups.steamhead = { };
 
 
   #-------- USERS --------#

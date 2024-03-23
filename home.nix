@@ -31,8 +31,8 @@
     MANPAGER = "nvim +Man!";
     NIXOS_OZONE_WL = "1";
     OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a";
-    QT_QPA_PLATFORM = "xcb";
-    QT_QPA_PLATFORMTHEME = "qt5ct";
+    QT_QPA_PLATFORMTHEME = "qt6ct";
+    QT_STYLE_OVERRIDE = "kvantum";
     STEAM_DISABLE_BROWSER_SHUTDOWN_WORKAROUND=1;
     SUDOEDITOR = "vim";
     VISUAL = "vim";
@@ -335,10 +335,6 @@
       '';
   };
   xdg.configFile = {
-    /*"bspwm" = {
-      source = ./.config/bspwm;
-      recursive = true;
-    };*/
     "hypr" = {
       source = ./.config/hypr;
       recursive = true;

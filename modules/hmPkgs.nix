@@ -1,5 +1,4 @@
 { pkgs,  ... }:{
-
   home.packages = with pkgs; [
     ### CLI
     bat
@@ -79,10 +78,10 @@
 
     ### Plasma5/QT5
     kdePackages.kio-gdrive
-    plasma5Packages.qtstyleplugin-kvantum
     libsForQt5.qtstyleplugin-kvantum
     libsForQt5.qt5ct
-
+    qt6Packages.qt6ct
+    qt6Packages.qtstyleplugin-kvantum
     ### SYSTEM
     google-drive-ocamlfuse
     qdirstat
@@ -96,15 +95,14 @@
       waybar
       waybar-mpris
       wttrbar
-    wl-clipboard
-    wl-clipboard-x11
+    #wl-clipboard
+    #wl-clipboard-x11
     #wl-clip-persist
     wlr-randr
 
     ### XORG
     dunst
     eww
-    feh
     jgmenu
     polybar
     nitrogen
@@ -112,7 +110,7 @@
     tdrop
     xorg.xkill
     xorg.xhost
-    #xclip
+    xclip
 
     ### MISC PACKAGES
     appimage-run

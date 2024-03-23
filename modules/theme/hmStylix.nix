@@ -2,7 +2,7 @@
   stylix = {
     autoEnable = false;
 
-    image =  ./wallpapers/vampire-hunter-d-yoshitaka-amano.jpg;
+    image = ./wallpapers/vampire-hunter-d-yoshitaka-amano.jpg;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
     polarity = "dark";
 
@@ -37,6 +37,7 @@
         enable = true;
         useImage = false;
       };
+      vim.enable = false;
       waybar = {
         enable = true;
         enableCenterBackColors = false;
