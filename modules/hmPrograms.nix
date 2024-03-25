@@ -10,7 +10,8 @@
 
   programs = {
     bash = {
-      bashrcExtra = "exec fish";
+      #bashrcExtra = "exec fish";
+      initExtra ="[[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != 'fish' && -z \${BASH_EXECUTION_STRING} ]] && exec ${pkgs.fish}/bin/fish";
     };
     broot = {
       enable = true;

@@ -36,7 +36,7 @@
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
             ./home.nix
-            ./modules/hmPkgs.nix
+            ./modules/hmPackages.nix
             ./modules/hmPrograms.nix
             flatpak.homeManagerModules.default
             ./modules/hmServices.nix

@@ -9,11 +9,11 @@
 
         function fish_user_key_bindings --description 'Colemak vi-keys'
           # Execute this once per mode that emacs bindings should be used in
-            fish_default_key_bindings -M insert
+          fish_default_key_bindings -M insert
 
           # Then execute the vi-bindings so they take precedence
           # Without --no-erase fish_vi_key_bindings will reset all bindings.
-            fish_vi_key_bindings --no-erase insert
+          fish_vi_key_bindings --no-erase insert
 
           if contains -- -h $argv
             or contains -- --help $argv
@@ -43,6 +43,14 @@
         ## more fish vi key fixes
           set fish_cursor_insert line
           set fish_suggest_key_bindings yes
+
+        ## shell indicators (nix-shell, python-venv, etc)
+          set -l nix_shell_info (
+            if test -n "$IN_NIX_SHELL"
+              echo -n "<nix-shell> "
+            end
+          )
+
 
         zoxide init fish | source
         carapace _carapace fish | source
@@ -104,37 +112,21 @@
       ];
       shellAbbrs = {
         #_________ EDIT CONFIG ________#
-        ## FISH SHELL
-        rcfshplug = "nvim ~/.nixcfg/.config/fish/fundle-plugins.fish";
-        rcfsh = "nvim ~/.nixcfg/.config/fish/config.fish";
-        rcfshabbr = "nvim ~/.nixcfg/.config/fish/abbr.fish";
-        rcfshalias = "nvim ~/.nixcfg/.config/fish/alias.fish";
-
-        ## WINDOW MANAGERS
-        ## HYPRLAND
-        rhyp = "nvim ~/.nixcfg/.config/hypr/hyprland.conf";
         rhppr = "nvim ~/.nixcfg/.config/hypr/hyprpaper.conf";
-        rhdd = "nvim ~/.nixcfg/.config/hypr/dropdown.conf";
-        rhddsh = "nvim ~/.nixcfg/.config/hypr/dropdown.sh";
 
         ## X WINDOW MANGERS
-        rhlwm = "nvim ~/.nixcfg/.config/herbstluftwm/autostart";
-        rbspwm = "nvim ~/.nixcfg/.config/bspwm/bspwmrc";
         rsxh = "nvim ~/.nixcfg/.config/sxhkd/sxhkdrc";
 
         ## OTHER CONFIG ABBR
-        rpicom = "nvim ~/.nixcfg/.config/picom/picom-kawase.conf";
-        rkt = "nvim ~/.nixcfg/.config/kitty/kitty.conf";
-        rvm = "nvim ~/.nixcfg/.config/nvim/init.vim";
-        rnvm = "nvim ~/.nixcfg/.config/nvim/init.vim";
-        rsway = "nvim ~/.nixcfg/.config/sway/config";
         rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
         rwb = "nvim ~/.nixcfg/.config/waybar/config";
 
         ## NIX SPECIFIC
-        rhm = "nvim ~/.nixcfg/home.nix";
-        rnf = "nvim ~/.nixcfg/flake.nix";
-        rnc = "nvim ~/.nixcfg/configuration.nix";
+        rhmc = "nvim ~/.nixcfg/home.nix";
+        rhmp = "nvim ~/.nixcfg/modules/hmPackages.nix";
+        rhmP = "nvim ~/.nixcfg/modules/hmPrograms.nix";
+        rnxf = "nvim ~/.nixcfg/flake.nix";
+        rnxc = "nvim ~/.nixcfg/configuration.nix";
 
         ## ALIASES
         nxrb = "sudo nixos-rebuild switch --upgrade --impure --flake ~/.nixcfg";
@@ -164,8 +156,28 @@
         gIPv4-way = "bash -c 'curl icanhazip.com | tee >(wl-copy)'";
         gIPv4-x11 = "bash -c 'curl icanhazip.com | xclip -i -selection clipboard'";
 
-        #________ GENERAL SHORTCUTS ________#
+
+        #________ GIT SHORTCUTS ________#
         g = "git";
+        gst = "git status";
+        glg = "git log --graph --oneline --all";
+        gco = "git checkout";
+        gb = "git branch";
+        gba = "git branch -a";
+        gc = "git commit";
+        gca = "git commit -a";
+        gcp = "git cherry-pick";
+        gp = "git pull";
+        gph = "git push";
+        ga = "git add";
+        gau = "git add -u";
+        gaa = "git add -all";
+        gcl = "git clone";
+        gd = "git diff";
+        gdc = "git diff --cached";
+        gdt = "git difftool";
+
+        #________ GENERAL SHORTCUTS ________#
         c = "clear";
         del = "trash";
         rm = "rm -Iv";
