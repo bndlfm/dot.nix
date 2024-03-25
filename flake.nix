@@ -38,18 +38,16 @@
             ./home.nix
             ./modules/hmPkgs.nix
             ./modules/hmPrograms.nix
-            ./modules/hmServices.nix
-
             flatpak.homeManagerModules.default
-            ( import ./modules/hmFlatpak.nix {inherit flatpak;})
-
-            spicetify-nix.homeManagerModule
-            ( import ./modules/theme/spicetify.nix {inherit spicetify-nix;})
+            ./modules/hmServices.nix
 
             agenix.homeManagerModules.default
 
             stylix.homeManagerModules.stylix
             ( import ./modules/theme/hmStylix.nix )
+
+            spicetify-nix.homeManagerModule
+            ( import ./modules/theme/spicetify.nix {inherit spicetify-nix;})
           ];
         };
 

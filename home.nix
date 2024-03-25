@@ -169,6 +169,7 @@
         "ibus-daemon"
         "blueman-applet"
         "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all"
+        "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/GoogleDrive"
         "gammastep-indicator -l 38.0628:-91.4035 -t 6500:4800"
         "${pkgs.kdeconnect}/libexec/kdeconnectd"
         "kdeconnect-indicator"
@@ -309,7 +310,7 @@
     alwaysResetDesktops = true;
     monitors = { HDMI-0 = [ "1" "2" "3" ]; DP-4 = [ "4" "5" "6" "7" "8" "9" ];};
     settings = {
-      border_width = 2;
+      border_width = 6;
       window_gap = 12;
       split_ratio = 0.52;
       borderless_monocle = true;
@@ -319,6 +320,7 @@
       "sxhkd"
       "~/.config/polybar/polybar.sh"
       "dunst"
+      "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/Documents/GoogleDrive"
       "xset r rate 325 70"
       "xset m 0 0"
       "nitrogen --restore"
@@ -327,13 +329,6 @@
   };
 
   ######### (HM) DOTFILES ########
-  home.file."nix.conf" = {
-    target = ".config/nix/nix.conf";
-    text = ''
-      substituters = https://cache.nixos.org https://nix-gaming.cachix.org https://chaotic-nyx.cachix.org https://ezkea.cachix.org
-      trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4= nyx.chaotic.cx-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8= chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8= ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=
-      '';
-  };
   xdg.configFile = {
     "hypr" = {
       source = ./.config/hypr;

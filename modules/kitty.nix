@@ -208,6 +208,5 @@
       ##active_border_color #f8f8f2
       ##inactive_border_color #6272a4
     '';
-    };
   };
 }

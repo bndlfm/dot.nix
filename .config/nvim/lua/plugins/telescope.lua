@@ -30,8 +30,9 @@ return {
 
   opts = {
     defaults = {
-      layout_strategy = "horizontal",
-      layout_config = { prompt_position = "top" },
+      side_by_side = true,
+      layout_strategy = "vertical",
+      layout_config = { preview_width = 0.8 },
       sorting_strategy = "ascending",
       winblend = 0,
     },
@@ -41,7 +42,19 @@ return {
     require("telescope").setup({
       extensions = {
         undo = {
-          -- telescope-undo.nvim config, see below
+          i = {
+            ["<cr>"] = require("telescope-undo.actions").yank_additions,
+            ["<S-cr>"] = require("telescope-undo.actions").yank_deletions,
+            ["<C-cr>"] = require("telescope-undo.actions").restore,
+            -- alternative defaults, for users whose terminals do questionable things with modified <cr>
+            ["<C-y>"] = require("telescope-undo.actions").yank_deletions,
+            ["<C-r>"] = require("telescope-undo.actions").restore,
+          },
+          n = {
+            ["y"] = require("telescope-undo.actions").yank_additions,
+            ["Y"] = require("telescope-undo.actions").yank_deletions,
+            ["u"] = require("telescope-undo.actions").restore,
+          },
         },
       },
     })

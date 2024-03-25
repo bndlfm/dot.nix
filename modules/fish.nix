@@ -54,7 +54,6 @@
         { name = "done"; src = pkgs.fishPlugins.done.src; }
         { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
         { name = "forgit"; src = pkgs.fishPlugins.forgit.src; }
-        { name = "grc"; src = pkgs.fishPlugins.grc.src; }
         {
           name = "fish-abbreviation-tips";
           src = pkgs.fetchFromGitHub {
@@ -82,6 +81,7 @@
             sha256 = "1hlc2ghnc8xidwzj2v1rjrw7gbpkkkld9y2mg4dh2qmcvlizcbd3";
           };
         }
+        { name = "grc"; src = pkgs.fishPlugins.grc.src; }
         {
           name = "virtualfish";
           src = pkgs.fetchFromGitHub {
@@ -100,6 +100,7 @@
             sha256 = "BGFPnGdF/wmnJH8YJqyBi4Pb6DlPM509fj+GnTnWkQc=";
           };
         }
+        { name = "tide"; src = pkgs.fishPlugins.tide.src; }
       ];
       shellAbbrs = {
         #_________ EDIT CONFIG ________#

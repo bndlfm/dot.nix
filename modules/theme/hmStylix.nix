@@ -28,7 +28,6 @@
       fzf.enable = true;
       gtk.enable = true;
       hyprland.enable = true;
-      kde.enable = true;
       kitty.enable = true;
       lazygit.enable = true;
       qutebrowser.enable = true;

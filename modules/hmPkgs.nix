@@ -52,7 +52,7 @@
 
     ### PROGRAMMING
     python3
-    nixd
+    nil
     codeium
     direnv
 
@@ -77,11 +77,11 @@
     volantes-cursors
 
     ### Plasma5/QT5
-    kdePackages.kio-gdrive
     libsForQt5.qtstyleplugin-kvantum
     libsForQt5.qt5ct
     qt6Packages.qt6ct
     qt6Packages.qtstyleplugin-kvantum
+
     ### SYSTEM
     google-drive-ocamlfuse
     qdirstat
@@ -122,6 +122,7 @@
     kdeconnect
     lxappearance
     pavucontrol
+    docker-client
     podman
     podman-compose
     qbittorrent
