@@ -3,7 +3,7 @@ return {
   enable = false,
   opts = {
     ensure_installed = {
-      "nil_ls",
+      "nil",
       "lua-language-server",
       "stylua",
       "shellcheck",
