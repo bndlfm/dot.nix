@@ -316,6 +316,10 @@
       borderless_monocle = true;
       gapless_monocle = true;
     };
+    rules = {
+      "steam" = { floating = true; };
+      "mpv" = { floating = true; };
+    };
     startupPrograms = [
       "sxhkd"
       "~/.config/polybar/polybar.sh"
