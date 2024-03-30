@@ -52,6 +52,7 @@
 
     ### PROGRAMMING
     python3
+    poetry
     nil
     codeium
     direnv

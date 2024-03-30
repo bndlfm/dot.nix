@@ -184,6 +184,9 @@
       openFirewall = true;
     };
 
+    # bluetooth gui
+    blueman.enable = true;
+
     ## Enable Flatpak
     flatpak.enable = true;
 
@@ -256,6 +259,8 @@
 
 
   #-------- NETWORKING --------#
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boo
   networking = {
     hostName = "meow";
     networkmanager.enable = true; # Enable Networking

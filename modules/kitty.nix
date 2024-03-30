@@ -9,7 +9,7 @@
       italic_font      Inconsolata LGC Nerd Font Mono Italic
       bold_italic_font Inconsolata LGC Nerd Font Mono Bold Italic
 
-      font_size 14.0
+      font_size 12.0
 
       scrollback_lines 100000
 
@@ -136,10 +136,25 @@
 
       map kitty_mod+d detach_tab ask
 
+      map kitty_mod+f5 launch --location=hsplit
+      map kitty_mod+f6 launch --location=vsplit
+      map kitty_mod+f7 layout_action rotate
       map kitty_mod+f9 clear_terminal reset active
       map kitty_mod+f10 clear_terminal clear active
       map kitty_mod+f11 clear_terminal scrollback active
       map kitty_mod+f12 clear_terminal scroll active
+
+      # Move the active window in the indicated direction
+      map shift+up move_window up
+      map shift+left move_window left
+      map shift+right move_window right
+      map shift+down move_window down
+
+      # Switch focus to the neighboring window in the indicated direction
+      map ctrl+left neighboring_window left
+      map ctrl+right neighboring_window right
+      map ctrl+up neighboring_window up
+      map ctrl+down neighboring_window down
 
       map ctrl+l combine : clear_terminal scroll active : send_text normal,application \x0c
 
