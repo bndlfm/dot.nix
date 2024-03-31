@@ -29,6 +29,24 @@ mod4 + slash
 mod4 + z
 	killorrun picom --config ~/.config/picom/picom-kawase.conf
 
+
+#
+# screen capture
+#
+
+Print
+        scrot ~/%b%d::%H%M%S.png --multidisp --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+
+mod4 + Print
+        scrot ~/%b%d::%H%M%S.png --freeze --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+
+Control + Print
+        scrot ~/%b%d::%H%M%S.png --select --freeze --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+
+Shift + Print
+        scrot ~/%b%d::%H%M%S.png --focused --border --delay 5 --count --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+
+
 #
 # bspwm hotkeys
 #
