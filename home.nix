@@ -5,7 +5,7 @@
     ./modules/hmServices.nix
 
     ./modules/hmPrograms.nix
-    ./modules/fish.nix
+    # ./modules/fish.nix
     ./modules/kitty.nix
     ./modules/ncmpcpp.nix
     ./modules/neovim.nix
