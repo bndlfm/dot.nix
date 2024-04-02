@@ -11,7 +11,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:n-hass/home-manager";
+      url = "github:bndlfm/home-manager-nhass";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flatpak.url = "github:GermanBread/declarative-flatpak/stable";

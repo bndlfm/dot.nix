@@ -53,6 +53,7 @@
     ### PROGRAMMING
     python3
     poetry
+    meld
     nil
     codeium
     direnv
@@ -130,7 +131,6 @@
     ripcord
     rofi
     speechd
-    #upscayl
     yazi
     #ydotool
     zip
