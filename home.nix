@@ -1,15 +1,16 @@
 { pkgs, ... }:{
 
   imports = [
-    ./modules/hmFlatpak.nix
-    ./modules/hmServices.nix
-
+    # home.programs.*
     ./modules/hmPrograms.nix
-    # ./modules/fish.nix
+    ./modules/fish.nix
     ./modules/kitty.nix
     ./modules/ncmpcpp.nix
     ./modules/neovim.nix
     ./modules/yazi.nix
+
+    #./modules/hmFlatpak.nix
+    ./modules/hmServices.nix
 
     ./modules/windowManagers.nix
   ];
