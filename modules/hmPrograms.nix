@@ -1,13 +1,5 @@
 { pkgs, ... }:{
 
-  imports = [
-    ./fish.nix
-    ./kitty.nix
-    ./ncmpcpp.nix
-    ./neovim.nix
-    ./yazi.nix
-  ];
-
   programs = {
     bash = {
       #bashrcExtra = "exec fish";
