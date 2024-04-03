@@ -1,16 +1,15 @@
 { pkgs, ... }:{
 
   imports = [
-    # home.programs.*
+    ./modules/hmFlatpak.nix
+    ./modules/hmServices.nix
+
     ./modules/hmPrograms.nix
-    ./modules/fish.nix
+    # ./modules/fish.nix
     ./modules/kitty.nix
     ./modules/ncmpcpp.nix
     ./modules/neovim.nix
     ./modules/yazi.nix
-
-    #./modules/hmFlatpak.nix
-    ./modules/hmServices.nix
 
     ./modules/windowManagers.nix
   ];
@@ -50,7 +49,7 @@
     libqalculate
     libnotify
     nix-index
-    nvtopPackages.full
+    nvtopPackages-full
     ollama
     pulsemixer
     ripgrep
@@ -174,10 +173,9 @@
     zoxide
   ];
 
-  ##
-  ### (HM) ENVIRONMENT VARIABLES 
-  ##
+  ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
+    DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
     EDITOR = "nvim";
     MANPAGER = "nvim +Man!";
     NIXOS_OZONE_WL = "1";
@@ -189,15 +187,7 @@
     VISUAL = "vim";
   };
 
-  ##
-  ### (HM) DOTFILES
-  ##
-  #home.file = {
-  #  ".local/bin" = {
-  #    source = ./bin;
-  #    recursive = true;
-  #  };
-  #};
+  ######### (HM) DOTFILES ########
   xdg.configFile = {
     "hypr" = {
       source = ./.config/hypr;
