@@ -1,11 +1,11 @@
 { pkgs, ... }:{
 
   imports = [
-    ./modules/hmFlatpak.nix
+    #./modules/hmFlatpak.nix
     ./modules/hmServices.nix
 
     ./modules/hmPrograms.nix
-    # ./modules/fish.nix
+    ./modules/fish.nix
     ./modules/kitty.nix
     ./modules/ncmpcpp.nix
     ./modules/neovim.nix
@@ -49,7 +49,7 @@
     libqalculate
     libnotify
     nix-index
-    nvtopPackages-full
+    nvtopPackages.nvidia
     ollama
     pulsemixer
     ripgrep
