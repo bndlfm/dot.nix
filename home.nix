@@ -93,7 +93,7 @@
     nil
     codeium
     direnv
-    dotnet-sdk_7
+    dotnet-sdk_8
 
     ### SWAY TOOLS
     swaybg
@@ -176,7 +176,7 @@
 
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
-    DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
+    DOTNET_ROOT = "${pkgs.dotnet-sdk_8}";
     EDITOR = "nvim";
     MANPAGER = "nvim +Man!";
     NIXOS_OZONE_WL = "1";
