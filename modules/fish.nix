@@ -128,6 +128,9 @@
         rnxf = "nvim ~/.nixcfg/flake.nix";
         rnxc = "nvim ~/.nixcfg/configuration.nix";
 
+        nxgc = "sudo nix-collect-garbage -d";
+        hmgc = "nix-collect-garbage -d";
+
         ## ALIASES
         nxrb = "sudo nixos-rebuild switch --upgrade --impure --flake ~/.nixcfg";
         hmrb = "home-manager switch --flake ~/.nixcfg";
