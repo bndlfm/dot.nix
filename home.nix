@@ -93,6 +93,7 @@
     nil
     codeium
     direnv
+    dotnet-sdk_7
 
     ### SWAY TOOLS
     swaybg
