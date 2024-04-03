@@ -1,5 +1,5 @@
 .mozilla
 .config/nvim/tmp
-.bin
+bin
 .config/nvim/lazy-lock.json
 .fonts

@@ -50,6 +50,7 @@
     libqalculate
     libnotify
     nix-index
+    nvtopPackages.full
     ollama
     pulsemixer
     ripgrep
@@ -173,7 +174,9 @@
     zoxide
   ];
 
-  ######### (HM) ENVIRONMENT VARIABLES #########
+  ##
+  ### (HM) ENVIRONMENT VARIABLES 
+  ##
   home.sessionVariables = {
     EDITOR = "nvim";
     MANPAGER = "nvim +Man!";
@@ -186,7 +189,15 @@
     VISUAL = "vim";
   };
 
-  ######### (HM) DOTFILES ########
+  ##
+  ### (HM) DOTFILES
+  ##
+  #home.file = {
+  #  ".local/bin" = {
+  #    source = ./bin;
+  #    recursive = true;
+  #  };
+  #};
   xdg.configFile = {
     "hypr" = {
       source = ./.config/hypr;
