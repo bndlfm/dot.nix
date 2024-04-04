@@ -31,7 +31,7 @@
       ];
     };
     overlays = [
-      ./overlays/overlays.nix
+      (import ./overlays/overlays.nix)
     ];
   };
 
