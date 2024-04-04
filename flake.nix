@@ -14,21 +14,26 @@
       url = "github:bndlfm/home-manager-nhass";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     flatpak.url = "github:GermanBread/declarative-flatpak/stable";
     spicetify-nix.url = "github:the-argus/spicetify-nix";
 
+    microvm = {
+      url = "github:astro/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     ### SECRETS
-    agenix.url = "github:ryantm/agenix";
+    sops-nix.url = "github:Mic92/sops-nix";
 
     ### THEMING:
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { home-manager, nixpkgs, agenix, flatpak, spicetify-nix, stylix, ... }:
+  outputs = { home-manager, nixpkgs, sops-nix, microvm, flatpak, spicetify-nix, stylix, ... }@inputs:
     let
       username = "neko";
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
     in
     {
       packages.${system} = {
@@ -41,7 +46,7 @@
             flatpak.homeManagerModules.default
             ./modules/hmServices.nix
 
-            agenix.homeManagerModules.default
+            inputs.sops-nix.homeManagerModules.sops
 
             stylix.homeManagerModules.stylix
             ( import ./modules/theme/hmStylix.nix )
@@ -57,7 +62,32 @@
               ./configuration.nix
               ./hardware-configuration.nix
 
-              agenix.nixosModules.default
+              microvm.nixosModules.microvm
+              #{
+              #  networking.hostName = "microvm";
+              #  users.users.root.password = "";
+              #  microvm = {
+              #    volumes = [ {
+              #      mountPoint = "/var";
+              #      image = "var.img";
+              #      size = 256;
+              #    } ];
+              #    shares = [ {
+              #      # use "virtiofs" for MicroVMs that are started by systemd
+              #      proto = "9p";
+              #      tag = "ro-store";
+              #      # a host's /nix/store will be picked up so that no
+              #      # squashfs/erofs will be built for it.
+              #      source = "/nix/store";
+              #      mountPoint = "/nix/.ro-store";
+              #    } ];
+
+              #    hypervisor = "qemu";
+              #    socket = "control.socket";
+              #  };
+              #}
+
+              sops-nix.nixosModules.sops
 
               stylix.nixosModules.stylix
               ( import ./modules/theme/nxStylix.nix )

@@ -118,7 +118,12 @@
       dockerSocket.enable = true;
       defaultNetwork.settings.dns_enabled = true;
     };
-    libvirtd.enable = true;
+    libvirtd = {
+      enable = true;
+      qemu = {
+        swtpm.enable = true;
+      };
+    };
     oci-containers = {
       backend = "podman";
       containers."jellyfin" = {
@@ -260,7 +265,7 @@
 
   #-------- NETWORKING --------#
   hardware.bluetooth.enable = true; # enables support for Bluetooth
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boo
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller
   networking = {
     hostName = "meow";
     networkmanager.enable = true; # Enable Networking

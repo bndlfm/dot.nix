@@ -1,5 +1,5 @@
 self: super: {
-  firefox-devedition = super.firefox-devedition-unwrapped.overrideAttrs (oldAttrs: {
+  firefox-devedition = super.firefox-devedition.overrideAttrs (oldAttrs: {
     patches = (oldAttrs.patches or []) ++ [
       (super.fetchpatch {
         url = "https://raw.githubusercontent.com/bndlfm/ffMemoryCache/main/ext-tabs.js.patch";
