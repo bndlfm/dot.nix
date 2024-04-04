@@ -1,4 +1,3 @@
-{
 self: super: {
   firefox-devedition = super.firefox-devedition.overrideAttrs (oldAttrs: {
     patches = oldAttrs.patches ++ [
@@ -12,9 +11,4 @@ self: super: {
       })
     ];
   });
-
-  #waybar = super.waybar.overrideAttrs (oldAttrs: {
-  #  buildInputs = oldAttrs.buildInputs ++ [ (super.wireplumber.overrideAttrs ) ];
-  #});
-  }
 }
