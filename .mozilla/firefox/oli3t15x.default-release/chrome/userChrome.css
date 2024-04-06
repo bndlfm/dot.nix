@@ -1,10 +1,6 @@
 @import url(./hide_tabs_toolbar.css);
-
 @import url(./autohide_toolbox.css);
-
-/*@import url(chrome/gruvbox.css);*/
-
-/*@import url(chrome/sdbry-show_on_hover_autohide.css);*/
+/*@import url(./extraCSS/gruvbox.css);*/
 
 #sidebar-header {
   display: none;
@@ -16,16 +12,10 @@ statuspanel[type="overLink"],
   display: inline;
 }
 
-/*@-moz-document regexp("^moz-extension://11e0929f-4c64-4683-8c9f-d7750bfa0539/sidebar/.*$")  {
-  :root:not(:hover) .Tab .title {
-    visibility: collapse !important;
-  }
-}*/
-
 /*****************************************************/
-
+/*****************************************************/
 /*** HIDES SIDEBERY TO X PIXELS UNTIL HOVERED OVER ***/
-
+/*****************************************************/
 /*****************************************************/
 
 /*
