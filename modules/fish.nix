@@ -132,7 +132,7 @@
         hmgc = "nix-collect-garbage -d";
 
         ## ALIASES
-        nxrb = "sudo nixos-rebuild switch --upgrade --impure --flake ~/.nixcfg";
+        nxrb = "sudo nixos-rebuild switch --upgrade --flake ~/.nixcfg";
         hmrb = "home-manager switch --flake ~/.nixcfg";
 
         cb = "flatpak run app.getclipboard.Clipboard";

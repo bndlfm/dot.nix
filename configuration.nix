@@ -15,7 +15,7 @@
       trusted-substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
-        #"https://ai.cachix.org"
+        "https://ai.cachix.org"
         "https://nix-gaming.cachix.org"
         #"https://chaotic-nyx.cachix.org"
         #"https://ezkea.cachix.org"
@@ -23,7 +23,7 @@
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        #"ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
+        "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
         #"nyx.chaotic.cx-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
         #"chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
@@ -55,6 +55,7 @@
     btrfs-progs
     home-manager
     neovim-unwrapped
+    nixos-rebuild
     runc
   ];
 
@@ -80,7 +81,7 @@
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
-      pinentryPackage = pkgs.pinentry_qt5;
+      #pinentryPackage = pkgs.pinentry_qt5;
     };
     hyprland = {
       enable = true;
@@ -185,7 +186,7 @@
   services = {
     avahi = {
       enable = true;
-      nssmdns4 = true;
+      #nssmdns4 = true;
       openFirewall = true;
     };
 
@@ -204,9 +205,17 @@
     ## X11
     xserver = {
       enable = true;
-      displayManager.sddm.enable = true;
-      desktopManager.plasma5.enable = true;
-      windowManager.bspwm.enable = true;
+      displayManager = {
+        sddm.enable = false;
+        lightdm.enable = true;
+      };
+      desktopManager = {
+        plasma5.enable = true;
+        pantheon.enable = false;
+      };
+      windowManager = {
+        bspwm.enable = true;
+      };
       xkb.layout = "us";
       xkb.variant = "";
     };
@@ -242,24 +251,37 @@
   };
 
   #-------- FILESYSTEM --------#
-  fileSystems."/mnt/data" = {
-    device = "/dev/disk/by-uuid/627b1de1-05e5-4596-8b3a-a009597f5ed6";
-    fsType = "btrfs";
-    options = [
-      "noatime"
-      "nodiratime"
-      "discard"
-    ];
-  };
-  fileSystems."/media" = {
-    device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
-    fsType = "btrfs";
-    options = [
-      "subvol=@media"
-      "noatime"
-      "nodiratime"
-      "discard"
-    ];
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/8a82f24c-5b0d-4f5e-900d-a6e615f0dc77";
+      fsType = "ext4";
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-uuid/6BFC-BE4E";
+      fsType = "vfat";
+    };
+
+    "/mnt/data" = {
+      device = "/dev/disk/by-uuid/627b1de1-05e5-4596-8b3a-a009597f5ed6";
+      fsType = "btrfs";
+      options = [
+        "noatime"
+        "nodiratime"
+        "discard"
+      ];
+    };
+
+    "/media" = {
+      device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
+      fsType = "btrfs";
+      options = [
+        "subvol=@media"
+        "noatime"
+        "nodiratime"
+        "discard"
+      ];
+    };
   };
 
 
@@ -372,9 +394,10 @@
     let
       monitor-center = "DP-4";
       monitor-top = "HDMI-0";
+      monitor-right = "";
     in
     ''
-      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="DP-4: nvidia-auto-select +0+1080, HDMI-0: nvidia-auto-select +322+0, DP-0: off"
+      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080, ${monitor-top}: nvidia-auto-select +322+0, DP-0: off"
     '';
   # old:
   #${pkgs.xorg.xrandr}/bin/xrandr --output ${monitor-center} --primary --mode 2560x1440 --pos 0x1080 --rate 144.00 --rotate normal --output ${monitor-top} --mode 1920x1080 --rate 60.00 --pos 322x0

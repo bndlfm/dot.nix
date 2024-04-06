@@ -40,7 +40,7 @@
       tab_bar_min_tabs 2
       tab_fade 0.25 0.5 0.75 1
 
-      tab_separator ""
+      tab_separator "|"
       tab_title_template " {index}: {title} "
 
       active_tab_title_template " {index}: {title} "

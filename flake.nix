@@ -30,7 +30,7 @@
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { home-manager, nixpkgs, sops-nix, microvm, flatpak, spicetify-nix, stylix, ... }@inputs:
+  outputs = { home-manager, microvm, nixpkgs, flatpak, sops-nix, spicetify-nix, stylix, ... }@inputs:
     let
       username = "neko";
       system = "x86_64-linux";
@@ -62,7 +62,7 @@
               ./configuration.nix
               ./hardware-configuration.nix
 
-              microvm.nixosModules.microvm
+              #microvm.nixosModules.microvm
               #{
               #  networking.hostName = "microvm";
               #  users.users.root.password = "";

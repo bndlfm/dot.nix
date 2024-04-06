@@ -1,0 +1,49 @@
+/* SIDE BAR AUTO-HIDE HEADER (except Bookmarks, History, Sync'd Tabs); appears normally on hover */
+#sidebar-box:not([sidebarcommand="viewBookmarksSidebar"]):not([sidebarcommand="viewHistorySidebar"]):not([sidebarcommand="viewTabsSidebar"])
+  #sidebar-header:not(:hover) {
+    max-height: 5px !important;
+    min-height: 5px !important;
+    padding: 0 !important;
+    background-color: rgb(53, 57, 86) !important;
+    opacity: 1.0 !important;
+}
+#sidebar-box:not([sidebarcommand="viewBookmarksSidebar"]):not([sidebarcommand="viewHistorySidebar"]):not([sidebarcommand="viewTabsSidebar"])
+  #sidebar-header:not(:hover) #sidebar-switcher-target {
+    opacity: 0 !important;
+}
+#sidebar-header {
+    -moz-transition: all 150ms ease-out 150ms !important;
+    background-color: rgb(40, 42, 54) !important;
+}
+ 
+/* SIDE BAR AUTO-HIDE PREVENTION */
+:root {
+  --sidebar-min-width: 33px;
+  --sidebar-visible-width: 300px;
+}
+#main-window:not([titlepreface*="⧌"]),
+#sidebar-box:not([sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]) {
+  min-width: var(--sidebar-visible-width) !important;
+  max-width: none !important;
+}
+ 
+/* SIDE BAR AUTO-HIDE SIDEBERY */
+#main-window[titlepreface*="⧌"] #sidebar,
+#main-window[titlepreface*="⧌"] #sidebar-header,
+#main-window[titlepreface*="⧌"] #sidebar-box{
+  position: relative !important;
+  min-width: var(--sidebar-min-width) !important;
+  max-width: var(--sidebar-min-width) !important;
+  transition: 150ms ease 150ms;
+  z-index:1;
+}
+#main-window[titlepreface*="⧌"] #sidebar-box:hover :-moz-any(#sidebar,#sidebar-header) {
+  position: relative !important;
+  min-width: var(--sidebar-visible-width) !important;
+  max-width: var(--sidebar-visible-width) !important;
+  transition: 150ms ease 150ms;
+  z-index:1;
+  margin-right: calc((var(--sidebar-visible-width) - var(--sidebar-min-width)) * -1) !important;
+}
+ 
+ 

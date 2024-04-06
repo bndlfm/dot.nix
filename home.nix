@@ -47,8 +47,8 @@
     fzf
     git-lfs
     gnugrep
-    libqalculate
     libnotify
+    libqalculate
     nix-index
     nvtopPackages.nvidia
     ollama
@@ -94,7 +94,7 @@
     nil
     codeium
     direnv
-    dotnet-sdk_8
+    dotnet-sdk_7
 
     ### SWAY TOOLS
     swaybg
@@ -147,6 +147,7 @@
     polybar
     nitrogen
     scrot
+    sxhkd
     tdrop
     xorg.xkill
     xorg.xhost
@@ -177,7 +178,7 @@
 
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
-    DOTNET_ROOT = "${pkgs.dotnet-sdk_8}";
+    DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
     EDITOR = "nvim";
     MANPAGER = "nvim +Man!";
     NIXOS_OZONE_WL = "1";
