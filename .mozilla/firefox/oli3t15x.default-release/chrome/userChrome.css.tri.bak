@@ -1,37 +1,10 @@
-@import url(chrome/hide_tabs_toolbar.css);
-
-@import url(chrome/autohide_toolbox.css);
-
-/*@import url(chrome/gruvbox.css);*/
-
-/*@import url(chrome/sdbry-show_on_hover_autohide.css);*/
-
-/*@-moz-document regexp("^moz-extension://11e0929f-4c64-4683-8c9f-d7750bfa0539/sidebar/.*$")  {
-  :root:not(:hover) .Tab .title {
-    visibility: collapse !important;
-  }
-}*/
-
-/*#statuspanel[type="overLink"] {
-  right: 0;
-  display: inline;
-}*/
+@import url(./hide_tabs_toolbar.css);
+@import url(./autohide_toolbox.css);
+/*@import url(./extraCSS/gruvbox.css);*/
 
 #sidebar-header {
   display: none;
 }
-
-/*statuspanel[type="overLink"],
-#statuspanel[type="overLink"] {
-  right: 0;
-  display: inline;
-}*/
-
-/*statuspanel[type="overLink"],
-#statuspanel[type="overLink"] {
-  right: 0;
-  display: inline;
-} */
 
 statuspanel[type="overLink"],
 #statuspanel[type="overLink"] {
@@ -40,14 +13,14 @@ statuspanel[type="overLink"],
 }
 
 /*****************************************************/
-
+/*****************************************************/
 /*** HIDES SIDEBERY TO X PIXELS UNTIL HOVERED OVER ***/
-
+/*****************************************************/
 /*****************************************************/
 
 /*
  * Show sidebar only when the cursor is over it:
- * The border controlling sidebar width will be removed 
+ * The border controlling sidebar width will be removed
  * so you'll need to modify these values to change width
  */
 

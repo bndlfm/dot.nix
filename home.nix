@@ -38,7 +38,6 @@
   home.packages = with pkgs; [
     ### CLI
     bat
-    btop
     chafa
     eza
     fd
@@ -50,13 +49,23 @@
     libnotify
     libqalculate
     nix-index
-    nvtopPackages.nvidia
     ollama
     pulsemixer
     ripgrep
     silver-searcher
     trashy
     xdragon
+
+    ### TUI
+    highlight
+    joshuto
+    page
+    ranger
+      ### TOP-LIKES
+      btop
+      iotop
+      nvtopPackages.nvidia
+
 
     ### EDITORS
     gimp
@@ -101,12 +110,6 @@
     swayidle
     swaylock
     swaynotificationcenter
-
-    ### TUI
-    joshuto
-    page
-    ranger
-    highlight
 
     ### THEMING
     base16-schemes
