@@ -55,30 +55,26 @@
     silver-searcher
     trashy
     xdragon
+    yt-dlp
+    zip
+    zoxide
 
     ### TUI
     highlight
     joshuto
     page
     ranger
-      ### TOP-LIKES
-      btop
-      iotop
-      nvtopPackages.nvidia
 
+        ### TOP-LIKES
+        btop
+        iotop
+        nvtopPackages.nvidia
 
     ### EDITORS
     gimp
 
     ### GAMES
     crawlTiles
-    protonup
-    winetricks
-
-    ### HYPRLAND
-    hdrop
-    hyprpaper
-    hyprshot
 
     ### MEDIA
     mpd
@@ -87,9 +83,6 @@
     ncmpcpp
     streamlink
     streamlink-twitch-gui-bin
-    chatterino2
-    yams
-    yt-dlp
     zathura
 
     ### PASSWORDS
@@ -97,19 +90,30 @@
     gopass
 
     ### PROGRAMMING
-    python3
-    poetry
-    meld
-    nil
     codeium
     direnv
     dotnet-sdk_7
+    meld
+    #nil
+    python3
+    poetry
 
-    ### SWAY TOOLS
-    swaybg
-    swayidle
-    swaylock
-    swaynotificationcenter
+    ### SOCIAL
+    chatterino2
+    ripcord
+
+    ### SYSTEM
+    podman
+    podman-compose
+    protonup
+    winetricks
+    wineWow64Packages.staging
+
+        ### Plasma5-6/QT5-6
+        libsForQt5.qtstyleplugin-kvantum
+        libsForQt5.qt5ct
+        qt6Packages.qt6ct
+        qt6Packages.qtstyleplugin-kvantum
 
     ### THEMING
     base16-schemes
@@ -119,64 +123,62 @@
     ocs-url
     volantes-cursors
 
-    ### Plasma5/QT5
-    libsForQt5.qtstyleplugin-kvantum
-    libsForQt5.qt5ct
-    qt6Packages.qt6ct
-    qt6Packages.qtstyleplugin-kvantum
-
-    ### SYSTEM
+    ### UTILITIES
+    appimage-run
     google-drive-ocamlfuse
+    gparted
+    grc
+    kdeconnect
+    pavucontrol
+    qbittorrent
     qdirstat
-    wineWow64Packages.staging
+    quicksynergy
+    rofi
+    synergy
 
-    ### WAYLAND SPECIFIC
-    gammastep
-    grimblast
-    slurp
-    nwg-look
-      waybar
-      waybar-mpris
-      wttrbar
-    #wl-clipboard
-    #wl-clipboard-x11
-    #wl-clip-persist
-    wlr-randr
+        ### WAYLAND SPECIFIC
+        gammastep
+        grimblast
+        slurp
+        nwg-look
+        waybar
+        waybar-mpris
+        wttrbar
+        wlr-randr
+        #wl-clipboard
+        #wl-clipboard-x11
+        #wl-clip-persist
 
-    ### XORG
-    dunst
-    eww
-    jgmenu
-    polybar
-    nitrogen
-    scrot
-    sxhkd
-    tdrop
-    xorg.xkill
-    xorg.xhost
-    xclip
+            ### SWAY TOOLS
+            swaybg
+            swayidle
+            swaylock
+            swaynotificationcenter
+
+            ### HYPRLAND
+            hdrop
+            hyprpaper
+            hyprshot
+
+        ### XORG TOOLS
+        dunst
+        eww
+        jgmenu
+        polybar
+        nitrogen
+        scrot
+        sxhkd
+        tdrop
+        xorg.xkill
+        xorg.xhost
+        xclip
+
 
     ### MISC PACKAGES
-    appimage-run
     brave
     discordchatexporter-cli
     firefox-devedition
-    grc
-    gparted
-    kdeconnect
-    lxappearance
-    pavucontrol
-    docker-client
-    podman
-    podman-compose
-    qbittorrent
-    ripcord
-    rofi
     speechd
-    yazi
-    #ydotool
-    zip
-    zoxide
   ];
 
   ######### (HM) ENVIRONMENT VARIABLES #########
