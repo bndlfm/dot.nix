@@ -46,6 +46,7 @@
     fzf
     git-lfs
     gnugrep
+    jq
     libnotify
     libqalculate
     nix-index

@@ -15,6 +15,8 @@
     rules = {
       "steam" = { floating = true; };
       "mpv" = { floating = true; };
+      "synergy" = { floating = true; };
+      "blueman-applet" = { floating = true; };
     };
     startupPrograms = [
       "sxhkd"
