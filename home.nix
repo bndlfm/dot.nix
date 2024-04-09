@@ -166,6 +166,7 @@
         eww
         jgmenu
         polybar
+          weather-icons
         nitrogen
         scrot
         sxhkd

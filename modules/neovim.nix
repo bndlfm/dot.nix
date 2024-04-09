@@ -10,9 +10,6 @@
     #'';
     extraPackages = with pkgs; [
       cargo
-      dart
-      eza
-      fd
       fzf
       gcc
       git
@@ -26,11 +23,8 @@
       pyright
       python3
       python3Packages.pip
-      tree-sitter
-      ripgrep
       unzip
       yarn
-      wget
     ];
     plugins = with pkgs.vimPlugins; [
       vim-nix
