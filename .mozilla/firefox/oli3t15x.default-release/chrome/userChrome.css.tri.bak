@@ -1,5 +1,7 @@
 @import url(./hide_tabs_toolbar.css);
+
 @import url(./autohide_toolbox.css);
+
 /*@import url(./extraCSS/gruvbox.css);*/
 
 #sidebar-header {
@@ -13,9 +15,13 @@ statuspanel[type="overLink"],
 }
 
 /*****************************************************/
+
 /*****************************************************/
+
 /*** HIDES SIDEBERY TO X PIXELS UNTIL HOVERED OVER ***/
+
 /*****************************************************/
+
 /*****************************************************/
 
 /*

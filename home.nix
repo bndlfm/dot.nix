@@ -76,6 +76,7 @@
 
     ### GAMES
     crawlTiles
+    libreoffice-qt
 
     ### MEDIA
     mpd
