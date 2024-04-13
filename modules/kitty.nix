@@ -162,7 +162,6 @@
       shell_integration no-cursor
 
       # Looks
-      ##include themes/gruvbox_dark.conf
       ##background_opacity 0.87
 
       ### https://draculatheme.com/kitty

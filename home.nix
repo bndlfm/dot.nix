@@ -171,7 +171,7 @@
             swaylock
             swaynotificationcenter
 
-            ### HYPRLAND
+            ### HYPRLAND TOOLS
             hdrop
             hyprpaper
             hyprshot

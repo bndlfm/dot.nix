@@ -100,22 +100,25 @@
     };
   };
 
-  #-------- CONTAINERS / VM --------#
+#-------- CONTAINERS / VM --------#
   virtualisation = {
-    containers.enable = true;
-    containers.storage.settings = {
-      storage = {
-        driver = "overlay";
-        runroot = "/run/containers/storage";
-        graphroot = "/var/lib/containers/storage";
-        rootless_storage_path = "/tmp/containers-$USER";
-        options.overlay.mountopt = "nodev,metacopy=on";
+    containers = {
+      enable = true;
+      cdi.dynamic.nvidia.enable = true;
+      storage.settings = {
+        storage = {
+          driver = "overlay";
+          runroot = "/run/containers/storage";
+          graphroot = "/var/lib/containers/storage";
+          rootless_storage_path = "/tmp/containers-$USER";
+          options.overlay.mountopt = "nodev,metacopy=on";
+        };
       };
-      #cdi.dynamic.nvidia.enable = true;
     };
+
     podman = {
       enable = true;
-      enableNvidia = true;
+      #enableNvidia = true;
       dockerSocket.enable = true;
       defaultNetwork.settings.dns_enabled = true;
     };
@@ -153,16 +156,15 @@
     };
   };
 
-  environment.extraInit = ''
-    if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-      export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-      fi
-  '';
-
+    environment.extraInit = ''
+      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+        fi
+    '';
 
 
   #-------- GROUPS ---------#
-  users.groups.distrobox = { };
+  users.groups.distrobox = {};
 
 
   #-------- USERS --------#
@@ -184,14 +186,18 @@
 
   #-------- SERVICES --------#
   services = {
+    # keep enabled for CUPS (printing)
     avahi = {
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
     };
 
-    # bluetooth gui
     blueman.enable = true;
+
+    displayManager = {
+      sddm.enable = true;
+    };
 
     ## Enable Flatpak
     flatpak.enable = true;
@@ -205,10 +211,6 @@
     ## X11
     xserver = {
       enable = true;
-      displayManager = {
-        sddm.enable = false;
-        lightdm.enable = true;
-      };
       desktopManager = {
         plasma5.enable = true;
         pantheon.enable = false;
@@ -220,9 +222,6 @@
       xkb.variant = "";
     };
   };
-  users.users.neko.packages = with pkgs; [
-    sxhkd
-  ];
 
   #-------- SYSTEM --------#
   systemd = {
