@@ -18,6 +18,28 @@
       size = 32;
     };
 
+    fonts = {
+      serif = {
+        package = pkgs.inconsolata-nerdfont;
+        name = "Inconsolata Nerd Font";
+      };
+
+      sansSerif = {
+        package = pkgs.gyre-fonts;
+        name = "TeX Gyre Heros";
+      };
+
+      monospace = {
+        package = pkgs.nerdfonts;
+        name = "Inconsolata Nerd Font Mono";
+      };
+
+      emoji = {
+        package = pkgs.noto-fonts-emoji-blob-bin;
+        name = "Noto Color Emoji";
+      };
+    };
+
     targets = {
       bat.enable = true;
       bspwm.enable = true;

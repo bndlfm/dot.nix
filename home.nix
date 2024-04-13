@@ -36,107 +36,121 @@
   };
 
   home.packages = with pkgs; [
+
     ### CLI
-    bat
-    chafa
-    eza
-    fd
-    ffmpeg-full
-    file
-    fzf
-    git-lfs
-    gnugrep
-    jq
-    libnotify
-    libqalculate
-    nix-index
-    ollama
-    pulsemixer
-    ripgrep
-    silver-searcher
-    trashy
-    xdragon
-    yt-dlp
-    zip
-    zoxide
+      bat
+      chafa
+      eza
+      fd
+      ffmpeg-full
+      file
+      fzf
+      git-lfs
+      gnugrep
+      jq
+      libnotify
+      libqalculate
+      nix-index
+      ollama
+      pulsemixer
+      ripgrep
+      silver-searcher
+      trashy
+      xdragon
+      yt-dlp
+      zip
+      zoxide
+
 
     ### TUI
-    highlight
-    joshuto
-    page
-    ranger
-
-        ### TOP-LIKES
+      ### TOP-LIKES
         btop
         iotop
         nvtopPackages.nvidia
+      ranger
+        highlight
+      joshuto
+        highlight
+      page
+
 
     ### EDITORS
-    gimp
+      gimp
+
 
     ### GAMES
-    crawlTiles
-    libreoffice-qt
+      crawlTiles
+      libreoffice-qt
+
 
     ### MEDIA
-    mpd
-    mpd-discord-rpc
-    mpv
-    ncmpcpp
-    streamlink
-    streamlink-twitch-gui-bin
-    zathura
+      mpd
+      mpd-discord-rpc
+      mpv
+      ncmpcpp
+      streamlink
+      streamlink-twitch-gui-bin
+      zathura
+
 
     ### PASSWORDS
-    git-credential-gopass
-    gopass
+      git-credential-gopass
+      gopass
+
 
     ### PROGRAMMING
-    codeium
-    direnv
-    dotnet-sdk_7
-    meld
-    #nil
-    python3
-    poetry
+      codeium
+      direnv
+      dotnet-sdk_7
+      meld
+      #nil
+      python3
+      poetry
+
 
     ### SOCIAL
-    chatterino2
-    ripcord
+      chatterino2
+      ripcord
+
 
     ### SYSTEM
-    podman
-    podman-compose
-    protonup
-    winetricks
-    wineWow64Packages.staging
-
-        ### Plasma5-6/QT5-6
+      ### Plasma5-6/QT5-6
         libsForQt5.qtstyleplugin-kvantum
         libsForQt5.qt5ct
         qt6Packages.qt6ct
         qt6Packages.qtstyleplugin-kvantum
+      podman
+      podman-compose
+      protonup
+      winetricks
+      wineWow64Packages.staging
+
+
 
     ### THEMING
-    base16-schemes
-    font-awesome
-    gyre-fonts
-    nerdfonts
-    ocs-url
-    volantes-cursors
+      ### FONTS
+        font-awesome
+        gyre-fonts
+        nerdfonts
+        noto-fonts-emoji-blob-bin
+      base16-schemes
+      ocs-url
+      volantes-cursors
+
+
 
     ### UTILITIES
-    appimage-run
-    google-drive-ocamlfuse
-    gparted
-    grc
-    kdeconnect
-    pavucontrol
-    qbittorrent
-    qdirstat
-    quicksynergy
-    rofi
-    synergy
+      appimage-run
+      google-drive-ocamlfuse
+      gparted
+      grc
+      kdeconnect
+      pavucontrol
+      qbittorrent
+      qdirstat
+      quicksynergy
+      rofi
+      synergy
 
         ### WAYLAND SPECIFIC
         gammastep
