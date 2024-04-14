@@ -418,36 +418,48 @@
   powerManagement.enable = false;
 
   #-------- XDG PORTALS --------#
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-kde
-    ];
-    config = {
-      common = {
-        default = [
-          "kde"
-          "gtk"
-        ];
+  xdg = {
+    portal = {
+      enable = true;
+      wlr.enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-kde
+      ];
+      config = {
+        common = {
+          default = [
+            "kde"
+            "gtk"
+          ];
+        };
+        kde = {
+          default = [
+            "kde"
+            "gtk"
+          ];
+        };
+        gnome = {
+          default = [
+            "gtk"
+            "kde"
+          ];
+        };
+        hyprland = {
+          default = [
+            "hyprland"
+            "kde"
+          ];
+        };
       };
-      kde = {
-        default = [
-          "kde"
-          "gtk"
-        ];
-      };
-      gnome = {
-        default = [
-          "gtk"
-          "kde"
-        ];
-      };
-      hyprland = {
-        default = [
-          "hyprland"
-          "kde"
-        ];
+    };
+    mime = {
+      defaultApplications = {
+        "application/pdf" = [ "zathura" ];
+        "text/html" = [ "firefox.desktop" ];
+        "x-scheme-handler/http" = [ "firefox.desktop" ];
+        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "x-scheme-handler/about" = [ "firefox.desktop" ];
+        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
       };
     };
   };

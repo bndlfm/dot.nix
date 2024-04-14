@@ -22,7 +22,7 @@ return {
         -- Override the styling of any highlight group.
         override = {
           Visual = {
-            bg = palette.gray1,
+            bg = palette.gray2,
           },
         },
         -- Cursorline options.  Also includes visual/selection.

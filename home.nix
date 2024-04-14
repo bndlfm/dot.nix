@@ -45,8 +45,8 @@
       ffmpeg-full
       file
       fzf
-      git-lfs
       gnugrep
+      gopass
       jq
       libnotify
       libqalculate
@@ -73,7 +73,6 @@
         highlight
       page
 
-
     ### EDITORS
       gimp
 
@@ -93,19 +92,17 @@
       zathura
 
 
-    ### PASSWORDS
-      git-credential-gopass
-      gopass
-
-
     ### PROGRAMMING
+      ### GIT
+        git
+        git-filter-repo
+        git-lfs
+        git-credential-gopass
       codeium
       direnv
       dotnet-sdk_7
       meld
-      #nil
       python3
-      poetry
 
 
     ### SOCIAL
@@ -126,7 +123,6 @@
       wineWow64Packages.staging
 
 
-
     ### THEMING
       ### FONTS
         font-awesome
@@ -138,21 +134,17 @@
       volantes-cursors
 
 
-
     ### UTILITIES
-      appimage-run
-      google-drive-ocamlfuse
-      gparted
-      grc
-      kdeconnect
-      pavucontrol
-      qbittorrent
-      qdirstat
-      quicksynergy
-      rofi
-      synergy
-
-        ### WAYLAND SPECIFIC
+      ### WAYLAND SPECIFIC
+        ### SWAY TOOLS
+          swaybg
+          swayidle
+          swaylock
+          swaynotificationcenter
+        ### HYPRLAND TOOLS
+          hdrop
+          hyprpaper
+          hyprshot
         gammastep
         grimblast
         slurp
@@ -165,18 +157,8 @@
         #wl-clipboard-x11
         #wl-clip-persist
 
-            ### SWAY TOOLS
-            swaybg
-            swayidle
-            swaylock
-            swaynotificationcenter
 
-            ### HYPRLAND TOOLS
-            hdrop
-            hyprpaper
-            hyprshot
-
-        ### XORG TOOLS
+      ### XORG TOOLS
         dunst
         eww
         jgmenu
@@ -189,6 +171,17 @@
         xorg.xkill
         xorg.xhost
         xclip
+      appimage-run
+      google-drive-ocamlfuse
+      gparted
+      grc
+      kdeconnect
+      pavucontrol
+      qbittorrent
+      qdirstat
+      quicksynergy
+      rofi
+      synergy
 
 
     ### MISC PACKAGES
@@ -200,6 +193,7 @@
 
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
+    DEFAULT_BROWSER = "${pkgs.firefox-devedition}/bin/firefox";
     DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
     EDITOR = "nvim";
     MANPAGER = "nvim +Man!";
@@ -213,62 +207,76 @@
   };
 
   ######### (HM) DOTFILES ########
-  xdg.configFile = {
-    "hypr" = {
-      source = ./.config/hypr;
-      recursive = true;
+  xdg = {
+    configFile = {
+      "hypr" = {
+        source = ./.config/hypr;
+        recursive = true;
+      };
+      "joshuto" = {
+        source = ./.config/joshuto;
+        recursive = true;
+      };
+      "mutt" = {
+        source = ./.config/mutt;
+        recursive = true;
+      };
+      #"nvim" = {
+      #  source = ./.config/nvim;
+      #  recursive = true;
+      #};
+      "polybar" = {
+        source = ./.config/polybar;
+        recursive = true;
+      };
+      "pulsemixer.cfg" = {
+        source = ./.config/pulsemixer.cfg;
+        recursive = false;
+      };
+      "ranger" = {
+        source = ./.config/ranger;
+        recursive = true;
+      };
+      "rofi" = {
+        source = ./.config/rofi;
+        recursive = true;
+      };
+      "sxhkd" = {
+        source = ./.config/sxhkd;
+        recursive = true;
+      };
+      "tridactyl" = {
+        source = ./.config/tridactyl;
+        recursive = true;
+      };
+      "qutebrowser" = {
+        source = ./.config/qutebrowser;
+        recursive = true;
+      };
+      "waybar" = {
+        source = ./.config/waybar;
+        recursive = true;
+      };
+      "yazi" = {
+        source = ./.config/yazi;
+        recursive = true;
+      };
+      "zathura" = {
+        source = ./.config/zathura;
+        recursive = true;
+      };
     };
-    "joshuto" = {
-      source = ./.config/joshuto;
-      recursive = true;
-    };
-    "mutt" = {
-      source = ./.config/mutt;
-      recursive = true;
-    };
-    #"nvim" = {
-    #  source = ./.config/nvim;
-    #  recursive = true;
-    #};
-    "polybar" = {
-      source = ./.config/polybar;
-      recursive = true;
-    };
-    "pulsemixer.cfg" = {
-      source = ./.config/pulsemixer.cfg;
-      recursive = false;
-    };
-    "ranger" = {
-      source = ./.config/ranger;
-      recursive = true;
-    };
-    "rofi" = {
-      source = ./.config/rofi;
-      recursive = true;
-    };
-    "sxhkd" = {
-      source = ./.config/sxhkd;
-      recursive = true;
-    };
-    "tridactyl" = {
-      source = ./.config/tridactyl;
-      recursive = true;
-    };
-    "qutebrowser" = {
-      source = ./.config/qutebrowser;
-      recursive = true;
-    };
-    "waybar" = {
-      source = ./.config/waybar;
-      recursive = true;
-    };
-    "yazi" = {
-      source = ./.config/yazi;
-      recursive = true;
-    };
-    "zathura" = {
-      source = ./.config/zathura;
-      recursive = true;
+    mime.enable = true;
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "application/pdf" = [ "zathura" ];
+        "text/html" = [ "firefox.desktop" ];
+        "x-scheme-handler/http" = [ "firefox.desktop" ];
+        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "x-scheme-handler/about" = [ "firefox.desktop" ];
+        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
+      };
     };
   };
 }
