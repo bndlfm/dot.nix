@@ -15,6 +15,7 @@
       git
       lua-language-server
       lazygit
+      gnumake
       nil
       nodejs
       nodePackages.bash-language-server

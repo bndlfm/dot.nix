@@ -14,6 +14,8 @@
     };
     rules = {
       "steam" = { floating = true; };
+      "steam_app" = { floating = true; };
+      "Steam" = { floating = true; };
       "mpv" = { floating = true; };
       "synergy" = { floating = true; };
       "blueman-applet" = { floating = true; };
@@ -33,14 +35,16 @@
   };
 
 
-
   ######### (HM) WAYLAND HYPRLAND ########
   wayland.windowManager.hyprland = {
     enable = true;
+
     systemd = {
       enable = true;
     };
+
     #plugins = with pkgs; [];
+    #
     settings = {
       "$mainMod" = "SUPER";
 

@@ -1,6 +1,4 @@
 return {
-  --"catppuccin/nvim",
-  --"rose-pine/neovim",
   --"ellisonleao/gruvbox.nvim",
   {
     "AlexvZyl/nordic.nvim",
