@@ -49,7 +49,7 @@
           modules = [
             ./home.nix
             ./modules/hmPackages.nix
-            ./modules/hmPrograms.nix
+            ./programs/hmPrograms.nix
             flatpak.homeManagerModules.default
             ./modules/hmServices.nix
 
