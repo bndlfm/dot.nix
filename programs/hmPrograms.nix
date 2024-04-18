@@ -32,7 +32,7 @@
     };
     fzf = {
       enable = true;
-      enableFishIntegration = false; # BROKEN 04/13/2024
+      enableFishIntegration = true;
     };
     git = {
       userName = "bndlfm";

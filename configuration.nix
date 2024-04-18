@@ -199,6 +199,10 @@
       sddm.enable = true;
     };
 
+    fail2ban = {
+      enable = true;
+    };
+
     ## Enable Flatpak
     flatpak.enable = true;
 
@@ -292,6 +296,11 @@
     networkmanager.enable = true; # Enable Networking
     firewall = {
       enable = true;
+      nat = {
+        enable = true;
+        externalInterface = "enp6s0";
+        internalInterface = "wg0";
+      };
       allowedTCPPorts = [
         8000
         8096 # Jellyfin HTTP
@@ -304,8 +313,9 @@
         }
       ];
       allowedUDPPorts = [
-        1900 # Jellyfin service autodiscovery
-        7359 # Also Jellyfin service autodiscovery
+        1900 # jellyfin service autodiscovery
+        7359 # also jellyfin service autodiscovery
+        51820 # wireguard port
       ];
       allowedUDPPortRanges = [
         {

@@ -11,11 +11,14 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:bndlfm/home-manager-nhass";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    fh.url = "https://flakehub.com/f/DeterminateSystems/fh/0.1.10.tar.gz";
+    #home-manager = {
+    #  url = "github:bndlfm/home-manager-nhass";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
 
     flatpak.url = "github:GermanBread/declarative-flatpak/stable";
 
@@ -34,7 +37,7 @@
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { home-manager, nixpkgs, fh, flatpak, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
+  outputs = { home-manager, nixpkgs, flatpak, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
     let
       username = "neko";
       system = "x86_64-linux";
@@ -65,10 +68,6 @@
             modules = [
               ./configuration.nix
               ./hardware-configuration.nix
-
-              {
-                environment.systemPackages = [ fh.packages.${system}.default ];
-              }
 
               microvm.nixosModules.host
               {

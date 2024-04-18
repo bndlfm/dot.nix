@@ -4,12 +4,12 @@
     #./modules/hmFlatpak.nix
     ./modules/hmServices.nix
 
-    ./modules/hmPrograms.nix
-    ./modules/fish.nix
-    ./modules/kitty.nix
-    ./modules/ncmpcpp.nix
-    ./modules/neovim.nix
-    ./modules/yazi.nix
+    ./programs/hmPrograms.nix
+    ./programs/fish.nix
+    ./programs/kitty.nix
+    ./programs/ncmpcpp.nix
+    ./programs/neovim.nix
+    ./programs/yazi.nix
 
     ./modules/windowManagers.nix
   ];
@@ -56,6 +56,7 @@
       ripgrep
       silver-searcher
       trashy
+      wireguard-tools
       xdragon
       yt-dlp
       zip
