@@ -294,13 +294,13 @@
   networking = {
     hostName = "meow";
     networkmanager.enable = true; # Enable Networking
+    nat = {
+      enable = true;
+      externalInterface = "enp6s0";
+      internalInterfaces = [ "wg0" ];
+    };
     firewall = {
       enable = true;
-      nat = {
-        enable = true;
-        externalInterface = "enp6s0";
-        internalInterface = "wg0";
-      };
       allowedTCPPorts = [
         8000
         8096 # Jellyfin HTTP
@@ -323,6 +323,43 @@
           to = 1764;
         }
       ];
+    };
+    wireguard.interfaces = {
+      wg0 = {
+        ips = [ "192.168.1.1/24" "fc10:10:10::1/64" ];
+
+        # This allows the wireguard server to route your traffic to the internet and hence be like a VPN
+        # For this to work you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
+        listenPort = 51820;
+
+        #postSetup = ''
+        #  ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o enp6s0 -j MASQUERADE
+        #'';
+
+        # This undoes the above command
+        #postShutdown = ''
+        #  ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 192.168.1.0/24 -o enp6s0 -j MASQUERADE
+        #'';
+
+        # Path to the private key file.
+        #
+        # Note: The private key can also be included inline via the privateKey option,
+        # but this makes the private key world-readable; thus, using privateKeyFile is
+        # recommended.
+        privateKeyFile = "./privatekey";
+
+        peers = [{
+        # List of allowed peers.
+          # Feel free to give a meaning full name
+          # Public key of the peer (not a file path).
+          # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
+          publicKey = "Nl5DtuKE3HscxEuTTirditJ1pJAlmb9hjL7H/6JeFQ0=";
+          allowedIPs = [ "192.168.1.2/32" "fc10:10:10::2/128" ];
+          #allowedIPs = [ "10.100.0.2/32" ];
+          #endpoint = "192.168.1.25:51820";
+          persistentKeepalive = 25;
+        }];
+      };
     };
   };
 
@@ -411,6 +448,7 @@
   # old:
   #${pkgs.xorg.xrandr}/bin/xrandr --output ${monitor-center} --primary --mode 2560x1440 --pos 0x1080 --rate 144.00 --rotate normal --output ${monitor-top} --mode 1920x1080 --rate 60.00 --pos 322x0
 
+
   #-------- BOOTLOADER --------#
   boot = {
     loader = {
@@ -424,8 +462,10 @@
     kernel.sysctl = { "vm.overcommit_memory" = 1; };
   };
 
+
   #-------- POWER --------#
   powerManagement.enable = false;
+
 
   #-------- XDG PORTALS --------#
   xdg = {
@@ -491,7 +531,6 @@
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
-
 
 
 
