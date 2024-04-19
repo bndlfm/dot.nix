@@ -326,9 +326,9 @@
     };
     wireguard.interfaces = {
       wg0 = {
-        ips = [ "192.168.1.1/24" "fc10:10:10::1/64" ];
+        ips = [ "192.168.1.1/24" ]; # "fc10:10:10::1/64"
 
-        # This allows the wireguard server to route your traffic to the internet and hence be like a VPN
+        # NOTE: This allows the wireguard server to route your traffic to the internet and hence be like a VPN
         # For this to work you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
         listenPort = 51820;
 
@@ -343,18 +343,19 @@
 
         # Path to the private key file.
         #
-        # Note: The private key can also be included inline via the privateKey option,
+        # NOTE: The private key can also be included inline via the privateKey option,
         # but this makes the private key world-readable; thus, using privateKeyFile is
         # recommended.
-        privateKeyFile = "./privatekey";
+        privateKeyFile = "/etc/wireguard/privatekey";
 
         peers = [{
         # List of allowed peers.
-          # Feel free to give a meaning full name
+          # Feel free to give a meaningful name
           # Public key of the peer (not a file path).
           # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
-          publicKey = "Nl5DtuKE3HscxEuTTirditJ1pJAlmb9hjL7H/6JeFQ0=";
-          allowedIPs = [ "192.168.1.2/32" "fc10:10:10::2/128" ];
+
+          publicKey = "Nl5DtuKE3HscxEuTTirditJ1pJAlmb9hjL7H/6JeFQ0="; # "fc10:10:10::2/128"
+          allowedIPs = [ "192.168.1.2/32" ];
           #allowedIPs = [ "10.100.0.2/32" ];
           #endpoint = "192.168.1.25:51820";
           persistentKeepalive = 25;
