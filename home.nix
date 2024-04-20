@@ -2,9 +2,9 @@
 
   imports = [
     #./modules/hmFlatpak.nix
+    ./programs/hmPrograms.nix
     ./modules/hmServices.nix
 
-    ./programs/hmPrograms.nix
     ./programs/fish.nix
     ./programs/kitty.nix
     ./programs/ncmpcpp.nix

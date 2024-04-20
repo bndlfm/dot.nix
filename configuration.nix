@@ -324,44 +324,44 @@
         }
       ];
     };
-    wireguard.interfaces = {
-      wg0 = {
-        ips = [ "192.168.1.1/24" ]; # "fc10:10:10::1/64"
+    #wireguard.interfaces = {
+    # wg0 = {
+        #ips = [ "192.168.1.1/24" ]; # "fc10:10:10::1/64"
 
-        # NOTE: This allows the wireguard server to route your traffic to the internet and hence be like a VPN
-        # For this to work you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
-        listenPort = 51820;
+        ## NOTE: This allows the wireguard server to route your traffic to the internet and hence be like a VPN
+        ## For this to work you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
+        #listenPort = 51820;
 
-        #postSetup = ''
-        #  ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o enp6s0 -j MASQUERADE
-        #'';
+        ##postSetup = ''
+        ##  ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o enp6s0 -j MASQUERADE
+        ##'';
 
-        # This undoes the above command
-        #postShutdown = ''
-        #  ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 192.168.1.0/24 -o enp6s0 -j MASQUERADE
-        #'';
+        ## This undoes the above command
+        ##postShutdown = ''
+        ##  ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 192.168.1.0/24 -o enp6s0 -j MASQUERADE
+        ##'';
 
-        # Path to the private key file.
-        #
-        # NOTE: The private key can also be included inline via the privateKey option,
-        # but this makes the private key world-readable; thus, using privateKeyFile is
-        # recommended.
-        privateKeyFile = "/etc/wireguard/privatekey";
+        ## Path to the private key file.
+        ##
+        ## NOTE: The private key can also be included inline via the privateKey option,
+        ## but this makes the private key world-readable; thus, using privateKeyFile is
+        ## recommended.
+        #privateKeyFile = "/etc/wireguard/privatekey/privatekey";
 
-        peers = [{
-        # List of allowed peers.
-          # Feel free to give a meaningful name
-          # Public key of the peer (not a file path).
-          # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
+        #peers = [{
+        ## List of allowed peers.
+        #  # Feel free to give a meaningful name
+        #  # Public key of the peer (not a file path).
+        #  # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
 
-          publicKey = "Nl5DtuKE3HscxEuTTirditJ1pJAlmb9hjL7H/6JeFQ0="; # "fc10:10:10::2/128"
-          allowedIPs = [ "192.168.1.2/32" ];
-          #allowedIPs = [ "10.100.0.2/32" ];
-          #endpoint = "192.168.1.25:51820";
-          persistentKeepalive = 25;
-        }];
-      };
-    };
+        #  publicKey = "Nl5DtuKE3HscxEuTTirditJ1pJAlmb9hjL7H/6JeFQ0="; # "fc10:10:10::2/128"
+        #  allowedIPs = [ "192.168.1.2/32" ];
+        #  #allowedIPs = [ "10.100.0.2/32" ];
+        #  #endpoint = "192.168.1.25:51820";
+        #  persistentKeepalive = 25;
+        #}];
+    #  };
+    #};
   };
 
 
@@ -441,10 +441,10 @@
     let
       monitor-center = "DP-4";
       monitor-top = "HDMI-0";
-      monitor-right = "";
+      monitor-right = "DP-3";
     in
     ''
-      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080, ${monitor-top}: nvidia-auto-select +322+0, DP-0: off"
+      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, ${monitor-top}: nvidia-auto-select +640+0 {ForceCompositionPipeline=On}, ${monitor-right}: nvidia-auto-select +2560+290 {rotation=right, ForceCompositionPipeline=On}"
     '';
   # old:
   #${pkgs.xorg.xrandr}/bin/xrandr --output ${monitor-center} --primary --mode 2560x1440 --pos 0x1080 --rate 144.00 --rotate normal --output ${monitor-top} --mode 1920x1080 --rate 60.00 --pos 322x0
