@@ -2,6 +2,8 @@
 
 @import url(./autohide_toolbox.css);
 
+@import url(./extraCSS/bookmarks_bar.css);
+
 /*@import url(./extraCSS/gruvbox.css);*/
 
 #sidebar-header {

@@ -1,12 +1,9 @@
 #
 # wm independent hotkeys
 #
-
-# terminal emulator
 mod4 + BackSpace
 	kitty
 
-# program launcher
 mod4 + @space
 	rofi -combi-modi window,drun,run,ssh -show combi -modi combi -show-icons # -theme ~/.config/rofi/themes/base16-rofi/base16-nord.rasi
 
@@ -33,19 +30,17 @@ mod4 + z
 #
 # screen capture
 #
-
 Print
-        scrot ~/%b%d::%H%M%S.png --multidisp --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+        scrotshot.sh full
 
 mod4 + Print
-        scrot ~/%b%d::%H%M%S.png --freeze --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+        scrotshot.sh freeze
 
 Control + Print
-        scrot ~/%b%d::%H%M%S.png --select --freeze --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+        scrotshot.sh select
 
 Shift + Print
-        scrot ~/%b%d::%H%M%S.png --focused --border --delay 5 --count --quality 75 --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
-
+        scrotshot.sh focused
 
 #
 # bspwm hotkeys

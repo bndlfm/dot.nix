@@ -74,8 +74,9 @@
         highlight
       page
 
-    ### EDITORS
+    ### EDITING TOOLS
       gimp
+      upscayl
 
 
     ### GAMES
@@ -197,6 +198,7 @@
     DEFAULT_BROWSER = "${pkgs.firefox-devedition}/bin/firefox";
     DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
     EDITOR = "nvim";
+    PAGER = "page";
     MANPAGER = "nvim +Man!";
     NIXOS_OZONE_WL = "1";
     OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a";

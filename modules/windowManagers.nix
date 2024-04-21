@@ -33,6 +33,36 @@
       "kdeconnect-indicator"
     ];
   };
+  home.packages = with pkgs; [
+    (writeShellScriptBin "scrotshot.sh" /* sh */ ''
+      #!/bin/bash
+
+      # Function to capture screenshot and copy to clipboard
+      capture_screenshot() {
+        scrot "$@" --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+      }
+
+      # Check the command-line argument and execute the corresponding scrot command
+      case "$1" in
+        "full")
+            capture_screenshot ~/%b%d::%H%M%S.png --multidisp --quality 75
+            ;;
+        "freeze")
+            capture_screenshot ~/%b%d::%H%M%S.png --freeze --quality 75
+            ;;
+        "select")
+            capture_screenshot --select --freeze --quality 75 ~/%b%d::%H%M%S.png
+            ;;
+        "focused")
+            capture_screenshot ~/%b%d::%H%M%S.png --focused --border --delay 5 --count --quality 75
+            ;;
+        *)
+            echo "Usage: $0 [full|freeze|select|focused]"
+            exit 1
+            ;;
+      esac
+    '')
+  ];
 
 
   ######### (HM) WAYLAND HYPRLAND ########
