@@ -1,5 +1,4 @@
-{ pkgs, ... }:{
-
+{ pkgs, ... }: {
   imports = [
     #./modules/hmFlatpak.nix
     ./programs/hmPrograms.nix
@@ -36,7 +35,6 @@
   };
 
   home.packages = with pkgs; [
-
     ### CLI
       bat
       chafa
@@ -69,7 +67,6 @@
         iotop
         nvtopPackages.nvidia
       ranger
-        highlight
       joshuto
         highlight
       page
@@ -189,7 +186,7 @@
     ### MISC PACKAGES
     brave
     discordchatexporter-cli
-    firefox-devedition
+    firefox-devedition-unwrapped
     speechd
   ];
 
@@ -242,10 +239,6 @@
       };
       "rofi" = {
         source = ./.config/rofi;
-        recursive = true;
-      };
-      "sxhkd" = {
-        source = ./.config/sxhkd;
         recursive = true;
       };
       "tridactyl" = {

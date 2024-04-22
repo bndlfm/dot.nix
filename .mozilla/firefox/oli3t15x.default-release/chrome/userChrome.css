@@ -129,3 +129,11 @@ statuspanel[type="overLink"],
   margin-inline: 0px !important;
   border-left-style: solid !important;
 }
+
+/*********************
+ * BOOKMARK BAR FIX  *
+ *********************/
+
+#PersonalToolbar {
+  padding-left: 36px !important;
+}

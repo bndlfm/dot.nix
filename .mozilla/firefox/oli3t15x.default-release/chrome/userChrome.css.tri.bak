@@ -3,6 +3,7 @@
 @import url(./autohide_toolbox.css);
 
 @import url(./extraCSS/bookmarks_bar.css);
+
 /*@import url(./extraCSS/gruvbox.css);*/
 
 #sidebar-header {
@@ -127,4 +128,11 @@ statuspanel[type="overLink"],
 #sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel-label {
   margin-inline: 0px !important;
   border-left-style: solid !important;
+}
+
+/*********************
+ * BOOKMARK BAR FIX  *
+ *********************/
+#PersonalToolbar {
+  padding-left: 36px !important;
 }

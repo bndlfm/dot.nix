@@ -31,16 +31,16 @@ mod4 + z
 # screen capture
 #
 Print
-        scrotshot.sh full
+    ~/.nix-profile/bin/scrotshot.sh select
 
 mod4 + Print
-        scrotshot.sh freeze
+    ~/.nix-profile/bin/scrotshot.sh freeze
 
 Control + Print
-        scrotshot.sh select
+    ~/.nix-profile/bin/scrotshot.sh select
 
 Shift + Print
-        scrotshot.sh focused
+    ~/.nix-profile/bin/scrotshot.sh focused
 
 #
 # bspwm hotkeys

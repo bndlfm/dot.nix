@@ -111,83 +111,132 @@
         { name = "tide"; src = pkgs.fishPlugins.tide.src; }
       ];
       shellAbbrs = {
-        #_________ EDIT CONFIG ________#
-        rhppr = "nvim ~/.nixcfg/.config/hypr/hyprpaper.conf";
+        ###############
+        # EDIT CONFIG #
+        ###############
+          rchpp = "nvim ~/.nixcfg/.config/hypr/hyprpaper.conf";
 
         ## X WINDOW MANGERS
-        rsxh = "nvim ~/.nixcfg/.config/sxhkd/sxhkdrc";
+          rsxh = "nvim ~/.nixcfg/.config/sxhkd/sxhkdrc";
 
         ## OTHER CONFIG ABBR
-        rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
-        rwb = "nvim ~/.nixcfg/.config/waybar/config";
+          rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
+          rwb = "nvim ~/.nixcfg/.config/waybar/config";
 
         ## NIX SPECIFIC
-        rhmc = "nvim ~/.nixcfg/home.nix";
-        rhmp = "nvim ~/.nixcfg/modules/hmPackages.nix";
-        rhmP = "nvim ~/.nixcfg/modules/hmPrograms.nix";
-        rnxf = "nvim ~/.nixcfg/flake.nix";
-        rnxc = "nvim ~/.nixcfg/configuration.nix";
+          rhmc = "nvim ~/.nixcfg/home.nix";
+          rhmp = "nvim ~/.nixcfg/modules/hmPackages.nix";
+          rhmP = "nvim ~/.nixcfg/modules/hmPrograms.nix";
+          rnxf = "nvim ~/.nixcfg/flake.nix";
+          rnxc = "nvim ~/.nixcfg/configuration.nix";
 
-        nxgc = "sudo nix-collect-garbage -d";
-        hmgc = "nix-collect-garbage -d";
+          nxgc = "sudo nix-collect-garbage -d";
+          hmgc = "nix-collect-garbage -d";
 
         ## ALIASES
-        nxrb = "sudo nixos-rebuild switch --upgrade --flake ~/.nixcfg";
-        hmrb = "home-manager switch --flake ~/.nixcfg";
+          nxrb = "sudo nixos-rebuild switch --upgrade --flake ~/.nixcfg";
+          hmrb = "home-manager switch --flake ~/.nixcfg";
 
+
+        ###############
+        # (G)O TO DIR #
+        ###############
+          gfsh = { position = "anywhere"; setCursor = true; expansion = "~/.config/fish/%"; };
+          gtri = { position = "anywhere"; setCursor = true; expansion = "~/.config/tridactyl/%"; };
+          ghyp = { position = "anywhere"; setCursor = true; expansion = "~/.config/hypr/%"; };
+          gvi = { position = "anywhere"; setCursor = true; expansion = "~/.config/nvim/%"; };
+
+          gloc = { position = "anywhere"; setCursor = true; expansion = "~/.local/%"; };
+          gconf = { position = "anywhere"; setCursor = true; expansion = "~/.config/%"; };
+          gbin = { position = "anywhere"; setCursor = true; expansion = "~/.local/bin/%"; };
+          gcont = { position = "anywhere"; setCursor = true; expansion = "~/.local/containers/%"; };
+        ####################
+        # CURL SHENANIGANS #
+        ####################
+          ## CHEAT.SH
+            cht = { setCursor = true; expansion = "curl cht.sh/%"; };
+            cheat = { setCursor = true; expansion = "curl cht.sh/%"; };
+
+          wttr = "curl wttr.in";
+
+          gIPv4-way = "bash -c 'curl icanhazip.com | tee >(wl-copy)'";
+          gIPv4-x11 = "bash -c 'curl icanhazip.com | xclip -i -selection clipboard'";
+
+        #################
+        # GIT SHORTCUTS #
+        #################
+          g = "git";
+          gst = "git status";
+          glg = "git log --graph --oneline --all";
+          gco = "git checkout";
+          gb = "git branch";
+          gba = "git branch -a";
+          gc = "git commit";
+          gca = "git commit -a";
+          gcp = "git cherry-pick";
+          gp = "git pull";
+          gph = "git push";
+          ga = "git add";
+          gau = "git add -u";
+          gaa = "git add -all";
+          gcl = "git clone";
+
+          gd = "git diff";
+          gdc = "git diff --cached";
+          gdt = "git difftool";
+
+        #############
+        # SYSTEMCTL #
+        #############
+          scu = "systemctl --user";
+          ssc = "sudo systemctl";
+
+          scust = "systemctl --user status";
+          sscst = "sudo systemctl status";
+
+          scus = "systemctl --user stop";
+          sscs = "sudo systemctl stop";
+
+          scuen = "systemctl --user enable --now";
+          sscen = "sudo systemctl enable --now";
+
+          scur = "systemctl --user restart";
+          sscr = "sudo systemctl restart";
+
+          scudr = "systemctl --user daemon-reload";
+          sscdr = "sudo systemctl daemon-reload";
+
+          scud = "systemctl --user disable";
+          sscd = "sudo systemctl disable";
+
+          scuS = "systemctl --user start";
+          sscS = "sudo systemctl start";
+
+          scutr = "systemctl --user try-restart";
+          ssctr = "sudo systemctl try-restart";
+
+          scue = "systemctl --user edit --runtime";
+          ssce = "sudo systemctl edit --runtime";
+
+          scuf = "systemctl --user --failed";
+          sscf = "sudo systemctl --failed"; 
+
+
+        #####################
+        # GENERAL SHORTCUTS #
+        #####################
+          c = "clear";
+          del = "trash";
+          rm = "rm -Iv";
+          ls = "eza --group-directories-first --icons --color-scale all";
+          suvi = "sudoedit";
+          yay = "nix search nixpkgs";
+          pass = "gopass";
+      };
+      shellAliases = {
         cb = "flatpak run app.getclipboard.Clipboard";
-
-        #________ (G)O TO DIR ________# 
-        gfsh = { position = "anywhere"; setCursor = true; expansion = "~/.config/fish/%"; };
-        gtri = { position = "anywhere"; setCursor = true; expansion = "~/.config/tridactyl/%"; };
-        ghyp = { position = "anywhere"; setCursor = true; expansion = "~/.config/hypr/%"; };
-        gvi = { position = "anywhere"; setCursor = true; expansion = "~/.config/nvim/%"; };
-
-        gloc = { position = "anywhere"; setCursor = true; expansion = "~/.local/%"; };
-        gconf = { position = "anywhere"; setCursor = true; expansion = "~/.config/%"; };
-
-        gbin = { position = "anywhere"; setCursor = true; expansion = "~/.local/bin/%"; };
-        gcont = { position = "anywhere"; setCursor = true; expansion = "~/.local/containers/%"; };
-
-        #________ CURL SHENANIGANS ________#
-        ## CHEAT.SH
-        cht = { setCursor = true; expansion = "curl cht.sh/%"; };
-        cheat = { setCursor = true; expansion = "curl cht.sh/%"; };
-
-        wttr = "curl wttr.in";
-
-        gIPv4-way = "bash -c 'curl icanhazip.com | tee >(wl-copy)'";
-        gIPv4-x11 = "bash -c 'curl icanhazip.com | xclip -i -selection clipboard'";
-
-
-        #________ GIT SHORTCUTS ________#
-        g = "git";
-        gst = "git status";
-        glg = "git log --graph --oneline --all";
-        gco = "git checkout";
-        gb = "git branch";
-        gba = "git branch -a";
-        gc = "git commit";
-        gca = "git commit -a";
-        gcp = "git cherry-pick";
-        gp = "git pull";
-        gph = "git push";
-        ga = "git add";
-        gau = "git add -u";
-        gaa = "git add -all";
-        gcl = "git clone";
-        gd = "git diff";
-        gdc = "git diff --cached";
-        gdt = "git difftool";
-
-        #________ GENERAL SHORTCUTS ________#
-        c = "clear";
-        del = "trash";
-        rm = "rm -Iv";
-        ls = "eza --group-directories-first --icons --color-scale all";
-        suvi = "sudoedit";
-        yay = "nix search nixpkgs";
-        pass = "gopass";
+        "..." = "cd ../..";
+        "...." = "cd ../../..";
       };
     };
   };
