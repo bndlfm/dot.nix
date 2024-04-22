@@ -186,7 +186,7 @@
     ### MISC PACKAGES
     brave
     discordchatexporter-cli
-    firefox-devedition-unwrapped
+    firefox-devedition
     speechd
   ];
 
