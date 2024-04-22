@@ -1,6 +1,9 @@
 bin
 .config/nvim/lazy-lock.json
 .config/nvim/tmp
+.config/nvim/plugged
+.config/page
 microvms
 .mozilla
 .fonts
+publickey
