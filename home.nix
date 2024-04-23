@@ -178,9 +178,8 @@
       pavucontrol
       qbittorrent
       qdirstat
-      quicksynergy
       rofi
-      synergy
+      virt-manager-qt
 
 
     ### MISC PACKAGES
