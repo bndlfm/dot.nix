@@ -179,7 +179,7 @@
       qbittorrent
       qdirstat
       rofi
-      virt-manager-qt
+      virt-manager
 
 
     ### MISC PACKAGES

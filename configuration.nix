@@ -36,6 +36,14 @@
     config = {
       allowUnfree = true;
       cudaSupport = true;
+      qt5 = {
+        enable = true;
+        platformTheme  = "qt5ct";
+          style = {
+            package = pkgs.utterly-nord-plasma;
+            name = "Utterly Nord Plasma";
+          };
+        };
       qt6 = {
         enable = true;
         platformTheme  = "qt6ct";
@@ -55,6 +63,7 @@
     btrfs-progs
     home-manager
     runc
+    quickemu
   ];
 
   environment.variables= {
@@ -85,6 +94,7 @@
       enable = true;
       xwayland.enable = true;
     };
+    nbd.enable = false;
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
@@ -171,7 +181,7 @@
   users.users.neko = {
     isNormalUser = true;
     description = "neko";
-    extraGroups = [ "networkmanager" "wheel" "input" "docker" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" "input" "docker" "libvirtd" "tss" ];
     linger = true;
   };
 
@@ -179,6 +189,15 @@
     isSystemUser = true;
     description = "distrobox user";
     group = "distrobox";
+  };
+
+  #-------- SECURITY --------#
+  security = {
+    tpm2 = {
+      enable = true;
+      pkcs11.enable = true;
+      tctiEnvironment.enable = true;
+    };
   };
 
   #-------- SERVICES --------#
@@ -445,6 +464,7 @@
     kernelParams = [ "nvidia.modesetting=1" ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = { "vm.overcommit_memory" = 1; };
+    supportedFilesystems = [ "ntfs" ];
   };
 
 
