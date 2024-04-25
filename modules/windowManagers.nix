@@ -55,97 +55,95 @@
       # toggle picom
       "mod4 + z" = "killorrun picom --config ~/.config/picom/picom.conf";
 
-      #
       # screen capture
-      #
       "Print" = "~/.nix-profile/bin/scrotshot.sh select";
       "mod4 + Print" = "~/.nix-profile/bin/scrotshot.sh freeze";
       "Control + Print" = "~/.nix-profile/bin/scrotshot.sh select";
       "Shift + Print" = "~/.nix-profile/bin/scrotshot.sh focused";
 
-        #####################
-        #   BSPWM HOTKEYS   #
-        #####################
+      #####################
+      #   BSPWM HOTKEYS   #
+      #####################
 
-        # Quit/Restart BSPWM
-        "mod4 + alt + {q,r}" = "bspc {quit,wm -r}";
+      # Quit/Restart BSPWM
+      "mod4 + alt + {q,r}" = "bspc {quit,wm -r}";
 
-        # Close and Kill
-        "mod4 + {_,shift + }q" = "bspc node -{c,k}";
+      # Close and Kill
+      "mod4 + {_,shift + }q" = "bspc node -{c,k}";
 
-        # Alternate Between the Tiled and Monocle Layout
-        "mod4 + m" = "bspc desktop -l next";
+      # Alternate Between the Tiled and Monocle Layout
+      "mod4 + m" = "bspc desktop -l next";
 
-        # Send the Newest Marked Node to the Newest Preselected Node
-        "mod4 + y" = "bspc node newest.marked.local -n newest.!automatic.local";
+      # Send the Newest Marked Node to the Newest Preselected Node
+      "mod4 + y" = "bspc node newest.marked.local -n newest.!automatic.local";
 
-        # Swap the Current Node and the Biggest Node
-        "mod4 + g" = "bspc node -s biggest";
+      # Swap the Current Node and the Biggest Node
+      "mod4 + g" = "bspc node -s biggest";
 
-        #-------------------#
-        #    State/Flags    #
-        #-------------------#
+      #-------------------#
+      #    State/Flags    #
+      #-------------------#
 
-        # Set the Window State
-        "mod4 + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating,fullscreen}";
+      # Set the Window State
+      "mod4 + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating,fullscreen}";
 
-        # Set the Node Flags
-        "mod4 + ctrl + {m,x,y,z}" = "bspc node -g {marked,locked,sticky,private}";
+      # Set the Node Flags
+      "mod4 + ctrl + {m,x,y,z}" = "bspc node -g {marked,locked,sticky,private}";
 
-        #-------------------#
-        #    Focus/Swap     #
-        #-------------------#
+      #-------------------#
+      #    Focus/Swap     #
+      #-------------------#
 
-        # Focus the Node in the Given Direction
-        "mod4 + {_,shift + }{h,n,e,i}" = "bspc node -{f,s} {west,south,north,east}";
+      # Focus the Node in the Given Direction
+      "mod4 + {_,shift + }{h,n,e,i}" = "bspc node -{f,s} {west,south,north,east}";
 
-        # Focus the Next/Previous Node in the Current Desktop
-        "mod4 + {_,shift + }c" = "bspc node -f {next,prev}.local";
+      # Focus the Next/Previous Node in the Current Desktop
+      "mod4 + {_,shift + }c" = "bspc node -f {next,prev}.local";
 
-        # Focus the Next/Previous Desktop in the Current Monitor
-        "mod4 + {comma,period}" = "bspc desktop -f {prev,next}.local";
+      # Focus the Next/Previous Desktop in the Current Monitor
+      "mod4 + {comma,period}" = "bspc desktop -f {prev,next}.local";
 
-        # Focus the Last Node/Desktop
-        "mod4 + {shift + grave,Tab}" = "bspc {node,desktop} -f last";
+      # Focus the Last Node/Desktop
+      "mod4 + {shift + grave,Tab}" = "bspc {node,desktop} -f last";
 
-        # Focus or Send to the Given Desktop
-        "mod4 + {_,shift + }{1-9}" = "bspc {desktop -f,node -d} '^{1-9}'";
+      # Focus or Send to the Given Desktop
+      "mod4 + {_,shift + }{1-9}" = "bspc {desktop -f,node -d} '^{1-9}'";
 
-        #-------------------#
-        #    Preselect      #
-        #-------------------#
+      #-------------------#
+      #    Preselect      #
+      #-------------------#
 
-        # Preselect the Direction
-        "mod4 + alt + {h, n, e, i}" = "bspc node -p {west,south,north,east}";
+      # Preselect the Direction
+      "mod4 + alt + {h, n, e, i}" = "bspc node -p {west,south,north,east}";
 
-        # Preselect the Ratio
-        "mod4 + ctrl + {1-9}" = "bspc node -o 0.{1-9}";
+      # Preselect the Ratio
+      "mod4 + alt + {1-9}" = "bspc node -o 0.{1-9}";
 
-        # Cancel the Preselection for the Focused Node
-        "mod4 + ctrl + space" = "bspc node -p cancel";
+      # Cancel the Preselection for the Focused Node
+      "mod4 + alt + space" = "bspc node -p cancel";
 
-        # Cancel the Preselection for the Focused Desktop
-        "mod4 + ctrl + shift + space" = "bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel";
+      # Cancel the Preselection for the Focused Desktop
+      "mod4 + alt + shift + space" = "bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel";
 
-        #-------------------#
-        #    Move/Resize    #
-        #-------------------#
+      #-------------------#
+      #    Move/Resize    #
+      #-------------------#
 
-        # Expand a Window by Moving One of Its Sides Outward
-        "mod4 + shift + {h, n, e, i}" = "bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}";
+      # Expand a Window by Moving One of Its Sides Outward
+      "mod4 + ctrl + {h, n, e, i}" = "bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}";
 
-        # Contract a Window by Moving One of Its Sides Inward
-        "mod4 + ctrl + shift + {h, n, e, i}" = "bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}";
+      # Contract a Window by Moving One of Its Sides Inward
+      "mod4 + ctrl + shift + {h, n, e, i}" = "bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}";
 
-        # Move a Floating Window
-        "mod4 + {Left,Down,Up,Right}" = "bspc node -v {-20 0,0 20,0 -20,20 0}";
+      # Move a Floating Window
+      "mod4 + shift + {Left,Down,Up,Right}" = "bspc node -v {-20 0,0 20,0 -20,20 0}";
 
-        #---------------------------#
-        #   Rotate/Flip Desktops    #
-        #---------------------------#
+      #---------------------------#
+      #   Rotate/Flip Desktops    #
+      #---------------------------#
 
-        # Rotate a Desktop
-        "mod4 + {_, shift +}r" = "bspc node@/ --rotate {90,-90}";
+      # Rotate a Desktop
+      "mod4 + {_, shift +}r" = "bspc node@/ --rotate {90,-90}";
       };
     };
   home.packages = with pkgs; [
