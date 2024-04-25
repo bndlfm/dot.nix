@@ -1,3 +1,6 @@
 [submodule ".dotfiles/.config/nvim"]
 	path = .dotfiles/.config/nvim
 	url = https://github.com/bndlfm/LazyVim-Colemak
+[submodule "modules/theme/sddm/sddm-lain-wired-theme"]
+	path = modules/theme/sddm/sddm-lain-wired-theme
+	url = https://gitlab.com/mixedCase/sddm-lain-wired-theme

@@ -5,6 +5,7 @@
 { config, pkgs, ... }:
 {
   imports = [
+    ./modules/theme/sddm.nix
   ];
 
   #-------- PACKAGES --------#
