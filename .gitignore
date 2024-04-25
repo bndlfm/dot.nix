@@ -3,7 +3,9 @@ bin
 .config/nvim/tmp
 .config/nvim/plugged
 .config/page
-microvms
-.mozilla
-.fonts
+microvms/
+.mozilla/
+.fonts/
 publickey
+windows-11/
+windows-11.conf

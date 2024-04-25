@@ -133,6 +133,7 @@ statuspanel[type="overLink"],
 /*********************
  * BOOKMARK BAR FIX  *
  *********************/
+
 #PersonalToolbar {
   padding-left: 36px !important;
 }
