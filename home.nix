@@ -124,6 +124,7 @@
 
     ### THEMING
       ### FONTS
+        rictydiminished-with-firacode
         font-awesome
         gyre-fonts
         nerdfonts
