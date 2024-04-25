@@ -46,18 +46,20 @@
             ./home.nix
             ./modules/hmPackages.nix
             ./programs/hmPrograms.nix
+
             flatpak.homeManagerModules.default
             ./modules/hmServices.nix
 
             inputs.sops-nix.homeManagerModules.sops
 
             stylix.homeManagerModules.stylix
-            ( import ./modules/theme/hmStylix.nix )
+            ( import ./theme/hmStylix.nix )
 
             spicetify-nix.homeManagerModule
-            ( import ./modules/theme/spicetify.nix {inherit spicetify-nix;})
+            ( import ./theme/spicetify.nix {inherit spicetify-nix;})
           ];
         };
+
 
         nixosConfigurations."meow" = nixpkgs.lib.nixosSystem
           {
@@ -73,7 +75,7 @@
               sops-nix.nixosModules.sops
 
               stylix.nixosModules.stylix
-              ( import ./modules/theme/nxStylix.nix )
+              ( import ./theme/nxStylix.nix )
             ];
           };
       };

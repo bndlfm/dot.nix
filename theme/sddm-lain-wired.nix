@@ -1,12 +1,12 @@
-{ stdenv, lib, fetchFromGitLab }:
+{ stdenv, fetchFromGitLab }:
 {
-  sddm-lain-theme = stdenv.mkDerivation rec {
-    pname = "sddm-lain-theme";
+  sddm-lain-wired-theme = stdenv.mkDerivation {
+    pname = "sddm-lain-wired-theme";
     version = "1.0";
     dontBuild = true;
     installPhase = ''
-      mkdir -p $out/share/sddm/themes/sddm-lain-theme
-      cp -aR $src $out/share/sddm/themes/sddm-lain-theme
+      mkdir -p $out/share/sddm/themes/sddm-lain-wired-theme
+      cp -aR $src $out/share/sddm/themes/sddm-lain-wired-theme
     '';
     src = fetchFromGitLab {
       owner = "mixedCase";

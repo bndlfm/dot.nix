@@ -62,7 +62,7 @@
     git
     btrfs-progs
     home-manager
-    (callPackage ./modules/theme/sddm.nix{}).sddm-lain-theme
+    (callPackage ./theme/sddm-lain-wired.nix{}).sddm-lain-wired-theme
     quickemu
     runc
   ];
@@ -215,7 +215,7 @@
     displayManager = {
       sddm = {
         enable = true;
-        theme = "sddm-lain-theme";
+        theme = "${pkgs.sddm-lain-theme}";
       };
     };
 
