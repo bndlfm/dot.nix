@@ -1,7 +1,7 @@
-{ stdev, lib, fetchFromGitLab }:
+{ stdenv, lib, fetchFromGitLab }:
 {
-  sddm-lain-theme = stdev.mkDerivation rec {
-    pname = "sddm-lain-wired-theme";
+  sddm-lain-theme = stdenv.mkDerivation rec {
+    pname = "sddm-lain-theme";
     version = "1.0";
     dontBuild = true;
     installPhase = ''
@@ -11,8 +11,8 @@
     src = fetchFromGitLab {
       owner = "mixedCase";
       repo = "sddm-lain-wired-theme";
-      rev = "v${version}";
-      sha256 = "4c98a329d62d40658657a2a4f54c44fe522c6117";
+      rev = "master";
+      sha256 = "0vaxd2ic5qmkwqivjdspbvkrr8ihp6rzq3hi42dryn4bn2w0nzps";
     };
   };
 }

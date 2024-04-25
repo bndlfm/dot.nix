@@ -5,7 +5,6 @@
 { config, pkgs, ... }:
 {
   imports = [
-    ./modules/theme/sddm.nix
   ];
 
   #-------- PACKAGES --------#
@@ -63,8 +62,9 @@
     git
     btrfs-progs
     home-manager
-    runc
+    (callPackage ./modules/theme/sddm.nix{}).sddm-lain-theme
     quickemu
+    runc
   ];
 
   environment.variables= {
@@ -213,7 +213,10 @@
     blueman.enable = true;
 
     displayManager = {
-      sddm.enable = true;
+      sddm = {
+        enable = true;
+        theme = "sddm-lain-theme";
+      };
     };
 
     fail2ban = {
