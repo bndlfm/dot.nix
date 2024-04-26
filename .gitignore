@@ -3,6 +3,7 @@ bin
 .config/nvim/tmp
 .config/nvim/plugged
 .config/page
+containers
 microvms/
 .mozilla/
 .fonts/

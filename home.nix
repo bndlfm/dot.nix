@@ -88,7 +88,6 @@
       ncmpcpp
       streamlink
       streamlink-twitch-gui-bin
-      zathura
 
 
     ### PROGRAMMING
@@ -181,13 +180,15 @@
       qdirstat
       rofi
       virt-manager
+      zathura
 
 
     ### MISC PACKAGES
-    brave
-    discordchatexporter-cli
-    firefox-devedition
-    speechd
+      brave
+      discordchatexporter-cli
+      firefox-devedition
+      notion-app-enhanced
+      speechd
   ];
 
   ######### (HM) ENVIRONMENT VARIABLES #########
