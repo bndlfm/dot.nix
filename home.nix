@@ -35,6 +35,9 @@
   };
 
   home.packages = with pkgs; [
+    ### AI
+      ollama
+
     ### CLI
       bat
       chafa
@@ -49,8 +52,6 @@
       libnotify
       libqalculate
       nix-index
-      ollama
-      pulsemixer
       ripgrep
       silver-searcher
       trashy
@@ -59,7 +60,6 @@
       yt-dlp
       zip
       zoxide
-
 
     ### TUI
       ### TOP-LIKES
@@ -70,25 +70,23 @@
       joshuto
         highlight
       page
+      pulsemixer
 
     ### EDITING TOOLS
       gimp
       upscayl
 
-
     ### GAMES
       crawlTiles
       libreoffice-qt
-
 
     ### MEDIA
       mpd
       mpd-discord-rpc
       mpv
       ncmpcpp
-      streamlink
       streamlink-twitch-gui-bin
-
+        streamlink
 
     ### PROGRAMMING
       ### GIT
@@ -102,11 +100,9 @@
       meld
       python3
 
-
     ### SOCIAL
       chatterino2
       ripcord
-
 
     ### SYSTEM
       ### Plasma5-6/QT5-6

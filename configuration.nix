@@ -325,6 +325,7 @@
         8000
         8096 # Jellyfin HTTP
         8920 # Jellyfin HTTPS
+        42110 # Khoj
       ];
       allowedTCPPortRanges = [
         {
@@ -333,9 +334,9 @@
         }
       ];
       allowedUDPPorts = [
-        1900 # jellyfin service autodiscovery
-        7359 # also jellyfin service autodiscovery
-        51820 # wireguard port
+        1900 7359 # Jellyfin service autodiscovery
+        42110 # Khoj
+        51820 # Wireguard port
       ];
       allowedUDPPortRanges = [
         {
