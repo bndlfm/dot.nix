@@ -113,7 +113,7 @@
   virtualisation = {
     containers = {
       enable = true;
-      cdi.dynamic.nvidia.enable = true;
+      #cdi.dynamic.nvidia.enable = true;
       storage.settings = {
         storage = {
           driver = "overlay";
@@ -203,6 +203,7 @@
 
   #-------- SERVICES --------#
   services = {
+
     # keep enabled for CUPS (printing)
     avahi = {
       enable = true;
@@ -215,7 +216,7 @@
     displayManager = {
       sddm = {
         enable = true;
-        theme = "${pkgs.sddm-lain-theme}";
+        theme = "sddm-lain-wired-theme";
       };
     };
 
@@ -223,11 +224,31 @@
       enable = true;
     };
 
-    ## Enable Flatpak
     flatpak.enable = true;
 
-    ## Enable the OpenSSH daemon.
+    ollama = {
+      enable = true;
+      acceleration = "cuda";
+    };
+
     openssh.enable = true;
+
+    postgresql = {
+      enable = true;
+      ensureDatabases = [ "khoj" ];
+      enableTCPIP = true;
+      extraPlugins = ps: with pkgs; [
+        postgresqlPackages.pgvector
+      ];
+      authentication = pkgs.lib.mkOverride 10 ''
+        #type database DBuser auth-method
+        local all      all    trust
+
+        #type database DBuser   address       auth-method
+        host  all      all      127.0.0.1/32  trust
+        host  khoj     postgres ::1/128       trust
+      '';
+    };
 
     ## Enable CUPS to print documents.
     printing.enable = true;
@@ -322,10 +343,12 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [
+        5173 # Grimoire
         8000
         8096 # Jellyfin HTTP
         8920 # Jellyfin HTTPS
-        42110 # Khoj
+        11434 # Ollama
+        5432 42110 # Khoj
       ];
       allowedTCPPortRanges = [
         {
@@ -335,7 +358,9 @@
       ];
       allowedUDPPorts = [
         1900 7359 # Jellyfin service autodiscovery
-        42110 # Khoj
+        5173 # Grimoire
+        11434 # Ollama
+        5432 42110 # Khoj
         51820 # Wireguard port
       ];
       allowedUDPPortRanges = [
@@ -393,38 +418,43 @@
 
 
   #-------- GPU --------#
-  hardware.nvidia = {
-    modesetting.enable = true;
+  hardware = {
+    nvidia = {
+      modesetting.enable = true;
 
-    # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    powerManagement.enable = false;
+      # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+      powerManagement.enable = false;
 
-    # Fine-grained power management. Turns off GPU when not in use.
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    powerManagement.finegrained = false;
+      # Fine-grained power management. Turns off GPU when not in use.
+      # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+      powerManagement.finegrained = false;
 
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of 
-    # supported GPUs is at: 
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
-    # Only available from driver 515.43.04+
-    # Currently alpha-quality/buggy, so false is currently the recommended setting.
-    open = false;
+      # Use the NVidia open source kernel module (not to be confused with the
+      # independent third-party "nouveau" open source driver).
+      # Support is limited to the Turing and later architectures. Full list of 
+      # supported GPUs is at: 
+      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+      # Only available from driver 515.43.04+
+      # Currently alpha-quality/buggy, so false is currently the recommended setting.
+      open = false;
 
-    # Enable the Nvidia settings menu,
-    # accessible via `nvidia-settings`.
-    nvidiaSettings = true;
+      # Enable the Nvidia settings menu,
+      # accessible via `nvidia-settings`.
+      nvidiaSettings = true;
 
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+      # Optionally, you may need to select the appropriate driver version for your specific GPU.
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    };
+
+    nvidia-container-toolkit.enable = true;
+
+    opengl = {
+      enable = true;
+      driSupport = true;
+      driSupport32Bit = true;
+    };
   };
 
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
 
   services.xserver.videoDrivers = [ "nvidia" ];
 

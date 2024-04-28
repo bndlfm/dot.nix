@@ -36,7 +36,7 @@
 
   home.packages = with pkgs; [
     ### AI
-      ollama
+      #ollama
 
     ### CLI
       bat
@@ -192,10 +192,17 @@
     DEFAULT_BROWSER = "${pkgs.firefox-devedition}/bin/firefox";
     DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
     EDITOR = "nvim";
+    KHOJ_ADMIN_EMAIL = "firefliesandlightningbugs@gmail.com";
+    KHOJ_ADMIN_PASSWORD = "NozndCZRacr7kpDx0UzWttZnXyJRL9qm";
     PAGER = "page";
+    POSTGRES_DB = "~/.nixcfg/bin/khoj/postgresql";
+    POSTGRES_USER = "postgres";
+    POSTGRES_PASSWORD = "postgres";
+    POSTGRES_HOST = "/var/lib/postgresql";
     MANPAGER = "nvim +Man!";
     NIXOS_OZONE_WL = "1";
     OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a";
+    OPENAI_API_BASE = "http://localhost:11434/v1/"; # https://localhost/v1/
     QT_QPA_PLATFORMTHEME = "qt6ct";
     QT_STYLE_OVERRIDE = "kvantum";
     STEAM_DISABLE_BROWSER_SHUTDOWN_WORKAROUND=1;

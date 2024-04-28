@@ -31,7 +31,7 @@
       mpd_host = "localhost";
       mpd_port = 6600;
       mpd_connection_timeout = 5;
-      mpd_music_dir = "~/Music";
+      mpdMusicDir = "~/Music";
       mpd_crossfade_time = 0;
       visualizer_in_stereo = true;
       visualizer_type = "wave_filled";

@@ -135,6 +135,7 @@
       map kitty_mod+delete clear_terminal reset active
 
       map kitty_mod+d detach_tab ask
+      map kitty_mod+a attach_tab ask
 
       map kitty_mod+f5 launch --location=hsplit
       map kitty_mod+f6 launch --location=vsplit
