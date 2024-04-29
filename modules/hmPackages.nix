@@ -52,7 +52,7 @@
 
     ### PROGRAMMING
     python3
-    poetry
+    #poetry
     meld
     nil
     codeium

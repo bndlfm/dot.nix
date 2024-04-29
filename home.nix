@@ -36,7 +36,7 @@
 
   home.packages = with pkgs; [
     ### AI
-      #ollama
+      upscayl
 
     ### CLI
       bat
@@ -74,7 +74,6 @@
 
     ### EDITING TOOLS
       gimp
-      upscayl
 
     ### GAMES
       crawlTiles
@@ -94,9 +93,13 @@
         git-filter-repo
         git-lfs
         git-credential-gopass
+      ## MERCURIAL
+         mercurial
       codeium
+      csharprepl
       direnv
-      dotnet-sdk_7
+      #dotnet-sdk_7
+      dotnetCorePackages.sdk_8_0_2xx
       meld
       python3
 
@@ -163,6 +166,7 @@
         scrot
         sxhkd
         tdrop
+        xbindkeys
         xorg.xkill
         xorg.xhost
         xclip
@@ -195,7 +199,6 @@
     KHOJ_ADMIN_EMAIL = "firefliesandlightningbugs@gmail.com";
     KHOJ_ADMIN_PASSWORD = "NozndCZRacr7kpDx0UzWttZnXyJRL9qm";
     PAGER = "page";
-    POSTGRES_DB = "~/.nixcfg/bin/khoj/postgresql";
     POSTGRES_USER = "postgres";
     POSTGRES_PASSWORD = "postgres";
     POSTGRES_HOST = "/var/lib/postgresql";

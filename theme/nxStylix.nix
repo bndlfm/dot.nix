@@ -2,7 +2,7 @@
   stylix = {
     autoEnable = false;
     polarity = "dark";
-    image = ./wallpapers/vampire-hunter-d-yoshitaka-amano.jpg;
+    image = ./wallpapers/eve-blue-girl.jpg;
 
     base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
 

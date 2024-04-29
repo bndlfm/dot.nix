@@ -458,24 +458,6 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  #environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text = /* sh */ ''
-  #  Section "Screen"
-  #    Identifier "Screen0"
-  #    Device "Device0"
-  #    Monitor "Monitor0"
-  #    DefaultDepth 24
-  #    Option "Stereo" "0"
-  #    Option "nvidiaXineramaInfoOrder" "DFP-7" 
-  #    Option "metamodes" "HDMI-0: nvidia-auto-select +322+0, DP-4: nvidia-auto-select +0+1080, DP-0: off"
-  #    Option "SLI" "Off"
-  #    Option "MultiGPU" "Off"
-  #    Option "BaseMosaic" "off"
-  #    SubSection "Display"
-  #      Depth 24
-  #    EndSubSection
-  #  EndSection
-  #'';
-
   # Setup displays
   services.xserver.displayManager.setupCommands =
     let
