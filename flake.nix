@@ -35,12 +35,11 @@
 
   outputs = { home-manager, nixpkgs, flatpak, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
     let
-      username = "neko";
       system = "x86_64-linux";
     in
     {
       packages.${system} = {
-        homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
+        homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
             ./home.nix
@@ -75,6 +74,14 @@
 
               stylix.nixosModules.stylix
               ( import ./theme/nxStylix.nix )
+            ];
+          };
+
+        nixosConfigurations."server" = nixpkgs.lib.nixosSystem
+          {
+            modules = [
+              ./server/configuration.nix
+              ./server/hardware-configuration.nix
             ];
           };
       };

@@ -68,8 +68,8 @@
   ];
 
   environment.variables= {
-    "QT_QPA_PLATFORMTHEME" = pkgs.lib.mkForce "qt6ct";
-    "QT_STYLE_PLUGIN" = pkgs.lib.mkForce "qtstyleplugin-kvantum";
+    QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
+    QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
   };
 
   environment.sessionVariables = {
@@ -78,7 +78,7 @@
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_STATE_HOME = "$HOME/.local/state";
     XDG_BIN_HOME = "$HOME/.local/bin";
-    XDG_RUNTIME_DIR = "/run/user/$(id -u)";
+    #XDG_RUNTIME_DIR = "/run/user/$(id -u)";
   };
 
   #-------- PACKAGE MODULES --------#
@@ -113,7 +113,6 @@
   virtualisation = {
     containers = {
       enable = true;
-      #cdi.dynamic.nvidia.enable = true;
       storage.settings = {
         storage = {
           driver = "overlay";
@@ -213,10 +212,9 @@
 
     blueman.enable = true;
 
-    displayManager = {
+    displayManager =  {
       sddm = {
         enable = true;
-        theme = "sddm-lain-wired-theme";
       };
     };
 
@@ -227,7 +225,7 @@
     flatpak.enable = true;
 
     ollama = {
-      enable = true;
+      enable = false;
       acceleration = "cuda";
     };
 
@@ -236,17 +234,13 @@
     postgresql = {
       enable = true;
       ensureDatabases = [ "khoj" ];
-      enableTCPIP = true;
+      enableTCPIP = false;
       extraPlugins = ps: with pkgs; [
         postgresqlPackages.pgvector
       ];
       authentication = pkgs.lib.mkOverride 10 ''
         #type database DBuser auth-method
         local all      all    trust
-
-        #type database DBuser   address       auth-method
-        host  all      all      127.0.0.1/32  trust
-        host  khoj     postgres ::1/128       trust
       '';
     };
 
@@ -256,9 +250,11 @@
     ## X11
     xserver = {
       enable = true;
+      #displayManager = {
+        #lightdm.enable = true;
+      #};
       desktopManager = {
         plasma5.enable = true;
-        pantheon.enable = false;
       };
       windowManager = {
         bspwm.enable = true;
@@ -443,7 +439,17 @@
       nvidiaSettings = true;
 
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
+      #package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+        #version = "545.29.06";
+        #sha256_64bit = "sha256-grxVZ2rdQ0FsFG5wxiTI3GrxbMBMcjhoDFajDgBFsXs=";
+        #sha256_aarch64 = "sha256-k7k22z5PYZdBVfuYXVcl9SFUMqZmK4qyxoRwlYyRdgU=";
+        #openSha256 = "sha256-dktHCoESqoNfu5M73aY5MQGROlZawZwzBqs3RkOyfoQ=";
+        #settingsSha256 = "sha256-YBaKpRQWSdXG8Usev8s3GYHCPqL8PpJeF6gpa2droWY=";
+        #persistencedSha256 = "sha256-ci86XGlno6DbHw6rkVSzBpopaapfJvk0+lHcR4LDq50=";
+
+        #ibtSupport = true;
+      #};
     };
 
     nvidia-container-toolkit.enable = true;
@@ -457,6 +463,25 @@
 
 
   services.xserver.videoDrivers = [ "nvidia" ];
+
+
+  environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text = /* sh */ ''
+    Section "Screen"
+      Identifier "Screen0"
+      Device "Device0"
+      Monitor "Monitor0"
+      DefaultDepth 24
+      Option "Stereo" "0"
+      Option "nvidiaXineramaInfoOrder" "DFP-7" 
+      Option "metamodes" "HDMI-0: nvidia-auto-select +322+0, DP-4: nvidia-auto-select +0+1080, DP-3: nvidia-auto-select +2560+290, DP-0: off"
+      Option "SLI" "Off"
+      Option "MultiGPU" "Off"
+      Option "BaseMosaic" "off"
+      SubSection "Display"
+        Depth 24
+      EndSubSection
+    EndSection
+  '';
 
   # Setup displays
   services.xserver.displayManager.setupCommands =

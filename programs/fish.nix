@@ -232,6 +232,7 @@
           suvi = "sudoedit";
           yay = "nix search nixpkgs";
           pass = "gopass";
+          fpk = "flatpak";
       };
       shellAliases = {
         cb = "flatpak run app.getclipboard.Clipboard";

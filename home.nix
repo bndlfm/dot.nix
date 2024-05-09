@@ -27,6 +27,7 @@
       };
       permittedInsecurePackages = [
         "nix-2.16.2"
+        "googleearth-pro-7.3.4.8248"
       ];
     };
     overlays = [
@@ -35,8 +36,16 @@
   };
 
   home.packages = with pkgs; [
+
+    #!!!! TEMP INSTALLS !!!!#
+      maiko
+
     ### AI
       upscayl
+
+    ### BROWSER
+      firefox-devedition
+      qutebrowser
 
     ### CLI
       bat
@@ -75,9 +84,13 @@
     ### EDITING TOOLS
       gimp
 
+    ### NOTES
+      obsidian
+
     ### GAMES
       crawlTiles
       libreoffice-qt
+      prismlauncher
 
     ### MEDIA
       mpd
@@ -105,6 +118,7 @@
 
     ### SOCIAL
       chatterino2
+      discord
       ripcord
 
     ### SYSTEM
@@ -148,14 +162,12 @@
         slurp
         nwg-look
         waybar
-        waybar-mpris
+        #waybar-mpris
         wttrbar
         wlr-randr
         #wl-clipboard
         #wl-clipboard-x11
         #wl-clip-persist
-
-
       ### XORG TOOLS
         dunst
         eww
@@ -171,6 +183,7 @@
         xorg.xhost
         xclip
       appimage-run
+      clipboard-jh
       google-drive-ocamlfuse
       gparted
       grc
@@ -184,10 +197,7 @@
 
 
     ### MISC PACKAGES
-      brave
       discordchatexporter-cli
-      firefox-devedition
-      notion-app-enhanced
       speechd
   ];
 
@@ -201,7 +211,7 @@
     PAGER = "page";
     POSTGRES_USER = "postgres";
     POSTGRES_PASSWORD = "postgres";
-    POSTGRES_HOST = "/var/lib/postgresql";
+    POSTGRES_HOST = "/run/postgresql/";
     MANPAGER = "nvim +Man!";
     NIXOS_OZONE_WL = "1";
     OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a";

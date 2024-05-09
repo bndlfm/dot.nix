@@ -17,13 +17,10 @@ in {
       };
       flatpak = {
         packages = [
-          "flathub:app/org.qutebrowser.qutebrowser//stable"
-          "flathub:app/org.qutebrowser.qutebrowser.Userscripts//stable"
+          "flathub:app/one.ablaze.floorp//stable"
           "flathub:app/net.lutris.Lutris//stable"
           "flathub:app/com.github.tchx84.Flatseal//stable"
-          "flathub:app/app.getclipboard.Clipboard//stable"
-          "flathub:app/md.obsidian.Obsidian//stable"
-          "flathub:app/com.discordapp.Discord//stable"
+          #"flathub:app/app.getclipboard.Clipboard//stable"
         ];
         remotes = {
           "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
@@ -40,9 +37,7 @@ in {
         };
       mpdris2 = {
         enable = true;
-        mpd = {
-          password = "8u55y";
-        };
+        mpd = {};
         multimediaKeys = true;
         notifications = true;
       };

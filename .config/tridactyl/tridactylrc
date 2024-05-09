@@ -25,7 +25,7 @@
 "*** Set Options ***
 "*******************
   " General  {{{
-      set newtab about:blank
+      set newtab https://www.chillwavve.com/products/735290-your-arms-are-my-cocoon-second-pressing
       set allowautofocus true
       set editorcmd kitty -e "nvim %f '+normal!%lGzv%c|'"
       set smoothscroll true
