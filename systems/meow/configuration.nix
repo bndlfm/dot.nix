@@ -54,7 +54,7 @@
         };
       };
     overlays = [
-      #(import ./overlays/overlays.nix)
+      #(import ../../overlays/overlays.nix)
     ];
   };
 
@@ -62,7 +62,7 @@
     git
     btrfs-progs
     home-manager
-    (callPackage ./theme/sddm-lain-wired.nix{}).sddm-lain-wired-theme
+    (callPackage ../../theme/sddm-lain-wired.nix{}).sddm-lain-wired-theme
     quickemu
     runc
   ];
@@ -89,7 +89,6 @@
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
-      #pinentryPackage = pkgs.pinentry_qt5;
     };
     hyprland = {
       enable = true;
@@ -104,8 +103,8 @@
     };
     steam = {
       enable = true;
-      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-      dedicatedServer.openFirewall = true; # Open ports firewall for Source Dedicated Server
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
     };
   };
 

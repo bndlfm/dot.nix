@@ -1,16 +1,16 @@
 { pkgs, ... }: {
   imports = [
     #./modules/hmFlatpak.nix
-    ./programs/hmPrograms.nix
-    ./modules/hmServices.nix
+    ../../programs/hmPrograms.nix
+    ../../modules/hmServices.nix
 
-    ./programs/fish.nix
-    ./programs/kitty.nix
-    ./programs/ncmpcpp.nix
-    ./programs/neovim.nix
-    ./programs/yazi.nix
+    ../../programs/fish.nix
+    ../../programs/kitty.nix
+    ../../programs/ncmpcpp.nix
+    ../../programs/neovim.nix
+    ../../programs/yazi.nix
 
-    ./modules/windowManagers.nix
+    ../../modules/windowManagers.nix
   ];
 
   home.stateVersion = "23.11";
@@ -31,7 +31,7 @@
       ];
     };
     overlays = [
-      (import ./overlays/overlays.nix)
+      (import ../../overlays/overlays.nix)
     ];
   };
 
@@ -227,15 +227,15 @@
   xdg = {
     configFile = {
       "hypr" = {
-        source = ./.config/hypr;
+        source = ../../.config/hypr;
         recursive = true;
       };
       "joshuto" = {
-        source = ./.config/joshuto;
+        source = ../../.config/joshuto;
         recursive = true;
       };
       "mutt" = {
-        source = ./.config/mutt;
+        source = ../../.config/mutt;
         recursive = true;
       };
       #"nvim" = {
@@ -243,39 +243,39 @@
       #  recursive = true;
       #};
       "polybar" = {
-        source = ./.config/polybar;
+        source = ../../.config/polybar;
         recursive = true;
       };
       "pulsemixer.cfg" = {
-        source = ./.config/pulsemixer.cfg;
+        source = ../../.config/pulsemixer.cfg;
         recursive = false;
       };
       "ranger" = {
-        source = ./.config/ranger;
+        source = ../../.config/ranger;
         recursive = true;
       };
       "rofi" = {
-        source = ./.config/rofi;
+        source = ../../.config/rofi;
         recursive = true;
       };
       "tridactyl" = {
-        source = ./.config/tridactyl;
+        source = ../../.config/tridactyl;
         recursive = true;
       };
       "qutebrowser" = {
-        source = ./.config/qutebrowser;
+        source = ../../.config/qutebrowser;
         recursive = true;
       };
       "waybar" = {
-        source = ./.config/waybar;
+        source = ../../.config/waybar;
         recursive = true;
       };
       "yazi" = {
-        source = ./.config/yazi;
+        source = ../../.config/yazi;
         recursive = true;
       };
       "zathura" = {
-        source = ./.config/zathura;
+        source = ../../.config/zathura;
         recursive = true;
       };
     };
