@@ -42,7 +42,7 @@
         homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-            ./home.nix
+            ./systems/meow/home.nix
             ./programs/hmPrograms.nix
 
             flatpak.homeManagerModules.default
@@ -58,12 +58,18 @@
           ];
         };
 
+        /*
+         *
+         *   NOTE: SYSTEM CONFIGURATIONS
+         *
+         */
 
+      ### DESKTOP
         nixosConfigurations."meow" = nixpkgs.lib.nixosSystem
           {
             modules = [
-              ./configuration.nix
-              ./hardware-configuration.nix
+              ./systems/meow/configuration.nix
+              ./systems/meow/hardware-configuration.nix
 
               microvm.nixosModules.host
               {
@@ -77,13 +83,15 @@
             ];
           };
 
-        nixosConfigurations."server" = nixpkgs.lib.nixosSystem
+      ### SERVER
+        nixosConfigurations."nyaalab" = nixpkgs.lib.nixosSystem
           {
             modules = [
-              ./server/configuration.nix
-              ./server/hardware-configuration.nix
+              ./system/nyaalab/configuration.nix
+              ./system/nyaalab/hardware-configuration.nix
             ];
           };
+
       };
     };
 }
