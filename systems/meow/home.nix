@@ -39,6 +39,7 @@
 
     #!!!! TEMP INSTALLS !!!!#
       maiko
+      zellij
 
     ### AI
       upscayl
