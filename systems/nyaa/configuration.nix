@@ -11,24 +11,6 @@
   nix = {
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" "@wheel" ];
-      trusted-substituters = [
-        "https://cache.nixos.org"
-        "https://nix-community.cachix.org"
-        "https://ai.cachix.org"
-        "https://nix-gaming.cachix.org"
-        #"https://chaotic-nyx.cachix.org"
-        #"https://ezkea.cachix.org"
-      ];
-      trusted-public-keys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
-        "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-        #"nyx.chaotic.cx-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-        #"chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-        #"ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
-      ];
     };
   };
 
@@ -36,22 +18,6 @@
     config = {
       allowUnfree = true;
       cudaSupport = true;
-      qt5 = {
-        enable = true;
-        platformTheme  = "qt5ct";
-          style = {
-            package = pkgs.utterly-nord-plasma;
-            name = "Utterly Nord Plasma";
-          };
-        };
-      qt6 = {
-        enable = true;
-        platformTheme  = "qt6ct";
-          style = {
-            package = pkgs.utterly-nord-plasma;
-            name = "Utterly Nord Plasma";
-          };
-        };
       };
     overlays = [
       #(import ../../overlays/overlays.nix)
@@ -62,9 +28,6 @@
     git
     btrfs-progs
     home-manager
-    (callPackage ../../theme/sddm-lain-wired.nix{}).sddm-lain-wired-theme
-    quickemu
-    runc
   ];
 
   environment.variables= {
@@ -89,10 +52,6 @@
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
-    };
-    hyprland = {
-      enable = true;
-      xwayland.enable = true;
     };
     nbd.enable = false;
     nix-ld = {
@@ -169,10 +128,6 @@
     '';
 
 
-  #-------- GROUPS ---------#
-  users.groups.distrobox = {};
-
-
   #-------- USERS --------#
   ##########################
   # Don't forget password! #
@@ -182,12 +137,6 @@
     description = "neko";
     extraGroups = [ "networkmanager" "wheel" "input" "docker" "libvirtd" "tss" ];
     linger = true;
-  };
-
-  users.users.distrobox = {
-    isSystemUser = true;
-    description = "distrobox user";
-    group = "distrobox";
   };
 
   #-------- SECURITY --------#
@@ -221,11 +170,10 @@
       enable = true;
     };
 
-    flatpak.enable = true;
+    flatpak.enable = false;
 
     ollama = {
       enable = false;
-      acceleration = "cuda";
     };
 
     openssh.enable = true;
@@ -244,7 +192,7 @@
     };
 
     ## Enable CUPS to print documents.
-    printing.enable = true;
+    #printing.enable = true;
 
     ## X11
     xserver = {
@@ -281,7 +229,6 @@
             TimeoutStopSec = 10;
           };
         };
-        ytoold.enable = true;
       };
     };
     extraConfig = ''
@@ -301,15 +248,15 @@
       fsType = "vfat";
     };
 
-    "/mnt/data" = {
-      device = "/dev/disk/by-uuid/627b1de1-05e5-4596-8b3a-a009597f5ed6";
-      fsType = "btrfs";
-      options = [
-        "noatime"
-        "nodiratime"
-        "discard"
-      ];
-    };
+    #"/mnt/data" = {
+      #device = "/dev/disk/by-uuid/627b1de1-05e5-4596-8b3a-a009597f5ed6";
+      #fsType = "btrfs";
+      #options = [
+      #  "noatime"
+      #  "nodiratime"
+      #  "discard"
+      #];
+    #};
 
     "/media" = {
       device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
