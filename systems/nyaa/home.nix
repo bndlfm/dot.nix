@@ -2,6 +2,9 @@
   imports = [
 #    ../../programs/fish.nix
     ../../programs/neovim.nix
+
+    # CONTAINERS
+    ../../containers/grimoire/grimoire.nix
   ];
 
   home.stateVersion = "23.11";
