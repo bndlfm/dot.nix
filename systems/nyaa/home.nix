@@ -1,8 +1,7 @@
 { pkgs, ... }: {
   imports = [
-    ../../programs/fish.nix
+#    ../../programs/fish.nix
     ../../programs/neovim.nix
-    #../../programs/yazi.nix
   ];
 
   home.stateVersion = "23.11";
@@ -75,10 +74,6 @@
       grc
       kdeconnect
       rofi
-
-    ### MISC PACKAGES
-      discordchatexporter-cli
-      speechd
   ];
 
   ######### (HM) ENVIRONMENT VARIABLES #########
@@ -93,10 +88,10 @@
   ######### (HM) DOTFILES ########
   xdg = {
     configFile = {
-      #"nvim" = {
-      #  source = ./.config/nvim;
-      #  recursive = true;
-      #};
+      "nvim" = {
+        source = ../../.config/nvim;
+        recursive = true;
+      };
       "pulsemixer.cfg" = {
         source = ../../.config/pulsemixer.cfg;
         recursive = false;
