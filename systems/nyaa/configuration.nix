@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../../containers/pihole/pihole.nix
     ];
 
   # Bootloader.
@@ -52,7 +53,7 @@
   users.users.server = {
     isNormalUser = true;
     description = "server";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "podman" "networkmanager" "wheel" ];
     packages = with pkgs; [];
   };
 
@@ -65,7 +66,7 @@
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
     arion
-    cc
+    docker-client
     gcc
     git
     neovim
@@ -85,10 +86,25 @@
   services.openssh.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ ... ];
-  networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 53 8053 ];
+  networking.firewall.allowedUDPPorts = [ 53 ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
+
+  virtualisation = {
+    docker.enable = false;
+    podman = {
+      enable = true;
+      dockerSocket.enable = true;
+      defaultNetwork.settings.dnsname_enabled = true;
+    };
+  };
+
+  environment.extraInit = ''
+    if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+      export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+    fi
+  '';
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

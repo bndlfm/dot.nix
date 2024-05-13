@@ -3,6 +3,7 @@ bin
 .config/nvim/tmp
 .config/nvim/plugged
 .config/page
+.config/systemd
 containers/khoj
 containers/grimoire
 virt-machines/

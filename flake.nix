@@ -88,8 +88,8 @@
         nixosConfigurations."nyaa" = nixpkgs.lib.nixosSystem
           {
             modules = [
-              ./system/nyaa/configuration.nix
-              ./system/nyaa/hardware-configuration.nix
+              ./systems/nyaa/configuration.nix
+              ./systems/nyaa/hardware-configuration.nix
             ];
           };
 
