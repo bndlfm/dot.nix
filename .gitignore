@@ -4,6 +4,7 @@ bin
 .config/nvim/plugged
 .config/page
 .config/systemd
+.config/environment.d
 containers/khoj
 containers/grimoire
 virt-machines/

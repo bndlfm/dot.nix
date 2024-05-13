@@ -2,7 +2,7 @@
   imports = [
     ../../programs/fish.nix
     ../../programs/neovim.nix
-    ../../programs/yazi.nix
+    #../../programs/yazi.nix
   ];
 
   home.stateVersion = "23.11";
@@ -67,15 +67,6 @@
       podman-compose
       winetricks
       wineWow64Packages.staging
-
-    ### THEMING
-      ### FONTS
-        rictydiminished-with-firacode
-        font-awesome
-        gyre-fonts
-        nerdfonts
-        noto-fonts-emoji-blob-bin
-      base16-schemes
 
     ### UTILITIES
       appimage-run
