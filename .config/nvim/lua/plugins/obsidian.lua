@@ -1,6 +1,6 @@
 return {
   "epwalsh/obsidian.nvim",
-  enabled = true,
+  enabled = false,
   dependencies = {
     -- Required.
     "nvim-lua/plenary.nvim",

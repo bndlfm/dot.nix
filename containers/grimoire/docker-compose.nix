@@ -34,10 +34,6 @@
     ];
     log-driver = "journald";
     extraOptions = [
-      "--health-cmd='wget --no-verbose --tries=1 --spider http://localhost:/api/health || exit 1'"
-      "--health-interval=5s"
-      "--health-retries=5"
-      "--health-timeout=5s"
       "--network-alias=grimoire"
       "--network=grimoire_default"
     ];
@@ -84,10 +80,6 @@
     ];
     log-driver = "journald";
     extraOptions = [
-      "--health-cmd='wget --no-verbose --tries=1 --spider http://localhost:80/api/health || exit 1'"
-      "--health-interval=5s"
-      "--health-retries=5"
-      "--health-timeout=5s"
       "--network-alias=pocketbase"
       "--network=grimoire_default"
     ];

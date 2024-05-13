@@ -7,6 +7,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
+      ./cachix.nix
       ./hardware-configuration.nix
       ../../containers/pihole/pihole.nix
       ../../containers/grimoire/docker-compose.nix
