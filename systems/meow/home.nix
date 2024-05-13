@@ -40,6 +40,7 @@
     #!!!! TEMP INSTALLS !!!!#
       maiko
       zellij
+      ventoy
 
     ### AI
       upscayl
@@ -164,6 +165,7 @@
         nwg-look
         waybar
         #waybar-mpris
+        wofi
         wttrbar
         wlr-randr
         #wl-clipboard

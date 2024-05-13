@@ -301,15 +301,15 @@
       fsType = "vfat";
     };
 
-    "/mnt/data" = {
-      device = "/dev/disk/by-uuid/627b1de1-05e5-4596-8b3a-a009597f5ed6";
-      fsType = "btrfs";
-      options = [
-        "noatime"
-        "nodiratime"
-        "discard"
-      ];
-    };
+    #"/mnt/data" = {
+    #  device = "/dev/disk/by-uuid/627b1de1-05e5-4596-8b3a-a009597f5ed6";
+    #  fsType = "btrfs";
+    #  options = [
+    #    "noatime"
+    #    "nodiratime"
+    #    "discard"
+    #  ];
+    #};
 
     "/media" = {
       device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";

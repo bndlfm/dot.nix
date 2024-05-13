@@ -196,13 +196,14 @@
       "$mainMod" = "SUPER";
 
       monitor = [
-        "HDMI-A-1, 1920x1080, 322x0, 1"
+        "HDMI-A-1, 1920x1080, 640x0, 1"
         "DP-1, disable"
+        "DP-2, 1920x1080@60, 2560x290, 1, transform, 3, bitdepth, 10"
         "DP-3, 2560x1440@144, 0x1080, 1, bitdepth, 10"
       ];
 
       workspace = [
-        "10, monitor:HDMI-A-1, default:true"
+        "10, monitor:DP-2, default:true"
         "1, monitor:DP-3, default:true"
         "7, monitor:DP-3"
       ];
@@ -344,7 +345,7 @@
         "$mainMod, J, togglesplit" # dwindle
 
         # Rofi
-        "$mainMod, SPACE, exec, rofi -show combi -combi-modi window,drun,run,ssh,combi -show-icons -monitor -1"
+        "$mainMod, SPACE, exec, rofi -show combi -combi-modi window,drun,run,ssh,combi -show-icons"
         "$mainMod SHIFT, C, exec, rofi -show calc"
         "$mainMod SHIFT, V, exec, rofi -modi 'clipboard:greenclip print' -show clipboard -run '{cmd}' -show-icons"
         "$mainMod, K, exec, /usr/bin/splatmoji copy"
