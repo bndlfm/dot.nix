@@ -11,22 +11,79 @@
       ../../containers/pihole/pihole.nix
     ];
 
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  #  wget
+    arion
+    docker-client
+    gcc
+    git
+    home-manager
+    neovim
+  ];
+
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
+  # NOTE: SERVICES:
+  services = {
+    openssh.enable = true;
+    xserver = {
+      layout = "us";
+      xkbVariant = "";
+    };
+
+#  containers = {
+#    grimoire = {
+#      image = "goniszewski/grimoire";
+#      dependsOn = "pocketbase";
+#      ports = [
+#        "5173:5173"
+#      ];
+#    };
+#    pocketbase = {
+#      image = "spectado/pocketbase:0.22.10";
+#      ports = [
+#        "8090:80"
+#      ];
+#    };
+  };
+
+  networking = {
+    hostName = "nyaa";
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 53 8053 ];
+      allowedUDPPorts = [ 53 ];
+    };
+    networkmanager.enable = true;
+  };
+
+  virtualisation = {
+    docker.enable = false;
+    podman = {
+      enable = true;
+      dockerSocket.enable = true;
+      defaultNetwork.settings.dnsname_enabled = true;
+    };
+  };
+
+  environment.extraInit = ''
+    if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+      export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+    fi
+  '';
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "nyaa"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "America/Chicago";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -43,11 +100,14 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
+  # Enable networking
+  networking. # Define your hostname.
+  networking.
+  nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # Set your time zone.
+  time.timeZone = "America/Chicago";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.server = {
@@ -56,55 +116,6 @@
     extraGroups = [ "podman" "networkmanager" "wheel" ];
     packages = with pkgs; [];
   };
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-    arion
-    docker-client
-    gcc
-    git
-    neovim
-  ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 53 8053 ];
-  networking.firewall.allowedUDPPorts = [ 53 ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = true;
-
-  virtualisation = {
-    docker.enable = false;
-    podman = {
-      enable = true;
-      dockerSocket.enable = true;
-      defaultNetwork.settings.dnsname_enabled = true;
-    };
-  };
-
-  environment.extraInit = ''
-    if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-      export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-    fi
-  '';
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
