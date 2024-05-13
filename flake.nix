@@ -85,11 +85,11 @@
           };
 
       ### SERVER
-        nixosConfigurations."nyaalab" = nixpkgs.lib.nixosSystem
+        nixosConfigurations."nyaa" = nixpkgs.lib.nixosSystem
           {
             modules = [
-              ./system/nyaalab/configuration.nix
-              ./system/nyaalab/hardware-configuration.nix
+              ./system/nyaa/configuration.nix
+              ./system/nyaa/hardware-configuration.nix
             ];
           };
 
