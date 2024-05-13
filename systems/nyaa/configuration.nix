@@ -100,9 +100,6 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable networking
-  networking. # Define your hostname.
-  networking.
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 

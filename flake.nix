@@ -59,6 +59,15 @@
           ];
         };
 
+        homeConfigurations."server" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${system};
+          modules = [
+            ./systems/nyaa/home.nix
+
+            inputs.sops-nix.homeManagerModules.sops
+          ];
+        };
+
         /*
          *
          *   NOTE: SYSTEM CONFIGURATIONS
