@@ -5,6 +5,9 @@
 { config, pkgs, ... }:
 {
   imports = [
+    ../../modules/tailscale.nix
+
+    ../../containers/jellyfin.nix
   ];
 
   #-------- PACKAGES --------#
@@ -123,7 +126,6 @@
         };
       };
     };
-
     podman = {
       enable = true;
       dockerSocket.enable = true;
@@ -135,32 +137,6 @@
         swtpm.enable = true;
       };
     };
-    #oci-containers = {
-    #  backend = "podman";
-    #  containers."jellyfin" = {
-    #    image = "docker.io/jellyfin/jellyfin:latest";
-    #    labels = {
-    #      "io.containers.autoupdate" = "registry";
-    #    };
-    #    autoStart = true;
-    #    ports = [
-    #      "8096:8096"
-    #      "8920:8920"
-    #      "1900:1900"
-    #      "7359:7359"
-    #    ];
-    #    environment = {
-    #      NVIDIA_VISIBLE_DEVICES = "all";
-    #      NVIDIA_DRIVER_CAPABILITIES = "all";
-    #      JELLYFIN_PublishedServerUrl = "192.168.1.5";
-    #    };
-    #    volumes = [
-    #      "/media/.cache:/cache"
-    #      "/media/.jellyfin:/config"
-    #      "/media:/media"
-    #    ];
-    #  };
-    #};
   };
 
     environment.extraInit = ''
@@ -185,12 +161,6 @@
     linger = true;
   };
 
-  users.users.distrobox = {
-    isSystemUser = true;
-    description = "distrobox user";
-    group = "distrobox";
-  };
-
   #-------- SECURITY --------#
   security = {
     tpm2 = {
@@ -202,37 +172,26 @@
 
   #-------- SERVICES --------#
   services = {
-
-    # keep enabled for CUPS (printing)
-    avahi = {
+    avahi = { # CUPS (printing)
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
     };
-
     blueman.enable = true;
-
     displayManager =  {
       sddm = {
         enable = true;
       };
     };
-
-    fail2ban = {
-      enable = true;
-    };
-
+    fail2ban.enable = true;
     flatpak.enable = true;
-
     ollama = {
       enable = false;
       acceleration = "cuda";
     };
-
     openssh.enable = true;
-
     postgresql = {
-      enable = true;
+      enable = false;
       ensureDatabases = [ "khoj" ];
       enableTCPIP = false;
       extraPlugins = ps: with pkgs; [
@@ -440,16 +399,6 @@
 
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
       package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
-      #package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-        #version = "545.29.06";
-        #sha256_64bit = "sha256-grxVZ2rdQ0FsFG5wxiTI3GrxbMBMcjhoDFajDgBFsXs=";
-        #sha256_aarch64 = "sha256-k7k22z5PYZdBVfuYXVcl9SFUMqZmK4qyxoRwlYyRdgU=";
-        #openSha256 = "sha256-dktHCoESqoNfu5M73aY5MQGROlZawZwzBqs3RkOyfoQ=";
-        #settingsSha256 = "sha256-YBaKpRQWSdXG8Usev8s3GYHCPqL8PpJeF6gpa2droWY=";
-        #persistencedSha256 = "sha256-ci86XGlno6DbHw6rkVSzBpopaapfJvk0+lHcR4LDq50=";
-
-        #ibtSupport = true;
-      #};
     };
 
     nvidia-container-toolkit.enable = true;
