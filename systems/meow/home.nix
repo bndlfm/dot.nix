@@ -92,7 +92,9 @@
     ### GAMES
       crawlTiles
       libreoffice-qt
-      prismlauncher
+      #prismlauncher
+      (prismlauncher.override{withWaylandGLFW=true;})
+      glfw-wayland-minecraft
 
     ### MEDIA
       mpd
