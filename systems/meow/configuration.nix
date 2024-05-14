@@ -65,6 +65,7 @@
     git
     btrfs-progs
     home-manager
+    pinentry-curses
     #(callPackage ../../theme/sddm-lain-wired.nix{}).sddm-lain-wired-theme
     quickemu
     runc
@@ -93,6 +94,7 @@
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
+      pinentryPackage = pkgs.pinentry-curses;
     };
     hyprland = {
       enable = true;
@@ -225,7 +227,7 @@
 
   #-------- SYSTEM --------#
   systemd = {
-    enableUnifiedCgroupHierarchy = false;
+    enableUnifiedCgroupHierarchy = true;
     user = {
       services = {
         polkit-kde-agent = {
