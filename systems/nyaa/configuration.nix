@@ -7,7 +7,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./cachix.nix
+      #./cachix.nix
       ./hardware-configuration.nix
       ../../containers/pihole/pihole.nix
       ../../containers/grimoire/docker-compose.nix
@@ -35,34 +35,32 @@
 
   # NOTE: SERVICES:
   services = {
+    fail2ban.enable = true;
+    ollama.enable = true;
     openssh.enable = true;
+    tailscale = {
+      enable = true;
+    };
     xserver = {
       layout = "us";
       xkbVariant = "";
     };
-
-#  containers = {
-#    grimoire = {
-#      image = "goniszewski/grimoire";
-#      dependsOn = "pocketbase";
-#      ports = [
-#        "5173:5173"
-#      ];
-#    };
-#    pocketbase = {
-#      image = "spectado/pocketbase:0.22.10";
-#      ports = [
-#        "8090:80"
-#      ];
-#    };
   };
 
   networking = {
     hostName = "nyaa";
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 53 8053 ];
-      allowedUDPPorts = [ 53 ];
+      allowedTCPPorts = [ 
+        53    #PIHOLE
+        5173  #GRIMOIRE
+        41641 #TAILSCALE
+      ];
+      allowedUDPPorts = [
+        53    #PIHOLE
+        5173  #GRIMOIRE
+        41641 #TAILSCALE
+      ];
     };
     networkmanager.enable = true;
   };
