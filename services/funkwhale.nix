@@ -1,4 +1,7 @@
-{ config, pkgs, ... }:{
+{ config, pkgs, funkwhale, ... }:
+let
+  djangoSecretFile = pkgs.writeText "djangoSecret" "test123";
+in {
   nixpkgs.overlays = [ funkwhale.overlay ];
 
   services = {

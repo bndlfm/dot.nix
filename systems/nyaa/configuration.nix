@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+
       ../../containers/pihole/pihole.nix
       ../../containers/grimoire/docker-compose.nix
 
@@ -103,7 +104,7 @@
 
   nixpkgs.config.allowUnfree = true;
   nix = {
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.latest;
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
