@@ -50,6 +50,7 @@
       qutebrowser
 
     ### CLI
+      age
       bat
       chafa
       eza
@@ -131,6 +132,7 @@
         libsForQt5.qt5ct
         qt6Packages.qt6ct
         qt6Packages.qtstyleplugin-kvantum
+        ksshaskpass
       podman
       podman-compose
       protonup

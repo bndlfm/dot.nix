@@ -19,6 +19,9 @@
 
     flatpak.url = "github:GermanBread/declarative-flatpak/stable";
 
+    funkwhale.url = "github:/mmai/funkwhale-flake";
+
+
     microvm = {
       url = "github:astro/microvm.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,7 +37,7 @@
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { home-manager, nixpkgs, flatpak, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
+  outputs = { home-manager, nixpkgs, flatpak, funkwhale, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
     let
       system = "x86_64-linux";
     in
@@ -75,7 +78,8 @@
          */
 
       ### DESKTOP
-        nixosConfigurations."meow" = nixpkgs.lib.nixosSystem
+      nixosConfigurations = {
+        "meow" = nixpkgs.lib.nixosSystem
           {
             modules = [
               ./systems/meow/configuration.nix
@@ -92,16 +96,22 @@
               ( import ./theme/nxStylix.nix )
             ];
           };
-
-      ### SERVER
-        nixosConfigurations."nyaa" = nixpkgs.lib.nixosSystem
+        "nyaa" = nixpkgs.lib.nixosSystem
           {
             modules = [
-              ./systems/nyaa/configuration.nix
-              ./systems/nyaa/hardware-configuration.nix
+              nixpkgs.nixosModules.notDetected
+                    funkwhale.nixosModule
+              ( { config, pkgs, ... }:
+              {
+                imports = [
+                  ./systems/nyaa/configuration.nix
+                  ./systems/nyaa/hardware-configuration.nix
+                  ./services/funkwhale.nix
+                ];
+              })
             ];
           };
-
+        };
       };
     };
 }

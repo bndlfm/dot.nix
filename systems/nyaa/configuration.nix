@@ -40,21 +40,6 @@
       layout = "us";
       xkbVariant = "";
     };
-
-#  containers = {
-#    grimoire = {
-#      image = "goniszewski/grimoire";
-#      dependsOn = "pocketbase";
-#      ports = [
-#        "5173:5173"
-#      ];
-#    };
-#    pocketbase = {
-#      image = "spectado/pocketbase:0.22.10";
-#      ports = [
-#        "8090:80"
-#      ];
-#    };
   };
 
   networking = {
@@ -102,7 +87,10 @@
   };
 
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix = {
+    package = pkgs.nixUnstable;
+    settings.experimental-features = [ "nix-command" "flakes" ];
+  };
 
   # Set your time zone.
   time.timeZone = "America/Chicago";
