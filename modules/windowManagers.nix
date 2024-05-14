@@ -345,9 +345,10 @@
         "$mainMod, J, togglesplit" # dwindle
 
         # Rofi
-        "$mainMod, SPACE, exec, rofi -show combi -combi-modi window,drun,run,ssh,combi -show-icons"
-        "$mainMod SHIFT, C, exec, rofi -show calc"
-        "$mainMod SHIFT, V, exec, rofi -modi 'clipboard:greenclip print' -show clipboard -run '{cmd}' -show-icons"
+        "$mainMod, SPACE, exec, wofi --show drun"
+        "$mainMod, SPACE, exec, wofi --show combi -combi-modi window,drun,run,ssh,combi -show-icons"
+        "$mainMod SHIFT, C, exec, wofi --show calc"
+        "$mainMod SHIFT, V, exec, wofi -modi 'clipboard:greenclip print' -show clipboard -run '{cmd}' -show-icons"
         "$mainMod, K, exec, /usr/bin/splatmoji copy"
         "$mainMod ALT, C, exec, pkill greenclip && greenclip clear && greenclip daemon"
 

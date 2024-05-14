@@ -62,9 +62,10 @@
     git
     btrfs-progs
     home-manager
-    (callPackage ../../theme/sddm-lain-wired.nix{}).sddm-lain-wired-theme
+    #(callPackage ../../theme/sddm-lain-wired.nix{}).sddm-lain-wired-theme
     quickemu
     runc
+    tailscale
   ];
 
   environment.variables= {
