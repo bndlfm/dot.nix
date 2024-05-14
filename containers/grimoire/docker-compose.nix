@@ -21,7 +21,7 @@
       PORT = "5173";
       PUBLIC_HTTPS_ONLY = "";
       PUBLIC_ORIGIN = "http://localhost:5173";
-      PUBLIC_POCKETBASE_URL = "";
+      PUBLIC_POCKETBASE_URL = "http://100.90.24.2:8090";
       PUBLIC_SIGNUP_DISABLED = "false";
       ROOT_ADMIN_EMAIL = "admin@localhost";
       ROOT_ADMIN_PASSWORD = "cBYfB0HbsZKEF9KS";
@@ -63,7 +63,7 @@
       PORT = "5173";
       PUBLIC_HTTPS_ONLY = "";
       PUBLIC_ORIGIN = "http://localhost:5173";
-      PUBLIC_POCKETBASE_URL = "";
+      PUBLIC_POCKETBASE_URL = "http://100.90.24.2:8090";
       PUBLIC_SIGNUP_DISABLED = "false";
       ROOT_ADMIN_EMAIL = "admin@localhost";
       ROOT_ADMIN_PASSWORD = "cBYfB0HbsZKEF9KS";

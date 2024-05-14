@@ -7,17 +7,14 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      #./cachix.nix
       ./hardware-configuration.nix
       ../../containers/pihole/pihole.nix
       ../../containers/grimoire/docker-compose.nix
+
+      ../../modules/tailscale.nix
     ];
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
     arion
     docker-client
     gcc
@@ -83,6 +80,11 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
+  };
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
