@@ -1,40 +1,6 @@
 {
   "nodes": {
-    "funkwhale": {
-      "inputs": {
-        "nixpkgs": "nixpkgs"
-      },
-      "locked": {
-        "lastModified": 1715161072,
-        "narHash": "sha256-idIdylmqPibBVePO2T67X4y6b9EZoAQq5w1hZZn38rY=",
-        "owner": "mmai",
-        "repo": "funkwhale-flake",
-        "rev": "4a744ac59a55323eefc6a0f263aa55ebdc61146e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mmai",
-        "repo": "funkwhale-flake",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
-      "locked": {
-        "lastModified": 1704290814,
-        "narHash": "sha256-LWvKHp7kGxk/GEtlrGYV68qIvPHkU9iToomNFGagixU=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "70bdadeb94ffc8806c0570eb5c2695ad29f0e421",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-23.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_2": {
       "locked": {
         "lastModified": 1704290814,
         "narHash": "sha256-LWvKHp7kGxk/GEtlrGYV68qIvPHkU9iToomNFGagixU=",
@@ -52,8 +18,7 @@
     },
     "root": {
       "inputs": {
-        "funkwhale": "funkwhale",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs"
       }
     }
   },

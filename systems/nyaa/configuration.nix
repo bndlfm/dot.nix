@@ -9,8 +9,9 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
 
-      ../../containers/pihole/pihole.nix
-      ../../containers/grimoire/docker-compose.nix
+      ../../containers/pihole.nix
+      ../../containers/grimoire/grimoire.nix
+      ../../containers/home-assistant.nix
 
       ../../modules/tailscale.nix
     ];
