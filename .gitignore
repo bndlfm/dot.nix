@@ -5,6 +5,7 @@ bin
 .config/page
 .config/systemd
 .config/environment.d
+sops/
 containers/khoj
 containers/grimoire
 containers/arr apps
