@@ -456,7 +456,11 @@
     kernelModules = [ "kvm-amd" ];
     kernelParams = [ "nvidia.modesetting=1" ];
     kernelPackages = pkgs.linuxPackages_latest;
-    kernel.sysctl = { "vm.overcommit_memory" = 1; };
+    kernel.sysctl = {
+      "vm.overcommit_memory" = 1;
+      "net.ipv4.ip_forward" = 1;
+      "net.ipv6.conf.all.forwarding" = 1;
+    };
     supportedFilesystems = [ "ntfs" ];
   };
 
