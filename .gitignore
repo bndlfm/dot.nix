@@ -9,6 +9,7 @@ sops/
 containers/khoj
 containers/grimoire
 containers/arr apps
+containers/funkwhale
 virt-machines/
 .mozilla/
 .fonts/

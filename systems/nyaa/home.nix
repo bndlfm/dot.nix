@@ -26,6 +26,7 @@
       zellij
 
     ### CLI
+      age
       eza
       fd
       ffmpeg-full

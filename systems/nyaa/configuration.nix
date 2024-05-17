@@ -9,9 +9,15 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
 
+<<<<<<< HEAD
       ../../containers/pihole/pihole.nix
       ../../containers/retroarch-web.nix
       ../../containers/grimoire/grimoire.nix
+=======
+      ../../containers/pihole.nix
+      ../../containers/grimoire/grimoire.nix
+      ../../containers/home-assistant.nix
+>>>>>>> 6c2b2f897c8dee9ff97ba34dc777967bddf09eb5
 
       ../../modules/tailscale.nix
     ];
@@ -105,7 +111,7 @@
 
   nixpkgs.config.allowUnfree = true;
   nix = {
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.latest;
     settings.experimental-features = [ "nix-command" "flakes" ];
   };
 

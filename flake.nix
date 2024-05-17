@@ -17,6 +17,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    extra-container.url = "github:erikarvstedt/extra-container";
+
     flatpak.url = "github:GermanBread/declarative-flatpak/stable";
 
     funkwhale.url = "github:/mmai/funkwhale-flake";
@@ -37,26 +39,24 @@
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { home-manager, nixpkgs, flatpak, funkwhale, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
+  outputs = { home-manager, nixpkgs, extra-container, flatpak, funkwhale, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
     let
       system = "x86_64-linux";
-    in
-    {
+    in {
+      ###
+      ###  NOTE: USER CONFIGURATIONS
+      ###
       packages.${system} = {
         homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
             ./systems/meow/home.nix
             ./programs/hmPrograms.nix
-
             flatpak.homeManagerModules.default
             ./modules/hmServices.nix
-
             inputs.sops-nix.homeManagerModules.sops
-
             stylix.homeManagerModules.stylix
             ( import ./theme/hmStylix.nix )
-
             spicetify-nix.homeManagerModule
             ( import ./theme/spicetify.nix {inherit spicetify-nix;})
           ];
@@ -66,48 +66,84 @@
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
             ./systems/nyaa/home.nix
-
             inputs.sops-nix.homeManagerModules.sops
           ];
         };
 
-        /*
-         *
-         *   NOTE: SYSTEM CONFIGURATIONS
-         *
-         */
+      ###
+      ###  NOTE: SYSTEM CONFIGURATIONS
+      ###
 
-      ### DESKTOP
-      nixosConfigurations = {
-        "meow" = nixpkgs.lib.nixosSystem
-          {
+        ### DESKTOP
+        nixosConfigurations = {
+          "meow" = nixpkgs.lib.nixosSystem
+            {
+              modules = [
+                ./systems/meow/configuration.nix
+                ./systems/meow/hardware-configuration.nix
+
+                microvm.nixosModules.host
+                {
+                  microvm.autostart = [ ];
+                }
+
+                extra-container.nixosModules.default
+
+                sops-nix.nixosModules.sops
+
+                stylix.nixosModules.stylix
+                ( import ./theme/nxStylix.nix )
+              ];
+            };
+          ### SERVER
+          "nyaa" = nixpkgs.lib.nixosSystem
+            {
+              modules = [
+                    ./systems/nyaa/configuration.nix
+                    ./systems/nyaa/hardware-configuration.nix
+              ];
+            };
+
+
+
+          ###
+          ###  NOTE: CONTAINERS
+          ###
+          funkwhale = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+
             modules = [
-              ./systems/meow/configuration.nix
-              ./systems/meow/hardware-configuration.nix
+              funkwhale.nixosModules.default
+              ( { pkgs, ... }:
+              let
+                hostname = "funkwhale";
+                secretFile = pkgs.writeText "djangoSecret" "test123";
+              in {
+                boot.isContainer = true;
+                #system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
+                system.stateVersion = "23.05";
 
-              microvm.nixosModules.host
-              {
-                microvm.autostart = [ ];
-              }
+                networking = {
+                  useDCHP = false;
+                  firewall.allowedTCPPorts = [ 80 ];
+                  hostName = "${hostname}";
+                };
+                nixpkgs.overlays = [ funkwhale.overlays.default ];
 
-              sops-nix.nixosModules.sops
-
-              stylix.nixosModules.stylix
-              ( import ./theme/nxStylix.nix )
-            ];
-          };
-        "nyaa" = nixpkgs.lib.nixosSystem
-          {
-            modules = [
-              nixpkgs.nixosModules.notDetected
-                    funkwhale.nixosModule
-              ( { config, pkgs, ... }:
-              {
-                imports = [
-                  ./systems/nyaa/configuration.nix
-                  ./systems/nyaa/hardware-configuration.nix
-                  ./services/funkwhale.nix
-                ];
+                services.funkwhale = {
+                  enable = true;
+                  hostname = "${hostname}";
+                  # typesenseKey = "my typesense key";
+                  defaultFromEmail = "noreply@funkwhale.rhumbs.fr";
+                  protocol = "http"; # no ssl for virtualbox
+                  forceSSL = false; # uncomment when LetsEncrypt needs to access "http:" in order to check domain
+                  api = {
+                      djangoSecretKeyFile = "${secretFile}";
+                  };
+                };
+                # Overrides default 30M
+                services.nginx.clientMaxBodySize = "100m";
+                #environment.systemPackages = with pkgs; [ neovim ];
               })
             ];
           };
