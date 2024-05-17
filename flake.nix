@@ -98,7 +98,7 @@
           "nyaa" = nixpkgs.lib.nixosSystem
             {
               modules = [
-                grimoire-flake.nixosModules.grimoire
+                grimoire-flake.nixosModules
                 ./systems/nyaa/configuration.nix
                 ./systems/nyaa/hardware-configuration.nix
               ];
