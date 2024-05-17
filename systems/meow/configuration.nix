@@ -8,7 +8,6 @@
     ../../modules/tailscale.nix
 
     ../../containers/jellyfin.nix
-    ../../containers/retroarch-web.nix
   ];
 
   #-------- PACKAGES --------#

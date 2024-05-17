@@ -8,8 +8,10 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+
       ../../containers/pihole/pihole.nix
-      ../../containers/grimoire/docker-compose.nix
+      ../../containers/retroarch-web.nix
+      ../../containers/grimoire/grimoire.nix
 
       ../../modules/tailscale.nix
     ];
