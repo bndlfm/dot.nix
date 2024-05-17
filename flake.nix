@@ -23,7 +23,7 @@
 
     funkwhale.url = "github:/mmai/funkwhale-flake";
 
-    grimoire-flake.url = "github:bndlfm/dotnix?dir=containers/grimoire";
+    grimoire-flake.url = "github:bndlfm/dotnix?dir=containers/";
 
     microvm = {
       url = "github:astro/microvm.nix";
@@ -53,11 +53,15 @@
           modules = [
             ./systems/meow/home.nix
             ./programs/hmPrograms.nix
+
             flatpak.homeManagerModules.default
             ./modules/hmServices.nix
+
             inputs.sops-nix.homeManagerModules.sops
+
             stylix.homeManagerModules.stylix
             ( import ./theme/hmStylix.nix )
+
             spicetify-nix.homeManagerModule
             ( import ./theme/spicetify.nix {inherit spicetify-nix;})
           ];
