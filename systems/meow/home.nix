@@ -115,8 +115,8 @@
       codeium
       csharprepl
       direnv
-      #dotnet-sdk_7
-      dotnetCorePackages.sdk_8_0_2xx
+      dotnet-sdk_7
+      #dotnetCorePackages.sdk_8_0_2xx
       meld
       python3
 
@@ -210,7 +210,7 @@
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
     DEFAULT_BROWSER = "${pkgs.firefox-devedition}/bin/firefox";
-    DOTNET_ROOT = "${pkgs.dotnetCorePackages.sdk_8_0_2xx}";
+    DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
     EDITOR = "nvim";
     KHOJ_ADMIN_EMAIL = "firefliesandlightningbugs@gmail.com";
     KHOJ_ADMIN_PASSWORD = "NozndCZRacr7kpDx0UzWttZnXyJRL9qm";
