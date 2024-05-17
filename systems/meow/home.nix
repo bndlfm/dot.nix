@@ -1,6 +1,5 @@
 { pkgs, ... }: {
   imports = [
-    #./modules/hmFlatpak.nix
     ../../programs/hmPrograms.nix
     ../../modules/hmServices.nix
 
