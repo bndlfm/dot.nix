@@ -23,7 +23,7 @@
 
     funkwhale.url = "github:/mmai/funkwhale-flake";
 
-    grimoire.url = "github:bndlfm/dot.nix?dir=containers/grimoireFlake.nix";
+    grimoire.url = "github:bndlfm/dot.nix?dir=containers/grimoire";
 
     microvm = {
       url = "github:astro/microvm.nix";
@@ -40,7 +40,7 @@
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { home-manager, nixpkgs, extra-container, flatpak, funkwhale, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
+  outputs = { home-manager, nixpkgs, grimoire, flatpak, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
     let
       system = "x86_64-linux";
     in {
@@ -88,8 +88,6 @@
                   microvm.autostart = [ ];
                 }
 
-                extra-container.nixosModules.default
-
                 sops-nix.nixosModules.sops
 
                 stylix.nixosModules.stylix
@@ -100,8 +98,9 @@
           "nyaa" = nixpkgs.lib.nixosSystem
             {
               modules = [
-                    ./systems/nyaa/configuration.nix
-                    ./systems/nyaa/hardware-configuration.nix
+                grimoire.nixosModules.grimoire
+                ./systems/nyaa/configuration.nix
+                ./systems/nyaa/hardware-configuration.nix
               ];
             };
 
@@ -110,6 +109,7 @@
           ###
           ###  NOTE: CONTAINERS
           ###
+          /*
           funkwhale = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
 
@@ -148,6 +148,7 @@
               })
             ];
           };
+          */
         };
       };
     };
