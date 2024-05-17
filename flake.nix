@@ -23,7 +23,7 @@
 
     funkwhale.url = "github:/mmai/funkwhale-flake";
 
-    grimoire-flake.url = "github:bndlfm/dotnix?dir=containers/";
+    grimoire-flake.url = "git+file:///home/server/dotnix/containers/grimoire/flake.nix";
 
     microvm = {
       url = "github:astro/microvm.nix";
