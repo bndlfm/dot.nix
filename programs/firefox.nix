@@ -34,7 +34,7 @@
                 template = "https://search.nixos.org/options";
                 params = [
                   { name = "type"; value = "packages"; }
-                  { name = "channel"; value = "${config.system.nixos.release}"; }
+                  { name = "channel"; value = "unstable"; }
                   { name = "query"; value = "{searchTerms}"; }
                 ];
               }];
