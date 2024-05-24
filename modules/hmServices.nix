@@ -20,7 +20,6 @@ in {
           "flathub:app/one.ablaze.floorp//stable"
           "flathub:app/net.lutris.Lutris//stable"
           "flathub:app/com.github.tchx84.Flatseal//stable"
-          #"flathub:app/app.getclipboard.Clipboard//stable"
         ];
         remotes = {
           "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
@@ -34,7 +33,7 @@ in {
       mpd = {
         enable = true;
         musicDirectory = "${homeDir}/Music";
-        };
+      };
       mpdris2 = {
         enable = true;
         mpd = {};

@@ -23,6 +23,8 @@
   home.packages = with pkgs; [
 
     #!!!! TEMP INSTALLS !!!!#
+      distrobox
+      ethtool
       zellij
 
     ### CLI

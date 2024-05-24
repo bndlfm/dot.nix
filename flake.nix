@@ -23,7 +23,12 @@
 
     funkwhale.url = "github:/mmai/funkwhale-flake";
 
-#    grimoire-flake.url = "git+file:///home/server/dotnix/containers/grimoire/flake.nix";
+    #grimoire-flake.url = "git+file:///home/server/dotnix/containers/grimoire/flake.nix";
+
+    nixos-cosmic = {
+      url = "github:/lilyinstarlight/nixos-cosmic";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     microvm = {
       url = "github:astro/microvm.nix";
@@ -40,18 +45,18 @@
     stylix.url = "github:danth/stylix";
   };
 
- outputs = { home-manager, nixpkgs, flatpak, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
+  outputs = { home-manager, nixpkgs, flatpak, microvm, sops-nix, spicetify-nix, stylix, nixos-cosmic, ... }@inputs:
+
     let
       system = "x86_64-linux";
     in {
-      ###
-      ###  NOTE: USER CONFIGURATIONS
-      ###
+
+    ###  NOTE: USER CONFIGURATIONS
       packages.${system} = {
         homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-            ./systems/meow/home.nix
+            ./users/neko/home.nix
             ./programs/hmPrograms.nix
 
             flatpak.homeManagerModules.default
@@ -70,43 +75,49 @@
         homeConfigurations."server" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-            ./systems/nyaa/home.nix
+            ./users/neko/home.nix
             inputs.sops-nix.homeManagerModules.sops
           ];
         };
 
-      ###
       ###  NOTE: SYSTEM CONFIGURATIONS
-      ###
 
-        ### DESKTOP
-        nixosConfigurations = {
-          "meow" = nixpkgs.lib.nixosSystem
+      nixosConfigurations = {
+      ### DESKTOP
+        "meow" = nixpkgs.lib.nixosSystem {
+          modules = [
+            ./systems/meow/configuration.nix
+            ./systems/meow/hardware-configuration.nix
+
+            microvm.nixosModules.host
             {
-              modules = [
-                ./systems/meow/configuration.nix
-                ./systems/meow/hardware-configuration.nix
+              microvm.autostart = [ ];
+            }
 
-                microvm.nixosModules.host
-                {
-                  microvm.autostart = [ ];
-                }
+            sops-nix.nixosModules.sops
 
-                sops-nix.nixosModules.sops
-
-                stylix.nixosModules.stylix
-                ( import ./theme/nxStylix.nix )
-              ];
-            };
-          ### SERVER
-          "nyaa" = nixpkgs.lib.nixosSystem
+            stylix.nixosModules.stylix
+            ( import ./theme/nxStylix.nix )
+          ];
+        };
+      ### SERVER
+        "nyaa" = nixpkgs.lib.nixosSystem {
+          modules = [
             {
-              modules = [
-              #  grimoire-flake.nixosModules
-                ./systems/nyaa/configuration.nix
-                ./systems/nyaa/hardware-configuration.nix
-              ];
-            };
+              nix.settings = {
+                substituters = [ "https://cosmic.cachix.org/"];
+                trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+              };
+            }
+            nixos-cosmic.nixosModules.default
+            ./systems/nyaa/configuration.nix
+            ./systems/nyaa/hardware-configuration.nix
+          ];
+        };
+      };
+    };
+  };
+}
 
 
 
@@ -153,8 +164,3 @@
             ];
           };
           */
-        };
-      };
-    };
-}
-

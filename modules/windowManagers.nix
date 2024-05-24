@@ -196,10 +196,11 @@
       "$mainMod" = "SUPER";
 
       monitor = [
-        "HDMI-A-1, 1920x1080, 640x0, 1"
-        "DP-1, disable"
-        "DP-2, 1920x1080@60, 2560x290, 1, transform, 3, bitdepth, 10"
-        "DP-3, 2560x1440@144, 0x1080, 1, bitdepth, 10"
+        "VGA-1, 1920x1080@60, 2560x290, 1"
+        #"HDMI-A-1, 1920x1080, 640x0, 1"
+        #"DP-1, disable"
+        #"DP-2, 1920x1080@60, 2560x290, 1, transform, 3, bitdepth, 10"
+        #"DP-3, 2560x1440@144, 0x1080, 1, bitdepth, 10"
       ];
 
       workspace = [
