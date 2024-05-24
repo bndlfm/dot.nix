@@ -135,7 +135,7 @@
 
         ## ALIASES
           nxrb = "sudo nixos-rebuild switch --upgrade --flake ~/.nixcfg";
-          hmrb = "home-manager switch --flake ~/.nixcfg";
+          hmrb = "home-manager switch --flake ~/.nixcfg -b bak --impure";
 
 
         ###############
