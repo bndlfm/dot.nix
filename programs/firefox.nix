@@ -1,4 +1,4 @@
-{ pkgs, lib, config, home-manager }:{
+{ pkgs, ... }:{
   programs.firefox = {
     enable = true;
     nativeMessagingHosts = [
