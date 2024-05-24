@@ -23,13 +23,6 @@
       enableZshIntegration = true;
       nix-direnv.enable = true;
     };
-    firefox = {
-      enable = true;
-      nativeMessagingHosts = [
-        pkgs.tridactyl-native
-      ];
-      package = pkgs.firefox-devedition;
-    };
     fzf = {
       enable = true;
       enableFishIntegration = true;
