@@ -23,7 +23,7 @@
 
     funkwhale.url = "github:/mmai/funkwhale-flake";
 
-    grimoire-flake.url = "git+file:///home/server/dotnix/containers/grimoire/flake.nix";
+#    grimoire-flake.url = "git+file:///home/server/dotnix/containers/grimoire/flake.nix";
 
     microvm = {
       url = "github:astro/microvm.nix";
@@ -40,7 +40,7 @@
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = { home-manager, nixpkgs, grimoire-flake, flatpak, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
+ outputs = { home-manager, nixpkgs, flatpak, microvm, sops-nix, spicetify-nix, stylix, ... }@inputs:
     let
       system = "x86_64-linux";
     in {
@@ -102,7 +102,7 @@
           "nyaa" = nixpkgs.lib.nixosSystem
             {
               modules = [
-                grimoire-flake.nixosModules
+              #  grimoire-flake.nixosModules
                 ./systems/nyaa/configuration.nix
                 ./systems/nyaa/hardware-configuration.nix
               ];

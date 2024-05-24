@@ -9,15 +9,10 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
 
-<<<<<<< HEAD
-      ../../containers/pihole/pihole.nix
-      ../../containers/retroarch-web.nix
-      ../../containers/grimoire/grimoire.nix
-=======
-      ../../containers/pihole.nix
-      ../../containers/grimoire/grimoire.nix
-      ../../containers/home-assistant.nix
->>>>>>> 6c2b2f897c8dee9ff97ba34dc777967bddf09eb5
+#      ../../containers/pihole/pihole.nix
+#      ../../containers/retroarch-web.nix
+#      ../../containers/grimoire/grimoire.nix
+#      ../../containers/home-assistant.nix
 
       ../../modules/tailscale.nix
     ];
@@ -27,7 +22,7 @@
     docker-client
     gcc
     git
-    #home-manager
+    home-manager
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

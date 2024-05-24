@@ -90,15 +90,15 @@
           };
         }
         { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-        {
-          name = "virtualfish";
-          src = pkgs.fetchFromGitHub {
-            owner = "justinmayer";
-            repo = "virtualfish";
-            rev = "d280414a1862e4ebf22abf6b9939ebd48ddd4a58";
-            sha256 = "1cn23vbribz3fj1nrm617fgzv81vmbx581j7xh2xxm5k7kmp770l";
-          };
-        }
+       # {
+        #  name = "virtualfish";
+         # src = pkgs.fetchFromGitHub {
+          #  owner = "justinmayer";
+           # repo = "virtualfish";
+           # rev = "d280414a1862e4ebf22abf6b9939ebd48ddd4a58";
+           # sha256 = "1cn23vbribz3fj1nrm617fgzv81vmbx581j7xh2xxm5k7kmp770l";
+         # };
+       # }
         {
           name = "tacklebox";
           src = pkgs.fetchFromGitHub {
