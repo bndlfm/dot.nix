@@ -8,8 +8,9 @@
     #../../containers/retroarch-web.nix
     #../../containers/grimoire/grimoire.nix
     #../../containers/home-assistant.nix
+    #../../containers/jellyfin.nix
 
-    ../../modules/tailscale.nix
+    ../../services/tailscale.nix
   ];
 
   nix = {
@@ -89,6 +90,7 @@
 
   #-------- PACKAGE MODULES --------#
   programs = {
+    extra-container.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
@@ -241,7 +243,7 @@
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
     kernelModules = [ "kvm-intel" ];
-    kernelParams = [ "intel_iommu=on" "iommu=pt" ];
+    kernelParams = [];
     kernel.sysctl = {
       "net.ipv4.ip_forward" = 1;
       "net.ipv6.conf.all.forwarding" = 1;

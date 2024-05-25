@@ -1,5 +1,5 @@
 vim.opt.clipboard:prepend({ "unnamed", "unnamedplus" })
-vim.o.colorcolumn = 100
+--vim.o.colorcolumn = 100
 vim.o.completeopt = "longest,noinsert,menuone,noselect,preview"
 vim.o.cursorline = true
 vim.o.expandtab = true

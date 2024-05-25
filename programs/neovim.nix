@@ -21,6 +21,8 @@
       nodePackages.bash-language-server
       nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted
+      ocaml
+      opam
       pyright
       python3
       python3Packages.pip

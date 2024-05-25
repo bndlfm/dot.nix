@@ -51,6 +51,7 @@
             end
           )
 
+        source /home/neko/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
         zoxide init fish | source
         carapace _carapace fish | source

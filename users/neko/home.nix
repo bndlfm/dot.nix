@@ -18,7 +18,7 @@ in {
     ../../programs/yazi.nix
 
   # services
-    ../../modules/hmServices.nix
+    ../../services/hmServices.nix
 
   # other
     ../../modules/windowManagers.nix
@@ -33,7 +33,7 @@ in {
           { inherit pkgs; };
       };
       permittedInsecurePackages = [
-        "nix-2.16.2"
+        #"nix-2.16.2"
         "googleearth-pro-7.3.4.8248"
       ];
     };
