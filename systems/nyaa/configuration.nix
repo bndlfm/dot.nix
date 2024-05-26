@@ -68,10 +68,9 @@
   environment.systemPackages = with pkgs; [
     arion
     docker-client
+    ethtool
     git
     home-manager
-    jre
-    runc
   ];
 
   environment.variables= {
