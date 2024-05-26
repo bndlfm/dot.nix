@@ -16,12 +16,19 @@
         # addRunner = false;
 
         config = {
-          containers.demo = {
-            extra.addressPrefix = "192.168.1";
+          containers.media = {
+            hostAddress = "192.168.1.2";
+            localAddress = "192.168.1.3";
 
             # `specialArgs` is available in nixpkgs > 22.11
             # This is useful for importing flakes from modules (see nixpkgs/lib/modules.nix).
             # specialArgs = { inherit inputs; };
+            bindMounts = {
+              "/media/content" = {
+                hostPath = "/media/content";
+                isReadOnly = false;
+              };
+            };
 
             config = { pkgs, ... }: {
               services = {
@@ -32,10 +39,10 @@
                   logDir = "/media/.jellyfin/log/";
                   openFirewall = true;
                 };
-                jellyseerr = {
-                  enabled = true;
-                  openFirewall = true;
-                };
+                #jellyseerr = {
+                #  enabled = true;
+                #  openFirewall = true;
+                #};
                 radarr = {
                   enable = true;
                   openFirewall = true;

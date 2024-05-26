@@ -130,6 +130,18 @@
     };
     fail2ban.enable = true;
     flatpak.enable = true;
+    networkd-dispatcher = {
+      enable = true;
+      rules = {
+        "tailscale" = {
+          script = ''
+            #!${pkgs.runtimeShell}
+            echo "Fixing UDP-GRO for Tailscale...."
+            ethtool -K enp4s0 rx-udp-gro-forwarding on rx-gro-list off 
+          '';
+        };
+      };
+    };
     ollama = {
       enable = false;
       acceleration = "cuda";
