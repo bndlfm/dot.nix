@@ -69,7 +69,6 @@
     docker-client
     ethtool
     git
-    home-manager
   ];
 
   environment.variables= {
@@ -120,12 +119,6 @@
       openFirewall = true;
     };
     blueman.enable = true;
-    displayManager =  {
-      #sddm.enable = false; # NOTE: See Specialisations
-    };
-    desktopManager = {
-      #plasma6.enable = false; # NOTE: See Specialisations
-    };
     fail2ban.enable = true;
     flatpak.enable = true;
     ollama = {
@@ -152,10 +145,11 @@
     ## X11
     xserver = {
       enable = true;
-      desktopManager = {
+      displayManager = {
+        gdm.enable = true;
       };
-      windowManager = {
-        bspwm.enable = true;
+      desktopManager = {
+        gnome.enable = true;
       };
       xkb.layout = "us";
       xkb.variant = "";
@@ -180,27 +174,42 @@
 
 #------- SPECIALIZATION -------#
   specialisation = {
-    lxqt.configuration = {
-      system.nixos.tags = [ "lxqt" ];
-      services = {
-        displayManager.sddm.enable = true;
-        xserver.desktopManager.lxqt.enable = true;
-      };
-    };
-    kde.configuration = {
-      system.nixos.tags = [ "kde" ];
-      services = {
-        displayManager.sddm.enable = true;
-        desktopManager.plasma6.enable = true;
-      };
-    };
-    cosmic.configuration = {
-      system.nixos.tags = [ "cosmic" ];
-      services = {
-        displayManager.cosmic-greeter.enable = true;
-        desktopManager.cosmic.enable = true;
-      };
-    };
+    #lxqt.configuration = {
+    #  system.nixos.tags = [ "lxqt" ];
+    #  services = {
+    #    displayManager = {
+    #      sddm.enable = true;
+    #    };
+    #    xserver = {
+    #      displayManager = {
+    #        gdm.enable = false;
+    #      };
+    #      desktopManager = {
+    #        lxqt.enable = true;
+    #        gnome.enable = false;
+    #      };
+    #    };
+    #  };
+    #};
+
+    #plasma6.configuration = {
+    #  system.nixos.tags = [ "plasma6" ];
+    #  services = {
+    #    displayManager = {
+    #      sddm.enable = true;
+    #      gdm.enable = false;
+    #    };
+    #    desktopManager = {
+    #      plasma6.enable = true;
+    #    };
+
+    #    xserver = {
+    #      desktopManager = {
+    #        gnome.enable = false;
+    #      };
+    #    };
+    #  };
+    #};
   };
 
 #------- NETWORKING -------#
@@ -223,18 +232,21 @@
   };
 
 #------- USERS -------#
-  users.users."server" = {
-    isNormalUser = true;
-    description = "server";
-    extraGroups = [ "podman" "networkmanager" "wheel" ];
-    packages = with pkgs; [];
-  };
   users.users."neko" = {
     isNormalUser = true;
     description = "neko user";
-    extraGroups = [ "podman" "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    extraGroups = [ "audio" "podman" "networkmanager" "wheel" ];
+    packages = with pkgs; [
+      home-manager
+    ];
   };
+
+  #users.users."server" = {
+  #  isNormalUser = true;
+  #  description = "server";
+  #  extraGroups = [ "podman" "networkmanager" "wheel" ];
+  #  packages = with pkgs; [];
+  #};
 
 #------- STORAGE / DRIVES -------#
   fileSystems."/media" = {
@@ -294,6 +306,18 @@
     deviceSection = ''
       option "DRI" "2"
     '';
+  };
+
+  #------- SOUND -------#
+  security.rtkit.enable = true;
+  hardware.pulseaudio.enable = false;
+  services.pipewire = {
+    enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    pulse.enable = true;
   };
 
   # This value determines the NixOS release from which the default

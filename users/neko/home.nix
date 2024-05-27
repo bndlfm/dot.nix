@@ -17,6 +17,8 @@ in {
     ../../programs/neovim.nix
     ../../programs/yazi.nix
 
+    ../../programs/gnome-shell.nix
+
   # services
     ../../services/hmServices.nix
 
