@@ -41,7 +41,7 @@ vim.o.visualbell = true
 vim.o.updatetime = 100
 vim.o.viewoptions = "cursor,folds,slash,unix"
 vim.o.virtualedit = "block"
-vim.wo.wrap = true
+vim.wo.wrap = false
 vim.o.undolevels = 9999999
 vim.o.undofile = true
 

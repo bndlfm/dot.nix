@@ -48,6 +48,11 @@
                   openFirewall = true;
                   dataDir = "/media/.radarr/";
                 };
+                sonarr = {
+                  enable = true;
+                  openFirewall = true;
+                  dataDir = "/media/.sonarr/";
+                };
               };
             };
           };

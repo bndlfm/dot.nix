@@ -10,7 +10,7 @@
     #../../containers/home-assistant.nix
     #../../containers/jellyfin.nix
 
-    ../../services/tailscale.nix
+    #../../services/tailscale.nix
   ];
 
   nix = {
@@ -42,7 +42,6 @@
   nixpkgs = {
     config = {
       allowUnfree = true;
-      cudaSupport = true;
       qt5 = {
         enable = true;
         platformTheme  = "qt5ct";
@@ -129,18 +128,6 @@
     };
     fail2ban.enable = true;
     flatpak.enable = true;
-    networkd-dispatcher = {
-      enable = true;
-      rules = {
-        "tailscale" = {
-          script = ''
-            #!${pkgs.runtimeShell}
-            echo "Fixing UDP-GRO for Tailscale...."
-            ethtool -K enp4s0 rx-udp-gro-forwarding on rx-gro-list off 
-          '';
-        };
-      };
-    };
     ollama = {
       enable = false;
       acceleration = "cuda";
@@ -249,6 +236,13 @@
     packages = with pkgs; [];
   };
 
+#------- STORAGE / DRIVES -------#
+  fileSystems."/media" = {
+    device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
+    fsType = "btrfs";
+    options = [ "subvol=@media" "noatime" "compress=zstd:3" ];
+  };
+
 #------- BOOTLOADER -------#
   boot = {
     loader.systemd-boot.enable = true;
@@ -261,7 +255,7 @@
     };
   };
 
-  # Select internationalisation properties.
+#------- i18n / internationalization -------#
   i18n = {
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
@@ -282,72 +276,25 @@
 
   #-------- GPU --------#
   hardware = {
-    nvidia = {
-      modesetting.enable = true;
-
-      # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-      powerManagement.enable = false;
-
-      # Fine-grained power management. Turns off GPU when not in use.
-      # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-      powerManagement.finegrained = false;
-
-      # Use the NVidia open source kernel module (not to be confused with the
-      # independent third-party "nouveau" open source driver).
-      # Support is limited to the Turing and later architectures. Full list of 
-      # supported GPUs is at: 
-      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
-      # Only available from driver 515.43.04+
-      # Currently alpha-quality/buggy, so false is currently the recommended setting.
-      open = false;
-
-      # Enable the Nvidia settings menu,
-      # accessible via `nvidia-settings`.
-      nvidiaSettings = true;
-
-      # Optionally, you may need to select the appropriate driver version for your specific GPU.
-      #package = config.boot.kernelPackages.nvidiaPackages.latest;
-    };
-
-    nvidia-container-toolkit.enable = true;
-
     opengl = {
       enable = true;
       driSupport = true;
       driSupport32Bit = true;
+      extraPackages = with pkgs; [
+        intel-media-driver
+        intel-vaapi-driver
+        libvdpau-va-gl
+      ];
     };
   };
+  environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
 
-  #services.xserver.videoDrivers = [ "nvidia" ];
-
-  environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text = /* sh */ ''
-    Section "Screen"
-      Identifier "Screen0"
-      Device "Device0"
-      Monitor "Monitor0"
-      DefaultDepth 24
-      Option "Stereo" "0"
-      Option "nvidiaXineramaInfoOrder" "DFP-7" 
-      Option "metamodes" "HDMI-0: nvidia-auto-select +322+0, DP-4: nvidia-auto-select +0+1080, DP-3: nvidia-auto-select +2560+290, DP-0: off"
-      Option "SLI" "Off"
-      Option "MultiGPU" "Off"
-      Option "BaseMosaic" "off"
-      SubSection "Display"
-        Depth 24
-      EndSubSection
-    EndSection
-  '';
-
-# Setup displays
-  #  services.xserver.displayManager.setupCommands =
-  #    let
-  #      monitor-center = "DP-4";
-  #      monitor-top = "HDMI-0";
-  #      monitor-right = "DP-3";
-  #    in
-  #    ''
-  #      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, ${monitor-top}: nvidia-auto-select +640+0 {ForceCompositionPipeline=On}, ${monitor-right}: nvidia-auto-select +2560+290 {rotation=right, ForceCompositionPipeline=On}"
-  #    '';
+  services.xserver = {
+    videoDrivers = [ "intel" ];
+    deviceSection = ''
+      option "DRI" "2"
+    '';
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

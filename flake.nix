@@ -60,7 +60,7 @@
             ./programs/hmPrograms.nix
 
             flatpak.homeManagerModules.default
-            ./modules/hmServices.nix
+            ./services/hmServices.nix
 
             inputs.sops-nix.homeManagerModules.sops
 
