@@ -21,6 +21,8 @@ in {
 
   # services
     ../../services/hmServices.nix
+    ../../services/espanso.nix
+    ../../services/flatpak.nix
 
   # other
     ../../modules/windowManagers.nix
@@ -196,7 +198,6 @@ in {
       google-drive-ocamlfuse
       gparted
       grc
-      kdeconnect
       pavucontrol
       qbittorrent
       qdirstat
@@ -289,18 +290,18 @@ in {
         recursive = true;
       };
     };
-    mime.enable = true;
-    mimeApps = {
-      enable = true;
-      defaultApplications = {
-        "application/pdf" = [ "zathura" ];
-        "text/html" = [ "firefox.desktop" ];
-        "x-scheme-handler/http" = [ "firefox.desktop" ];
-        "x-scheme-handler/https" = [ "firefox.desktop" ];
-        "x-scheme-handler/about" = [ "firefox.desktop" ];
-        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
-      };
-    };
+    #mime.enable = true;
+    #mimeApps = {
+    #  enable = true;
+    #  defaultApplications = {
+    #    "application/pdf" = [ "zathura" ];
+    #    "text/html" = [ "firefox.desktop" ];
+    #    "x-scheme-handler/http" = [ "firefox.desktop" ];
+    #    "x-scheme-handler/https" = [ "firefox.desktop" ];
+    #    "x-scheme-handler/about" = [ "firefox.desktop" ];
+    #    "x-scheme-handler/unknown" = [ "firefox.desktop" ];
+    #  };
+    #};
   };
 }
 

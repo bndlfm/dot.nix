@@ -14,7 +14,7 @@
         environment = {
         };
         volumes = [
-          "/home/server/ROMS:/saved_roms"
+          "/home/neko/ROMs:/saved_roms"
         ];
       };
     };

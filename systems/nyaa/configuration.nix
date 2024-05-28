@@ -4,13 +4,13 @@
   imports = [
     ./hardware-configuration.nix
 
-    #../../containers/pihole/pihole.nix
+    ../../containers/pihole.nix
     #../../containers/retroarch-web.nix
     #../../containers/grimoire/grimoire.nix
     #../../containers/home-assistant.nix
     #../../containers/jellyfin.nix
 
-    #../../services/tailscale.nix
+    ../../services/tailscale.nix
   ];
 
   nix = {

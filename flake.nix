@@ -110,6 +110,7 @@
               };
             }
             nixos-cosmic.nixosModules.default
+            flatpak.nixosModules.default
             ./systems/nyaa/configuration.nix
             ./systems/nyaa/hardware-configuration.nix
           ];
