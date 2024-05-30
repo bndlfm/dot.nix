@@ -190,8 +190,10 @@
       enable = true;
     };
 
-    #plugins = with pkgs; [];
-    #
+    plugins = with pkgs; [
+      "~/Projects/hyprslidr/hyprslidr.so"
+    ];
+
     settings = {
       "$mainMod" = "SUPER";
 

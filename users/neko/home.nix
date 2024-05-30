@@ -7,25 +7,24 @@ in {
   home.homeDirectory = "/home/neko";
 
   imports = [
-  #programs
-    ../../programs/hmPrograms.nix
+  ### PROGRAMS
+    ../../programs/hm/firefox.nix
+    ../../programs/hm/fish.nix
+    ../../programs/hm/gnome-shell.nix
+    ../../programs/hm/kitty.nix
+    ../../programs/hm/ncmpcpp.nix
+    ../../programs/hm/neovim.nix
+    ../../programs/hm/yazi.nix
 
-    ../../programs/firefox.nix
-    ../../programs/fish.nix
-    ../../programs/kitty.nix
-    ../../programs/ncmpcpp.nix
-    ../../programs/neovim.nix
-    ../../programs/yazi.nix
+    ../../programs/hm/misc_programs.nix
 
-    ../../programs/gnome-shell.nix
+  ### SERVICES
+    ../../services/hm/misc_services.nix
+    ../../services/hm/espanso.nix
+    ../../services/hm/flatpak.nix
 
-  # services
-    ../../services/hmServices.nix
-    ../../services/espanso.nix
-    ../../services/flatpak.nix
-
-  # other
-    ../../modules/windowManagers.nix
+  ### MODULES
+    ../../modules/hm/windowManagers.nix
   ];
 
   nixpkgs = {
@@ -219,7 +218,7 @@ in {
     _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd";
     KHOJ_ADMIN_EMAIL = "firefliesandlightningbugs@gmail.com";
     KHOJ_ADMIN_PASSWORD = "NozndCZRacr7kpDx0UzWttZnXyJRL9qm";
-    PAGER = "page";
+    PAGER = "nvim +Man!";
     POSTGRES_USER = "postgres";
     POSTGRES_PASSWORD = "postgres";
     POSTGRES_HOST = "/run/postgresql/";

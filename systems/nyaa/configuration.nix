@@ -4,13 +4,15 @@
   imports = [
     ./hardware-configuration.nix
 
+  ### CONTAINERS
     ../../containers/pihole.nix
-    #../../containers/retroarch-web.nix
     #../../containers/grimoire/grimoire.nix
     #../../containers/home-assistant.nix
     #../../containers/jellyfin.nix
+    #../../containers/retroarch-web.nix
 
-    ../../services/tailscale.nix
+  ### MODULES
+    ../../modules/nx/tailscale.nix
   ];
 
   nix = {
@@ -22,19 +24,12 @@
         "https://nix-community.cachix.org"
         "https://cosmic.cachix.org/"
         "https://ai.cachix.org"
-        "https://nix-gaming.cachix.org"
-        #"https://chaotic-nyx.cachix.org"
-        #"https://ezkea.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
         "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
-        "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-        #"nyx.chaotic.cx-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-        #"chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
-        #"ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
       ];
     };
   };
@@ -48,7 +43,7 @@
           style = {
             package = pkgs.utterly-nord-plasma;
             name = "Utterly Nord Plasma";
-          };
+        };
         };
       qt6 = {
         enable = true;
@@ -57,8 +52,8 @@
             package = pkgs.utterly-nord-plasma;
             name = "Utterly Nord Plasma";
           };
-        };
       };
+    };
     overlays = [
       #(import ../../overlays/overlays.nix)
     ];
@@ -191,7 +186,6 @@
     #    };
     #  };
     #};
-
     #plasma6.configuration = {
     #  system.nixos.tags = [ "plasma6" ];
     #  services = {
@@ -212,24 +206,42 @@
     #};
   };
 
+
 #------- NETWORKING -------#
   networking = {
     hostName = "nyaa";
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 
+      allowedTCPPorts = [
         53    #PIHOLE
         5173  #GRIMOIRE
+        12525 #BITBURNER / NPM WATCH
         41641 #TAILSCALE
       ];
       allowedUDPPorts = [
         53    #PIHOLE
         5173  #GRIMOIRE
+        12525 #BITBURNER / NPM WATCH
         41641 #TAILSCALE
       ];
     };
     networkmanager.enable = true;
   };
+
+
+#------- SYSTEMD -------#
+  systemd = {
+    extraConfig = ''
+      DefaultTimeoutStopSec=10s
+    '';
+    sleep.extraConfig = ''
+      AllowSuspend=no
+      AllowHibernation=no
+      AllowHybridSleep=no
+      AllowSuspendThenHibernate=no
+    '';
+  };
+
 
 #------- USERS -------#
   users.users."neko" = {
@@ -267,25 +279,6 @@
     };
   };
 
-#------- i18n / internationalization -------#
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
-    extraLocaleSettings = {
-      LC_ADDRESS = "en_US.UTF-8";
-      LC_IDENTIFICATION = "en_US.UTF-8";
-      LC_MEASUREMENT = "en_US.UTF-8";
-      LC_MONETARY = "en_US.UTF-8";
-      LC_NAME = "en_US.UTF-8";
-      LC_NUMERIC = "en_US.UTF-8";
-      LC_PAPER = "en_US.UTF-8";
-      LC_TELEPHONE = "en_US.UTF-8";
-      LC_TIME = "en_US.UTF-8";
-    };
-  };
-
-  # Set your time zone.
-  time.timeZone = "America/Chicago";
-
   #-------- GPU --------#
   hardware = {
     opengl = {
@@ -305,6 +298,7 @@
     videoDrivers = [ "intel" ];
     deviceSection = ''
       option "DRI" "2"
+      option "TearFree" "1"
     '';
   };
 
@@ -319,6 +313,25 @@
     };
     pulse.enable = true;
   };
+
+#------- i18n / internationalization -------#
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "en_US.UTF-8";
+      LC_IDENTIFICATION = "en_US.UTF-8";
+      LC_MEASUREMENT = "en_US.UTF-8";
+      LC_MONETARY = "en_US.UTF-8";
+      LC_NAME = "en_US.UTF-8";
+      LC_NUMERIC = "en_US.UTF-8";
+      LC_PAPER = "en_US.UTF-8";
+      LC_TELEPHONE = "en_US.UTF-8";
+      LC_TIME = "en_US.UTF-8";
+    };
+  };
+
+  # Set your time zone.
+  time.timeZone = "America/Chicago";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

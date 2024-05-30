@@ -18,7 +18,7 @@
         config = {
           containers.media = {
             hostAddress = "192.168.1.2";
-            localAddress = "192.168.1.3";
+            localAddress = "192.168.1.2";
 
             # `specialArgs` is available in nixpkgs > 22.11
             # This is useful for importing flakes from modules (see nixpkgs/lib/modules.nix).
