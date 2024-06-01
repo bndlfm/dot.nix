@@ -8,9 +8,9 @@
     ];
     package = pkgs.firefox-devedition;
     profiles = {
-      default = {
-        id = 0;
-        name = "default";
+      "o0lgfwj8.dev-edition-default" = {
+        id = 1;
+        name = "o0lgfwj8";
         isDefault = true;
         settings = {};
         search = {

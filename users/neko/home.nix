@@ -7,24 +7,25 @@ in {
   home.homeDirectory = "/home/neko";
 
   imports = [
-  ### PROGRAMS
-    ../../programs/hm/firefox.nix
-    ../../programs/hm/fish.nix
-    ../../programs/hm/gnome-shell.nix
-    ../../programs/hm/kitty.nix
-    ../../programs/hm/ncmpcpp.nix
-    ../../programs/hm/neovim.nix
-    ../../programs/hm/yazi.nix
+    ### PROGRAMS
+      ../../programs/hm/firefox.nix
+      ../../programs/hm/fish.nix
+      ../../programs/hm/gnome-shell.nix
+      ../../programs/hm/kitty.nix
+      ../../programs/hm/ncmpcpp.nix
+      ../../programs/hm/neovim.nix
+      ../../programs/hm/yazi.nix
 
-    ../../programs/hm/misc_programs.nix
+      ../../programs/hm/misc_programs.nix
 
-  ### SERVICES
-    ../../services/hm/misc_services.nix
-    ../../services/hm/espanso.nix
-    ../../services/hm/flatpak.nix
+    ### SERVICES
+      ../../services/hm/espanso.nix
+      ../../services/hm/flatpak.nix
 
-  ### MODULES
-    ../../modules/hm/windowManagers.nix
+      ../../services/hm/misc_services.nix
+
+    ### MODULES
+      ../../modules/hm/windowManagers.nix
   ];
 
   nixpkgs = {
@@ -175,9 +176,9 @@ in {
         wofi
         wttrbar
         wlr-randr
-        #wl-clipboard
-        #wl-clipboard-x11
-        #wl-clip-persist
+        wl-clipboard
+        wl-clipboard-x11
+        wl-clip-persist
       ### XORG TOOLS
         dunst
         eww
@@ -191,7 +192,7 @@ in {
         xbindkeys
         xorg.xkill
         xorg.xhost
-        xclip
+        #xclip
       appimage-run
       clipboard-jh
       google-drive-ocamlfuse

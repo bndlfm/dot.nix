@@ -40,6 +40,15 @@ vim.keymap.set("v", "<LEADER>tt", "<CMD>s/    /\t/g<CR>", { desc = "space to tab
 
 -- MISC {{{
 vim.keymap.set("n", "<LEADER>o", "za", { desc = "folding" })
+vim.keymap.set("n", "z1", "<CMD>set foldlevelstart=1<CR>", { desc = "Fold Level Start = 1" })
+vim.keymap.set("n", "z2", "<CMD>set foldlevelstart=2<CR>", { desc = "Fold Level Start = 2" })
+vim.keymap.set("n", "z3", "<CMD>set foldlevelstart=3<CR>", { desc = "Fold Level Start = 3" })
+vim.keymap.set("n", "z4", "<CMD>set foldlevelstart=4<CR>", { desc = "Fold Level Start = 4" })
+vim.keymap.set("n", "z5", "<CMD>set foldlevelstart=5<CR>", { desc = "Fold Level Start = 5" })
+vim.keymap.set("n", "z6", "<CMD>set foldlevelstart=6<CR>", { desc = "Fold Level Start = 6" })
+vim.keymap.set("n", "z7", "<CMD>set foldlevelstart=7<CR>", { desc = "Fold Level Start = 7" })
+vim.keymap.set("n", "z8", "<CMD>set foldlevelstart=8<CR>", { desc = "Fold Level Start = 8" })
+vim.keymap.set("n", "z9", "<CMD>set foldlevelstart=9<CR>", { desc = "Fold Level Start = 9" })
 --vim.keymap.set("i", "<C-y>", "<ESC>A {}<ESC>i<CR><ESC>ko", { desc = "insert a pair of {} and goto next line" })
 --}}}
 

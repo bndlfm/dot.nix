@@ -9,107 +9,101 @@
     };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    ### NIXPKGS
+      nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    ### DECLARATIVE USER ENVIRONMENT
+      home-manager = {
+        url = "github:nix-community/home-manager";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      #url = "github:bndlfm/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    extra-container.url = "github:erikarvstedt/extra-container";
-
-    flatpak.url = "github:GermanBread/declarative-flatpak/stable";
-
-    funkwhale.url = "github:/mmai/funkwhale-flake";
-
-    #grimoire-flake.url = "git+file:///home/server/dotnix/containers/grimoire/flake.nix";
-
-    nixos-cosmic = {
-      url = "github:/lilyinstarlight/nixos-cosmic";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    microvm = {
-      url = "github:astro/microvm.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
+    ### DECLARITIVE FLATPAK
+      flatpak.url = "github:GermanBread/declarative-flatpak/stable";
+    ### TILING WINDOW MANAGER
+      hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    #DECLARTIVE TINY VMS
+      microvm = {
+        url = "github:astro/microvm.nix";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     ### USERCSS
-    spicetify-nix.url = "github:the-argus/spicetify-nix";
-
+      spicetify-nix.url = "github:the-argus/spicetify-nix";
     ### SECRETS
-    sops-nix.url = "github:Mic92/sops-nix";
-
+      sops-nix.url = "github:Mic92/sops-nix";
     ### THEMING:
-    stylix.url = "github:danth/stylix";
+      stylix.url = "github:danth/stylix";
+    ### CONTAINERS
+      #grimoire-flake.url = "git+file:///home/server/.nixcfg/containers/grimoire/flake.nix";
   };
 
-  outputs = { home-manager, nixpkgs, flatpak, microvm, sops-nix, spicetify-nix, stylix, nixos-cosmic, ... }@inputs:
-
-    let
-      system = "x86_64-linux";
-    in {
-
-    ###  NOTE: USER CONFIGURATIONS
+  outputs = {
+    nixpkgs,
+    home-manager,
+    flatpak,
+    hyprland,
+    microvm,
+    sops-nix,
+    spicetify-nix,
+    stylix,
+    ... 
+  }@inputs: let
+    system = "x86_64-linux";
+  in {
+    ### USER CONFIGURATIONS ###
       packages.${system} = {
         homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-            ./users/neko/home.nix
-            ./programs/hmPrograms.nix
 
             flatpak.homeManagerModules.default
-            ./services/hmServices.nix
 
             inputs.sops-nix.homeManagerModules.sops
 
-            stylix.homeManagerModules.stylix
-            ( import ./theme/hmStylix.nix )
+            spicetify-nix.homeManagerModule ( import ./theme/spicetify.nix {inherit spicetify-nix;})
+            stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
 
-            spicetify-nix.homeManagerModule
-            ( import ./theme/spicetify.nix {inherit spicetify-nix;})
+            ./users/neko/home.nix
           ];
         };
-
         homeConfigurations."server" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-            ./users/neko/home.nix
             inputs.sops-nix.homeManagerModules.sops
+            ./users/server/home.nix
           ];
         };
 
-      ###  NOTE: SYSTEM CONFIGURATIONS
 
+
+    ### SYSTEM CONFIGURATIONS ###
       nixosConfigurations = {
       ### DESKTOP
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
+            hyprland.nixosModules.default {
+              programs.hyprland = {
+                enable = true;
+                xwayland.enable = true;
+              };
+            }
+            microvm.nixosModules.host {
+              microvm.autostart = [];
+            }
+            sops-nix.nixosModules.sops
+            stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
             ./systems/meow/configuration.nix
             ./systems/meow/hardware-configuration.nix
-
-            microvm.nixosModules.host
-            {
-              microvm.autostart = [ ];
-            }
-
-            sops-nix.nixosModules.sops
-
-            stylix.nixosModules.stylix
-            ( import ./theme/nxStylix.nix )
           ];
         };
       ### SERVER
         "nyaa" = nixpkgs.lib.nixosSystem {
           modules = [
-            {
-              nix.settings = {
-                substituters = [ "https://cosmic.cachix.org/"];
-                trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+            hyprland.nixosModules.default {
+              programs.hyprland = {
+                enable = true;
+                xwayland.enable = true;
               };
             }
-            nixos-cosmic.nixosModules.default
             flatpak.nixosModules.default
             ./systems/nyaa/configuration.nix
             ./systems/nyaa/hardware-configuration.nix
