@@ -21,6 +21,8 @@
       flatpak.url = "github:GermanBread/declarative-flatpak/stable";
     ### TILING WINDOW MANAGER
       hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    ### NIRI SCROLLING WM
+      niri.url = "github:sodiboo/niri-flake";
     #DECLARTIVE TINY VMS
       microvm = {
         url = "github:astro/microvm.nix";
@@ -42,24 +44,25 @@
     flatpak,
     hyprland,
     microvm,
+    niri,
     sops-nix,
     spicetify-nix,
     stylix,
-    ... 
+    ...
   }@inputs: let
     system = "x86_64-linux";
   in {
+
     ### USER CONFIGURATIONS ###
       packages.${system} = {
         homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-
             flatpak.homeManagerModules.default
 
             inputs.sops-nix.homeManagerModules.sops
 
-            spicetify-nix.homeManagerModule ( import ./theme/spicetify.nix {inherit spicetify-nix;})
+            spicetify-nix.homeManagerModule ( import ./theme/spicetify.nix {inherit spicetify-nix;} )
             stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
 
             ./users/neko/home.nix
@@ -74,22 +77,26 @@
         };
 
 
-
     ### SYSTEM CONFIGURATIONS ###
       nixosConfigurations = {
       ### DESKTOP
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
+            ### WINDOW MANAGERS
             hyprland.nixosModules.default {
               programs.hyprland = {
                 enable = true;
                 xwayland.enable = true;
               };
             }
+            niri.nixosModules.niri ( import ./modules/nx/wm/niri.nix )
+
             microvm.nixosModules.host {
               microvm.autostart = [];
             }
+
             sops-nix.nixosModules.sops
+
             stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
             ./systems/meow/configuration.nix
             ./systems/meow/hardware-configuration.nix
@@ -98,13 +105,17 @@
       ### SERVER
         "nyaa" = nixpkgs.lib.nixosSystem {
           modules = [
+            ### WINDOW MANAGER
             hyprland.nixosModules.default {
               programs.hyprland = {
                 enable = true;
                 xwayland.enable = true;
               };
             }
+            niri.nixosModules.niri ( import ./modules/nx/wm/niri.nix )
+
             flatpak.nixosModules.default
+
             ./systems/nyaa/configuration.nix
             ./systems/nyaa/hardware-configuration.nix
           ];

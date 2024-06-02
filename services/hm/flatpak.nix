@@ -2,9 +2,10 @@
   services = {
     flatpak = {
       packages = [
-        "flathub:app/one.ablaze.floorp//stable"
-        "flathub:app/net.lutris.Lutris//stable"
-        "flathub:app/com.github.tchx84.Flatseal//stable"
+        "flathub:app/com.github.tchx84.Flatseal"
+        "flathub:app/one.ablaze.floorp"
+        "flathub:app/com.google.EarthPro"
+        "flathub:app/net.lutris.Lutris"
       ];
       remotes = {
         "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
