@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
@@ -57,25 +57,67 @@
     ];
   };
 
-  environment.systemPackages = with pkgs; [
-    arion
-    docker-client
-    ethtool
-    git
-  ];
-
-  environment.variables= {
-    QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
-    QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
+#------- SPECIALIZATION -------#
+  ### NON-SPECIALIZATION
+  config = lib.mkIf (config.specialisation !={}) {
+    services = {
+      displayManager.sddm.enable = true;
+      desktopManager.plasma6.enable = true;
+    };
   };
 
-  environment.sessionVariables = {
-    XDG_CONFIG_HOME = "$HOME/.config";
-    XDG_DATA_HOME = "$HOME/.local/share";
-    XDG_CACHE_HOME = "$HOME/.cache";
-    XDG_STATE_HOME = "$HOME/.local/state";
-    XDG_BIN_HOME = "$HOME/.local/bin";
-    #XDG_RUNTIME_DIR = "/run/user/$(id -u)";
+  ### SPECIALIZATION COMMETH
+  specialisation = {
+    PaperWM.configuration = {
+      system.nixos.tags = [ "PaperWM" ];
+      services = {
+        displayManager = {
+          sddm.enable = true;
+        };
+        xserver = {
+          displayManager = {
+            gdm.enable = false;
+          };
+          desktopManager = {
+            lxqt.enable = true;
+            gnome.enable = false;
+          };
+        };
+      };
+    };
+    lxqt.configuration = {
+      system.nixos.tags = [ "lxqt" ];
+      services = {
+        displayManager = {
+          sddm.enable = true;
+        };
+        xserver = {
+          desktopManager = {
+            lxqt.enable = true;
+          };
+        };
+      };
+    };
+  };
+
+#------- PACKAGES -------#
+  environment = {
+    systemPackages = with pkgs; [
+      ethtool
+      git
+    ];
+    variables= {
+      QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
+      QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
+    };
+    sessionVariables = {
+      XDG_CONFIG_HOME = "$HOME/.config";
+      XDG_DATA_HOME = "$HOME/.local/share";
+      XDG_CACHE_HOME = "$HOME/.cache";
+      XDG_STATE_HOME = "$HOME/.local/state";
+      XDG_BIN_HOME = "$HOME/.local/bin";
+      #XDG_RUNTIME_DIR = "/run/user/$(id -u)";
+    };
   };
 
   #-------- PACKAGE MODULES --------#
@@ -90,7 +132,6 @@
       enable = true;
       libraries = with pkgs; [
         cmake
-        jre
       ];
     };
     steam = {
@@ -102,7 +143,7 @@
 
 #------- SERVICES -------#
   services = {
-    avahi = { # CUPS (printing)
+    avahi = { # CUPS NETWORKING (PRINTING)
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
@@ -127,19 +168,9 @@
         local all      all    trust
       '';
     };
-
-    ## Enable CUPS to print documents.
-    printing.enable = true;
-
-    ## X11
-    xserver = {
+    printing.enable = true; # CUPS (PRINTING)
+    xserver = { # X11
       enable = true;
-      displayManager = {
-        gdm.enable = true;
-      };
-      desktopManager = {
-        gnome.enable = true;
-      };
       xkb.layout = "us";
       xkb.variant = "";
     };
@@ -161,44 +192,6 @@
     fi
   '';
 
-#------- SPECIALIZATION -------#
-  specialisation = {
-    #lxqt.configuration = {
-    #  system.nixos.tags = [ "lxqt" ];
-    #  services = {
-    #    displayManager = {
-    #      sddm.enable = true;
-    #    };
-    #    xserver = {
-    #      displayManager = {
-    #        gdm.enable = false;
-    #      };
-    #      desktopManager = {
-    #        lxqt.enable = true;
-    #        gnome.enable = false;
-    #      };
-    #    };
-    #  };
-    #};
-    #plasma6.configuration = {
-    #  system.nixos.tags = [ "plasma6" ];
-    #  services = {
-    #    displayManager = {
-    #      sddm.enable = true;
-    #      gdm.enable = false;
-    #    };
-    #    desktopManager = {
-    #      plasma6.enable = true;
-    #    };
-
-    #    xserver = {
-    #      desktopManager = {
-    #        gnome.enable = false;
-    #      };
-    #    };
-    #  };
-    #};
-  };
 
 
 #------- NETWORKING -------#
