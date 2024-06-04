@@ -1,5 +1,5 @@
 vim.opt.clipboard:prepend({ "unnamed", "unnamedplus" })
-vim.o.colorcolumn = 100
+--vim.o.colorcolumn = 100
 vim.o.completeopt = "longest,noinsert,menuone,noselect,preview"
 vim.o.cursorline = true
 vim.o.expandtab = true
@@ -41,7 +41,7 @@ vim.o.visualbell = true
 vim.o.updatetime = 100
 vim.o.viewoptions = "cursor,folds,slash,unix"
 vim.o.virtualedit = "block"
-vim.wo.wrap = true
+vim.wo.wrap = false
 vim.o.undolevels = 9999999
 vim.o.undofile = true
 

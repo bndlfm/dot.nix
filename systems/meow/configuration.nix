@@ -446,7 +446,7 @@
       efi.canTouchEfiVariables = true;
     };
     extraModprobeConfig = '''';
-    kernelModules = [ "kvm-amd" ];
+    kernelModules = [ "" ];
     kernelParams = [ "nvidia.modesetting=1" ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {

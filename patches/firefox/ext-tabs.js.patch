@@ -1,0 +1,334 @@
+--- browser/components/extensions/parent/ext-tabs.js	2024-02-18 19:40:51.139956753 -0600
++++ browser/components/extensions/parent/ext-tabs.js.modified	2024-02-18 20:02:32.281071191 -0600
+@@ -15,7 +15,7 @@
+   SessionStore: "resource:///modules/sessionstore/SessionStore.sys.mjs",
+ });
+ 
+-ChromeUtils.defineLazyGetter(this, "strBundle", function () {
++ChromeUtils.defineLazyGetter(this, "strBundle", function() {
+   return Services.strings.createBundle(
+     "chrome://global/locale/extensions.properties"
+   );
+@@ -664,7 +664,7 @@
+           context,
+           name: "tabs.onReplaced",
+           register: fire => {
+-            return () => {};
++            return () => { };
+           },
+         }).api(),
+ 
+@@ -1102,9 +1102,9 @@
+             if (
+               !isSameWindow &&
+               PrivateBrowsingUtils.isBrowserPrivate(gBrowser) !=
+-                PrivateBrowsingUtils.isBrowserPrivate(
+-                  nativeTab.ownerGlobal.gBrowser
+-                )
++              PrivateBrowsingUtils.isBrowserPrivate(
++                nativeTab.ownerGlobal.gBrowser
++              )
+             ) {
+               continue;
+             }
+@@ -1339,12 +1339,8 @@
+ 
+         saveAsPDF(pageSettings) {
+           let activeTab = getTabOrActive(null);
+-          let picker = Cc["@mozilla.org/filepicker;1"].createInstance(
+-            Ci.nsIFilePicker
+-          );
+-          let title = strBundle.GetStringFromName(
+-            "saveaspdf.saveasdialog.title"
+-          );
++          console.log("Silent mode: " + pageSettings.silentMode);
++
+           let filename;
+           if (
+             pageSettings.toFileName !== null &&
+@@ -1362,130 +1358,166 @@
+               filename = url.hostname;
+             }
+           }
+-          filename = DownloadPaths.sanitize(filename);
+-
+-          picker.init(activeTab.ownerGlobal, title, Ci.nsIFilePicker.modeSave);
+-          picker.appendFilter("PDF", "*.pdf");
+-          picker.defaultExtension = "pdf";
+-          picker.defaultString = filename;
+-
+-          return new Promise(resolve => {
+-            picker.open(function (retval) {
+-              if (retval == 0 || retval == 2) {
+-                // OK clicked (retval == 0) or replace confirmed (retval == 2)
+-
+-                // Workaround: When trying to replace an existing file that is open in another application (i.e. a locked file),
+-                // the print progress listener is never called. This workaround ensures that a correct status is always returned.
+-                try {
+-                  let fstream = Cc[
+-                    "@mozilla.org/network/file-output-stream;1"
+-                  ].createInstance(Ci.nsIFileOutputStream);
+-                  fstream.init(picker.file, 0x2a, 0o666, 0); // ioflags = write|create|truncate, file permissions = rw-rw-rw-
+-                  fstream.close();
+-                } catch (e) {
+-                  resolve(retval == 0 ? "not_saved" : "not_replaced");
+-                  return;
+-                }
++          //filename = DownloadPaths.sanitize(filename);
+ 
+-                let psService = Cc[
+-                  "@mozilla.org/gfx/printsettings-service;1"
+-                ].getService(Ci.nsIPrintSettingsService);
+-                let printSettings = psService.createNewPrintSettings();
+-
+-                printSettings.printerName = "";
+-                printSettings.isInitializedFromPrinter = true;
+-                printSettings.isInitializedFromPrefs = true;
+-
+-                printSettings.outputDestination =
+-                  Ci.nsIPrintSettings.kOutputDestinationFile;
+-                printSettings.toFileName = picker.file.path;
++          if (!pageSettings.silentMode) {
+ 
+-                printSettings.printSilent = true;
+-
+-                printSettings.outputFormat =
+-                  Ci.nsIPrintSettings.kOutputFormatPDF;
++            let picker = Cc["@mozilla.org/filepicker;1"].createInstance(
++              Ci.nsIFilePicker
++            );
++            let title = strBundle.GetStringFromName(
++              "saveaspdf.saveasdialog.title"
++            );
+ 
+-                if (pageSettings.paperSizeUnit !== null) {
+-                  printSettings.paperSizeUnit = pageSettings.paperSizeUnit;
+-                }
+-                if (pageSettings.paperWidth !== null) {
+-                  printSettings.paperWidth = pageSettings.paperWidth;
+-                }
+-                if (pageSettings.paperHeight !== null) {
+-                  printSettings.paperHeight = pageSettings.paperHeight;
+-                }
+-                if (pageSettings.orientation !== null) {
+-                  printSettings.orientation = pageSettings.orientation;
+-                }
+-                if (pageSettings.scaling !== null) {
+-                  printSettings.scaling = pageSettings.scaling;
+-                }
+-                if (pageSettings.shrinkToFit !== null) {
+-                  printSettings.shrinkToFit = pageSettings.shrinkToFit;
+-                }
+-                if (pageSettings.showBackgroundColors !== null) {
+-                  printSettings.printBGColors =
+-                    pageSettings.showBackgroundColors;
+-                }
+-                if (pageSettings.showBackgroundImages !== null) {
+-                  printSettings.printBGImages =
+-                    pageSettings.showBackgroundImages;
+-                }
+-                if (pageSettings.edgeLeft !== null) {
+-                  printSettings.edgeLeft = pageSettings.edgeLeft;
+-                }
+-                if (pageSettings.edgeRight !== null) {
+-                  printSettings.edgeRight = pageSettings.edgeRight;
++            picker.init(activeTab.ownerGlobal, title, Ci.nsIFilePicker.modeSave);
++            picker.appendFilter("PDF", "*.pdf");
++            picker.defaultExtension = "pdf";
++            picker.defaultString = filename;
++
++            return new Promise(resolve => {
++              picker.open(function(retval) {
++                if (retval == 0 || retval == 2) {
++                  // OK clicked (retval == 0) or replace confirmed (retval == 2)
++
++                  // Workaround: When trying to replace an existing file that is open in another application (i.e. a locked file),
++                  // the print progress listener is never called. This workaround ensures that a correct status is always returned.
++                  try {
++                    let fstream = Cc[
++                      "@mozilla.org/network/file-output-stream;1"
++                    ].createInstance(Ci.nsIFileOutputStream);
++                    fstream.init(picker.file, 0x2a, 0o666, 0); // ioflags = write|create|truncate, file permissions = rw-rw-rw-
++                    fstream.close();
++                  } catch (e) {
++                    resolve(retval == 0 ? "not_saved" : "not_replaced");
++                    return;
++                  }
++
++                  let psService = Cc[
++                    "@mozilla.org/gfx/printsettings-service;1"
++                  ].getService(Ci.nsIPrintSettingsService);
++                  let printSettings = psService.createNewPrintSettings();
++
++                  printSettings.printerName = "";
++                  printSettings.isInitializedFromPrinter = true;
++                  printSettings.isInitializedFromPrefs = true;
++
++                  printSettings.outputDestination =
++                    Ci.nsIPrintSettings.kOutputDestinationFile;
++                  printSettings.toFileName = picker.file.path;
++
++                  printSettings.printSilent = true;
++
++                  printSettings.outputFormat =
++                    Ci.nsIPrintSettings.kOutputFormatPDF;
++
++                  if (pageSettings.paperSizeUnit !== null) {
++                    printSettings.paperSizeUnit = pageSettings.paperSizeUnit;
++                  }
++                  if (pageSettings.paperWidth !== null) {
++                    printSettings.paperWidth = pageSettings.paperWidth;
++                  }
++                  if (pageSettings.paperHeight !== null) {
++                    printSettings.paperHeight = pageSettings.paperHeight;
++                  }
++                  if (pageSettings.orientation !== null) {
++                    printSettings.orientation = pageSettings.orientation;
++                  }
++                  if (pageSettings.scaling !== null) {
++                    printSettings.scaling = pageSettings.scaling;
++                  }
++                  if (pageSettings.shrinkToFit !== null) {
++                    printSettings.shrinkToFit = pageSettings.shrinkToFit;
++                  }
++                  if (pageSettings.showBackgroundColors !== null) {
++                    printSettings.printBGColors =
++                      pageSettings.showBackgroundColors;
++                  }
++                  if (pageSettings.showBackgroundImages !== null) {
++                    printSettings.printBGImages =
++                      pageSettings.showBackgroundImages;
++                  }
++                  if (pageSettings.edgeLeft !== null) {
++                    printSettings.edgeLeft = pageSettings.edgeLeft;
++                  }
++                  if (pageSettings.edgeRight !== null) {
++                    printSettings.edgeRight = pageSettings.edgeRight;
++                  }
++                  if (pageSettings.edgeTop !== null) {
++                    printSettings.edgeTop = pageSettings.edgeTop;
++                  }
++                  if (pageSettings.edgeBottom !== null) {
++                    printSettings.edgeBottom = pageSettings.edgeBottom;
++                  }
++                  if (pageSettings.marginLeft !== null) {
++                    printSettings.marginLeft = pageSettings.marginLeft;
++                  }
++                  if (pageSettings.marginRight !== null) {
++                    printSettings.marginRight = pageSettings.marginRight;
++                  }
++                  if (pageSettings.marginTop !== null) {
++                    printSettings.marginTop = pageSettings.marginTop;
++                  }
++                  if (pageSettings.marginBottom !== null) {
++                    printSettings.marginBottom = pageSettings.marginBottom;
++                  }
++                  if (pageSettings.headerLeft !== null) {
++                    printSettings.headerStrLeft = pageSettings.headerLeft;
++                  }
++                  if (pageSettings.headerCenter !== null) {
++                    printSettings.headerStrCenter = pageSettings.headerCenter;
++                  }
++                  if (pageSettings.headerRight !== null) {
++                    printSettings.headerStrRight = pageSettings.headerRight;
++                  }
++                  if (pageSettings.footerLeft !== null) {
++                    printSettings.footerStrLeft = pageSettings.footerLeft;
++                  }
++                  if (pageSettings.footerCenter !== null) {
++                    printSettings.footerStrCenter = pageSettings.footerCenter;
++                  }
++                  if (pageSettings.footerRight !== null) {
++                    printSettings.footerStrRight = pageSettings.footerRight;
++                  }
++
++                  activeTab.linkedBrowser.browsingContext
++                    .print(printSettings)
++                    .then(() => resolve(retval == 0 ? "saved" : "replaced"))
++                    .catch(() =>
++                      resolve(retval == 0 ? "not_saved" : "not_replaced")
++                    );
++                } else {
++                  // Cancel clicked (retval == 1)
++                  resolve("canceled");
+                 }
+-                if (pageSettings.edgeTop !== null) {
+-                  printSettings.edgeTop = pageSettings.edgeTop;
+-                }
+-                if (pageSettings.edgeBottom !== null) {
+-                  printSettings.edgeBottom = pageSettings.edgeBottom;
+-                }
+-                if (pageSettings.marginLeft !== null) {
+-                  printSettings.marginLeft = pageSettings.marginLeft;
+-                }
+-                if (pageSettings.marginRight !== null) {
+-                  printSettings.marginRight = pageSettings.marginRight;
+-                }
+-                if (pageSettings.marginTop !== null) {
+-                  printSettings.marginTop = pageSettings.marginTop;
+-                }
+-                if (pageSettings.marginBottom !== null) {
+-                  printSettings.marginBottom = pageSettings.marginBottom;
+-                }
+-                if (pageSettings.headerLeft !== null) {
+-                  printSettings.headerStrLeft = pageSettings.headerLeft;
+-                }
+-                if (pageSettings.headerCenter !== null) {
+-                  printSettings.headerStrCenter = pageSettings.headerCenter;
+-                }
+-                if (pageSettings.headerRight !== null) {
+-                  printSettings.headerStrRight = pageSettings.headerRight;
+-                }
+-                if (pageSettings.footerLeft !== null) {
+-                  printSettings.footerStrLeft = pageSettings.footerLeft;
+-                }
+-                if (pageSettings.footerCenter !== null) {
+-                  printSettings.footerStrCenter = pageSettings.footerCenter;
+-                }
+-                if (pageSettings.footerRight !== null) {
+-                  printSettings.footerStrRight = pageSettings.footerRight;
+-                }
+-
+-                activeTab.linkedBrowser.browsingContext
+-                  .print(printSettings)
+-                  .then(() => resolve(retval == 0 ? "saved" : "replaced"))
+-                  .catch(() =>
+-                    resolve(retval == 0 ? "not_saved" : "not_replaced")
+-                  );
+-              } else {
+-                // Cancel clicked (retval == 1)
+-                resolve("canceled");
+-              }
++              });
+             });
+-          });
++          }
++          else {
++            return new Promise(resolve => {
++              let psService = Cc[
++                "@mozilla.org/gfx/printsettings-service;1"
++              ].getService(Ci.nsIPrintSettingsService);
++              let printSettings = psService.createNewPrintSettings();
++
++              printSettings.printerName = "";
++              printSettings.isInitializedFromPrinter = true;
++              printSettings.isInitializedFromPrefs = true;
++
++              printSettings.outputDestination = Ci.nsIPrintSettings.kOutputDestinationFile;
++
++              // For now, limit to downloads directory
++              printSettings.toFileName = "~/Downloads" + filename;
++
++              printSettings.printSilent = true;
++
++              printSettings.outputFormat = Ci.nsIPrintSettings.kOutputFormatPDF;
++              activeTab.linkedBrowser.browsingContext
++                .print(printSettings)
++                .then(() => resolve(retval == 0 ? "saved" : "replaced"))
++                .catch(() =>
++                  resolve("error with silent printing"));
++            })
++          }
+         },
+ 
+         async toggleReaderMode(tabId) {

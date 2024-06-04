@@ -1,6 +1,6 @@
 return {
   "exafunction/codeium.vim",
-  enable = true,
+  enabled = true,
   priority = 40,
   dependencies = {
     "nvim-lua/plenary.nvim",

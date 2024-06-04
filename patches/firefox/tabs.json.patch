@@ -1,0 +1,14 @@
+--- browser/components/extensions/schemas/tabs.json	2024-02-18 19:40:50.893956625 -0600
++++ browser/components/extensions/schemas/tabs.json.modified	2024-02-18 19:48:34.866145240 -0600
+@@ -321,6 +321,11 @@
+             "optional": true,
+             "description": "The page content scaling factor: 1.0 = 100% = normal size. Default: 1.0."
+           },
++          "silentMode" : {
++            "type" : "boolean",
++            "optional" : true,
++            "description" : "Whether to silently save the PDF or open the file picker. Default: false"
++          },
+           "shrinkToFit": {
+             "type": "boolean",
+             "optional": true,
