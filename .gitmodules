@@ -4,12 +4,3 @@
 [submodule "modules/theme/sddm/sddm-lain-wired-theme"]
 	path = modules/theme/sddm/sddm-lain-wired-theme
 	url = https://gitlab.com/mixedCase/sddm-lain-wired-theme
-[submodule "containers/docker-funkwhale"]
-	path = containers/docker-funkwhale
-	url = https://dev.funkwhale.audio/meliurwen/docker-funkwhale
-[submodule "containers/funk_whale"]
-	path = containers/funk_whale
-	url = https://dev.funkwhale.audio/meliurwen/docker-funkwhale
-[submodule "theme/wallpapers/nordic-wallpapers"]
-	path = theme/wallpapers/nordic-wallpapers
-	url = https://github.com/linuxdotexe/nordic-wallpapers
