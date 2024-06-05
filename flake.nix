@@ -19,6 +19,10 @@
     ### DECLARITIVE FLATPAK
       nix-flatpak.url = "github:gmodena/nix-flatpak";
     ### TILING WINDOW MANAGER
+      nixos-cosmic = {
+        url = "github:lilyinstarlight/nixos-cosmic";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
       hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
       niri.url = "github:sodiboo/niri-flake";
     #DECLARTIVE TINY VMS
@@ -37,13 +41,19 @@
   outputs = {
     nixpkgs,
     home-manager,
+
     nix-flatpak,
-    hyprland,
     microvm,
-    niri,
     sops-nix,
+
+    ### THEMING / CUSTOMIZATION
     spicetify-nix,
     stylix,
+
+    ### WINDOW MANAGERS
+    nixos-cosmic,
+    hyprland,
+    niri,
     ...
   }@inputs: let
     system = "x86_64-linux";
@@ -53,21 +63,21 @@
         homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-            nix-flatpak.homeManagerModules.nix-flatpak ( import ./services/hm/flatpak.nix )
+              nix-flatpak.homeManagerModules.nix-flatpak
 
-            inputs.sops-nix.homeManagerModules.sops
+              inputs.sops-nix.homeManagerModules.sops
 
-            spicetify-nix.homeManagerModule ( import ./theme/spicetify.nix {inherit spicetify-nix;})
-            stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
+              spicetify-nix.homeManagerModule ( import ./theme/spicetify.nix {inherit spicetify-nix;})
+              stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
 
-            ./users/neko/home.nix
+              ./users/neko/home.nix
           ];
         };
         homeConfigurations."server" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-            inputs.sops-nix.homeManagerModules.sops
-            ./users/server/home.nix
+              inputs.sops-nix.homeManagerModules.sops
+              ./users/server/home.nix
           ];
         };
 
@@ -78,8 +88,11 @@
       ### DESKTOP
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
+            # WINDOW MANAGERS
+            nixos-cosmic.nixosModules.default
             hyprland.nixosModules.default
             niri.nixosModules.niri
+
             nix-flatpak.nixosModules.nix-flatpak
 
             microvm.nixosModules.host {
@@ -89,6 +102,7 @@
             sops-nix.nixosModules.sops
 
             stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
+
             ./systems/meow/configuration.nix
             ./systems/meow/hardware-configuration.nix
           ];

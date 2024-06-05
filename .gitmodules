@@ -4,3 +4,9 @@
 [submodule "modules/theme/sddm/sddm-lain-wired-theme"]
 	path = modules/theme/sddm/sddm-lain-wired-theme
 	url = https://gitlab.com/mixedCase/sddm-lain-wired-theme
+[submodule ".config/ranger/plugins/ranger-devicons2"]
+	path = .config/ranger/plugins/ranger-devicons2
+	url = https://github.com/cdump/ranger-devicons2
+[submodule "theme/wallpapers/nordic"]
+	path = theme/wallpapers/nordic
+	url = https://github.com/linuxdotexe/nordic-wallpapers
