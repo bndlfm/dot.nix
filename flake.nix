@@ -9,33 +9,21 @@
     };
 
   inputs = {
-    ### NIXPKGS
-      nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    ### DECLARATIVE USER ENVIRONMENT
-      home-manager = {
-        url = "github:nix-community/home-manager";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-
-    ### DECLARITIVE FLATPAK
-      flatpak.url = "github:GermanBread/declarative-flatpak/stable";
-    ### TILING WINDOW MANAGER
-      hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    ### NIRI SCROLLING WM
-      niri.url = "github:sodiboo/niri-flake";
-    #DECLARTIVE TINY VMS
-      microvm = {
-        url = "github:astro/microvm.nix";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-    ### USERCSS
-      spicetify-nix.url = "github:the-argus/spicetify-nix";
-    ### SECRETS
-      sops-nix.url = "github:Mic92/sops-nix";
-    ### THEMING:
-      stylix.url = "github:danth/stylix";
-    ### CONTAINERS
-      #grimoire-flake.url = "git+file:///home/server/.nixcfg/containers/grimoire/flake.nix";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    flatpak.url = "github:GermanBread/declarative-flatpak/stable";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    niri.url = "github:sodiboo/niri-flake";
+    microvm = {
+      url = "github:astro/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    spicetify-nix.url = "github:the-argus/spicetify-nix";
+    sops-nix.url = "github:Mic92/sops-nix";
+    stylix.url = "github:danth/stylix";
   };
 
   outputs = {
@@ -89,7 +77,7 @@
                 xwayland.enable = true;
               };
             }
-            niri.nixosModules.niri ( import ./modules/nx/wm/niri.nix )
+            niri.nixosModules.niri
 
             microvm.nixosModules.host {
               microvm.autostart = [];
@@ -102,8 +90,7 @@
             ./systems/meow/hardware-configuration.nix
           ];
         };
-      ### SERVER
-        "nyaa" = nixpkgs.lib.nixosSystem {
+        "nyaa" = nixpkgs.lib.nixosSystem {         ### SERVER
           modules = [
             ### WINDOW MANAGER
             hyprland.nixosModules.default {
@@ -112,7 +99,7 @@
                 xwayland.enable = true;
               };
             }
-            niri.nixosModules.niri ( import ./modules/nx/wm/niri.nix )
+            niri.nixosModules.niri
 
             flatpak.nixosModules.default
 
@@ -124,49 +111,3 @@
     };
   };
 }
-
-
-
-          ###
-          ###  NOTE: CONTAINERS
-          ###
-          /*
-          funkwhale = nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-
-            modules = [
-              funkwhale.nixosModules.default
-              ( { pkgs, ... }:
-              let
-                hostname = "funkwhale";
-                secretFile = pkgs.writeText "djangoSecret" "test123";
-              in {
-                boot.isContainer = true;
-                #system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
-                system.stateVersion = "23.05";
-
-                networking = {
-                  useDCHP = false;
-                  firewall.allowedTCPPorts = [ 80 ];
-                  hostName = "${hostname}";
-                };
-                nixpkgs.overlays = [ funkwhale.overlays.default ];
-
-                services.funkwhale = {
-                  enable = true;
-                  hostname = "${hostname}";
-                  # typesenseKey = "my typesense key";
-                  defaultFromEmail = "noreply@funkwhale.rhumbs.fr";
-                  protocol = "http"; # no ssl for virtualbox
-                  forceSSL = false; # uncomment when LetsEncrypt needs to access "http:" in order to check domain
-                  api = {
-                      djangoSecretKeyFile = "${secretFile}";
-                  };
-                };
-                # Overrides default 30M
-                services.nginx.clientMaxBodySize = "100m";
-                #environment.systemPackages = with pkgs; [ neovim ];
-              })
-            ];
-          };
-          */

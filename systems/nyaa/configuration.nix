@@ -58,29 +58,15 @@
   };
 
 #------- SPECIALIZATION -------#
-  ### NON-SPECIALIZATION
-  config = lib.mkIf (config.specialisation !={}) {
-    services = {
-      displayManager.sddm.enable = true;
-      desktopManager.plasma6.enable = true;
-    };
-  };
 
   ### SPECIALIZATION COMMETH
   specialisation = {
     PaperWM.configuration = {
       system.nixos.tags = [ "PaperWM" ];
       services = {
-        displayManager = {
-          sddm.enable = true;
-        };
         xserver = {
-          displayManager = {
-            gdm.enable = false;
-          };
           desktopManager = {
-            lxqt.enable = true;
-            gnome.enable = false;
+            gnome.enable = true;
           };
         };
       };
@@ -88,12 +74,9 @@
     lxqt.configuration = {
       system.nixos.tags = [ "lxqt" ];
       services = {
-        displayManager = {
-          sddm.enable = true;
-        };
         xserver = {
           desktopManager = {
-            lxqt.enable = true;
+            lxqt.enable = false;
           };
         };
       };
@@ -149,6 +132,9 @@
       openFirewall = true;
     };
     blueman.enable = true;
+    desktopManager = {
+      plasma6.enable = lib.mkIf (config.specialisation !={}) true;
+    };
     fail2ban.enable = true;
     flatpak.enable = true;
     ollama = {
@@ -171,6 +157,7 @@
     printing.enable = true; # CUPS (PRINTING)
     xserver = { # X11
       enable = true;
+      displayManager.gdm.enable = true;
       xkb.layout = "us";
       xkb.variant = "";
     };
@@ -183,6 +170,20 @@
       enable = true;
       dockerSocket.enable = true;
       defaultNetwork.settings.dnsname_enabled = true;
+    };
+    vmVariant = {
+      # used with nixos-rebuild build-vm
+      virtualisation = {
+        memorySize = "8192";
+        cores = "2";
+      };
+    };
+    vmVariantWithBootLoader = {
+      # used with nixos-rebuild build-vm-bootloader
+      virtualisation = {
+        memorySize = "8192";
+        cores = "2";
+      };
     };
   };
 
@@ -231,21 +232,34 @@
 
 
 #------- USERS -------#
-  users.users."neko" = {
-    isNormalUser = true;
-    description = "neko user";
-    extraGroups = [ "audio" "podman" "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      home-manager
-    ];
+users = {
+  users = {
+    "neko" = {
+      isNormalUser = true;
+      description = "neko user";
+      extraGroups = [ "audio" "podman" "networkmanager" "wheel" ];
+      packages = with pkgs; [
+        home-manager
+      ];
+    };
+    "server" = {
+      isNormalUser = true;
+      description = "server";
+      extraGroups = [ "audio" "podman" "networkmanager" "wheel" ];
+      packages = with pkgs; [];
+    };
+    "nixosvmtest" = {
+      isSystemUser = true;
+      initialPassword = "test";
+      group = "nixosvmtest";
+    };
   };
+  groups = {
+    "nixosvmtest" = {};
+  };
+};
 
-  #users.users."server" = {
-  #  isNormalUser = true;
-  #  description = "server";
-  #  extraGroups = [ "podman" "networkmanager" "wheel" ];
-  #  packages = with pkgs; [];
-  #};
+
 
 #------- STORAGE / DRIVES -------#
   fileSystems."/media" = {

@@ -10,3 +10,6 @@
 [submodule "containers/funk_whale"]
 	path = containers/funk_whale
 	url = https://dev.funkwhale.audio/meliurwen/docker-funkwhale
+[submodule "theme/wallpapers/nordic-wallpapers"]
+	path = theme/wallpapers/nordic-wallpapers
+	url = https://github.com/linuxdotexe/nordic-wallpapers
