@@ -16,9 +16,8 @@
         url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-
     ### DECLARITIVE FLATPAK
-      flatpak.url = "github:GermanBread/declarative-flatpak/stable";
+      nix-flatpak.url = "github:gmodena/nix-flatpak";
     ### TILING WINDOW MANAGER
       hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     #DECLARTIVE TINY VMS
@@ -39,13 +38,13 @@
   outputs = {
     nixpkgs,
     home-manager,
-    flatpak,
+    nix-flatpak,
     hyprland,
     microvm,
     sops-nix,
     spicetify-nix,
     stylix,
-    ... 
+    ...
   }@inputs: let
     system = "x86_64-linux";
   in {
@@ -54,8 +53,7 @@
         homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-
-            flatpak.homeManagerModules.default
+            nix-flatpak.homeManagerModules.nix-flatpak ( import ./services/hm/flatpak.nix )
 
             inputs.sops-nix.homeManagerModules.sops
 
@@ -80,16 +78,16 @@
       ### DESKTOP
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
-            hyprland.nixosModules.default {
-              programs.hyprland = {
-                enable = true;
-                xwayland.enable = true;
-              };
-            }
+            hyprland.nixosModules.default
+
+            nix-flatpak.nixosModules.nix-flatpak
+
             microvm.nixosModules.host {
               microvm.autostart = [];
             }
+
             sops-nix.nixosModules.sops
+
             stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
             ./systems/meow/configuration.nix
             ./systems/meow/hardware-configuration.nix
@@ -104,7 +102,7 @@
                 xwayland.enable = true;
               };
             }
-            flatpak.nixosModules.default
+            nix-flatpak.nixosModules.nix-flatpak
             ./systems/nyaa/configuration.nix
             ./systems/nyaa/hardware-configuration.nix
           ];

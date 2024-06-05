@@ -5,9 +5,9 @@
 { config, pkgs, ... }:
 {
   imports = [
-    ../../modules/tailscale.nix
+    ../../modules/nx/tailscale.nix
 
-    ../../containers/jellyfin.nix
+    #../../containers/jellyfin.nix
   ];
 
   #-------- PACKAGES --------#
@@ -204,9 +204,6 @@
     ## X11
     xserver = {
       enable = true;
-      #displayManager = {
-        #lightdm.enable = true;
-      #};
       desktopManager = {
         plasma5.enable = true;
       };
@@ -360,10 +357,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
-
-    ## use the example session manager (no others are packaged yet so this is
-    ## enabled by default, no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
 
@@ -393,7 +386,8 @@
       nvidiaSettings = true;
 
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
-      package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      #NOTE: Firefox may need to be run as xwayland w/ MOZ_ENABLE_WAYLAND=0
     };
 
     nvidia-container-toolkit.enable = true;
@@ -417,7 +411,7 @@
       DefaultDepth 24
       Option "Stereo" "0"
       Option "nvidiaXineramaInfoOrder" "DFP-7" 
-      Option "metamodes" "HDMI-0: nvidia-auto-select +322+0, DP-4: nvidia-auto-select +0+1080, DP-3: nvidia-auto-select +2560+290, DP-0: off"
+      Option "metamodes" "HDMI-0: nvidia-auto-select +640+0 {ForceCompositionPipeline=On}, DP-0: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, DP-3: nvidia-auto-select +2560+290 {rotation=right, ForceCompositionPipeline=On}"
       Option "SLI" "Off"
       Option "MultiGPU" "Off"
       Option "BaseMosaic" "off"
@@ -430,7 +424,7 @@
   # Setup displays
   services.xserver.displayManager.setupCommands =
     let
-      monitor-center = "DP-4";
+      monitor-center = "DP-0";
       monitor-top = "HDMI-0";
       monitor-right = "DP-3";
     in
@@ -447,7 +441,7 @@
     };
     extraModprobeConfig = '''';
     kernelModules = [ "" ];
-    kernelParams = [ "nvidia.modesetting=1" ];
+    kernelParams = [ "nvidia.modeset=1" "nvidia_drm.fbdev=1" "amd_pstate=active" ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
       "vm.overcommit_memory" = 1;

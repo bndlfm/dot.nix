@@ -5,15 +5,15 @@ in {
   services = {
     arrpc.enable = true;
     kdeconnect = {
-      enable = false;
-      indicator = false;
+      enable = true;
+      indicator = true;
     };
     mpd = {
-      enable = true;
+      enable = false;
       musicDirectory = "${homeDir}/Music";
     };
     mpdris2 = {
-      enable = true;
+      enable = false;
       mpd = {};
       multimediaKeys = true;
       notifications = true;

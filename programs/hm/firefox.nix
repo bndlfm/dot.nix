@@ -3,20 +3,28 @@
     enable = true;
     nativeMessagingHosts = [
       pkgs.tridactyl-native
-      pkgs.browserpass
+      pkgs.gopass-jsonapi
       pkgs.plasma-browser-integration
     ];
     package = pkgs.firefox-devedition;
+    #preferences = {
+    #  "widget.use-xdg-desktop-portal.file-picker" = 1;
+    #};
     profiles = {
-      "o0lgfwj8.dev-edition-default" = {
+      "oli3t15x.default-release" = {
+        id = 0;
+        name = "default-release";
+        isDefault = false;
+      };
+      "oli3t15x.dev-edition-default" = {
         id = 1;
-        name = "o0lgfwj8";
+        name = "dev-edition-default";
         isDefault = true;
         settings = {};
         search = {
           force = true;
-          default = "Perplexity";
-          order = [ "Perplexity" "Google" ];
+          default = "Google";
+          order = [ "Google" "Perplexity" ];
           engines = {
             "Nix Packages" = {
               urls = [{
@@ -58,10 +66,25 @@
           };
         };
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          ublock-origin
+          augmented-steam
+          blocktube
           browserpass
+          bypass-paywalls-clean
+          clearurls
+          copy-selection-as-markdown
           darkreader
+          dearrow
+          gopass-bridge
+          return-youtube-dislikes
+          sidebery
+          simple-translate
+          sponsorblock
+          tampermonkey
           tridactyl
+          ublacklist
+          ublock-origin
+          umatrix
+          web-archives
         ];
       };
     };

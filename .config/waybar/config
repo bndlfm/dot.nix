@@ -3,7 +3,7 @@
     "layer": "top",
     "position": "top",
     "output": [
-      "VGA-1"
+      "DP-1"
     ],
     "include": [
       "~/.config/waybar/default_modules.json"
@@ -30,7 +30,8 @@
     "layer": "top",
     "position": "top",
     "output": [
-      "HDMI-A-1"
+      "HDMI-A-1",
+      "DP-2"
     ],
     "include": [
       "~/.config/waybar/default_modules.json"

@@ -150,36 +150,36 @@
       "mod4 + {_, shift +}r" = "bspc node@/ --rotate {90,-90}";
       };
     };
-  home.packages = with pkgs; [
-    (writeShellScriptBin "scrotshot.sh" /* sh */ ''
-      #!/bin/bash
+  #home.packages = with pkgs; [
+  #  (writeShellScriptBin "scrotshot.sh" /* sh */ ''
+  #    #!/bin/bash
 
-      # Function to capture screenshot and copy to clipboard
-      capture_screenshot() {
-        scrot "$@" --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
-      }
+  #    # Function to capture screenshot and copy to clipboard
+  #    capture_screenshot() {
+  #      scrot "$@" --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
+  #    }
 
-      # Check the command-line argument and execute the corresponding scrot command
-      case "$1" in
-        "full")
-            capture_screenshot ~/%b%d::%H%M%S.png --multidisp --quality 75
-            ;;
-        "freeze")
-            capture_screenshot ~/%b%d::%H%M%S.png --freeze --quality 75
-            ;;
-        "select")
-            capture_screenshot --select --freeze --quality 75 ~/%b%d::%H%M%S.png
-            ;;
-        "focused")
-            capture_screenshot ~/%b%d::%H%M%S.png --focused --border --delay 5 --count --quality 75
-            ;;
-        *)
-            echo "Usage: $0 [full|freeze|select|focused]"
-            exit 1
-            ;;
-      esac
-    '')
-  ];
+  #    # Check the command-line argument and execute the corresponding scrot command
+  #    case "$1" in
+  #      "full")
+  #          capture_screenshot ~/%b%d::%H%M%S.png --multidisp --quality 75
+  #          ;;
+  #      "freeze")
+  #          capture_screenshot ~/%b%d::%H%M%S.png --freeze --quality 75
+  #          ;;
+  #      "select")
+  #          capture_screenshot --select --freeze --quality 75 ~/%b%d::%H%M%S.png
+  #          ;;
+  #      "focused")
+  #          capture_screenshot ~/%b%d::%H%M%S.png --focused --border --delay 5 --count --quality 75
+
+  #      *)
+  #          echo "Usage: $0 [full|freeze|select|focused]"
+  #          exit 1
+  #          ;;
+  #    esac
+  #  '')
+  #];
 
 
   ######### (HM) WAYLAND HYPRLAND ########
@@ -197,17 +197,15 @@
       "$mainMod" = "SUPER";
 
       monitor = [
-        "VGA-1, 1920x1080@60, 2560x290, 1"
-        #"HDMI-A-1, 1920x1080, 640x0, 1"
-        #"DP-1, disable"
-        #"DP-2, 1920x1080@60, 2560x290, 1, transform, 3, bitdepth, 10"
-        #"DP-3, 2560x1440@144, 0x1080, 1, bitdepth, 10"
+        "DP-2, 1920x1080@60, 2560x290, 1, transform, 3"
+        "DP-1, 2560x1440@144, 0x1080, 1, bitdepth, 10"
+        "HDMI-A-1, 1920x1080, 640x0, 1"
       ];
 
       workspace = [
-        "10, monitor:DP-2, default:true"
-        "1, monitor:DP-3, default:true"
-        "7, monitor:DP-3"
+       "10, monitor:DP-2, default:true"
+       "1, monitor:DP-1, default:true"
+       "7, monitor:DP-1"
       ];
 
       misc = {
@@ -256,11 +254,19 @@
       };
 
       env = [
+        "GBM_BACKEND,nvidia-drm"
+        "GDK_BACKEND,wayland"
+        "__GL_GSYNC_ALLOWED,1"
+        "__GL_VRR_ALLOWED,1"
+        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+        "LIBVA_DRIVER_NAME,nvidia"
         "MOZ_ENABLE_WAYLAND,1"
         "QT_AUTO_SCREEN_SCALE_FACTOR,1"
         "QT_QPA_PLATFORM,wayland"
         "VRR,1"
         "vrr,1"
+        "WLR_NO_HARDWARE_CURSORS,1"
+        "WLR_DRM_NO_ATOMIC,1"
         "XCURSOR_SIZE,24"
         "XDG_SESSION_DESKTOP,hyprland"
         "XDG_SESSION_TYPE,wayland"
@@ -321,7 +327,7 @@
         "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
         "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
         "swaybg"
-        "xrandr --output DP-3 --primary"
+        "xrandr --output DP-1 --primary"
         "ydotoold"
         "export $(dbus-launch)"
         "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE"
@@ -340,6 +346,8 @@
         "$mainMod, F, fullscreen"
         "$mainMod, P, pseudo" # dwindle
         "$mainMod, J, togglesplit" # dwindle
+
+        "$mainMod, GRAVE, exec, hdrop -f -b kitty --class kittydrop"
 
         # Rofi
         "$mainMod, SPACE, exec, wofi --show drun"

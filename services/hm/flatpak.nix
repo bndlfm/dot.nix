@@ -2,13 +2,15 @@
   services = {
     flatpak = {
       packages = [
-        "flathub:app/one.ablaze.floorp//stable"
-        "flathub:app/net.lutris.Lutris//stable"
-        "flathub:app/com.github.tchx84.Flatseal//stable"
+        "com.discordapp.Discord"
+        #"one.ablaze.floorp"
+        "net.lutris.Lutris"
+        "com.github.tchx84.Flatseal"
       ];
-      remotes = {
-        "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-        "flathub-beta" = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
+      uninstallUnmanaged = true;
+      update.auto = {
+        enable = true;
+        onCalendar = "weekly";
       };
     };
   };
