@@ -116,6 +116,7 @@ in {
         git
         git-filter-repo
         git-lfs
+        git-credential-manager
         git-credential-gopass
       codeium
       direnv
