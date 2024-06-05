@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
@@ -23,13 +23,11 @@
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
         "https://cosmic.cachix.org/"
-        "https://ai.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
-        "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
       ];
     };
   };
@@ -59,25 +57,50 @@
     ];
   };
 
-  environment.systemPackages = with pkgs; [
-    arion
-    docker-client
-    ethtool
-    git
-  ];
+#------- SPECIALIZATION -------#
 
-  environment.variables= {
-    QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
-    QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
+  ### SPECIALIZATION COMMETH
+  specialisation = {
+    PaperWM.configuration = {
+      system.nixos.tags = [ "PaperWM" ];
+      services = {
+        xserver = {
+          desktopManager = {
+            gnome.enable = true;
+          };
+        };
+      };
+    };
+    lxqt.configuration = {
+      system.nixos.tags = [ "lxqt" ];
+      services = {
+        xserver = {
+          desktopManager = {
+            lxqt.enable = false;
+          };
+        };
+      };
+    };
   };
 
-  environment.sessionVariables = {
-    XDG_CONFIG_HOME = "$HOME/.config";
-    XDG_DATA_HOME = "$HOME/.local/share";
-    XDG_CACHE_HOME = "$HOME/.cache";
-    XDG_STATE_HOME = "$HOME/.local/state";
-    XDG_BIN_HOME = "$HOME/.local/bin";
-    #XDG_RUNTIME_DIR = "/run/user/$(id -u)";
+#------- PACKAGES -------#
+  environment = {
+    systemPackages = with pkgs; [
+      ethtool
+      git
+    ];
+    variables= {
+      QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
+      QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
+    };
+    sessionVariables = {
+      XDG_CONFIG_HOME = "$HOME/.config";
+      XDG_DATA_HOME = "$HOME/.local/share";
+      XDG_CACHE_HOME = "$HOME/.cache";
+      XDG_STATE_HOME = "$HOME/.local/state";
+      XDG_BIN_HOME = "$HOME/.local/bin";
+      #XDG_RUNTIME_DIR = "/run/user/$(id -u)";
+    };
   };
 
   #-------- PACKAGE MODULES --------#
@@ -92,7 +115,6 @@
       enable = true;
       libraries = with pkgs; [
         cmake
-        jre
       ];
     };
     steam = {
@@ -104,12 +126,15 @@
 
 #------- SERVICES -------#
   services = {
-    avahi = { # CUPS (printing)
+    avahi = { # CUPS NETWORKING (PRINTING)
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
     };
     blueman.enable = true;
+    desktopManager = {
+      plasma6.enable = lib.mkIf (config.specialisation !={}) true;
+    };
     fail2ban.enable = true;
     flatpak.enable = true;
     ollama = {
@@ -129,19 +154,10 @@
         local all      all    trust
       '';
     };
-
-    ## Enable CUPS to print documents.
-    printing.enable = true;
-
-    ## X11
-    xserver = {
+    printing.enable = true; # CUPS (PRINTING)
+    xserver = { # X11
       enable = true;
-      displayManager = {
-        gdm.enable = true;
-      };
-      desktopManager = {
-        gnome.enable = true;
-      };
+      displayManager.gdm.enable = true;
       xkb.layout = "us";
       xkb.variant = "";
     };
@@ -155,6 +171,20 @@
       dockerSocket.enable = true;
       defaultNetwork.settings.dnsname_enabled = true;
     };
+    vmVariant = {
+      # used with nixos-rebuild build-vm
+      virtualisation = {
+        memorySize = "8192";
+        cores = "2";
+      };
+    };
+    vmVariantWithBootLoader = {
+      # used with nixos-rebuild build-vm-bootloader
+      virtualisation = {
+        memorySize = "8192";
+        cores = "2";
+      };
+    };
   };
 
   environment.extraInit = ''
@@ -163,44 +193,6 @@
     fi
   '';
 
-#------- SPECIALIZATION -------#
-  specialisation = {
-    #lxqt.configuration = {
-    #  system.nixos.tags = [ "lxqt" ];
-    #  services = {
-    #    displayManager = {
-    #      sddm.enable = true;
-    #    };
-    #    xserver = {
-    #      displayManager = {
-    #        gdm.enable = false;
-    #      };
-    #      desktopManager = {
-    #        lxqt.enable = true;
-    #        gnome.enable = false;
-    #      };
-    #    };
-    #  };
-    #};
-    #plasma6.configuration = {
-    #  system.nixos.tags = [ "plasma6" ];
-    #  services = {
-    #    displayManager = {
-    #      sddm.enable = true;
-    #      gdm.enable = false;
-    #    };
-    #    desktopManager = {
-    #      plasma6.enable = true;
-    #    };
-
-    #    xserver = {
-    #      desktopManager = {
-    #        gnome.enable = false;
-    #      };
-    #    };
-    #  };
-    #};
-  };
 
 
 #------- NETWORKING -------#
@@ -240,21 +232,34 @@
 
 
 #------- USERS -------#
-  users.users."neko" = {
-    isNormalUser = true;
-    description = "neko user";
-    extraGroups = [ "audio" "podman" "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      home-manager
-    ];
+users = {
+  users = {
+    "neko" = {
+      isNormalUser = true;
+      description = "neko user";
+      extraGroups = [ "audio" "podman" "networkmanager" "wheel" ];
+      packages = with pkgs; [
+        home-manager
+      ];
+    };
+    "server" = {
+      isNormalUser = true;
+      description = "server";
+      extraGroups = [ "audio" "podman" "networkmanager" "wheel" ];
+      packages = with pkgs; [];
+    };
+    "nixosvmtest" = {
+      isSystemUser = true;
+      initialPassword = "test";
+      group = "nixosvmtest";
+    };
   };
+  groups = {
+    "nixosvmtest" = {};
+  };
+};
 
-  #users.users."server" = {
-  #  isNormalUser = true;
-  #  description = "server";
-  #  extraGroups = [ "podman" "networkmanager" "wheel" ];
-  #  packages = with pkgs; [];
-  #};
+
 
 #------- STORAGE / DRIVES -------#
   fileSystems."/media" = {

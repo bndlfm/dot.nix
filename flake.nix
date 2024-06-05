@@ -20,6 +20,7 @@
       nix-flatpak.url = "github:gmodena/nix-flatpak";
     ### TILING WINDOW MANAGER
       hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      niri.url = "github:sodiboo/niri-flake";
     #DECLARTIVE TINY VMS
       microvm = {
         url = "github:astro/microvm.nix";
@@ -31,8 +32,6 @@
       sops-nix.url = "github:Mic92/sops-nix";
     ### THEMING:
       stylix.url = "github:danth/stylix";
-    ### CONTAINERS
-      #grimoire-flake.url = "git+file:///home/server/.nixcfg/containers/grimoire/flake.nix";
   };
 
   outputs = {
@@ -41,6 +40,7 @@
     nix-flatpak,
     hyprland,
     microvm,
+    niri,
     sops-nix,
     spicetify-nix,
     stylix,
@@ -79,7 +79,7 @@
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
             hyprland.nixosModules.default
-
+            niri.nixosModules.niri
             nix-flatpak.nixosModules.nix-flatpak
 
             microvm.nixosModules.host {
@@ -96,12 +96,6 @@
       ### SERVER
         "nyaa" = nixpkgs.lib.nixosSystem {
           modules = [
-            hyprland.nixosModules.default {
-              programs.hyprland = {
-                enable = true;
-                xwayland.enable = true;
-              };
-            }
             nix-flatpak.nixosModules.nix-flatpak
             ./systems/nyaa/configuration.nix
             ./systems/nyaa/hardware-configuration.nix
