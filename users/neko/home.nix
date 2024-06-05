@@ -46,6 +46,7 @@ in {
   home.packages = with pkgs; [
     #!!!! TEMP INSTALLS !!!!#
       distrobox
+      warp-terminal
       godot_4
       godot_4-export-templates
 
@@ -123,6 +124,7 @@ in {
       dotnet-sdk_7
       meld
       python3
+      python3Packages.openai
 
     ### SOCIAL
       chatterino2

@@ -6,6 +6,7 @@ bin
 .config/page
 .config/systemd
 .config/environment.d
+.config/openairc
 sops/
 containers/khoj
 containers/arr apps
