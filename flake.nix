@@ -89,7 +89,12 @@
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
             # WINDOW MANAGERS
-            nixos-cosmic.nixosModules.default
+            nixos-cosmic.nixosModules.default {
+              services = {
+                displayManager.cosmic-greeter.enable = true;
+                desktopManager.cosmic.enable = true;
+              };
+            }
             hyprland.nixosModules.default
             niri.nixosModules.niri
 

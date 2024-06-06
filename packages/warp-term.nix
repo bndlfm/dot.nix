@@ -1,8 +1,5 @@
 {
-  lib,
-  inputs,
   pkgs,
-  stdenv,
   ...
 }:
 pkgs.warp-terminal.overrideAttrs (old: rec {
@@ -13,7 +10,7 @@ pkgs.warp-terminal.overrideAttrs (old: rec {
     sha256 = "sha256-xnXRg23AdfCk2TKBr+PZ3wDYqTN4+8wLSodWpmh3D/Y=";
   };
   nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.makeWrapper ];
-  propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.curl ];
+  #propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.curl ];
   postInstall = ''
     wrapProgram $out/bin/warp-terminal --set WARP_ENABLE_WAYLAND 1 \
     	--prefix LD_LIBRARY_PATH : ${pkgs.wayland}/lib

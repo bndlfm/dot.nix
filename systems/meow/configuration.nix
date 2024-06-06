@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, nixos-cosmic, ... }:
 {
   imports = [
     ../../modules/nx/tailscale.nix
@@ -59,8 +59,6 @@
     btrfs-progs
     home-manager
     pinentry-curses
-    python3
-    python3Packages.openai
     #(callPackage ../../theme/sddm-lain-wired.nix{}).sddm-lain-wired-theme
     quickemu
     runc
@@ -176,10 +174,11 @@
       openFirewall = true;
     };
     blueman.enable = true;
+    desktopManager = {
+      plasma6.enable = lib.mkIf (config.specialisation !={}) true;
+    };
     displayManager =  {
-      sddm = {
-        enable = true;
-      };
+      sddm.enable = lib.mkIf (config.specialisation !={}) true;
     };
     fail2ban.enable = true;
     flatpak.enable = true;
@@ -188,18 +187,18 @@
       acceleration = "cuda";
     };
     openssh.enable = true;
-    postgresql = {
-      enable = false;
-      ensureDatabases = [ "khoj" ];
-      enableTCPIP = false;
-      extraPlugins = ps: with pkgs; [
-        postgresqlPackages.pgvector
-      ];
-      authentication = pkgs.lib.mkOverride 10 ''
-        #type database DBuser auth-method
-        local all      all    trust
-      '';
-    };
+    #postgresql = {
+    #  enable = false;
+    #  ensureDatabases = [ "khoj" ];
+    #  enableTCPIP = false;
+    #  extraPlugins = ps: with pkgs; [
+    #    postgresqlPackages.pgvector
+    #  ];
+    #  authentication = pkgs.lib.mkOverride 10 ''
+    #    #type database DBuser auth-method
+    #    local all      all    trust
+    #  '';
+    #};
 
     ## Enable CUPS to print documents.
     printing.enable = true;
@@ -207,12 +206,6 @@
     ## X11
     xserver = {
       enable = true;
-      desktopManager = {
-        plasma5.enable = true;
-      };
-      windowManager = {
-        bspwm.enable = true;
-      };
       xkb.layout = "us";
       xkb.variant = "";
     };
@@ -243,6 +236,17 @@
       DefaultTimeoutStopSec = 10s
     '';
   };
+
+  #------- SPECIALIZATIONS -------#
+  #specialisation = {
+  #  cosmic.configuration = {
+  #    system.nixos.tags = [ "cosmic" ];
+  #    services = {
+  #      desktopManager.cosmic.enable = true;
+  #      displayManager.cosmic.enable = true;
+  #    };
+  #  };
+  #};
 
   #-------- FILESYSTEM --------#
   fileSystems = {

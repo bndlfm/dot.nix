@@ -58,7 +58,6 @@
   };
 
 #------- SPECIALIZATION -------#
-
   ### SPECIALIZATION COMMETH
   specialisation = {
     PaperWM.configuration = {

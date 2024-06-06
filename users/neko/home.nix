@@ -52,7 +52,7 @@ in {
       godot_4
       godot_4-export-templates
       fish
-      (pkgs.callPackage ../../packages/warp-terminal.nix {}).warp-terminal
+      (pkgs.callPackage ../../packages/warp-term.nix {})
       #(appimageTools.wrapType2 {
       #  name = "warp-terminal";
       #  pname = "warp-terminal";
