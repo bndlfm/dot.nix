@@ -4,54 +4,53 @@
       enable = true;
       interactiveShellInit = /* fish */ ''
         set PATH $PATH /home/neko/.local/bin
-
         set fish_greeting
 
         function fish_user_key_bindings --description 'Colemak vi-keys'
-          # Execute this once per mode that emacs bindings should be used in
-          fish_default_key_bindings -M insert
+            fish_default_key_bindings -M insert
+            fish_vi_key_bindings --no-erase insert # Without --no-erase fish_vi_key_bindings will reset all bindings.
 
-          # Then execute the vi-bindings so they take precedence
-          # Without --no-erase fish_vi_key_bindings will reset all bindings.
-          fish_vi_key_bindings --no-erase insert
+            if contains -- -h $argv
+                or contains -- --help $argv
+                echo "Sorry but this function doesn't support -h or --help" >&2
+                return 1
+            end
 
-          if contains -- -h $argv
-            or contains -- --help $argv
-            echo "Sorry but this function doesn't support -h or --help" >&2
-            return 1
-          end
+            ## ADJUST HJKL TO HNEI FOR NAVIGATION
+                bind -s --preset -M default h backward-char
+                bind -s --preset -M default n down-or-search
+                bind -s --preset -M default e up-or-search
+                bind -s --preset -M default i forward-char
 
-          ## Adjust hjkl to hnei for navigation
-            bind -s --preset -M default h backward-char
-            bind -s --preset -M default n down-or-search
-            bind -s --preset -M default e up-or-search
-            bind -s --preset -M default i forward-char
+            ## REMAP (SHIFT) H TO GO TO THE bEGINNING OF lINE AND (SHIFT) I TO GO TO THE END OF LINE
+                bind -s --preset -M default H beginning-of-line
+                bind -s --preset -M default I end-of-line
 
-          # Remap (Shift) H to go to the Beginning of Line and (Shift) I to go to the End of Line
-            bind -s --preset -M default H beginning-of-line
-            bind -s --preset -M default I end-of-line
+            # CHANGE K TO ACT AS I FOR INSERT MODE
+                bind -s --preset -m insert k repaint-mode
 
-          # Change k to act as i for insert mode
-            bind -s --preset -m insert k repaint-mode
+            # USE CTRL-Y TO ACCEPT SUGGESTED TEXT AND SUBMIT
+                bind -s --preset -M insert \cy "commandline -f accept-autosuggestion execute"
 
-          # Use Ctrl-Y to accept suggested text and submit
-            bind -s --preset -M insert \cy "commandline -f accept-autosuggestion execute"
+            # CODEX.FISH OPENAI CODEX PLUGIN
+                bind --erase -M insert --preset \cx
+                bind --erase -M visual --preset \cx
+                bind --erase --preset \cx
+                bind -M insert \cx create_completion
+                bind -M visual \cx create_completion
         end
 
-        set fish_default_key_bindings fish_user_key_bindings
-
         ## more fish vi key fixes
-          set fish_cursor_insert line
-          set fish_suggest_key_bindings yes
+            set fish_default_key_bindings fish_user_key_bindings
+            set fish_cursor_insert line
+            set fish_suggest_key_bindings yes
 
         ## shell indicators (nix-shell, python-venv, etc)
-          set -l nix_shell_info (
-            if test -n "$IN_NIX_SHELL"
-              echo -n "<nix-shell> "
-            end
-          )
-
-        source /home/neko/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
+            set -l nix_shell_info (
+              if test -n "$IN_NIX_SHELL"
+                echo -n "<nix-shell> "
+              end
+            )
 
         zoxide init fish | source
         carapace _carapace fish | source
@@ -82,24 +81,33 @@
           };
         }
         {
-          name = "fish-history-merge";
+          name = "fish-ai";
           src = pkgs.fetchFromGitHub {
-            owner = "2m";
-            repo = "fish-history-merge";
-            rev = "7e415b8ab843a64313708273cf659efbf471ad39";
-            sha256 = "1hlc2ghnc8xidwzj2v1rjrw7gbpkkkld9y2mg4dh2qmcvlizcbd3";
+            owner = "Realiserad";
+            repo = "fish-ai";
+            rev = "9c40b4af5d837565be803dd15a6f85671ec29884";
+            sha256 = "NTGIBFoYdYZWf2YF5Di2/rYBtGHy4qpOiIvGMn/sh+A=";
           };
         }
+        #{
+          #name = "fish-history-merge";
+          #src = pkgs.fetchFromGitHub {
+          #  owner = "2m";
+          #  repo = "fish-history-merge";
+          #  rev = "7e415b8ab843a64313708273cf659efbf471ad39";
+          #  sha256 = "1hlc2ghnc8xidwzj2v1rjrw7gbpkkkld9y2mg4dh2qmcvlizcbd3";
+          #};
+        #}
         { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-       # {
-        #  name = "virtualfish";
-         # src = pkgs.fetchFromGitHub {
-          #  owner = "justinmayer";
-           # repo = "virtualfish";
-           # rev = "d280414a1862e4ebf22abf6b9939ebd48ddd4a58";
-           # sha256 = "1cn23vbribz3fj1nrm617fgzv81vmbx581j7xh2xxm5k7kmp770l";
-         # };
-       # }
+        # {
+          #  name = "virtualfish";
+          #   src = pkgs.fetchFromGitHub {
+          #    owner = "justinmayer";
+          #   repo = "virtualfish";
+          #   rev = "d280414a1862e4ebf22abf6b9939ebd48ddd4a58";
+          #   sha256 = "1cn23vbribz3fj1nrm617fgzv81vmbx581j7xh2xxm5k7kmp770l";
+          # };
+        # }
         {
           name = "tacklebox";
           src = pkgs.fetchFromGitHub {

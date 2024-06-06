@@ -314,8 +314,7 @@
         ## qBittorrent
           "workspace 9 silent, class:org.qbittorrent.qBittorrent"
       ];
-
-      "exec-once" = [
+      exec-once = [
         "waybar"
         "ibus-daemon"
         "blueman-applet"
@@ -350,8 +349,8 @@
         "$mainMod, GRAVE, exec, hdrop -f -b kitty --class kittydrop"
 
         # Rofi
-        "$mainMod, SPACE, exec, wofi --show drun"
-        "$mainMod, SPACE, exec, wofi --show combi -combi-modi window,drun,run,ssh,combi -show-icons"
+        "$mainMod, SPACE, exec, wofi --show run"
+        #"$mainMod, SPACE, exec, wofi --show combi -combi-modi window,drun,run,ssh,combi -show-icons"
         "$mainMod SHIFT, C, exec, wofi --show calc"
         "$mainMod SHIFT, V, exec, wofi -modi 'clipboard:greenclip print' -show clipboard -run '{cmd}' -show-icons"
         "$mainMod, K, exec, /usr/bin/splatmoji copy"

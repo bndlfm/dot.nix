@@ -1,4 +1,4 @@
-{ pkgs, ... }: 
+{ pkgs, lib, ... }:
 let
   homeDir = "/home/neko";
 in {
@@ -35,6 +35,9 @@ in {
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
           { inherit pkgs; };
+        fish = pkgs.fish.overrideAttrs (oldAttrs: {
+          propagatedBuildInputs = oldAttrs.buildInputs ++ [ pkgs.python3 pkgs.python3Packages.openai ]; # FOR fish_ai.fish
+        });
       };
       permittedInsecurePackages = [];
     };
@@ -46,9 +49,19 @@ in {
   home.packages = with pkgs; [
     #!!!! TEMP INSTALLS !!!!#
       distrobox
-      warp-terminal
       godot_4
       godot_4-export-templates
+      fish
+      (pkgs.callPackage ../../packages/warp-term.nix {}).warp-terminal
+      #(appimageTools.wrapType2 {
+      #  name = "warp-terminal";
+      #  pname = "warp-terminal";
+      #  src = fetchurl {
+      #    url = "https://releases.warp.dev/stable/v0.2024.05.28.08.02.stable_00/Warp-x86_64.AppImage";
+      #    hash = "sha256-uLSPLc6oRmMasVpXe9dhV1Rsr1QbWNQDAGUR4SQ5NsY=";
+      #  };
+      #  extraPkgs = pkgs: [ pkgs.curl pkgs.zlib ];
+      #})
 
     ### AI
       upscayl
@@ -123,8 +136,6 @@ in {
       direnv
       dotnet-sdk_7
       meld
-      python3
-      python3Packages.openai
 
     ### SOCIAL
       chatterino2

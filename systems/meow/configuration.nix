@@ -59,6 +59,8 @@
     btrfs-progs
     home-manager
     pinentry-curses
+    python3
+    python3Packages.openai
     #(callPackage ../../theme/sddm-lain-wired.nix{}).sddm-lain-wired-theme
     quickemu
     runc
@@ -98,6 +100,7 @@
       enable = true;
       libraries = with pkgs; [
         cmake
+        python3Packages.openai
       ];
     };
     steam = {
