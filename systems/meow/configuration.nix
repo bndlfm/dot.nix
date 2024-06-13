@@ -31,7 +31,7 @@
   nixpkgs = {
     config = {
       allowUnfree = true;
-      cudaSupport = true;
+      cudaSupport = false;
       qt5 = {
         enable = true;
         platformTheme  = "qt5ct";
@@ -175,10 +175,10 @@
     };
     blueman.enable = true;
     desktopManager = {
-      plasma6.enable = lib.mkIf (config.specialisation !={}) true;
+      plasma6.enable = true;
     };
     displayManager =  {
-      sddm.enable = lib.mkIf (config.specialisation !={}) true;
+      sddm.enable = true;
     };
     fail2ban.enable = true;
     flatpak.enable = true;
@@ -211,6 +211,17 @@
     };
   };
 
+  #------- SPECIALIZATIONS -------#
+  #specialisation = {
+  #  cosmic.configuration = {
+  #    system.nixos.tags = [ "cosmic" ];
+  #    services = {
+  #      desktopManager.cosmic.enable = true;
+  #      displayManager.cosmic.enable = true;
+  #    };
+  #  };
+  #};
+
   #-------- SYSTEM --------#
   systemd = {
     enableUnifiedCgroupHierarchy = true;
@@ -236,17 +247,6 @@
       DefaultTimeoutStopSec = 10s
     '';
   };
-
-  #------- SPECIALIZATIONS -------#
-  #specialisation = {
-  #  cosmic.configuration = {
-  #    system.nixos.tags = [ "cosmic" ];
-  #    services = {
-  #      desktopManager.cosmic.enable = true;
-  #      displayManager.cosmic.enable = true;
-  #    };
-  #  };
-  #};
 
   #-------- FILESYSTEM --------#
   fileSystems = {
@@ -467,7 +467,6 @@
   xdg = {
     portal = {
       enable = true;
-      wlr.enable = true;
       extraPortals = with pkgs; [
         xdg-desktop-portal-kde
       ];

@@ -51,17 +51,7 @@ in {
       distrobox
       godot_4
       godot_4-export-templates
-      fish
       (pkgs.callPackage ../../packages/warp-term.nix {})
-      #(appimageTools.wrapType2 {
-      #  name = "warp-terminal";
-      #  pname = "warp-terminal";
-      #  src = fetchurl {
-      #    url = "https://releases.warp.dev/stable/v0.2024.05.28.08.02.stable_00/Warp-x86_64.AppImage";
-      #    hash = "sha256-uLSPLc6oRmMasVpXe9dhV1Rsr1QbWNQDAGUR4SQ5NsY=";
-      #  };
-      #  extraPkgs = pkgs: [ pkgs.curl pkgs.zlib ];
-      #})
 
     ### AI
       upscayl

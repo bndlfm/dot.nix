@@ -190,16 +190,17 @@
       enable = true;
     };
 
-    plugins = with pkgs; [
+    plugins = [
+      #"/home/neko/.nixcfg/.config/hypr/plugins/hyprslidr.so"
     ];
 
     settings = {
       "$mainMod" = "SUPER";
 
       monitor = [
-        "DP-2, 1920x1080@60, 2560x290, 1, transform, 3"
-        "DP-1, 2560x1440@144, 0x1080, 1, bitdepth, 10"
-        "HDMI-A-1, 1920x1080, 640x0, 1"
+        "DP-1, 2560x1440@144, 1080x0, 1, bitdepth, 10"
+        "DP-2, 1920x1080, 3640x0, 1, transform, 3"
+#        "HDMI-A-1, 1920x1080, 0x0, 1, transform, 3"
       ];
 
       workspace = [
@@ -211,7 +212,7 @@
       misc = {
         vrr=1;
         vfr=true;
-        };
+      };
 
       #-------- Hyprland Variables --------#
       general = {
@@ -221,7 +222,7 @@
         gaps_out = 10;
         border_size = 4;
         layout = "dwindle";
-        };
+      };
 
       dwindle = {
         force_split = 2;
@@ -237,9 +238,8 @@
           "borderangle, 1, 2, default"
           "fade, 1, 2, default"
           "workspaces, 1, 2, default"
-          ];
-        };
-
+        ];
+      };
       decoration = {
         rounding = 7;
         #"blur"= true;
@@ -252,7 +252,6 @@
         #"col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
         #"col.shadow_inactive_border" = "rgba(595959aa)";
       };
-
       env = [
         "GBM_BACKEND,nvidia-drm"
         "GDK_BACKEND,wayland"
@@ -282,7 +281,7 @@
         float_switch_override_focus = 0;
         numlock_by_default = true;
         sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
-        };
+      };
 
       #-------- Window Rules --------#
       windowrule = [
@@ -454,6 +453,7 @@
       ];
     };
     extraConfig = ''
+      monitor=HDMI-A-1, 1920x1080, 0x0, 1, transform, 3
     '';
   };
 }

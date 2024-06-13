@@ -19,10 +19,6 @@
     ### DECLARITIVE FLATPAK
       nix-flatpak.url = "github:gmodena/nix-flatpak";
     ### TILING WINDOW MANAGER
-      nixos-cosmic = {
-        url = "github:lilyinstarlight/nixos-cosmic";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
       hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
       niri.url = "github:sodiboo/niri-flake";
     #DECLARTIVE TINY VMS
@@ -51,7 +47,6 @@
     stylix,
 
     ### WINDOW MANAGERS
-    nixos-cosmic,
     hyprland,
     niri,
     ...
@@ -89,12 +84,6 @@
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
             # WINDOW MANAGERS
-            nixos-cosmic.nixosModules.default {
-              services = {
-                displayManager.cosmic-greeter.enable = true;
-                desktopManager.cosmic.enable = true;
-              };
-            }
             hyprland.nixosModules.default
             niri.nixosModules.niri
 

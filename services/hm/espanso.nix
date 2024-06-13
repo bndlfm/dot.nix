@@ -2,7 +2,7 @@
   services = {
     espanso = {
       enable = true;
-      package = pkgs.espanso;
+      package = pkgs.espanso-wayland;
       matches = {
         base = {
           matches = [

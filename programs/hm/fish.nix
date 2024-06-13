@@ -57,7 +57,8 @@
         direnv hook fish | source
       '';
       plugins = [
-        { name = "autopair"; src = pkgs.fishPlugins.autopair.src; }
+        #{ name = "autopair"; src = pkgs.fishPlugins.autopair.src; }
+        { name = "pisces"; src = pkgs.fishPlugins.pisces.src; }
         { name = "colored-man-pages"; src = pkgs.fishPlugins.colored-man-pages.src; }
         { name = "done"; src = pkgs.fishPlugins.done.src; }
         { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
@@ -89,25 +90,7 @@
             sha256 = "NTGIBFoYdYZWf2YF5Di2/rYBtGHy4qpOiIvGMn/sh+A=";
           };
         }
-        #{
-          #name = "fish-history-merge";
-          #src = pkgs.fetchFromGitHub {
-          #  owner = "2m";
-          #  repo = "fish-history-merge";
-          #  rev = "7e415b8ab843a64313708273cf659efbf471ad39";
-          #  sha256 = "1hlc2ghnc8xidwzj2v1rjrw7gbpkkkld9y2mg4dh2qmcvlizcbd3";
-          #};
-        #}
         { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-        # {
-          #  name = "virtualfish";
-          #   src = pkgs.fetchFromGitHub {
-          #    owner = "justinmayer";
-          #   repo = "virtualfish";
-          #   rev = "d280414a1862e4ebf22abf6b9939ebd48ddd4a58";
-          #   sha256 = "1cn23vbribz3fj1nrm617fgzv81vmbx581j7xh2xxm5k7kmp770l";
-          # };
-        # }
         {
           name = "tacklebox";
           src = pkgs.fetchFromGitHub {
