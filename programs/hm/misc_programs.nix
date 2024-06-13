@@ -32,8 +32,8 @@
       userEmail = "firefliesandlightningbugs@gmail.com";
       extraConfig = {
         credential = {
-          credentialStore = "secretservice";
-          helper = "${pkgs.git-credential-gopass}/bin/git-credential-manager";
+          credentialStore = "credential-gopass";
+          #helper = "${pkgs.git-credential-gopass}/bin/git-credential-manager";
         };
       };
     };
