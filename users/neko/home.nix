@@ -35,9 +35,9 @@ in {
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
           { inherit pkgs; };
-        fish = pkgs.fish.overrideAttrs (oldAttrs: {
-          propagatedBuildInputs = oldAttrs.buildInputs ++ [ pkgs.python3 pkgs.python3Packages.openai ]; # FOR fish_ai.fish
-        });
+#        fish = pkgs.fish.overrideAttrs (oldAttrs: {
+#          propagatedBuildInputs = oldAttrs.buildInputs ++ [ pkgs.python3 pkgs.python3Packages.openai ]; # FOR fish_ai.fish
+#        });
       };
       permittedInsecurePackages = [];
     };
@@ -104,12 +104,13 @@ in {
     ### GAMES
       crawlTiles
       libreoffice-qt
+      lutris
       (prismlauncher.override{withWaylandGLFW=true;})
       glfw-wayland-minecraft
 
     ### MEDIA
-      mpd
-      mpd-discord-rpc
+#      mpd
+#      mpd-discord-rpc
       mpv
       ncmpcpp
       streamlink-twitch-gui-bin
@@ -129,7 +130,7 @@ in {
 
     ### SOCIAL
       chatterino2
-      discord
+#      discord
       ripcord
 
     ### SYSTEM

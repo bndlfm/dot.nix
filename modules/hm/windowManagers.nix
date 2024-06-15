@@ -299,12 +299,14 @@
         ## Steam
           "workspace 7 silent, steam"
           "float, steam"
-        ];
+         ];
       windowrulev2 = [
         ## File Pickers
           "float, class:xdg-desktop-portal(.*)"
           "size 1060 960, title:(.*)(Select a)(.*)"
           "center, title:(.*)(Select a)(.*)"
+        ## GPT FIREFOX
+          "float, title:^(.*ChatGPTBox.*Firefox Developer Edition.*)$"
         ## Pin Entry (GPG)
           "float, class:Pinentry(.*)"
           "center, class:Pinentry(.*)"
@@ -322,9 +324,9 @@
         "gammastep-indicator -l 38.0628:-91.4035 -t 6500:4800"
         "${pkgs.kdeconnect}/libexec/kdeconnectd"
         "kdeconnect-indicator"
-        "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
-        "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
-        "swaybg"
+        #"swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
+        #"swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
+        #"swaybg"
         "xrandr --output DP-1 --primary"
         "ydotoold"
         "export $(dbus-launch)"

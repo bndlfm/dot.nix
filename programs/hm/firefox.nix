@@ -71,6 +71,7 @@
           augmented-steam
           blocktube
           bypass-paywalls-clean
+          chatgptbox
           clearurls
           copy-selection-as-markdown
           darkreader
@@ -304,6 +305,10 @@
 
           #sidebar-splitter {
             display: none;
+          }
+
+          #sidebar-header {
+            display: note;
           }
 
           #sidebar-header {
