@@ -178,11 +178,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1712821856,
-        "narHash": "sha256-rObTWSqfqt0qlOCokE2abesI11Ic8bCCkPNxlyk57Q0=",
+        "lastModified": 1718548087,
+        "narHash": "sha256-WmjH+vdf1UPh2W2ccRr2IhP+CXssOKkOPeh4kDZLipo=",
         "owner": "nix-community",
         "repo": "crate2nix",
-        "rev": "cf034861fdc4e091fc7c5f01d6c022dc46686cf1",
+        "rev": "4fcd1d9485634d10a83635e4d9e5a7c69f9a3884",
         "type": "github"
       },
       "original": {
@@ -472,11 +472,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1718243258,
-        "narHash": "sha256-abBpj2VU8p6qlRzTU8o22q68MmOaZ4v8zZ4UlYl5YRU=",
+        "lastModified": 1718526747,
+        "narHash": "sha256-sKrD/utGvmtQALvuDj4j0CT3AJXP1idOAq2p+27TpeE=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "8d5e27b4807d25308dfe369d5a923d87e7dbfda3",
+        "rev": "0a7ffb28e5df5844d0e8039c9833d7075cdee792",
         "type": "github"
       },
       "original": {
@@ -546,11 +546,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1718480796,
-        "narHash": "sha256-BMLFzvIn5Qdrfc1zyIXWTMA5FHx+R9JNDJ7dkwbvdzk=",
+        "lastModified": 1718560868,
+        "narHash": "sha256-d6n7rii6+u2Q55QzaxgpbLB9cnGhV88ogjyvV0BuEZg=",
         "ref": "refs/heads/main",
-        "rev": "1f5fd7e64a1c0e8d1815bdd6d168193bf9c28d6d",
-        "revCount": 4839,
+        "rev": "738530e62ee48f7326cd5a610b90b47344b701f1",
+        "revCount": 4848,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/hyprwm/Hyprland"
@@ -699,11 +699,11 @@
         "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1718390998,
-        "narHash": "sha256-2xd6nv7wqZxNL4S79ibExyqBtrpATUhR0AggN2jUqp4=",
+        "lastModified": 1718551160,
+        "narHash": "sha256-HHmiheWWiAooYT0q8Pm7oLDz+JAc7zm1w0zhZ7Oluvg=",
         "owner": "sodiboo",
         "repo": "niri-flake",
-        "rev": "b36bf86de51f4498048ec9c6bf99824186493e2e",
+        "rev": "1326832ac03df12ee93f559dc8f34c9af44d6358",
         "type": "github"
       },
       "original": {
@@ -1063,11 +1063,11 @@
         "nixpkgs": "nixpkgs_8"
       },
       "locked": {
-        "lastModified": 1718457106,
-        "narHash": "sha256-sVpsAuvXaSRHhcCw8XbVKlZe8GqB5jpGj4oyZaHAI/Y=",
+        "lastModified": 1718546905,
+        "narHash": "sha256-FmtNOW6Ng11TTgsXkQLqBcIE0j2SmlydHXu/DnWlS4k=",
         "owner": "danth",
         "repo": "stylix",
-        "rev": "a7fbda1fd965cc22e62463896a4af0342cb00e6a",
+        "rev": "80e8e1e2f613bdc8749461899f0959312eb4a54e",
         "type": "github"
       },
       "original": {
