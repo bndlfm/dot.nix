@@ -233,6 +233,8 @@ in {
     STEAM_DISABLE_BROWSER_SHUTDOWN_WORKAROUND=1;
     SUDOEDITOR = "vim";
     VISUAL = "vim";
+    XCURSOR = "volantes-cursors";
+    XCURSOR_SIZE = "24";
   };
 
   ######### (HM) DOTFILES ########
