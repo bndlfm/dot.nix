@@ -18,8 +18,8 @@
       gnumake
       nil
       nodejs
-      nodePackages.bash-language-server
-      nodePackages.typescript-language-server
+      bash-language-server
+      javascript-typescript-langserver
       nodePackages.vscode-langservers-extracted
       ocaml
       opam

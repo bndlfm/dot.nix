@@ -5,7 +5,7 @@
 { config, lib, pkgs, nixos-cosmic, ... }:
 {
   imports = [
-    ../../modules/nx/tailscale.nix
+    #../../modules/nx/tailscale.nix
     ../../containers/pihole.nix
 
     #../../containers/jellyfin.nix

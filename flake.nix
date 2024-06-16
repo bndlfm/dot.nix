@@ -2,92 +2,103 @@
   nixConfig = {
     extra-substituters = [
       "https://nix-community.cachix.org"
-      ];
+      "https://ezkea.cachix.org" # AN ANIME GAME LAUNCHER
+    ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
-    };
+      "ezeak.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" # AN ANIME GAME LAUNCHER
+    ];
+  };
+
 
   inputs = {
-    ### NIXPKGS
-      nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    ### DECLARATIVE USER ENVIRONMENT
-      home-manager = {
-        url = "github:nix-community/home-manager";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-    ### DECLARITIVE FLATPAK
-      nix-flatpak.url = "github:gmodena/nix-flatpak";
-    ### TILING WINDOW MANAGER
-      hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-      niri.url = "github:sodiboo/niri-flake";
-    #DECLARTIVE TINY VMS
-      microvm = {
-        url = "github:astro/microvm.nix";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-    ### USERCSS
-      spicetify-nix.url = "github:the-argus/spicetify-nix";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ### CUSTOMIZATION
+    spicetify-nix.url = "github:the-argus/spicetify-nix";
+    stylix.url = "github:danth/stylix";
+    ### PROGRAMS
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ### VMs
+    microvm = {
+      url = "github:astro/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ### SECRETS
-      sops-nix.url = "github:Mic92/sops-nix";
-    ### THEMING:
-      stylix.url = "github:danth/stylix";
+    sops-nix.url = "github:Mic92/sops-nix";
+
+    ### WINDOW MANAGER
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    niri.url = "github:sodiboo/niri-flake";
   };
+
 
   outputs = {
     nixpkgs,
     home-manager,
 
     nix-flatpak,
+    aagl,
+
     microvm,
+
     sops-nix,
 
-    ### THEMING / CUSTOMIZATION
     spicetify-nix,
     stylix,
 
-    ### WINDOW MANAGERS
     hyprland,
     niri,
     ...
-  }@inputs: let
+  }@inputs:
+
+
+  let
     system = "x86_64-linux";
   in {
+
+
     ### USER CONFIGURATIONS ###
       packages.${system} = {
         homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
+
           modules = [
-              nix-flatpak.homeManagerModules.nix-flatpak
+            nix-flatpak.homeManagerModules.nix-flatpak
 
-              inputs.sops-nix.homeManagerModules.sops
+            inputs.sops-nix.homeManagerModules.sops
 
-              spicetify-nix.homeManagerModule ( import ./theme/spicetify.nix {inherit spicetify-nix;})
-              stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
+            spicetify-nix.homeManagerModule ( import ./theme/spicetify.nix {inherit spicetify-nix;})
 
-              ./users/neko/home.nix
+            stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
+
+            ./users/neko/home.nix
           ];
         };
+
         homeConfigurations."server" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
+
           modules = [
-              inputs.sops-nix.homeManagerModules.sops
-              ./users/server/home.nix
+            inputs.sops-nix.homeManagerModules.sops
+            ./users/server/home.nix
           ];
         };
 
 
-
-    ### SYSTEM CONFIGURATIONS ###
       nixosConfigurations = {
-      ### DESKTOP
         "meow" = nixpkgs.lib.nixosSystem {
-          modules = [
-            # WINDOW MANAGERS
-            hyprland.nixosModules.default
-            niri.nixosModules.niri
 
+          modules = [
             nix-flatpak.nixosModules.nix-flatpak
+            aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
 
             microvm.nixosModules.host {
               microvm.autostart = [];
@@ -97,11 +108,14 @@
 
             stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
 
+            hyprland.nixosModules.default
+            niri.nixosModules.niri
+
             ./systems/meow/configuration.nix
             ./systems/meow/hardware-configuration.nix
           ];
         };
-      ### SERVER
+
         "nyaa" = nixpkgs.lib.nixosSystem {
           modules = [
             nix-flatpak.nixosModules.nix-flatpak

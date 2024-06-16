@@ -304,5 +304,10 @@ in {
     #  };
     #};
   };
+  specialisation.familyTree.configuration = {
+    home.packages = with pkgs; [
+      ocrmypdf
+    ];
+  };
 }
 
