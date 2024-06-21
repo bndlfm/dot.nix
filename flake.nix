@@ -9,31 +9,30 @@
     spicetify-nix.url = "github:the-argus/spicetify-nix";
     stylix.url = "github:danth/stylix";
     ### PROGRAMS
-    nix-flatpak.url = "github:gmodena/nix-flatpak";
+    flatpak.url = "github:gmodena/nix-flatpak";
     aagl = {
       url = "github:ezKEa/aagl-gtk-on-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ### SECRETS
+    sops-nix.url = "github:Mic92/sops-nix";
     ### VMs
     microvm = {
       url = "github:astro/microvm.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ### SECRETS
-    sops-nix.url = "github:Mic92/sops-nix";
-
     ### WINDOW MANAGER
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     niri.url = "github:sodiboo/niri-flake";
   };
 
 
-  outputs = {
+  outputs = inputs@{
     nixpkgs,
     home-manager,
 
-    nix-flatpak,
     aagl,
+    flatpak,
 
     microvm,
 
@@ -45,58 +44,46 @@
     hyprland,
     niri,
     ...
-  }@inputs:
-
-
-  let
+  }: let
     system = "x86_64-linux";
   in {
 
 
-    ### USER CONFIGURATIONS ###
-      packages.${system} = {
-        homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
+    packages.${system} = {
 
-          modules = [
-            nix-flatpak.homeManagerModules.nix-flatpak
-            inputs.sops-nix.homeManagerModules.sops
+      homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
+        modules = [
+          flatpak.homeManagerModules.nix-flatpak
+          inputs.sops-nix.homeManagerModules.sops
+          spicetify-nix.homeManagerModule ( import ./theme/spicetify.nix {inherit spicetify-nix;})
+          stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
+          ./users/neko/home.nix
+        ];
+      };
 
-            spicetify-nix.homeManagerModule ( import ./theme/spicetify.nix {inherit spicetify-nix;})
-            stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
-
-            ./users/neko/home.nix
-          ];
-        };
-
-        homeConfigurations."server" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
-
-          modules = [
-            inputs.sops-nix.homeManagerModules.sops
-            ./users/server/home.nix
-          ];
-        };
+      homeConfigurations."server" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
+        modules = [
+          inputs.sops-nix.homeManagerModules.sops
+          ./users/server/home.nix
+        ];
+      };
 
 
       nixosConfigurations = {
+
         "meow" = nixpkgs.lib.nixosSystem {
-
           modules = [
-            nix-flatpak.nixosModules.nix-flatpak
+            flatpak.nixosModules.nix-flatpak
             aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
-
             microvm.nixosModules.host {
               microvm.autostart = [];
             }
-
             sops-nix.nixosModules.sops
-
             stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
-
             hyprland.nixosModules.default
             niri.nixosModules.niri
-
             ./systems/meow/configuration.nix
             ./systems/meow/hardware-configuration.nix
           ];
@@ -104,7 +91,7 @@
 
         "nyaa" = nixpkgs.lib.nixosSystem {
           modules = [
-            nix-flatpak.nixosModules.nix-flatpak
+            flatpak.nixosModules.nix-flatpak
             ./systems/nyaa/configuration.nix
             ./systems/nyaa/hardware-configuration.nix
           ];

@@ -83,6 +83,10 @@
     dconf = {
       enable = true;
     };
+    gamescope = {
+      enable = true;
+      capSysNice = true;
+    };
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;

@@ -348,7 +348,7 @@
         "$mainMod, P, pseudo" # dwindle
         "$mainMod, J, togglesplit" # dwindle
 
-        "$mainMod, GRAVE, exec, hdrop -f -b kitty --class kittydrop"
+        "$mainMod, GRAVE, exec, hdrop -f -b -g 30 kitty --class kittydrop"
 
         # Rofi
         "$mainMod, SPACE, exec, wofi --show run"

@@ -103,14 +103,13 @@ in {
 
     ### GAMES
       crawlTiles
+      glfw-wayland-minecraft
       libreoffice-qt
       lutris
       (prismlauncher.override{withWaylandGLFW=true;})
-      glfw-wayland-minecraft
 
     ### MEDIA
-#      mpd
-#      mpd-discord-rpc
+      mpd-discord-rpc
       mpv
       ncmpcpp
       streamlink-twitch-gui-bin
