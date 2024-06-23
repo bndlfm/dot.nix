@@ -200,7 +200,7 @@
       monitor = [
         "DP-1, 2560x1440@144, 1080x0, 1, bitdepth, 10"
         "DP-2, 1920x1080, 3640x0, 1, transform, 3"
-#        "HDMI-A-1, 1920x1080, 0x0, 1, transform, 3"
+        # See extraConfig below: "HDMI-A-1, 1920x1080, 0x0, 1, transform, 3"
       ];
 
       workspace = [
@@ -327,7 +327,7 @@
         "kdeconnect-indicator"
         #"swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
         #"swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
-        #"swaybg"
+        "swaybg"
         "xrandr --output DP-1 --primary"
         "ydotoold"
         "export $(dbus-launch)"

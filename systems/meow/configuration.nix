@@ -2,14 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, nixos-cosmic, ... }:
-{
+{ config, pkgs, ... }:{
   imports = [
     ./cachix.nix
-    #../../modules/nx/tailscale.nix
     ../../containers/pihole.nix
-
     #../../containers/jellyfin.nix
+
+    #../../modules/nx/tailscale.nix
+    ../../services/nx/sunshine.nix
   ];
 
   #-------- PACKAGES --------#
@@ -136,6 +136,7 @@
         swtpm.enable = true;
       };
     };
+    waydroid.enable = true;
   };
 
     environment.extraInit = ''
@@ -372,6 +373,10 @@
 
   #-------- GPU --------#
   hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
     nvidia = {
       modesetting.enable = true;
 
@@ -401,12 +406,6 @@
     };
 
     nvidia-container-toolkit.enable = true;
-
-    opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-    };
   };
 
 
