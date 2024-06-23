@@ -9,7 +9,7 @@
     #../../containers/jellyfin.nix
 
     #../../modules/nx/tailscale.nix
-    ../../services/nx/sunshine.nix
+    #../../services/nx/sunshine.nix
   ];
 
   #-------- PACKAGES --------#
@@ -206,6 +206,23 @@
 
     ## Enable CUPS to print documents.
     printing.enable = true;
+
+    sunshine = {
+      enable = true;
+      autoStart = true;
+      capSysAdmin = true;
+      openFirewall = true;
+      #applications = {
+      #  env = {
+      #    PATH = "$(PATH):$(HOME)/.local/bin";
+      #  };
+      #  apps = [
+      #    {
+      #
+      #    }
+      #  ];
+      #};
+    };
 
     ## X11
     xserver = {
