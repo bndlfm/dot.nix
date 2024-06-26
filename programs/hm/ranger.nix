@@ -1,21 +1,17 @@
-{ lib, ... }:{
+{ ... }:{
   programs.ranger = {
     enable = true;
     plugins = [
       {
         name = "ranger_devicons";
-        src = builtins.fetchFromGithub {
-          owner = "alexanderjeurissen";
-          repor = "ranger_devicons";
-          rev = lib.fakeSha256;
+        src = builtins.fetchGit {
+          url = "https://github.com/alexanderjeurissen/ranger_devicons";
         };
       }
       {
         name = "ranger-devicons2";
-        src = builtins.fetchFromGitHub {
-          owner = "cdump";
-          repo = "ranger-devicons2";
-          rev = lib.fakeSha256;
+        src = builtins.fetchGit {
+          url = "https://github.com/cdump/ranger-devicons2";
         };
       }
     ];

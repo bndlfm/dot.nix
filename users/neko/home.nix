@@ -14,6 +14,7 @@ in {
       ../../programs/hm/kitty.nix
       ../../programs/hm/ncmpcpp.nix
       ../../programs/hm/neovim.nix
+      ../../programs/hm/ranger.nix
       ../../programs/hm/yazi.nix
 
       ../../programs/hm/misc_programs.nix
