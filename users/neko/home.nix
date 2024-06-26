@@ -52,6 +52,7 @@ in {
       godot_4
       godot_4-export-templates
       (pkgs.callPackage ../../packages/warp-term.nix {})
+      pdfstudio2023
 
     ### AI
       upscayl
@@ -141,7 +142,7 @@ in {
       podman-compose
       protonup
       winetricks
-      wineWow64Packages.staging
+      wine64
 
 
     ### THEMING
