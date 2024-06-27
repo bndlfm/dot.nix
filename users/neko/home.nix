@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 let
   homeDir = "/home/neko";
 in {
@@ -36,9 +36,6 @@ in {
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
           { inherit pkgs; };
-#        fish = pkgs.fish.overrideAttrs (oldAttrs: {
-#          propagatedBuildInputs = oldAttrs.buildInputs ++ [ pkgs.python3 pkgs.python3Packages.openai ]; # FOR fish_ai.fish
-#        });
       };
       permittedInsecurePackages = [];
     };
@@ -52,15 +49,14 @@ in {
       distrobox
       godot_4
       godot_4-export-templates
-      (pkgs.callPackage ../../packages/warp-term.nix {})
       pdfstudio2023
+      (pkgs.callPackage ../../packages/warp-term.nix {})
 
-    ### AI
-      upscayl
 
     ### BROWSER
       firefox-devedition
       qutebrowser
+
 
     ### CLI
       age
@@ -86,6 +82,7 @@ in {
       zip
       zoxide
 
+
     ### TUI
       ### TOP-LIKES
         btop
@@ -99,6 +96,7 @@ in {
 
     ### EDITING TOOLS
       gimp
+      upscayl
 
     ### NOTES
       obsidian
@@ -117,6 +115,7 @@ in {
       streamlink-twitch-gui-bin
         streamlink
 
+
     ### PROGRAMMING
       ### GIT
         git
@@ -129,10 +128,11 @@ in {
       dotnet-sdk_7
       meld
 
+
     ### SOCIAL
       chatterino2
-#      discord
       ripcord
+
 
     ### SYSTEM
       ### Plasma5-6/QT5-6
@@ -194,7 +194,6 @@ in {
         xbindkeys
         xorg.xkill
         xorg.xhost
-        #xclip
       appimage-run
       clipboard-jh
       google-drive-ocamlfuse
@@ -213,11 +212,13 @@ in {
       speechd
   ];
 
+
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
     DEFAULT_BROWSER = "${pkgs.firefox-devedition}/bin/firefox";
     DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
     EDITOR  = "nvim";
+    GPG_TTY ="$(tty)";
     _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd";
     KHOJ_ADMIN_EMAIL = "firefliesandlightningbugs@gmail.com";
     KHOJ_ADMIN_PASSWORD = "NozndCZRacr7kpDx0UzWttZnXyJRL9qm";
