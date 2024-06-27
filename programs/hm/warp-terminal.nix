@@ -1,13 +1,10 @@
 {
-  lib,
-  inputs,
   pkgs,
-  stdenv,
   ...
 }:
 pkgs.warp-terminal.overrideAttrs (old: rec {
   pname = "warp-terminal";
-  version = "0.2024.04.02.08.02.stable_01";
+  version = "0.2024.06.18.08.02.stable_04";
   src = pkgs.fetchurl {
     url = "https://releases.warp.dev/stable/v${version}/warp-terminal-v${version}-1-x86_64.pkg.tar.zst";
     sha256 = "sha256-xnXRg23AdfCk2TKBr+PZ3wDYqTN4+8wLSodWpmh3D/Y=";

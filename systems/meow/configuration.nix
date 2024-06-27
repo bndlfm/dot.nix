@@ -80,6 +80,7 @@
 
   #-------- PACKAGE MODULES --------#
   programs = {
+    darling.enable = true;
     dconf = {
       enable = true;
     };
@@ -136,6 +137,7 @@
         swtpm.enable = true;
       };
     };
+    spiceUSBRedirection.enable = true;
     waydroid.enable = true;
   };
 
@@ -174,7 +176,7 @@
   services = {
     avahi = { # CUPS (printing)
       enable = true;
-      nssmdns4 = true;
+      #nssmdns4 = true;
       openFirewall = true;
     };
     blueman.enable = true;
@@ -310,15 +312,16 @@
   networking = {
     hostName = "meow";
     networkmanager.enable = true; # Enable Networking
-    nat = {
-      enable = true;
-      externalInterface = "enp6s0";
-      internalInterfaces = [ "wg0" ];
-    };
+    #nat = {
+    #  enable = true;
+    #  externalInterface = "enp6s0";
+    #  internalInterfaces = [ "wg0" ];
+    #};
     firewall = {
       enable = true;
       allowedTCPPorts = [
         5173 # Grimoire
+        5930
         8000
         8096 # Jellyfin HTTP
         8920 # Jellyfin HTTPS
@@ -334,6 +337,7 @@
       allowedUDPPorts = [
         1900 7359 # Jellyfin service autodiscovery
         5173 # Grimoire
+        5930
         11434 # Ollama
         5432 42110 # Khoj
         51820 # Wireguard port
