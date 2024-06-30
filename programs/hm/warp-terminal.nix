@@ -7,7 +7,7 @@ pkgs.warp-terminal.overrideAttrs (old: rec {
   version = "0.2024.06.18.08.02.stable_04";
   src = pkgs.fetchurl {
     url = "https://releases.warp.dev/stable/v${version}/warp-terminal-v${version}-1-x86_64.pkg.tar.zst";
-    sha256 = "sha256-xnXRg23AdfCk2TKBr+PZ3wDYqTN4+8wLSodWpmh3D/Y=";
+    hash = "sha256-8/9VgkKU7VO7m0Mgx24vM2Bv6+yqcSlhPLZ1slCTCEc=";
   };
   nativeBuildInputs = old.nativeBuildInputs ++ [pkgs.makeWrapper];
   postInstall = ''

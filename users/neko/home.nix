@@ -50,7 +50,8 @@ in {
       godot_4
       godot_4-export-templates
       pdfstudio2023
-      (pkgs.callPackage ../../packages/warp-term.nix {})
+      (pkgs.callPackage ../../programs/hm/warp-terminal.nix {})
+      spice-gtk
 
 
     ### BROWSER
@@ -143,7 +144,7 @@ in {
       podman-compose
       protonup
       winetricks
-      wine64
+      wineWowPackages.stagingFull
 
 
     ### THEMING
