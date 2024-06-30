@@ -77,6 +77,7 @@ in {
       ripgrep
       silver-searcher
       trashy
+      usbutils
       wireguard-tools
       xdragon
       yt-dlp
