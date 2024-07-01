@@ -235,6 +235,9 @@
       #};
     };
 
+    udev.extraRules = ''
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="*",GROUP="users", MODE="0660"
+    '';
     ## X11
     xserver = {
       enable = true;
