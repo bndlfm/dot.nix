@@ -1,5 +1,7 @@
 *.orig
 bin
+./packages/TinyWiiBackupManager
+./packages/tinyWiiBackupManager
 .config/nvim/lazy-lock.json
 .config/nvim/tmp
 .config/nvim/plugged
