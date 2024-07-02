@@ -19,9 +19,9 @@
       gtk3
     ];
 
-#    postPatch = ''
-#      ln -s ${./Cargo.lock} Cargo.lock
-#    '';
+    postPatch = ''
+      ln -s ${./Cargo.lock} Cargo.lock
+    '';
 
     buildPhase = ''
       # Add build commands here
@@ -35,8 +35,8 @@
     '';
 
     meta = with pkgs.lib; {
-      description = "Wii Backup Fusion";
-      homepage = "https://github.com/larsenv/Wii-Backup-Fusion";
+      description = "Tiny Wii Backup Manager";
+      homepage = "https://github.com/mq1/TinyWiiBackupManager";
       license = licenses.gpl3; # Adjust if the license is different
       platforms = platforms.all;
     };
