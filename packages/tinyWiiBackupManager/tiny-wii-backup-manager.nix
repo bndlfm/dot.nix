@@ -22,7 +22,7 @@
 
     buildInputs = with pkgs; [
       gtk3
-    ] ++ lib.optionals stdenv.isLinux [ openssl ];
+    ] ++ lib.optionals stdenv.isLinux [ openssl pkg-config ];
 
     buildPhase = ''
       cargo build --release
