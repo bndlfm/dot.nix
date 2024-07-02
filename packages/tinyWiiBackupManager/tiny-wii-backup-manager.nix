@@ -25,7 +25,6 @@
     ] ++ lib.optionals stdenv.isLinux [ openssl ];
 
     buildPhase = ''
-      OPENSSL_NO_VENDOR = 1
       cargo build --release
     '';
 
@@ -41,3 +40,6 @@
       platforms = platforms.all;
     };
 }
+
+#      OPENSSL_NO_VENDOR = 1
+
