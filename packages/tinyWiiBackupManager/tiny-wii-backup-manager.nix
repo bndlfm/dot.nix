@@ -5,16 +5,23 @@
 
     src = fetchFromGitHub {
       owner = "mq1";
-      repo = "tiny-wii-backup-manager";
+      repo = "TinyWiiBackupManager";
       rev = "master"; # You might want to use a specific commit hash or tag instead
-      sha256 = lib.fakeSha256;
+      sha256 = "sha256-EYJQzQ9iEmhdEgmPriaP9Oy5n5pnFNOFqsnHMN9+vcY=";
     };
 
-    cargoHash = lib.fakeSha256;
+    cargoLock = {
+      lockFile = ./Cargo.lock;
+      allowBuiltinFetchGit = true;
+    };
 
     buildInputs = with pkgs; [
       gtk3
     ];
+
+#    postPatch = ''
+#      ln -s ${./Cargo.lock} Cargo.lock
+#    '';
 
     buildPhase = ''
       # Add build commands here
