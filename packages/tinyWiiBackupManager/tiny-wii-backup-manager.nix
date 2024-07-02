@@ -11,9 +11,9 @@
     };
 
 
-    postPatch = ''
-      ln -s ${./Cargo.lock} Cargo.lock
-    '';
+#    postPatch = ''
+#      ln -s ${./Cargo.lock} Cargo.lock
+#    '';
 
     cargoLock = {
       lockFile = ./Cargo.lock;
