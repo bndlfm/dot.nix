@@ -10,19 +10,19 @@
       sha256 = "sha256-EYJQzQ9iEmhdEgmPriaP9Oy5n5pnFNOFqsnHMN9+vcY=";
     };
 
-
+    cargoDeps = rustPlatform.importCargoLock {
+      inherit src;
+      lockFile = ./Cargo.lock;
+    };
 #    postPatch = ''
 #      ln -s ${./Cargo.lock} Cargo.lock
 #    '';
 
-    cargoLock = {
-      lockFile = ./Cargo.lock;
-      allowBuiltinFetchGit = true;
-    };
+    nativeBuildInputs = with pkgs; [ pkg-config ];
 
     buildInputs = with pkgs; [
       gtk3
-    ] ++ lib.optionals stdenv.isLinux [ openssl pkg-config ];
+    ] ++ lib.optionals stdenv.isLinux [ openssl ];
 
     buildPhase = ''
       cargo build --release
@@ -41,5 +41,9 @@
     };
 }
 
-#      OPENSSL_NO_VENDOR = 1
+#OPENSSL_NO_VENDOR = 1
 
+#cargoLock = {
+# lockFile = ./Cargo.lock;
+# allowBuiltinFetchGit = true;
+#};
