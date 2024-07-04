@@ -24,7 +24,7 @@
         volumes = [
           "/media/.cache:/cache"
           "/media/.jellyfin:/config"
-          "/media:/media"
+          "/media/content:/media"
         ];
       };
     };

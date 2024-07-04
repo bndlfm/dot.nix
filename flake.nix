@@ -72,7 +72,6 @@
 
 
       nixosConfigurations = {
-
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
             flatpak.nixosModules.nix-flatpak

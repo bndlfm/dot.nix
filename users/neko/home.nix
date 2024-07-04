@@ -106,6 +106,7 @@ in {
     ### GAMES
       crawlTiles
       glfw-wayland-minecraft
+      heroic
       libreoffice-qt
       lutris
       (prismlauncher.override{withWaylandGLFW=true;})
@@ -145,7 +146,8 @@ in {
       podman-compose
       protonup
       winetricks
-      wineWowPackages.stagingFull
+      #wine
+      wine64
 
 
     ### THEMING

@@ -5,10 +5,12 @@
 { config, pkgs, ... }:{
   imports = [
     ./cachix.nix
-    ../../containers/pihole.nix
-    #../../containers/jellyfin.nix
+    #../../containers/pihole.nix
+    ../../containers/jellyfin.nix
 
     #../../modules/nx/tailscale.nix
+    ../../modules/nx/aagl-on-nix.nix
+
     #../../services/nx/sunshine.nix
   ];
 
@@ -30,6 +32,10 @@
     config = {
       allowUnfree = true;
       cudaSupport = false;
+      packageOverrides = pkgs: {
+        nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
+          { inherit pkgs; };
+      };
       qt5 = {
         enable = true;
         platformTheme  = "qt5ct";
@@ -223,16 +229,6 @@
       autoStart = true;
       capSysAdmin = true;
       openFirewall = true;
-      #applications = {
-      #  env = {
-      #    PATH = "$(PATH):$(HOME)/.local/bin";
-      #  };
-      #  apps = [
-      #    {
-      #
-      #    }
-      #  ];
-      #};
     };
 
     udev.extraRules = ''
@@ -295,15 +291,15 @@
       fsType = "vfat";
     };
 
-    "/mnt/data" = {
-      device = "/dev/disk/by-uuid/70cbfa77-4222-4322-a373-6d09ae4d3141";
-      fsType = "ext4";
-      options = [
-        "noatime"
-        "nodiratime"
-        "discard"
-      ];
-    };
+   #"/mnt/data" = {
+   #  device = "/dev/disk/by-uuid/70cbfa77-4222-4322-a373-6d09ae4d3141";
+   #  fsType = "ext4";
+   #  options = [
+   #    "noatime"
+   #    "nodiratime"
+   #    "discard"
+   #  ];
+   # };
 
     "/media" = {
       device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
