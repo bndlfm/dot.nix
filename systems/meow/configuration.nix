@@ -5,11 +5,12 @@
 { config, pkgs, ... }:{
   imports = [
     ./cachix.nix
+
     #../../containers/pihole.nix
-    ../../containers/jellyfin.nix
+    #../../containers/jellyfin.nix
 
     #../../modules/nx/tailscale.nix
-    ../../modules/nx/aagl-on-nix.nix
+    #../../modules/nx/aagl-gtk-on-nix.nix
 
     #../../services/nx/sunshine.nix
   ];
@@ -234,6 +235,7 @@
     udev.extraRules = ''
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="*",GROUP="users", MODE="0660"
     '';
+
     ## X11
     xserver = {
       enable = true;
@@ -291,15 +293,15 @@
       fsType = "vfat";
     };
 
-   #"/mnt/data" = {
-   #  device = "/dev/disk/by-uuid/70cbfa77-4222-4322-a373-6d09ae4d3141";
-   #  fsType = "ext4";
-   #  options = [
-   #    "noatime"
-   #    "nodiratime"
-   #    "discard"
-   #  ];
-   # };
+    "/mnt/data" = {
+      device = "/dev/disk/by-partuuid/37a21dd3-9547-4533-aaa5-440c4e2e16bd";
+      fsType = "ntfs";
+      options = [
+        "noatime"
+        "nodiratime"
+        "discard"
+      ];
+    };
 
     "/media" = {
       device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
@@ -418,8 +420,8 @@
 
       # Use the NVidia open source kernel module (not to be confused with the
       # independent third-party "nouveau" open source driver).
-      # Support is limited to the Turing and later architectures. Full list of 
-      # supported GPUs is at: 
+      # Support is limited to the Turing and later architectures. Full list of
+      # supported GPUs is at:
       # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
       # Only available from driver 515.43.04+
       # Currently alpha-quality/buggy, so false is currently the recommended setting.
@@ -430,7 +432,7 @@
       nvidiaSettings = true;
 
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      # package = config.boot.kernelPackages.nvidiaPackages.stable;
       #NOTE: Firefox may need to be run as xwayland w/ MOZ_ENABLE_WAYLAND=0
     };
 
@@ -462,12 +464,12 @@
   # Setup displays
   services.xserver.displayManager.setupCommands =
     let
-      monitor-center = "DP-0";
-      monitor-top = "HDMI-0";
-      monitor-right = "DP-3";
-    in
+      monitor-center = "DP-1";
+      monitor-left = "DP-2";
+      monitor-right = "HDMI-A-1";
+    in /* sh */
     ''
-      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, ${monitor-top}: nvidia-auto-select +640+0 {ForceCompositionPipeline=On}, ${monitor-right}: nvidia-auto-select +2560+290 {rotation=right, ForceCompositionPipeline=On}"
+      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, ${monitor-left}: nvidia-auto-select +0+0 {ForceCompositionPipeline=On}, ${monitor-right}: nvidia-auto-select +3840+0 {rotation=right, ForceCompositionPipeline=On}"
     '';
 
 
