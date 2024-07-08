@@ -10,17 +10,17 @@
     stylix.url = "github:danth/stylix";
     ### PROGRAMS
     flatpak.url = "github:gmodena/nix-flatpak";
-    aagl = {
-      url = "github:ezKEa/aagl-gtk-on-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+      #aagl = {
+      #  url = "github:ezKEa/aagl-gtk-on-nix";
+      #  inputs.nixpkgs.follows = "nixpkgs";
+      #};
     ### SECRETS
     sops-nix.url = "github:Mic92/sops-nix";
     ### VMs
-    microvm = {
-      url = "github:astro/microvm.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+      #microvm = {
+        #url = "github:astro/microvm.nix";
+        #inputs.nixpkgs.follows = "nixpkgs";
+      #};
     ### WINDOW MANAGER
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     niri.url = "github:sodiboo/niri-flake";
@@ -50,7 +50,6 @@
 
 
     packages.${system} = {
-
       homeConfigurations."neko" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${system};
         modules = [
@@ -75,10 +74,8 @@
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
             flatpak.nixosModules.nix-flatpak
-            aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
-            microvm.nixosModules.host {
-              microvm.autostart = [];
-            }
+            #aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
+            #microvm.nixosModules.host { microvm.autostart = []; }
             sops-nix.nixosModules.sops
             stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
             hyprland.nixosModules.default

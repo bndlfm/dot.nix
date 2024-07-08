@@ -330,6 +330,7 @@
         "swaybg"
         "xrandr --output DP-1 --primary"
         "ydotoold"
+        "hyprpaper"
         "export $(dbus-launch)"
         "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE"
         ];

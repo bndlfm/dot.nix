@@ -1,6 +1,7 @@
 { pkgs, ... }:
 let
   homeDir = "/home/neko";
+  aagl-gtk-on-nix = import (builtins.fetchTarball "https://github.com/ezKEa/aagl-gtk-on-nix/archive/main.tar.gz");
 in {
   home.stateVersion = "23.11";
   home.username = "neko";
@@ -8,6 +9,7 @@ in {
 
   imports = [
     ### PROGRAMS
+      ../../programs/hm/an-anime-game-launcher.nix
       ../../programs/hm/firefox.nix
       ../../programs/hm/fish.nix
       ../../programs/hm/gnome-shell.nix
@@ -146,7 +148,7 @@ in {
       podman-compose
       protonup
       winetricks
-      wineWowPackages.staging
+      wineWowPackages.stable
 
 
     ### THEMING
