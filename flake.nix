@@ -10,17 +10,17 @@
     stylix.url = "github:danth/stylix";
     ### PROGRAMS
     flatpak.url = "github:gmodena/nix-flatpak";
-      #aagl = {
-      #  url = "github:ezKEa/aagl-gtk-on-nix";
-      #  inputs.nixpkgs.follows = "nixpkgs";
-      #};
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ### SECRETS
     sops-nix.url = "github:Mic92/sops-nix";
     ### VMs
-      #microvm = {
-        #url = "github:astro/microvm.nix";
-        #inputs.nixpkgs.follows = "nixpkgs";
-      #};
+    microvm = {
+      url = "github:astro/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ### WINDOW MANAGER
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     niri.url = "github:sodiboo/niri-flake";
