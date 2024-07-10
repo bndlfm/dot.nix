@@ -1,0 +1,114 @@
+.onagre {
+  --exit-unfocused: false;
+  --font-family: "Iosevka, Iosevka Nerd Font";
+  --icon-theme: "Papirus";
+  --icon-size: 24;
+  font-size: 16;
+  width: 600;
+  height: 400;
+  background: #2E3440;  // Nord0
+  color: #D8DEE9;  // Nord4
+  border-color: #4C566A;  // Nord3
+  border-radius: 8;
+  border-width: 2;
+  padding: 10;
+
+  .container {
+    background: #3B4252;  // Nord1
+    border-radius: 6;
+    padding: 8;
+
+    .search {
+      background: #434C5E;  // Nord2
+      color: #ECEFF4;  // Nord6
+      border-radius: 4;
+      padding: 6;
+      --spacing: 8;
+      --height: 50;
+      --align-y: center;
+
+      .input {
+        background: #4C566A;  // Nord3
+        color: #E5E9F0;  // Nord5
+        border-radius: 4;
+        padding: 4;
+        --width: fill;
+        --height: 40;
+        --align-y: center;
+        --selection-color: #5E81AC;  // Nord10
+        --placeholder-color: #81A1C1;  // Nord9
+        font-size: 14;
+      }
+
+      .plugin-hint {
+        background: #88C0D0;  // Nord8
+        color: #2E3440;  // Nord0
+        border-radius: 2;
+        padding: 2;
+        font-size: 12;
+      }
+    }
+
+    .rows {
+      --height: fill;
+
+      .row {
+        background: #3B4252;  // Nord1
+        color: #E5E9F0;  // Nord5
+        border-radius: 4;
+        padding: 8;
+        --height: 60;
+        --spacing: 8;
+        align-y: center;
+
+        .title {
+          color: #88C0D0;  // Nord8
+          font-size: 14;
+        }
+
+        .description {
+          color: #D8DEE9;  // Nord4
+          font-size: 12;
+        }
+
+        .icon {
+          --width: 32;
+          --height: 32;
+        }
+
+        .category-icon {
+          --width: 24;
+          --height: 24;
+          color: #81A1C1;  // Nord9
+        }
+      }
+
+      .row-selected {
+        background: #4C566A;  // Nord3
+        color: #ECEFF4;  // Nord6
+
+        .title {
+          color: #8FBCBB;  // Nord7
+        }
+
+        .description {
+          color: #E5E9F0;  // Nord5
+        }
+      }
+    }
+
+    .scrollable {
+      background: #2E3440;  // Nord0
+      border-color: #4C566A;  // Nord3
+      border-radius: 4;
+      width: 8;
+      margin: 2;
+
+      .scroller {
+        color: #5E81AC;  // Nord10
+        border-radius: 4;
+        width: 6;
+      }
+    }
+  }
+}

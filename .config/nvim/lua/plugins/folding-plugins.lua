@@ -159,7 +159,6 @@ return {
         return virtText
       end,
 
-      close_fold_kinds = { "imports", "comment" },
       close_folds_kinds_for_ft = {
         default = { "imports", "comment" },
         json = { "array" },

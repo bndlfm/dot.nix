@@ -49,10 +49,10 @@
       godot_4
       godot_4-export-templates
       (pkgs.callPackage ../../programs/hm/warp-terminal.nix {})
+      onagre
 
     ### BROWSER
       firefox-devedition
-      #qutebrowser
 
 
     ### CLI
@@ -262,6 +262,10 @@
       #  source = ./.config/nvim;
       #  recursive = true;
       #};
+      "onager" = {
+        source = ../../.config/onager;
+        recursive = true;
+      };
       "polybar" = {
         source = ../../.config/polybar;
         recursive = true;
