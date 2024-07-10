@@ -5,27 +5,27 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-    #extraConfig = ''
-    #:luafile ~/.config/nvim/lazy_bootstrap.lua
-    #'';
     extraPackages = with pkgs; [
+      bash-language-server
       cargo
       fzf
       gcc
       git
+      gnumake
+      javascript-typescript-langserver
       lua-language-server
       lazygit
-      gnumake
-      nil
+      nixd
       nodejs
-      bash-language-server
-      javascript-typescript-langserver
       nodePackages.vscode-langservers-extracted
       ocaml
       opam
       pyright
       python3
       python3Packages.pip
+      shellcheck
+      shfmt
+      stylua
       unzip
       yarn
     ];
@@ -36,9 +36,11 @@
         p.c
         p.cpp
         p.lua
+        p.ocaml
         p.nix
         p.python
         p.rust
+        p.scheme
         p.typescript
       ]))
     ];

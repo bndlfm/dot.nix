@@ -1,8 +1,4 @@
-{ pkgs, ... }:
-let
-  homeDir = "/home/neko";
-  aagl-gtk-on-nix = import (builtins.fetchTarball "https://github.com/ezKEa/aagl-gtk-on-nix/archive/main.tar.gz");
-in {
+{ pkgs, ... }: {
   home.stateVersion = "23.11";
   home.username = "neko";
   home.homeDirectory = "/home/neko";
@@ -53,12 +49,11 @@ in {
       godot_4-export-templates
       pdfstudio2023
       (pkgs.callPackage ../../programs/hm/warp-terminal.nix {})
-      spice-gtk
 
 
     ### BROWSER
       firefox-devedition
-      qutebrowser
+      #qutebrowser
 
 
     ### CLI
@@ -98,12 +93,15 @@ in {
       page
       pulsemixer
 
+
     ### EDITING TOOLS
       gimp
       upscayl
 
+
     ### NOTES
       obsidian
+
 
     ### GAMES
       crawlTiles
@@ -112,6 +110,7 @@ in {
       libreoffice-qt
       lutris
       (prismlauncher.override{withWaylandGLFW=true;})
+
 
     ### MEDIA
       mpd-discord-rpc

@@ -191,7 +191,7 @@
     };
 
     plugins = [
-      #"/home/neko/.nixcfg/.config/hypr/plugins/hyprslidr.so"
+      #      "/home/neko/.nixcfg/.config/hypr/plugins/hyprscroller.so"
     ];
 
     settings = {
@@ -222,6 +222,7 @@
         gaps_out = 10;
         border_size = 4;
         layout = "dwindle";
+        "col.active_border" = "rgba(88C0D0ff) rgba(81a1c1ff) 45deg";
       };
 
       dwindle = {
@@ -248,9 +249,8 @@
         drop_shadow = true;
         shadow_range = 4;
         shadow_render_power = 3;
-        #"col.shadow" = "rgba(1a1a1aee)";
-        #"col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        #"col.shadow_inactive_border" = "rgba(595959aa)";
+        "col.shadow" = "rgba(2e3440FF)";
+        "col.shadow_inactive" = "rgba(242933FF)";
       };
       env = [
         "GBM_BACKEND,nvidia-drm"
@@ -325,8 +325,8 @@
         "gammastep-indicator -l 38.0628:-91.4035 -t 6500:4800"
         "${pkgs.kdeconnect}/libexec/kdeconnectd"
         "kdeconnect-indicator"
-        #"swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
-        #"swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
+        "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
+        "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
         "swaybg"
         "xrandr --output DP-1 --primary"
         "ydotoold"

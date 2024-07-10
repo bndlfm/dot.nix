@@ -24,7 +24,7 @@
         search = {
           force = true;
           default = "Google";
-          order = [ "Google" "Perplexity" ];
+          order = [ "Google" ];
           engines = {
             "Nix Packages" = {
               urls = [{
@@ -70,7 +70,7 @@
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
           augmented-steam
           blocktube
-          bypass-paywalls-clean
+          #bypass-paywalls-clean
           chatgptbox
           clearurls
           copy-selection-as-markdown
@@ -379,6 +379,12 @@
 
           #PersonalToolbar {
             padding-left: 36px !important;
+          }
+
+          /* hacky way to try and fix sidebar header appearing */
+          #TabsToolbar{ visibility: collapse !important }
+          #sidebar-header {
+            display: none;
           }
         '';
       };

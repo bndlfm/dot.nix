@@ -90,39 +90,3 @@
       }
     );
 }
-
-
-
-#NOTE: OLD / NOT WORKING
-  #installPhase = ''
-  #  # Create shell script
-  #  cat > $out/bin/hyper-shell <<EOF
-  #  #!/usr/bin/env bash
-  #  exec ${pythonWithPackages}/bin/python $out/share/${pname}/dodo.py "$@"
-  #  EOF
-  #
-  #  chmod +x $out/bin/hyper-shell
-  #
-  #  makeWrapper $out/bin/hyper-shell $out/bin/hyper-shell \
-  #    --prefix PYTHONPATH : $out/share/${pname} \
-  #  install -Dm755 ${launcherScript}/bin/hyper-shell $out/bin/hyper-shell
-  #'';
-
-#launcherScript = pkgs.writeShellScriptBin "hyper-shell" ''
-  #  #!/usr/bin/env bash
-  #  exec ${pythonWithPackages}/bin/python $out/share/hyper-shell/dodo.py "$@"
-#'';
-
-#fishConfig = { config, programs, ... }: {
-  #  programs.fish = {
-  #    shellAliases = programs.fish.shellAliases ++ {
-  #      "dodo" = "python dodo.py";
-  #      "hs" = "hyper-shell";
-  #    };
-  #    interactiveShellInit = ''
-  #    '';
-  #  };
-  #  #home.file.".bin/hyper-shell".source = "${hyper-shell}/bin/hyper-shell";
-#};
-
-#homeManagerModules.default = fishConfig;

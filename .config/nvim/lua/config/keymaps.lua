@@ -39,27 +39,15 @@ vim.keymap.set("v", "<LEADER>tt", "<CMD>s/    /\t/g<CR>", { desc = "space to tab
 --}}}
 
 -- MISC {{{
-vim.keymap.set("n", "<LEADER>o", "za", { desc = "folding" })
-vim.keymap.set("n", "z1", "<CMD>set foldlevelstart=1<CR>", { desc = "Fold Level Start = 1" })
-vim.keymap.set("n", "z2", "<CMD>set foldlevelstart=2<CR>", { desc = "Fold Level Start = 2" })
-vim.keymap.set("n", "z3", "<CMD>set foldlevelstart=3<CR>", { desc = "Fold Level Start = 3" })
-vim.keymap.set("n", "z4", "<CMD>set foldlevelstart=4<CR>", { desc = "Fold Level Start = 4" })
-vim.keymap.set("n", "z5", "<CMD>set foldlevelstart=5<CR>", { desc = "Fold Level Start = 5" })
-vim.keymap.set("n", "z6", "<CMD>set foldlevelstart=6<CR>", { desc = "Fold Level Start = 6" })
-vim.keymap.set("n", "z7", "<CMD>set foldlevelstart=7<CR>", { desc = "Fold Level Start = 7" })
-vim.keymap.set("n", "z8", "<CMD>set foldlevelstart=8<CR>", { desc = "Fold Level Start = 8" })
-vim.keymap.set("n", "z9", "<CMD>set foldlevelstart=9<CR>", { desc = "Fold Level Start = 9" })
---vim.keymap.set("i", "<C-y>", "<ESC>A {}<ESC>i<CR><ESC>ko", { desc = "insert a pair of {} and goto next line" })
+vim.keymap.set("i", "<C-y>", "<ESC>A {}<ESC>i<CR><ESC>ko", { desc = "insert a pair of {} and goto next line" })
 --}}}
 
 -- ================= CURSOR MOVEMENT ===================== {{{
--- NEW CURSOR MOVEMENT (ARROW KEY RESIZE WINDOWS)
 --      ^
---      u
---  < n   i >
 --      e
+--  < h   i >
+--      n
 --      v
---
 vim.keymap.set({ "n", "v", "", "s", "x" }, "e", "k", { desc = "move cursor ⇧" })
 vim.keymap.set({ "n", "v", "", "s", "x" }, "n", "j", { desc = "move cursor ⇩" })
 vim.keymap.set({ "n", "v", "", "s", "x" }, "h", "h", { desc = "move cursor ⇦" })
@@ -82,10 +70,10 @@ vim.keymap.set({ "n", "v" }, "B", "5b", { desc = "5b -> B" })
 
 -- SET h (SAME AS n, CURSOR LEFT) TO 'END OF WORD'
 vim.keymap.set("n", "l", "e", { desc = "Move cursor to end of word" })
-vim.keymap.set("n", "L", "5e", { desc = "5e -> L" })
+vim.keymap.set("n", "L", "5e", { desc = "Move cursor to end of word (x5)" })
 -- CTRL + U OR E WILL MOVE UP/DOWN THE VIEW PORT WITHOUT MOVING THE CURSOR
-vim.keymap.set({ "n", "v" }, "<C-e>", "5<C-y>", { desc = "Move viewport ⇧" })
-vim.keymap.set({ "n", "v" }, "<C-n>", "5<C-e>", { desc = "Move viewport ⇩" })
+--vim.keymap.set({ "n", "v" }, "<C-e>", "5<C-y>", { desc = "Move viewport ⇧" })
+--vim.keymap.set({ "n", "v" }, "<C-n>", "5<C-e>", { desc = "Move viewport ⇩" })
 
 -- INSERT MODE CURSOR MOVEMENT
 vim.keymap.set("i", "<C-a>", "<ESC>A")
