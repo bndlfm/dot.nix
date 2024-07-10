@@ -13,6 +13,7 @@
       ../../programs/hm/ncmpcpp.nix
       ../../programs/hm/neovim.nix
       ../../programs/hm/ranger.nix
+      ../../programs/hm/rofi.nix
       ../../programs/hm/yazi.nix
 
       ../../programs/hm/misc_programs.nix
@@ -47,9 +48,7 @@
       distrobox
       godot_4
       godot_4-export-templates
-      pdfstudio2023
       (pkgs.callPackage ../../programs/hm/warp-terminal.nix {})
-
 
     ### BROWSER
       firefox-devedition
