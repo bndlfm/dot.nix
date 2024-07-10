@@ -21,3 +21,4 @@ publickey
 windows-11/
 windows-11.conf
 packages/TinyWiiBackupManager
+.config/hypr/plugins/hyprscroller.so
