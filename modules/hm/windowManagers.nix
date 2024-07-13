@@ -1,187 +1,4 @@
-{ pkgs, ... }:
-{
-  ########## XSESSION - BSPWM ##########
-  xsession.windowManager.bspwm = {
-    enable = true;
-    alwaysResetDesktops = true;
-    monitors = { 
-      HDMI-0 = [ "1" "2" "3" "4" ];
-      DP-4 = [ "5" "6" "7" "8" "9" ];
-      DP-3 = [ "0" ];
-    };
-    settings = {
-      border_width = 6;
-      window_gap = 12;
-      split_ratio = 0.52;
-      borderless_monocle = true;
-      gapless_monocle = true;
-    };
-    rules = {
-      "steam" = { floating = true; };
-      "steam_app" = { floating = true; };
-      "Steam" = { floating = true; };
-      "mpv" = { floating = true; };
-      "synergy" = { floating = true; };
-      "blueman-applet" = { floating = true; };
-    };
-    startupPrograms = [
-      "sxhkd"
-      "~/.config/polybar/polybar.sh"
-      "dunst"
-      "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/Documents/GoogleDrive"
-      "xset r rate 325 70"
-      "xset m 0 0"
-      "nitrogen --restore"
-      "xsetroot -xcf ${pkgs.volantes-cursors}/share/icons/volantes_light_cursors/cursors/left_ptr 32"
-      "${pkgs.kdeconnect}/libexec/kdeconnectd"
-      "kdeconnect-indicator"
-    ];
-  };
-  services.sxhkd = {
-    enable = true;
-    keybindings = {
-      ##############################
-      #   WM INDEPENDENT HOTKEYS   #
-      ##############################
-      "mod4 + BackSpace" = "kitty";
-      "mod4 + @space" = "rofi -combi-modi window,drun,run,ssh -show combi -modi combi -show-icons # -theme ~/.config/rofi/themes/base16-rofi/base16-nord.rasi";
-      "mod4 + shift + @space" = "~/.config/rofi/scripts/splatmoji/splatmoji type";
-
-      # terminal dropdown
-      "mod4 + grave" = "tdrop -mat -w -5 -y 30 kitty";
-
-      # make sxhkd reload its configuration files:
-      "mod4 + Escape" = "pkill -USR1 -x sxhkd && notify-send 'Configuration Reloaded'";
-
-      # deadd notification center popup
-      "mod4 + slash" = "kill -s USR1 $(pidof deadd-notification-center)";
-
-      # toggle picom
-      "mod4 + z" = "killorrun picom --config ~/.config/picom/picom.conf";
-
-      # screen capture
-      "Print" = "~/.nix-profile/bin/scrotshot.sh select";
-      "mod4 + Print" = "~/.nix-profile/bin/scrotshot.sh freeze";
-      "Control + Print" = "~/.nix-profile/bin/scrotshot.sh select";
-      "Shift + Print" = "~/.nix-profile/bin/scrotshot.sh focused";
-
-      #####################
-      #   BSPWM HOTKEYS   #
-      #####################
-
-      # Quit/Restart BSPWM
-      "mod4 + alt + {q,r}" = "bspc {quit,wm -r}";
-
-      # Close and Kill
-      "mod4 + {_,shift + }q" = "bspc node -{c,k}";
-
-      # Alternate Between the Tiled and Monocle Layout
-      "mod4 + m" = "bspc desktop -l next";
-
-      # Send the Newest Marked Node to the Newest Preselected Node
-      "mod4 + y" = "bspc node newest.marked.local -n newest.!automatic.local";
-
-      # Swap the Current Node and the Biggest Node
-      "mod4 + g" = "bspc node -s biggest";
-
-      #-------------------#
-      #    State/Flags    #
-      #-------------------#
-
-      # Set the Window State
-      "mod4 + {t,shift + t,s,f}" = "bspc node -t {tiled,pseudo_tiled,floating,fullscreen}";
-
-      # Set the Node Flags
-      "mod4 + ctrl + {m,x,y,z}" = "bspc node -g {marked,locked,sticky,private}";
-
-      #-------------------#
-      #    Focus/Swap     #
-      #-------------------#
-
-      # Focus the Node in the Given Direction
-      "mod4 + {_,shift + }{h,n,e,i}" = "bspc node -{f,s} {west,south,north,east}";
-
-      # Focus the Next/Previous Node in the Current Desktop
-      "mod4 + {_,shift + }c" = "bspc node -f {next,prev}.local";
-
-      # Focus the Next/Previous Desktop in the Current Monitor
-      "mod4 + {comma,period}" = "bspc desktop -f {prev,next}.local";
-
-      # Focus the Last Node/Desktop
-      "mod4 + {shift + grave,Tab}" = "bspc {node,desktop} -f last";
-
-      # Focus or Send to the Given Desktop
-      "mod4 + {_,shift + }{1-9}" = "bspc {desktop -f,node -d} '^{1-9}'";
-
-      #-------------------#
-      #    Preselect      #
-      #-------------------#
-
-      # Preselect the Direction
-      "mod4 + alt + {h, n, e, i}" = "bspc node -p {west,south,north,east}";
-
-      # Preselect the Ratio
-      "mod4 + alt + {1-9}" = "bspc node -o 0.{1-9}";
-
-      # Cancel the Preselection for the Focused Node
-      "mod4 + alt + space" = "bspc node -p cancel";
-
-      # Cancel the Preselection for the Focused Desktop
-      "mod4 + alt + shift + space" = "bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel";
-
-      #-------------------#
-      #    Move/Resize    #
-      #-------------------#
-
-      # Expand a Window by Moving One of Its Sides Outward
-      "mod4 + ctrl + {h, n, e, i}" = "bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}";
-
-      # Contract a Window by Moving One of Its Sides Inward
-      "mod4 + ctrl + shift + {h, n, e, i}" = "bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}";
-
-      # Move a Floating Window
-      "mod4 + shift + {Left,Down,Up,Right}" = "bspc node -v {-20 0,0 20,0 -20,20 0}";
-
-      #---------------------------#
-      #   Rotate/Flip Desktops    #
-      #---------------------------#
-
-      # Rotate a Desktop
-      "mod4 + {_, shift +}r" = "bspc node@/ --rotate {90,-90}";
-      };
-    };
-  #home.packages = with pkgs; [
-  #  (writeShellScriptBin "scrotshot.sh" /* sh */ ''
-  #    #!/bin/bash
-
-  #    # Function to capture screenshot and copy to clipboard
-  #    capture_screenshot() {
-  #      scrot "$@" --exec 'xclip -selection clipboard -t image/png -i < $f && notify-send "Screenshot Captured"'
-  #    }
-
-  #    # Check the command-line argument and execute the corresponding scrot command
-  #    case "$1" in
-  #      "full")
-  #          capture_screenshot ~/%b%d::%H%M%S.png --multidisp --quality 75
-  #          ;;
-  #      "freeze")
-  #          capture_screenshot ~/%b%d::%H%M%S.png --freeze --quality 75
-  #          ;;
-  #      "select")
-  #          capture_screenshot --select --freeze --quality 75 ~/%b%d::%H%M%S.png
-  #          ;;
-  #      "focused")
-  #          capture_screenshot ~/%b%d::%H%M%S.png --focused --border --delay 5 --count --quality 75
-
-  #      *)
-  #          echo "Usage: $0 [full|freeze|select|focused]"
-  #          exit 1
-  #          ;;
-  #    esac
-  #  '')
-  #];
-
-
+{ pkgs, ... }: {
   ######### (HM) WAYLAND HYPRLAND ########
   wayland.windowManager.hyprland = {
     enable = true;
@@ -195,94 +12,30 @@
     ];
 
     settings = {
-      "$mainMod" = "SUPER";
-
-      monitor = [
-        "DP-1, 2560x1440@144, 1080x0, 1, bitdepth, 10"
-        "DP-2, 1920x1080, 3640x0, 1, transform, 3"
-        # See extraConfig below: "HDMI-A-1, 1920x1080, 0x0, 1, transform, 3"
-      ];
-
-      workspace = [
-       "10, monitor:DP-2, default:true"
-       "1, monitor:DP-1, default:true"
-       "7, monitor:DP-1"
-      ];
-
-      misc = {
-        vrr=1;
-        vfr=true;
-      };
-
-      #-------- Hyprland Variables --------#
-      general = {
-        # https://wiki.hyprland.org/Configuring/Variables/ for more
-        allow_tearing = true;
-        gaps_in = 5;
-        gaps_out = 10;
-        border_size = 4;
-        layout = "dwindle";
-        "col.active_border" = "rgba(88C0D0ff) rgba(81a1c1ff) 45deg";
-      };
-
-      dwindle = {
-        force_split = 2;
-      };
-
-      animations = {
-        enabled = "yes";
-        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
-        animation = [
-          "windows, 1, 2, myBezier"
-          "windowsOut, 1, 2, default, popin 80%"
-          "border, 1, 2, default"
-          "borderangle, 1, 2, default"
-          "fade, 1, 2, default"
-          "workspaces, 1, 2, default"
+      #-------- Startup --------#
+      exec-once = [
+        # Shibboleths for DBus / IBus
+            "ibus-daemon"
+            "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE"
+            "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all"
+            "export $(dbus-launch)"
+        # Idleing stuff
+            "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
+            "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
+        # Clipboard Shenanigans
+            "copyq --start-server"
+            "wl-paste --type text --watch cliphist store" #Stores only text data
+            "wl-paste --type image --watch cliphist store" #Stores only image data
+        # KDE Connect
+            "${pkgs.kdeconnect}/libexec/kdeconnect"
+            "kdeconnect-indicator"
+        "waybar"
+        "blueman-applet" # Bluetooth
+        "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/GoogleDrive" # Google Drive
+        "xrandr --output DP-1 --primary" # set Primary Monitor for Xwayland
+        "gammastep-indicator -l 38.0628:-91.4035 -t 6500:4800" # (Night/Red/Blue)shift for wayland
+        "hyprpaper"
         ];
-      };
-      decoration = {
-        rounding = 7;
-        #"blur"= true;
-        #"blur_size" = 3;
-        #"blur_passes" = 2;
-        drop_shadow = true;
-        shadow_range = 4;
-        shadow_render_power = 3;
-        "col.shadow" = "rgba(2e3440FF)";
-        "col.shadow_inactive" = "rgba(242933FF)";
-      };
-      env = [
-        "GBM_BACKEND,nvidia-drm"
-        "GDK_BACKEND,wayland"
-        "__GL_GSYNC_ALLOWED,1"
-        "__GL_VRR_ALLOWED,1"
-        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-        "LIBVA_DRIVER_NAME,nvidia"
-        "MOZ_ENABLE_WAYLAND,1"
-        "QT_AUTO_SCREEN_SCALE_FACTOR,1"
-        "QT_QPA_PLATFORM,wayland"
-        "VRR,1"
-        "vrr,1"
-        "WLR_NO_HARDWARE_CURSORS,1"
-        "WLR_DRM_NO_ATOMIC,1"
-        "XCURSOR,volantes-cursors"
-        "XCURSOR_SIZE,24"
-        "XDG_SESSION_DESKTOP,hyprland"
-        "XDG_SESSION_TYPE,wayland"
-        "XDG_CURRENT_DESKTOP,hyprland"
-      ];
-
-      input = {
-        kb_layout = "us";
-        repeat_rate = 80;
-        repeat_delay = 280;
-        follow_mouse = 2;
-        mouse_refocus = false;
-        float_switch_override_focus = 0;
-        numlock_by_default = true;
-        sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
-      };
 
       #-------- Window Rules --------#
       windowrule = [
@@ -316,24 +69,9 @@
         ## qBittorrent
           "workspace 9 silent, class:org.qbittorrent.qBittorrent"
       ];
-      exec-once = [
-        "waybar"
-        "ibus-daemon"
-        "blueman-applet"
-        "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all"
-        "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/GoogleDrive"
-        "gammastep-indicator -l 38.0628:-91.4035 -t 6500:4800"
-        "${pkgs.kdeconnect}/libexec/kdeconnectd"
-        "kdeconnect-indicator"
-        "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
-        "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
-        "swaybg"
-        "xrandr --output DP-1 --primary"
-        "ydotoold"
-        "hyprpaper"
-        "export $(dbus-launch)"
-        "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE"
-        ];
+
+      #-------- Key Bindings --------#
+      "$mainMod" = "SUPER";
       bind = [
         # Misc Binds (kitty, close window, quit session, rofi, etc)
         "$mainMod, BACKSPACE, exec, kitty"
@@ -416,12 +154,10 @@
         "$mainMod, mouse_down, workspace, e+1"
         "$mainMod, mouse_up, workspace, e-1"
 
-        # Screenshot a window
-        "SHIFT, PRINT, exec, hyprshot -m window"
-        # Screenshot a monitor
-        ", PRINT, exec, hyprshot -m output"
-        # Screenshot a region
-        "CONTROL, PRINT, exec, hyprshot -m region"
+        # Screenshot / Capture
+        "SHIFT, PRINT, exec, hyprshot -m window"  # Screenshot a window
+        ", PRINT, exec, hyprshot -m output"  # Screenshot a monitor
+        "CONTROL, PRINT, exec, hyprshot -m region"  # Screenshot a region
 
         # Volume
         ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
@@ -455,7 +191,25 @@
         "$mainMod, mouse:272, movewindow"
         "$mainMod, mouse:273, resizewindow"
       ];
+
+      monitor = [
+        "DP-1, 2560x1440@144, 1080x0, 1, bitdepth, 10"
+        "DP-2, 1920x1080, 3640x0, 1, transform, 3"
+        # See extraConfig below: "HDMI-A-1, 1920x1080, 0x0, 1, transform, 3"
+      ];
+
+      workspace = [
+       "10, monitor:DP-2, default:true"
+       "1, monitor:DP-1, default:true"
+       "7, monitor:DP-1"
+      ];
+
+      misc = {
+        vrr=1;
+        vfr=true;
+      };
     };
+
     extraConfig = ''
       monitor=HDMI-A-1, 1920x1080, 0x0, 1, transform, 3
     '';

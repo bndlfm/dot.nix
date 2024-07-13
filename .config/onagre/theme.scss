@@ -59,7 +59,7 @@
         padding: 8;
         --height: 60;
         --spacing: 8;
-        align-y: center;
+        --align-y: center;
 
         .title {
           color: #88C0D0;  // Nord8
@@ -85,7 +85,7 @@
 
       .row-selected {
         background: #4C566A;  // Nord3
-        color: #ECEFF4;  // Nord6
+        color: #ECEFF4;  // Nord6;
 
         .title {
           color: #8FBCBB;  // Nord7

@@ -18,6 +18,9 @@
 
       ../../programs/hm/misc_programs.nix
 
+    ### SCRIPTS
+      ../../scripts/wkill.nix
+
     ### SERVICES
       ../../services/hm/espanso.nix
       ../../services/hm/flatpak.nix
@@ -50,6 +53,7 @@
       godot_4-export-templates
       (pkgs.callPackage ../../programs/hm/warp-terminal.nix {})
       onagre
+      python312Packages.huggingface-hub
 
     ### BROWSER
       firefox-devedition
@@ -169,6 +173,7 @@
           swaylock
           swaynotificationcenter
         ### HYPRLAND TOOLS
+          copyq
           hdrop
           hyprpaper
           hyprshot
@@ -223,8 +228,6 @@
     EDITOR  = "nvim";
     GPG_TTY ="$(tty)";
     _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd";
-    KHOJ_ADMIN_EMAIL = "firefliesandlightningbugs@gmail.com";
-    KHOJ_ADMIN_PASSWORD = "NozndCZRacr7kpDx0UzWttZnXyJRL9qm";
     PAGER = "nvim +Man!";
     POSTGRES_USER = "postgres";
     POSTGRES_PASSWORD = "postgres";
@@ -262,8 +265,8 @@
       #  source = ./.config/nvim;
       #  recursive = true;
       #};
-      "onager" = {
-        source = ../../.config/onager;
+      "onagre" = {
+        source = ../../.config/onagre;
         recursive = true;
       };
       "polybar" = {

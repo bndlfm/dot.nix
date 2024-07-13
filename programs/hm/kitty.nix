@@ -163,7 +163,7 @@
       shell_integration no-cursor
 
       # Looks
-      ##background_opacity 0.87
+      background_opacity 0.87
 
       ### https://draculatheme.com/kitty
       ##foreground            #f8f8f2

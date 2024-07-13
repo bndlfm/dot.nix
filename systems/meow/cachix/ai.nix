@@ -3,10 +3,10 @@
   nix = {
     settings = {
       substituters = [
-#        "https://ezkea.cachix.org"
+        "https://ai.cachix.org"
       ];
       trusted-public-keys = [
-#        "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI="
+        "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
       ];
     };
   };

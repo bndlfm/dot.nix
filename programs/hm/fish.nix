@@ -56,6 +56,15 @@
         carapace _carapace fish | source
         direnv hook fish | source
       '';
+      functions = {
+        mkcd = ''
+          if test (count $argv) -eq 1
+            mkdir -p $argv[1] && cd $argv[1]
+          else
+            echo 'Usage: mkcd <directory>'
+          end
+        '';
+      };
       plugins = [
         #{ name = "autopair"; src = pkgs.fishPlugins.autopair.src; }
         { name = "pisces"; src = pkgs.fishPlugins.pisces.src; }
