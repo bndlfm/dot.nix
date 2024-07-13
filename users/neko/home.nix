@@ -19,7 +19,7 @@
       ../../programs/hm/misc_programs.nix
 
     ### SCRIPTS
-      ../../scripts/wkill.nix
+      ../../scripts/hkill.nix
 
     ### SERVICES
       ../../services/hm/espanso.nix

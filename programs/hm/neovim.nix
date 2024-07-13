@@ -18,7 +18,6 @@
       nil
       #nixd
       nodejs
-      nodePackages.vscode-langservers-extracted
       ocaml
       opam
       pyright
