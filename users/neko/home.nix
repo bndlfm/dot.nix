@@ -28,7 +28,7 @@
       ../../services/hm/misc_services.nix
 
     ### MODULES
-      ../../modules/hm/windowManagers.nix
+      ../../modules/hm/hyprland.nix
   ];
 
   nixpkgs = {
