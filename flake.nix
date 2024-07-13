@@ -9,10 +9,10 @@
     spicetify-nix.url = "github:the-argus/spicetify-nix";
     stylix.url = "github:danth/stylix";
     ### PROGRAMS
-    #aagl = {
-    #  url = "github:ezKEa/aagl-gtk-on-nix";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
+    aagl = {
+      url = "github:ezKEa/aagl-gtk-on-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flatpak.url = "github:gmodena/nix-flatpak";
     ### SECRETS
     sops-nix.url = "github:Mic92/sops-nix";
@@ -31,6 +31,7 @@
     nixpkgs,
     home-manager,
     flatpak,
+    aagl,
     microvm,
     sops-nix,
     spicetify-nix,
@@ -68,6 +69,7 @@
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
             flatpak.nixosModules.nix-flatpak
+            aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
             sops-nix.nixosModules.sops
             stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
             hyprland.nixosModules.default

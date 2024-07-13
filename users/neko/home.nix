@@ -5,7 +5,6 @@
 
   imports = [
     ### PROGRAMS
-      ../../programs/hm/an-anime-game-launcher.nix
       ../../programs/hm/firefox.nix
       ../../programs/hm/fish.nix
       ../../programs/hm/gnome-shell.nix
@@ -17,9 +16,6 @@
       ../../programs/hm/yazi.nix
 
       ../../programs/hm/misc_programs.nix
-
-    ### SCRIPTS
-      ../../scripts/hkill.nix
 
     ### SERVICES
       ../../services/hm/espanso.nix
@@ -167,16 +163,6 @@
 
     ### UTILITIES
       ### WAYLAND SPECIFIC
-        ### SWAY TOOLS
-          swaybg
-          swayidle
-          swaylock
-          swaynotificationcenter
-        ### HYPRLAND TOOLS
-          copyq
-          hdrop
-          hyprpaper
-          hyprshot
         gammastep
         grimblast
         slurp

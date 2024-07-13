@@ -1,4 +1,54 @@
 { pkgs, ... }: {
+  home.packages = with pkgs; [
+    ### HYPRLAND TOOLS
+      clipse
+      hdrop
+      hyprpaper
+      hyprshot
+      swayidle
+      swaylock
+      swaynotificationcenter
+    ### hkill attempt
+      (writeShellScriptBin "hyprland-window-killer" /* sh */ ''
+        #!${pkgs.bash}/bin/bash
+
+        # Function to get the window under the cursor
+        get_window_under_cursor() {
+          ${pkgs.hyprland}/bin/hyprctl clients -j | ${pkgs.jq}/bin/jq -r '.[] | "\(.at[0]),\(.at[1]) \(.pid)"' | while read -r line; do
+            x=$(echo $line | cut -d' ' -f1 | cut -d',' -f1)
+            y=$(echo $line | cut -d' ' -f1 | cut -d',' -f2)
+            pid=$(echo $line | cut -d' ' -f2)
+            if ${pkgs.hyprland}/bin/hyprctl cursorpos | grep -q "$x,$y"; then
+              echo $pid
+              return
+            fi
+          done
+        }
+
+        # Notify user to click on a window
+        ${pkgs.libnotify}/bin/notify-send "Window Killer" "Click on a window to terminate it."
+
+        # Wait for mouse click
+        ${pkgs.hyprland}/bin/hyprctl dispatch submap killer
+        ${pkgs.hyprland}/bin/hyprctl dispatch focuscurrentorlast  # This triggers the submap to exit
+
+        # Get the PID of the clicked window
+        pid=$(get_window_under_cursor)
+
+        if [ -n "$pid" ] && [ "$pid" != "null" ]; then
+          # Kill the process
+          ${pkgs.coreutils}/bin/kill -9 "$pid"
+          # Notify the user
+          ${pkgs.libnotify}/bin/notify-send "Window Killer" "Process $pid terminated."
+        else
+          ${pkgs.libnotify}/bin/notify-send "Window Killer" "Failed to get window information."
+        fi
+
+        # Reset submap
+        ${pkgs.hyprland}/bin/hyprctl dispatch submap reset
+      '')
+  ];
+
   ######### (HM) WAYLAND HYPRLAND ########
   wayland.windowManager.hyprland = {
     enable = true;
@@ -8,11 +58,10 @@
     };
 
     plugins = [
-      #      "/home/neko/.nixcfg/.config/hypr/plugins/hyprscroller.so"
     ];
 
     settings = {
-      #-------- Startup --------#
+  #-------- Startup --------#
       exec-once = [
         # Shibboleths for DBus / IBus
             "ibus-daemon"
@@ -37,7 +86,7 @@
         "hyprpaper"
         ];
 
-      #-------- Window Rules --------#
+  #-------- Window Rules --------#
       windowrule = [
         ## Chatterino/Streamlink-Twitch-GUI
           "workspace 10 silent, streamlink-twitch-gui"
@@ -70,7 +119,7 @@
           "workspace 9 silent, class:org.qbittorrent.qBittorrent"
       ];
 
-      #-------- Key Bindings --------#
+  #-------- Key Bindings --------#
       "$mainMod" = "SUPER";
       bind = [
         # Misc Binds (kitty, close window, quit session, rofi, etc)
@@ -204,7 +253,7 @@
        "7, monitor:DP-1"
       ];
 
-      #-------- Hyprland Variables --------#
+  #-------- Hyprland Variables --------#
       general = {
         # https://wiki.hyprland.org/Configuring/Variables/ for more
         allow_tearing = true;
