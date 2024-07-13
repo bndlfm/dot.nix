@@ -1,4 +1,4 @@
-{ pkgs }: {
+{ pkgs, ... }: {
   home.packages = [
     (pkgs.writeShellScriptBin "hkill" /* sh */ ''
       #!${pkgs.bash}/bin/bash
