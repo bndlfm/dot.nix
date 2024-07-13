@@ -204,6 +204,75 @@
        "7, monitor:DP-1"
       ];
 
+      #-------- Hyprland Variables --------#
+      general = {
+        # https://wiki.hyprland.org/Configuring/Variables/ for more
+        allow_tearing = true;
+        gaps_in = 5;
+        gaps_out = 10;
+        border_size = 4;
+        layout = "dwindle";
+      };
+
+      dwindle = {
+        force_split = 2;
+      };
+
+      animations = {
+        enabled = "yes";
+        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
+        animation = [
+          "windows, 1, 2, myBezier"
+          "windowsOut, 1, 2, default, popin 80%"
+          "border, 1, 2, default"
+          "borderangle, 1, 2, default"
+          "fade, 1, 2, default"
+          "workspaces, 1, 2, default"
+        ];
+      };
+      decoration = {
+        rounding = 7;
+        #"blur"= true;
+        #"blur_size" = 3;
+        #"blur_passes" = 2;
+        drop_shadow = true;
+        shadow_range = 4;
+        shadow_render_power = 3;
+        #"col.shadow" = "rgba(1a1a1aee)";
+        #"col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        #"col.shadow_inactive_border" = "rgba(595959aa)";
+      };
+      env = [
+        "GBM_BACKEND,nvidia-drm"
+        "GDK_BACKEND,wayland"
+        "__GL_GSYNC_ALLOWED,1"
+        "__GL_VRR_ALLOWED,1"
+        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+        "LIBVA_DRIVER_NAME,nvidia"
+        "MOZ_ENABLE_WAYLAND,1"
+        "QT_AUTO_SCREEN_SCALE_FACTOR,1"
+        "QT_QPA_PLATFORM,wayland"
+        "VRR,1"
+        "vrr,1"
+        "WLR_NO_HARDWARE_CURSORS,1"
+        "WLR_DRM_NO_ATOMIC,1"
+        "XCURSOR,volantes-cursors"
+        "XCURSOR_SIZE,24"
+        "XDG_SESSION_DESKTOP,hyprland"
+        "XDG_SESSION_TYPE,wayland"
+        "XDG_CURRENT_DESKTOP,hyprland"
+      ];
+
+      input = {
+        kb_layout = "us";
+        repeat_rate = 80;
+        repeat_delay = 280;
+        follow_mouse = 2;
+        mouse_refocus = false;
+        float_switch_override_focus = 0;
+        numlock_by_default = true;
+        sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
+      };
       misc = {
         vrr=1;
         vfr=true;
