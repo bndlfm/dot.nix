@@ -15,7 +15,8 @@
       javascript-typescript-langserver
       lua-language-server
       lazygit
-      nixd
+      nil
+      #nixd
       nodejs
       nodePackages.vscode-langservers-extracted
       ocaml
