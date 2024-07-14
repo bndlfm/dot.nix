@@ -104,6 +104,9 @@
           "float, steam"
          ];
       windowrulev2 = [
+        ## Clipboard
+          "float, class:(clipse)"
+          "size 622 652, class:(clipse)"
         ## File Pickers
           "float, class:xdg-desktop-portal(.*)"
           "size 1060 960, title:(.*)(Select a)(.*)"
@@ -142,7 +145,7 @@
         "$mainMod, SPACE, exec, wofi --show run"
         #"$mainMod, SPACE, exec, wofi --show combi -combi-modi window,drun,run,ssh,combi -show-icons"
         "$mainMod SHIFT, C, exec, wofi --show calc"
-        "$mainMod SHIFT, V, exec, wofi -modi 'clipboard:greenclip print' -show clipboard -run '{cmd}' -show-icons"
+        "$mainMod SHIFT, V, exec, kitty --class clipse -c 'clipse'"
         "$mainMod, K, exec, /usr/bin/splatmoji copy"
         "$mainMod ALT, C, exec, pkill greenclip && greenclip clear && greenclip daemon"
 

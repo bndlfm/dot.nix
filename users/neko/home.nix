@@ -162,6 +162,9 @@
 
 
     ### UTILITIES
+      ### KDE Packages
+        kdePackages.kdegraphics-thumbnailers
+        kdePackages.plasma-workspace
       ### WAYLAND SPECIFIC
         gammastep
         grimblast
