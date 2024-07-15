@@ -28,7 +28,7 @@ return {
           },
         },
       },
-      nil_ls = {},
+      --nil_ls = {},
       nixd = {},
       pyright = {},
       rust_analyzer = {

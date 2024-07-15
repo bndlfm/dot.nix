@@ -9,7 +9,7 @@ in {
       indicator = true;
     };
     mpd = {
-      enable = false;
+      enable = true;
       musicDirectory = "${homeDir}/Music";
     };
     mpdris2 = {

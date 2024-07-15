@@ -15,8 +15,8 @@
       javascript-typescript-langserver
       lua-language-server
       lazygit
-      nil
-      #nixd
+      #nil
+      nixd
       nodejs
       ocaml
       opam

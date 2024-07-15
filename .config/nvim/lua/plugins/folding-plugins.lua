@@ -114,64 +114,36 @@ return {
       },
     },
     init = function()
-      -- Fold commands usually change the foldlevel, which fixes folds, e.g. auto-closing after
-      -- leaving insert mode, ufo does not have equivalents for zr and zm because there is no
-      -- saved fold level.  vim-internal fold levels need to be disabled by setting to 99
-      vim.opt.foldenable = true
-      vim.opt.foldcolumn = "1"
+      -- INFO fold commands usually change the foldlevel, which fixes folds, e.g.
+      -- auto-closing them after leaving insert mode, however ufo does not seem to
+      -- have equivalents for zr and zm because there is no saved fold level.
+      -- Consequently, the vim-internal fold levels need to be disabled by setting
+      -- them to 99
       vim.opt.foldlevel = 99
       vim.opt.foldlevelstart = 99
-
-      require("ufo").setup(opts)
     end,
     opts = {
-      -- Hide closing }]) in fold with treesitter
-      enable_get_fold_virt_text = true,
-      fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate, ctx)
-        -- include the bottom line in folded text for additional context
-        local filling = " ⋯ "
-        local sufWidth = vim.fn.strdisplaywidth(suffix)
-        local targetWidth = width - sufWidth
-        local curWidth = 0
-        table.insert(virtText, { filling, "Folded" })
-        local endVirtText = ctx.get_fold_virt_text(endLnum)
-        for i, chunk in ipairs(endVirtText) do
-          local chunkText = chunk[1]
-          local hlGroup = chunk[2]
-          if i == 1 then
-            chunkText = chunkText:gsub("^%s+", "")
-          end
-          local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-          if targetWidth > curWidth + chunkWidth then
-            table.insert(virtText, { chunkText, hlGroup })
-          else
-            chunkText = truncate(chunkText, targetWidth - curWidth)
-            table.insert(virtText, { chunkText, hlGroup })
-            chunkWidth = vim.fn.strdisplaywidth(chunkText)
-            -- str width returned from truncate() may less than 2nd argument, need padding
-            if curWidth + chunkWidth < targetWidth then
-              suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
-            end
-            break
-          end
-          curWidth = curWidth + chunkWidth
+      provider_selector = function(_, ft, _)
+        -- INFO some filetypes only allow indent, some only LSP, some only
+        -- treesitter. However, ufo only accepts two kinds as priority,
+        -- therefore making this function necessary :/
+        local lspWithOutFolding = { "markdown", "sh", "css", "html", "python" }
+        if vim.tbl_contains(lspWithOutFolding, ft) then
+          return { "treesitter", "indent" }
         end
-        return virtText
+        return { "lsp", "indent" }
       end,
-
+      -- open opening the buffer, close these fold kinds
+      -- use `:UfoInspect` to get available fold kinds from the LSP
+      --
       close_folds_kinds_for_ft = {
         default = { "imports", "comment" },
         json = { "array" },
         c = { "comment", "region" },
       },
-
+      --close_fold_kinds = { "imports", "comment" },
       open_fold_hl_timeout = 800,
-
-      preview = {},
-
-      provider_selector = function(bufnr, filetype, buftype)
-        return { "treesitter", "indent" }
-      end,
+      fold_virt_text_handler = foldTextFormatter,
     },
   },
 }

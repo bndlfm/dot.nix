@@ -146,6 +146,7 @@
         #"$mainMod, SPACE, exec, wofi --show combi -combi-modi window,drun,run,ssh,combi -show-icons"
         "$mainMod SHIFT, C, exec, wofi --show calc"
         "$mainMod SHIFT, V, exec, kitty --class clipse -c 'clipse'"
+
         "$mainMod, K, exec, /usr/bin/splatmoji copy"
         "$mainMod ALT, C, exec, pkill greenclip && greenclip clear && greenclip daemon"
 

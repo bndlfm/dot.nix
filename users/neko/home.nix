@@ -135,6 +135,7 @@
     ### SOCIAL
       chatterino2
       ripcord
+      fluffychat
 
 
     ### SYSTEM
@@ -166,6 +167,7 @@
         kdePackages.kdegraphics-thumbnailers
         kdePackages.plasma-workspace
       ### WAYLAND SPECIFIC
+        #(callPackage ../../packages/azote.nix { })
         gammastep
         grimblast
         slurp
@@ -254,10 +256,6 @@
       #  source = ./.config/nvim;
       #  recursive = true;
       #};
-      "onagre" = {
-        source = ../../.config/onagre;
-        recursive = true;
-      };
       "polybar" = {
         source = ../../.config/polybar;
         recursive = true;
@@ -295,7 +293,7 @@
         recursive = true;
       };
     };
-    #mime.enable = true;
+    mime.enable = true;
     #mimeApps = {
     #  enable = true;
     #  defaultApplications = {

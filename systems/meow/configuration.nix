@@ -182,7 +182,7 @@
   services = {
     avahi = { # CUPS (printing)
       enable = true;
-      #nssmdns4 = true;
+      nssmdns4 = true;
       openFirewall = true;
     };
     blueman.enable = true;
@@ -191,6 +191,7 @@
     };
     displayManager =  {
       sddm.enable = true;
+      defaultSession = "hyprland";
     };
     fail2ban.enable = false;
     flatpak.enable = true;
