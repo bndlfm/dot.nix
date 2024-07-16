@@ -37,7 +37,6 @@
     targets = {
       chromium.enable = true;
       gtk.enable = true;
-      kde.enable = false;
     };
   };
 }

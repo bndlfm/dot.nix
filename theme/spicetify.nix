@@ -6,8 +6,8 @@ in {
   programs = {
     spicetify = {
       enable = true;
-      theme = spicePkgs.themes.Matte;
-      colorScheme = "Matte";
+      theme = spicePkgs.themes.Flow;
+      colorScheme = "Flow";
       enabledExtensions = with spicePkgs.extensions; [
         fullAppDisplay
         hidePodcasts

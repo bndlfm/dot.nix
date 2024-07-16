@@ -217,7 +217,7 @@
     printing.enable = true;
 
     sunshine = {
-      enable = false;
+      enable = true;
       autoStart = true;
       capSysAdmin = true;
       openFirewall = true;

@@ -232,9 +232,13 @@
     STEAM_DISABLE_BROWSER_SHUTDOWN_WORKAROUND=1;
     SUDOEDITOR = "vim";
     VISUAL = "vim";
-    VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
     XCURSOR = "volantes-cursors";
     XCURSOR_SIZE = "24";
+    # GPU STUFF
+    PROTON_ENABLE_NVAPI = "1";
+    PROTON_HIDE_NVIDIA_GPU = "0";
+    VKD3D_CONFIG = "dxr";
+    VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
   };
 
   ######### (HM) DOTFILES ########
