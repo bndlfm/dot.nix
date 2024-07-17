@@ -50,7 +50,7 @@
         modules = [
           flatpak.homeManagerModules.nix-flatpak
           inputs.sops-nix.homeManagerModules.sops
-          spicetify-nix.homeManagerModule ( import ./theme/spicetify.nix {inherit spicetify-nix;})
+          spicetify-nix.homeManagerModule ( import ./theme/spicetify.nix {inherit nixpkgs spicetify-nix;})
           stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
           ./users/neko/home.nix
         ];

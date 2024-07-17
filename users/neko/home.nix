@@ -180,6 +180,7 @@
         wl-clipboard
         wl-clipboard-x11
         wl-clip-persist
+        wl-gammactl
       ### XORG TOOLS
         dunst
         eww

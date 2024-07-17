@@ -893,11 +893,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1721160190,
-        "narHash": "sha256-dnC7b/C8QRPoGs2H2cAYWmrTRVhN5m1xDpyrNTqV8r8=",
+        "lastModified": 1721248202,
+        "narHash": "sha256-VAhuQQ4EKbw/6z7K2IoR83+gXUdMksLWFQOhJNhSvQE=",
         "ref": "refs/heads/main",
-        "rev": "293e687389a19b369f312c5c335c9afe7c886be1",
-        "revCount": 4929,
+        "rev": "300228b503b36e5977b0d58713c5b4cf1f07b8a9",
+        "revCount": 4930,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/hyprwm/Hyprland"
@@ -1047,11 +1047,11 @@
         "xwayland-satellite": "xwayland-satellite"
       },
       "locked": {
-        "lastModified": 1721168270,
-        "narHash": "sha256-wmFlWj5d8XcgDksIrWohKsGxiidr6YsI4qLVpDtK95U=",
+        "lastModified": 1721244227,
+        "narHash": "sha256-ufiYfNrSJ2NLWGiFYdjnGiViC9Ka3wSuKxOqBun9cuU=",
         "owner": "sodiboo",
         "repo": "niri-flake",
-        "rev": "e59130f4e446a0161ac75ce031760deec6f7c5ac",
+        "rev": "fd035f1e744781aa9c184d416f3241f85365a42b",
         "type": "github"
       },
       "original": {
@@ -1080,11 +1080,11 @@
     "niri-unstable": {
       "flake": false,
       "locked": {
-        "lastModified": 1721114523,
-        "narHash": "sha256-HXUNwB2qeTNmTGX7z8JvyJAKJcDWGRsneaisSW9U1MA=",
+        "lastModified": 1721243295,
+        "narHash": "sha256-S7bOsV40oYgMEwUgyXQujCarYYVgCuGl+++eMU/GzEc=",
         "owner": "YaLTeR",
         "repo": "niri",
-        "rev": "3ace97660fde7fe1f0cc07a3925d1114af9a9c2f",
+        "rev": "e98d1ec5a7d2de0b5ba901e56a3e810e37fdcdec",
         "type": "github"
       },
       "original": {
