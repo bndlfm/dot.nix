@@ -7,6 +7,7 @@
     ### PROGRAMS
       ../../programs/hm/firefox.nix
       ../../programs/hm/fish.nix
+      ../../programs/hm/git.nix
       ../../programs/hm/gnome-shell.nix
       ../../programs/hm/kitty.nix
       ../../programs/hm/ncmpcpp.nix

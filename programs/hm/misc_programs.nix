@@ -27,16 +27,6 @@
       enable = true;
       enableFishIntegration = true;
     };
-    git = {
-      userName = "bndlfm";
-      userEmail = "firefliesandlightningbugs@gmail.com";
-      extraConfig = {
-        credential = {
-          credentialStore = "gopass";
-          helper = "${pkgs.git-credential-gopass}/bin/git-credential-manager";
-        };
-      };
-    };
     nix-index = {
       enable = true;
       enableFishIntegration = true;
