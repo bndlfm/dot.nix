@@ -9,7 +9,7 @@
     #../../modules/nx/aagl-gtk-on-nix.nix
 
     #../../services/nx/sunshine.nix
-    ../../services/nx/jellyfin.nix
+    #../../services/nx/jellyfin.nix
   ];
 
   #-------- PACKAGES --------#
@@ -192,10 +192,10 @@
     };
     fail2ban.enable = false;
     flatpak.enable = true;
-    monado = {
-      enable = true;
-      defaultRuntime = true;
-    };
+    #monado = {
+    #  enable = true;
+    #  defaultRuntime = true;
+    #};
     ollama = {
       enable = false;
       acceleration = "cuda";
@@ -231,6 +231,9 @@
     ## X11
     xserver = {
       enable = true;
+      windowManager = {
+        bspwm.enable = true;
+      };
       xkb.layout = "us";
       xkb.variant = "";
     };
@@ -252,10 +255,12 @@
     enableUnifiedCgroupHierarchy = true;
     user = {
       services = {
+        /*
         monado.environment = {
           STEAMVR_LH_ENABLE = "1";
           XRT_COMPOSITOR_COMPUTE = "1";
         };
+        */
         polkit-kde-agent-1 = {
           description = "polkit-kde-agent-1";
           wantedBy = [ "graphical-session.target" ];
@@ -470,9 +475,11 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    extraModprobeConfig = '''';
+    extraModprobeConfig = ''
+      options nvidia NVreg_EnableGpuFirmware=0
+    '';
     kernelModules = [ "" ];
-    kernelParams = [ "nvidia.modeset=1" "nvidia_drm.fbdev=1" "amd_pstate=active" ];
+    kernelParams = [ "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.hdmi_deepcolor=1" "amd_pstate=active" ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
       "vm.overcommit_memory" = 1;

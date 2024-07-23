@@ -26,7 +26,8 @@
 
     ### MODULES
       ../../modules/hm/hyprland.nix
-      ../../modules/hm/OpenComposite.nix
+      ../../modules/hm/bspwm.nix
+    #      ../../modules/hm/OpenComposite.nix
   ];
 
   nixpkgs = {
@@ -50,8 +51,6 @@
       godot_4
       godot_4-export-templates
       (pkgs.callPackage ../../programs/hm/warp-terminal.nix {})
-      onagre
-      python312Packages.huggingface-hub
 
     ### BROWSER
       firefox-devedition
