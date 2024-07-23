@@ -30,7 +30,7 @@
   };
 
 
-  outputs = inputs@{
+  outputs = {
     nixpkgs,
     home-manager,
     flatpak,
@@ -42,7 +42,7 @@
     hyprland,
     niri,
     ...
-  }: let
+  }@inputs: let
     system = "x86_64-linux";
   in {
 

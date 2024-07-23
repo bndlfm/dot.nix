@@ -6,6 +6,6 @@
     honkers-railway-launcher.enable = false;
     honkers-launcher.enable = false;
     wavey-launcher.enable = true;
-    sleepy-launcher.enable = false;
+    sleepy-launcher.enable = true;
   };
 }

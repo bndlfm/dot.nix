@@ -62,29 +62,29 @@
 
     settings = {
   #-------- Startup --------#
-      exec-once = [
-        # Shibboleths for DBus / IBus
-            "ibus-daemon"
-            "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE"
-            "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all"
-            "export $(dbus-launch)"
-        # Idleing stuff
-            "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
-            "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
-        # Clipboard Shenanigans
-            "copyq --start-server"
-            "wl-paste --type text --watch cliphist store" #Stores only text data
-            "wl-paste --type image --watch cliphist store" #Stores only image data
-        # KDE Connect
-            "${pkgs.kdeconnect}/libexec/kdeconnect"
-            "kdeconnect-indicator"
-        "waybar"
-        "blueman-applet" # Bluetooth
-        "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/GoogleDrive" # Google Drive
-        "xrandr --output DP-1 --primary" # set Primary Monitor for Xwayland
-        "gammastep-indicator -l 38.0628:-91.4035 -t 6500:4800" # (Night/Red/Blue)shift for wayland
-        "hyprpaper"
-        ];
+    exec-once = [
+      # Shibboleths for DBus / IBus
+          "ibus-daemon"
+          "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE"
+          "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all"
+          "export $(dbus-launch)"
+      # Idleing stuff
+          "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
+          "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
+      # Clipboard Shenanigans
+          "copyq --start-server"
+          "wl-paste --type text --watch cliphist store" #Stores only text data
+          "wl-paste --type image --watch cliphist store" #Stores only image data
+      # KDE Connect
+          "${pkgs.kdeconnect}/libexec/kdeconnect"
+          "kdeconnect-indicator"
+      "waybar"
+      "blueman-applet" # Bluetooth
+      "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/GoogleDrive" # Google Drive
+      "xrandr --output DP-1 --primary" # set Primary Monitor for Xwayland
+      "gammastep-indicator -l 38.0628:-91.4035 -t 6500:4800" # (Night/Red/Blue)shift for wayland
+      "hyprpaper"
+      ];
 
   #-------- Window Rules --------#
       windowrule = [
@@ -257,7 +257,7 @@
        "7, monitor:DP-1"
       ];
 
-  #-------- Hyprland Variables --------#
+    #-------- Hyprland Variables --------#
       general = {
         # https://wiki.hyprland.org/Configuring/Variables/ for more
         allow_tearing = true;
@@ -265,6 +265,10 @@
         gaps_out = 10;
         border_size = 4;
         layout = "dwindle";
+
+        "col.active_border" = "rgba(99c0d0ff) rgba(5e81acff) 45deg";
+        "col.inactive_border" = "rgba(2e3440ff)";
+        "col.nogroup_border" = "rgba(60728aff)";
       };
 
       dwindle = {

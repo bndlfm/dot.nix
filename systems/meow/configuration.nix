@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... }:{
   imports = [
     ./cachix.nix
@@ -13,6 +9,7 @@
     #../../modules/nx/aagl-gtk-on-nix.nix
 
     #../../services/nx/sunshine.nix
+    ../../services/nx/jellyfin.nix
   ];
 
   #-------- PACKAGES --------#
@@ -195,6 +192,10 @@
     };
     fail2ban.enable = false;
     flatpak.enable = true;
+    monado = {
+      enable = true;
+      defaultRuntime = true;
+    };
     ollama = {
       enable = false;
       acceleration = "cuda";
@@ -251,6 +252,10 @@
     enableUnifiedCgroupHierarchy = true;
     user = {
       services = {
+        monado.environment = {
+          STEAMVR_LH_ENABLE = "1";
+          XRT_COMPOSITOR_COMPUTE = "1";
+        };
         polkit-kde-agent-1 = {
           description = "polkit-kde-agent-1";
           wantedBy = [ "graphical-session.target" ];

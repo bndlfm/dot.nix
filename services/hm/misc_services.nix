@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 let
   homeDir = builtins.getEnv "HOME";
 in {
@@ -11,9 +11,13 @@ in {
     mpd = {
       enable = true;
       musicDirectory = "${homeDir}/Music";
+      network = {
+        startWhenNeeded = true;
+        port = 6600;
+      };
     };
     mpdris2 = {
-      enable = false;
+      enable = true;
       mpd = {};
       multimediaKeys = true;
       notifications = true;

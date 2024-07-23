@@ -26,6 +26,7 @@
 
     ### MODULES
       ../../modules/hm/hyprland.nix
+      ../../modules/hm/OpenComposite.nix
   ];
 
   nixpkgs = {
@@ -135,7 +136,7 @@
 
     ### SOCIAL
       chatterino2
-      ripcord
+    #ripcord
       fluffychat
 
 
@@ -165,8 +166,7 @@
 
     ### UTILITIES
       ### KDE Packages
-        kdePackages.kdegraphics-thumbnailers
-        kdePackages.plasma-workspace
+    # kdePackages.kdegraphics-thumbnailers
       ### WAYLAND SPECIFIC
         #(callPackage ../../packages/azote.nix { })
         gammastep

@@ -5,6 +5,7 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
+    extraLuaPackages = ps: [ ps.magick ];
     extraPackages = with pkgs; [
       bash-language-server
       cargo
@@ -12,6 +13,7 @@
       gcc
       git
       gnumake
+      imagemagick
       javascript-typescript-langserver
       lua-language-server
       lazygit
