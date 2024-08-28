@@ -8,45 +8,6 @@
       swayidle
       swaylock
       swaynotificationcenter
-    ### hkill attempt
-      (writeShellScriptBin "hyprland-window-killer" /* sh */ ''
-        #!${pkgs.bash}/bin/bash
-
-        # Function to get the window under the cursor
-        get_window_under_cursor() {
-          ${pkgs.hyprland}/bin/hyprctl clients -j | ${pkgs.jq}/bin/jq -r '.[] | "\(.at[0]),\(.at[1]) \(.pid)"' | while read -r line; do
-            x=$(echo $line | cut -d' ' -f1 | cut -d',' -f1)
-            y=$(echo $line | cut -d' ' -f1 | cut -d',' -f2)
-            pid=$(echo $line | cut -d' ' -f2)
-            if ${pkgs.hyprland}/bin/hyprctl cursorpos | grep -q "$x,$y"; then
-              echo $pid
-              return
-            fi
-          done
-        }
-
-        # Notify user to click on a window
-        ${pkgs.libnotify}/bin/notify-send "Window Killer" "Click on a window to terminate it."
-
-        # Wait for mouse click
-        ${pkgs.hyprland}/bin/hyprctl dispatch submap killer
-        ${pkgs.hyprland}/bin/hyprctl dispatch focuscurrentorlast  # This triggers the submap to exit
-
-        # Get the PID of the clicked window
-        pid=$(get_window_under_cursor)
-
-        if [ -n "$pid" ] && [ "$pid" != "null" ]; then
-          # Kill the process
-          ${pkgs.coreutils}/bin/kill -9 "$pid"
-          # Notify the user
-          ${pkgs.libnotify}/bin/notify-send "Window Killer" "Process $pid terminated."
-        else
-          ${pkgs.libnotify}/bin/notify-send "Window Killer" "Failed to get window information."
-        fi
-
-        # Reset submap
-        ${pkgs.hyprland}/bin/hyprctl dispatch submap reset
-      '')
   ];
 
   ######### (HM) WAYLAND HYPRLAND ########
@@ -69,12 +30,10 @@
           "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all"
           "export $(dbus-launch)"
       # Idleing stuff
-          "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
-          "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
+        #  "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
+        #  "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
       # Clipboard Shenanigans
-          "copyq --start-server"
-          "wl-paste --type text --watch cliphist store" #Stores only text data
-          "wl-paste --type image --watch cliphist store" #Stores only image data
+        "copyq --start-server"
       # KDE Connect
           "${pkgs.kdeconnect}/libexec/kdeconnect"
           "kdeconnect-indicator"
@@ -91,6 +50,8 @@
         ## Chatterino/Streamlink-Twitch-GUI
           "workspace 10 silent, streamlink-twitch-gui"
           "workspace 10 silent, chatterino"
+        ## Copyq Clipboard Manager
+          "float, com.github.hluk.copyq"
         ## Discord
           "workspace 10 silent, vencorddesktop"
         ## MPV Picture-in-Picture
@@ -122,14 +83,14 @@
           "workspace 9 silent, class:org.qbittorrent.qBittorrent"
       ];
 
-  #-------- Key Bindings --------#
+    #-------- Key Bindings --------#
       "$mainMod" = "SUPER";
       bind = [
         # Misc Binds (kitty, close window, quit session, rofi, etc)
         "$mainMod, BACKSPACE, exec, kitty"
         "$mainMod, Q, killactive, "
         "$mainMod ALT, ESCAPE, exit, "
-        "$mainMod CONTROL, F, exec, dolphin"
+        "$mainMod CONTROL, F, exec, nautilus"
 
         "$mainMod ALT, L, exec, ~/hypr/swayidle-swaylock-hypr.sh"
 
@@ -142,13 +103,8 @@
         "$mainMod, GRAVE, exec, hdrop -f -b -g 30 kitty --class kittydrop"
 
         # Rofi
-        "$mainMod, SPACE, exec, wofi --show run"
-        #"$mainMod, SPACE, exec, wofi --show combi -combi-modi window,drun,run,ssh,combi -show-icons"
-        "$mainMod SHIFT, C, exec, wofi --show calc"
-        "$mainMod SHIFT, V, exec, kitty --class clipse -c 'clipse'"
-
-        "$mainMod, K, exec, /usr/bin/splatmoji copy"
-        "$mainMod ALT, C, exec, pkill greenclip && greenclip clear && greenclip daemon"
+        "$mainMod, D, exec, wofi --show run"
+        "$mainMod SHIFT, V, exec, copyq show"
 
         # Groups and Movement in / out of them
         "$mainMod, G, togglegroup"
@@ -159,11 +115,47 @@
         "$mainMod ALT, down, moveintogroup, d"
         "$mainMod, R, moveoutofgroup"
 
+        ############################################################
+        #                       hyprscroller                       #
+        ############################################################
         # Move Focus
-        "$mainMod, H, movefocus, l"
-        "$mainMod, N, movefocus, d"
-        "$mainMod, E, movefocus, u"
-        "$mainMod, I, movefocus, r"
+        "$mainMod, H, scroller:movefocus, l"
+        "$mainMod, N, scroller:movefocus, d"
+        "$mainMod, E, scroller:movefocus, u"
+        "$mainMod, I, scroller:movefocus, r"
+
+        # Push to new column
+        "$mainMod, P, scroller:admitwindow"
+        "$mainMod SHIFT, P, scroller:expelwindow"
+
+        # Move Windows
+        "$mainMod SHIFT, H, scroller:movewindow, l"
+        "$mainMod SHIFT, N, scroller:movewindow, d"
+        "$mainMod SHIFT, E, scroller:movewindow, u"
+        "$mainMod SHIFT, I, scroller:movewindow, r"
+
+        # Change monitor focus
+        "$mainMod SHIFT, left, focusmonitor, l"
+        "$mainMod SHIFT, right, focusmonitor, r"
+        "$mainMod SHIFT, up, focusmonitor, u"
+        "$mainMod SHIFT, down, focusmonitor, d"
+
+        # Align Windows
+        "$mainMod CONTROL, H, scroller:alignwindow, l"
+        "$mainMod CONTROL, N, scroller:alignwindow, d"
+        "$mainMod CONTROL, E, scroller:alignwindow, u"
+        "$mainMod CONTROL, I, scroller:alignwindow, r"
+        "$mainMod CONTROL, C, scroller:alignwindow, c" # center
+
+        # Window Control
+        "$mainMod, bracketleft, scroller:setmode, row"
+        "$mainMod, bracketright, scroller:setmode, col"
+
+        "$mainMod, equal, scroller:cyclesize, next"
+        "$mainMod, minus, scroller:cyclesize, prev"
+
+
+        ############################################################
 
         # Cycle focus between floating windows
         "$mainMod, Tab, cyclenext"
@@ -218,26 +210,27 @@
       ];
       binde = [
         # Move Windows
-        "$mainMod SHIFT, H, exec, ~/.config/hypr/move-windows.sh l"
-        "$mainMod SHIFT, N, exec, ~/.config/hypr/move-windows.sh d"
-        "$mainMod SHIFT, E, exec, ~/.config/hypr/move-windows.sh u"
-        "$mainMod SHIFT, I, exec, ~/.config/hypr/move-windows.sh r"
+        #"$mainMod SHIFT, H, exec, ~/.config/hypr/move-windows.sh l"
+        #"$mainMod SHIFT, N, exec, ~/.config/hypr/move-windows.sh d"
+        #"$mainMod SHIFT, E, exec, ~/.config/hypr/move-windows.sh u"
+        #"$mainMod SHIFT, I, exec, ~/.config/hypr/move-windows.sh r"
 
-        "$mainMod SHIFT, left, moveactive, -10 0"
-        "$mainMod SHIFT, down, moveactive, 0 10"
-        "$mainMod SHIFT, up, moveactive, 0 -10"
-        "$mainMod SHIFT, right, moveactive, 10 0"
+
+        #"$mainMod SHIFT, left, moveactive, -10 0"
+        #"$mainMod SHIFT, down, moveactive, 0 10"
+        #"$mainMod SHIFT, up, moveactive, 0 -10"
+        #"$mainMod SHIFT, right, moveactive, 10 0"
 
         # sets repeatable binds for resizing the active window
-        "$mainMod CONTROL, H, resizeactive, -30 0"
-        "$mainMod CONTROL, N, resizeactive, 0 30"
-        "$mainMod CONTROL, E, resizeactive, 0 -30"
-        "$mainMod CONTROL, I, resizeactive, 30 0"
+        #"$mainMod CONTROL, H, resizeactive, -30 0"
+        #"$mainMod CONTROL, N, resizeactive, 0 30"
+        #"$mainMod CONTROL, E, resizeactive, 0 -30"
+        #"$mainMod CONTROL, I, resizeactive, 30 0"
 
-        "$mainMod CONTROL, left, resizeactive, -10 0"
-        "$mainMod CONTROL, right, resizeactive, 10 0"
-        "$mainMod CONTROL, up, resizeactive, 0 -10"
-        "$mainMod CONTROL, down, resizeactive, 0 10"
+        #"$mainMod CONTROL, left, resizeactive, -10 0"
+        #"$mainMod CONTROL, right, resizeactive, 10 0"
+        #"$mainMod CONTROL, up, resizeactive, 0 -10"
+        #"$mainMod CONTROL, down, resizeactive, 0 10"
       ];
       bindm = [
         # Move/resize windows with mainMod + LMB/RMB and dragging
@@ -264,7 +257,7 @@
         gaps_in = 5;
         gaps_out = 10;
         border_size = 4;
-        layout = "dwindle";
+        layout = "scroller";
 
         "col.active_border" = "rgba(99c0d0ff) rgba(5e81acff) 45deg";
         "col.inactive_border" = "rgba(2e3440ff)";
@@ -289,15 +282,9 @@
       };
       decoration = {
         rounding = 7;
-        #"blur"= true;
-        #"blur_size" = 3;
-        #"blur_passes" = 2;
         drop_shadow = true;
         shadow_range = 4;
         shadow_render_power = 3;
-        #"col.shadow" = "rgba(1a1a1aee)";
-        #"col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        #"col.shadow_inactive_border" = "rgba(595959aa)";
       };
       env = [
         "GBM_BACKEND,nvidia-drm"
@@ -337,6 +324,27 @@
     };
 
     extraConfig = ''
+      # Center submap
+          # will switch to a submap called center
+          bind = $mainMod, C, submap, center
+          # will start a submap called "center"
+          submap = center
+          # sets repeatable binds for resizing the active window
+          bind = , C, scroller:alignwindow, c
+          bind = , C, submap, reset
+          bind = , right, scroller:alignwindow, r
+          bind = , right, submap, reset
+          bind = , left, scroller:alignwindow, l
+          bind = , left, submap, reset
+          bind = , up, scroller:alignwindow, u
+          bind = , up, submap, reset
+          bind = , down, scroller:alignwindow, d
+          bind = , down, submap, reset
+          # use reset to go back to the global submap
+          bind = , escape, submap, reset
+          # will reset the submap, meaning end the current one and return to the global one
+      submap = reset
+
       monitor=HDMI-A-1, 1920x1080, 0x0, 1, transform, 3
     '';
   };

@@ -115,28 +115,27 @@
         ###############
         # EDIT CONFIG #
         ###############
-          rchpp = "nvim ~/.nixcfg/.config/hypr/hyprpaper.conf";
+          ## WAYLAND
+            rchpp = "nvim ~/.nixcfg/modules/hm/hyprland.nix";
+          ## X WINDOW MANGERS
+            rsxh = "nvim ~/.nixcfg/.config/sxhkd/sxhkdrc";
 
-        ## X WINDOW MANGERS
-          rsxh = "nvim ~/.nixcfg/.config/sxhkd/sxhkdrc";
-
-        ## OTHER CONFIG ABBR
-          rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
-          rwb = "nvim ~/.nixcfg/.config/waybar/config";
-
-        ## NIX SPECIFIC
-          rhmc = "nvim ~/.nixcfg/home.nix";
-          rhmp = "nvim ~/.nixcfg/modules/hmPackages.nix";
-          rhmP = "nvim ~/.nixcfg/modules/hmPrograms.nix";
-          rnxf = "nvim ~/.nixcfg/flake.nix";
-          rnxc = "nvim ~/.nixcfg/configuration.nix";
-
-          nxgc = "sudo nix-collect-garbage -d";
-          hmgc = "nix-collect-garbage -d";
-
-        ## ALIASES
-          nxrb = "sudo nixos-rebuild switch --upgrade --flake ~/.nixcfg";
-          hmrb = "home-manager switch --flake ~/.nixcfg -b bak --impure";
+          ## OTHER CONFIG ABBR
+            rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
+            rwb = "nvim ~/.nixcfg/.config/waybar/config";
+          ## NIX SPECIFIC CONFIGS
+            rhmc = "nvim ~/.nixcfg/users/meow/home.nix";
+            rhmp = "cd ~/.nixcfg/programs/hm/";
+            rnxf = "nvim ~/.nixcfg/flake.nix";
+            rnxc = "nvim ~/.nixcfg/systems/meow/configuration.nix";
+          ## REBUILD SYSTEM
+            nxcli = "NIXOS_CONFIG=~/.nixcfg/flake.nix#meow nix run github:water-sucks/nixos/0.11.0 -- option -i";
+            nfu = "nix flake update ~/.nixcfg/";
+            nxrb = "sudo nixos-rebuild switch --upgrade --flake ~/.nixcfg";
+            hmrb = "home-manager switch --flake ~/.nixcfg -b bak --impure";
+          ## GARBAGE COLLECTION
+            nxgc = "sudo nix-collect-garbage -d";
+            hmgc = "nix-collect-garbage -d";
 
 
         ###############
@@ -151,6 +150,8 @@
           gconf = { position = "anywhere"; setCursor = true; expansion = "~/.config/%"; };
           gbin = { position = "anywhere"; setCursor = true; expansion = "~/.local/bin/%"; };
           gcont = { position = "anywhere"; setCursor = true; expansion = "~/.local/containers/%"; };
+
+
         ####################
         # CURL SHENANIGANS #
         ####################
@@ -162,6 +163,7 @@
 
           gIPv4-way = "bash -c 'curl icanhazip.com | tee >(wl-copy)'";
           gIPv4-x11 = "bash -c 'curl icanhazip.com | xclip -i -selection clipboard'";
+
 
         #################
         # GIT SHORTCUTS #

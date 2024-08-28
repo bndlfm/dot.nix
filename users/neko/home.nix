@@ -24,10 +24,9 @@
 
       ../../services/hm/misc_services.nix
 
-    ### MODULES
-      ../../modules/hm/hyprland.nix
-      ../../modules/hm/bspwm.nix
-    #      ../../modules/hm/OpenComposite.nix
+    ### WINDOW MANAGERS
+      ../../windowManagers/hm/hyprland.nix
+      ../../windowManagers/hm/bspwm.nix
   ];
 
   nixpkgs = {
@@ -38,7 +37,10 @@
         nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
           { inherit pkgs; };
       };
-      permittedInsecurePackages = [];
+      permittedInsecurePackages = [
+        "fluffychat-linux-1.20.0"
+        "olm-3.2.16"
+      ];
     };
     overlays = [
       (import ../../overlays/overlays.nix)
@@ -47,19 +49,20 @@
 
   home.packages = with pkgs; [
     #!!!! TEMP INSTALLS !!!!#
-      distrobox
-      godot_4
-      godot_4-export-templates
-      (pkgs.callPackage ../../programs/hm/warp-terminal.nix {})
+      #(pkgs.callPackage ../../programs/hm/warp-terminal.nix {})
 
-    ### BROWSER
-      firefox-devedition
+    ### APPLE (FUCK YOU!)
+      uxplay
 
+    ### BROWSERS
+      #firefox see ~/.nixcfg/programs/hm/firefox.nix
 
     ### CLI
       age
       bat
+      cachix
       chafa
+      distrobox
       eza
       fd
       ffmpeg-full
@@ -74,6 +77,7 @@
       ripgrep
       silver-searcher
       trashy
+      unzip
       usbutils
       wireguard-tools
       xdragon
@@ -127,15 +131,14 @@
         git-lfs
         git-credential-manager
         git-credential-gopass
-      codeium
+      godot_4
+      godot_4-export-templates
       direnv
       dotnet-sdk_7
       meld
 
 
     ### SOCIAL
-      chatterino2
-    #ripcord
       fluffychat
 
 
@@ -164,10 +167,7 @@
 
 
     ### UTILITIES
-      ### KDE Packages
-    # kdePackages.kdegraphics-thumbnailers
       ### WAYLAND SPECIFIC
-        #(callPackage ../../packages/azote.nix { })
         gammastep
         grimblast
         slurp
@@ -196,9 +196,12 @@
         xorg.xhost
       appimage-run
       clipboard-jh
+      copyq
       google-drive-ocamlfuse
       gparted
       grc
+      keymapp # For ErgoDox
+        zsa-udev-rules
       pavucontrol
       qbittorrent
       qdirstat
@@ -208,7 +211,6 @@
 
 
     ### MISC PACKAGES
-      discordchatexporter-cli
       speechd
   ];
 
@@ -216,15 +218,17 @@
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
     DEFAULT_BROWSER = "${pkgs.firefox-devedition}/bin/firefox";
+    DOCKER_HOST = "unix:///run/user/1000/docker.sock";
     DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
     EDITOR  = "nvim";
     GPG_TTY ="$(tty)";
     _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd";
     PAGER = "nvim +Man!";
-    POSTGRES_USER = "postgres";
-    POSTGRES_PASSWORD = "postgres";
-    POSTGRES_HOST = "/run/postgresql/";
+    #    POSTGRES_USER = "postgres";
+    #    POSTGRES_PASSWORD = "postgres";
+    #    POSTGRES_HOST = "/run/postgresql/";
     MANPAGER = "nvim +Man!";
+    MOZ_DBUS_REMOTE="1";
     NIXOS_OZONE_WL = "1";
     OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a";
     OPENAI_API_BASE = "http://localhost:11434/v1/"; # https://localhost/v1/
@@ -298,18 +302,6 @@
         recursive = true;
       };
     };
-    mime.enable = true;
-    #mimeApps = {
-    #  enable = true;
-    #  defaultApplications = {
-    #    "application/pdf" = [ "zathura" ];
-    #    "text/html" = [ "firefox.desktop" ];
-    #    "x-scheme-handler/http" = [ "firefox.desktop" ];
-    #    "x-scheme-handler/https" = [ "firefox.desktop" ];
-    #    "x-scheme-handler/about" = [ "firefox.desktop" ];
-    #    "x-scheme-handler/unknown" = [ "firefox.desktop" ];
-    #  };
-    #};
   };
   specialisation.familyTree.configuration = {
     home.packages = with pkgs; [

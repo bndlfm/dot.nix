@@ -3,12 +3,12 @@
     ./cachix.nix
 
     #../../containers/pihole.nix
-    #../../containers/jellyfin.nix
 
     #../../modules/nx/tailscale.nix
-    #../../modules/nx/aagl-gtk-on-nix.nix
 
-    #../../services/nx/sunshine.nix
+    ../../services/nx/sunshine.nix
+
+    #../../containers/jellyfin.nix
     #../../services/nx/jellyfin.nix
   ];
 
@@ -17,43 +17,24 @@
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       trusted-users = [ "root" "@wheel" ];
-      trusted-substituters = [
-        #"https://ai.cachix.org"
-      ];
-      trusted-public-keys = [
-        #"ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
-      ];
+      trusted-substituters = [ ];
+      trusted-public-keys = [ ];
     };
   };
 
   nixpkgs = {
     config = {
       allowUnfree = true;
-      cudaSupport = false;
+      cudaSupport = true;
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
           { inherit pkgs; };
       };
-      qt5 = {
-        enable = true;
-        platformTheme  = "qt5ct";
-          style = {
-            package = pkgs.utterly-nord-plasma;
-            name = "Utterly Nord Plasma";
-          };
-        };
-      qt6 = {
-        enable = true;
-        platformTheme  = "qt6ct";
-          style = {
-            package = pkgs.utterly-nord-plasma;
-            name = "Utterly Nord Plasma";
-          };
-        };
-      };
-    overlays = [
-      #(import ../../overlays/overlays.nix)
-    ];
+      permittedInsecurePackages = [
+        "fluffychat-linux-1.20.0"
+      ];
+    };
+    overlays = [ ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -61,8 +42,7 @@
     btrfs-progs
     home-manager
     pinentry-curses
-    kdePackages.polkit-kde-agent-1
-    #(callPackage ../../theme/sddm-lain-wired.nix{}).sddm-lain-wired-theme
+    polkit_gnome
     runc
     tailscale
   ];
@@ -78,12 +58,12 @@
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_STATE_HOME = "$HOME/.local/state";
     XDG_BIN_HOME = "$HOME/.local/bin";
-    #XDG_RUNTIME_DIR = "/run/user/$(id -u)";
+    XDG_RUNTIME_DIR = "/run/user/$(id -u)";
   };
 
   #-------- PACKAGE MODULES --------#
   programs = {
-    darling.enable = true;
+    darling.enable = false;
     dconf = {
       enable = true;
     };
@@ -101,11 +81,14 @@
       xwayland.enable = true;
     };
     nbd.enable = false;
+    nh = {
+      enable = true;
+      flake = "/home/neko/.nixcfg";
+    };
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
         cmake
-        python3Packages.openai
       ];
     };
     steam = {
@@ -119,6 +102,7 @@
   virtualisation = {
     containers = {
       enable = true;
+      cdi.dynamic.nvidia.enable = true;
       storage.settings = {
         storage = {
           driver = "overlay";
@@ -129,9 +113,15 @@
         };
       };
     };
+    docker = {
+      enable = false;
+      daemon.settings = {
+        default-runtime = "nvidia";
+      };
+    };
     podman = {
       enable = true;
-      dockerSocket.enable = true;
+      #dockerSocket.enable = true;
       defaultNetwork.settings.dns_enabled = true;
     };
     libvirtd = {
@@ -143,17 +133,15 @@
     spiceUSBRedirection.enable = true;
     waydroid.enable = true;
   };
-
-    environment.extraInit = ''
-      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-        fi
-    '';
+  environment.extraInit = ''
+    if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+      export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+    fi
+  '';
 
 
   #-------- GROUPS ---------#
   users.groups.distrobox = {};
-
 
   #-------- USERS --------#
   ##########################
@@ -183,98 +171,67 @@
       openFirewall = true;
     };
     blueman.enable = true;
-    desktopManager = {
-      plasma6.enable = true;
-    };
+    desktopManager = {};
     displayManager =  {
-      sddm.enable = true;
       defaultSession = "hyprland";
     };
     fail2ban.enable = false;
     flatpak.enable = true;
-    #monado = {
+    #llama-cpp = {
     #  enable = true;
-    #  defaultRuntime = true;
+    #  openFirewall = true;
+    #  host = "192.168.1.5";
     #};
-    ollama = {
+    monado = {
       enable = false;
+      defaultRuntime = false;
+    };
+    ollama = {
+      enable = true;
       acceleration = "cuda";
     };
     openssh.enable = true;
-    #postgresql = {
-    #  enable = false;
-    #  ensureDatabases = [ "khoj" ];
-    #  enableTCPIP = false;
-    #  extraPlugins = ps: with pkgs; [
-    #    postgresqlPackages.pgvector
-    #  ];
-    #  authentication = pkgs.lib.mkOverride 10 ''
-    #    #type database DBuser auth-method
-    #    local all      all    trust
-    #  '';
-    #};
-
-    ## Enable CUPS to print documents.
     printing.enable = true;
-
-    sunshine = {
-      enable = true;
-      autoStart = true;
-      capSysAdmin = true;
-      openFirewall = true;
-    };
-
     udev.extraRules = ''
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="*",GROUP="users", MODE="0660"
     '';
-
-    ## X11
     xserver = {
       enable = true;
+      displayManager = {
+        gdm.enable = true;
+      };
+      desktopManager = {
+        gnome.enable = true;
+      };
       windowManager = {
-        bspwm.enable = true;
+        bspwm.enable = false;
       };
       xkb.layout = "us";
       xkb.variant = "";
     };
   };
 
-  #------- SPECIALIZATIONS -------#
-  #specialisation = {
-  #  cosmic.configuration = {
-  #    system.nixos.tags = [ "cosmic" ];
-  #    services = {
-  #      desktopManager.cosmic.enable = true;
-  #      displayManager.cosmic.enable = true;
-  #    };
-  #  };
-  #};
-
   #-------- SYSTEM --------#
   systemd = {
-    enableUnifiedCgroupHierarchy = true;
     user = {
       services = {
-        /*
         monado.environment = {
           STEAMVR_LH_ENABLE = "1";
           XRT_COMPOSITOR_COMPUTE = "1";
         };
-        */
-        polkit-kde-agent-1 = {
-          description = "polkit-kde-agent-1";
+        polkit-gnome-authentication-agent-1 = {
+          description = "polkit gnome interface";
           wantedBy = [ "graphical-session.target" ];
           wants = [ "graphical-session.target" ];
           after = [ "graphical-session.target" ];
           serviceConfig = {
             Type = "simple";
-            ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
+            ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
             Restart = "on-failure";
             RestartSec = 1;
             TimeoutStopSec = 10;
           };
         };
-        ytoold.enable = true;
       };
     };
     extraConfig = ''
@@ -288,15 +245,13 @@
       device = "/dev/disk/by-uuid/8a82f24c-5b0d-4f5e-900d-a6e615f0dc77";
       fsType = "ext4";
     };
-
     "/boot" = {
       device = "/dev/disk/by-uuid/6BFC-BE4E";
       fsType = "vfat";
     };
-
     "/mnt/data" = {
       device = "/dev/disk/by-partuuid/37a21dd3-9547-4533-aaa5-440c4e2e16bd";
-      fsType = "ntfs";
+      fsType = "lowntfs-3g";
       options = [
         "noatime"
         "nodiratime"
@@ -315,7 +270,6 @@
       ];
     };
   };
-
 
   #-------- NETWORKING --------#
   hardware.bluetooth.enable = true; # enables support for Bluetooth
@@ -348,6 +302,7 @@
       allowedUDPPorts = [
         1900 7359 # Jellyfin service autodiscovery
         5173 # Grimoire
+        5353 # AirPlay (iOS)
         5930
         11434 # Ollama
         5432 42110 # Khoj
@@ -360,35 +315,7 @@
         }
       ];
     };
-    #  wg0 = {
-    #    ips = [ "192.168.1.1/24" ]; # "fc10:10:10::1/64"
-
-    #    # NOTE: This allows the wireguard server to route your traffic to the internet and hence be like a VPN
-    #    # For this to work you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
-    #    listenPort = 51820;
-
-    #    # Path to the private key file.
-    
-    #    # NOTE: The private key can also be included inline via the privateKey option,
-    #    # but this makes the private key world-readable; thus, using privateKeyFile is
-    #    # recommended.
-    #    privateKeyFile = "/etc/wireguard/privatekey/privatekey";
-
-    #    #peers = [{
-    #      # List of allowed peers.
-    #      # Feel free to give a meaningful name
-    #      # Public key of the peer (not a file path).
-    #      # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
-
-    #      #publicKey = "Nl5DtuKE3HscxEuTTirditJ1pJAlmb9hjL7H/6JeFQ0="; # "fc10:10:10::2/128"
-    #      #allowedIPs = [ "192.168.1.2/32" ];
-    #      #endpoint = "192.168.1.25:51820";
-    #      #persistentKeepalive = 25;
-    #    }];
-    #  };
-    #};
   };
-
 
   #-------- AUDIO --------#
   #sound.enable = true;
@@ -402,7 +329,6 @@
     jack.enable = true;
   };
 
-
   #-------- GPU --------#
   hardware = {
     graphics = {
@@ -411,33 +337,19 @@
     };
     nvidia = {
       modesetting.enable = true;
-
-      # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+      # Experimental, and can cause sleep/suspend to fail.
       powerManagement.enable = false;
-
       # Fine-grained power management. Turns off GPU when not in use.
-      # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+      # Experimental Turing+
       powerManagement.finegrained = false;
-
-      # Use the NVidia open source kernel module (not to be confused with "nouveau" open source driver).
-      # Full list of supported GPUs is at: https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-      # Currently alpha-quality/buggy, so false is currently the recommended setting.
+      # Use the NVidia open source dkms kernel module
+      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
       open = false;
-
-      # Enable the Nvidia settings menu, accessible via `nvidia-settings`.
       nvidiaSettings = true;
-
-      # Optionally, you may need to select the appropriate driver version for your specific GPU.
-      # package = config.boot.kernelPackages.nvidiaPackages.stable;
-      #NOTE: Firefox may need to be run as xwayland w/ MOZ_ENABLE_WAYLAND=0
     };
-
     nvidia-container-toolkit.enable = true;
   };
-
-
   services.xserver.videoDrivers = [ "nvidia" ];
-
 
   environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text = /* sh */ ''
     Section "Screen"
@@ -447,7 +359,7 @@
       DefaultDepth 24
       Option "Stereo" "0"
       Option "nvidiaXineramaInfoOrder" "DFP-7" 
-      Option "metamodes" "HDMI-0: nvidia-auto-select +640+0 {ForceCompositionPipeline=On}, DP-0: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, DP-3: nvidia-auto-select +2560+290 {rotation=right, ForceCompositionPipeline=On}"
+      Option "metamodes" "HDMI-0: nvidia-auto-select +640+0 {rotation=right, ForceCompositionPipeline=On}, DP-0: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, DP-3: nvidia-auto-select +2560+290 {rotation=right, ForceCompositionPipeline=On}"
       Option "SLI" "Off"
       Option "MultiGPU" "Off"
       Option "BaseMosaic" "off"
@@ -463,9 +375,8 @@
       monitor-center = "DP-1";
       monitor-left = "DP-2";
       monitor-right = "HDMI-A-1";
-    in /* sh */
-    ''
-      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, ${monitor-left}: nvidia-auto-select +0+0 {ForceCompositionPipeline=On}, ${monitor-right}: nvidia-auto-select +3840+0 {rotation=right, ForceCompositionPipeline=On}"
+    in ''
+      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, ${monitor-left}: nvidia-auto-select +0+0 {rotate=right, ForceCompositionPipeline=On}, ${monitor-right}: nvidia-auto-select +3840+0 {rotation=right, ForceCompositionPipeline=On}"
     '';
 
 
@@ -489,10 +400,8 @@
     supportedFilesystems = [ "ntfs" ];
   };
 
-
   #-------- POWER --------#
   powerManagement.enable = false;
-
 
   #-------- XDG PORTALS --------#
   xdg = {
@@ -569,5 +478,4 @@
   ## (e.g. man configuration.nix or on https://nixos.org/nixos/options.html). ##
   ##############################################################################
   system.stateVersion = "23.11"; # Did you read the comment?
-
 }
