@@ -6,7 +6,7 @@ return {
     keys = {
       { "<leader>e", "<cmd>Neotree float<cr>", desc = "Find files floating" },
     },
-    requires = {
+    dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",

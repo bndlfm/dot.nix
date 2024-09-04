@@ -137,9 +137,10 @@
       map kitty_mod+d detach_tab ask
       map kitty_mod+a attach_tab ask
 
-      map kitty_mod+f5 launch --location=hsplit
-      map kitty_mod+f6 launch --location=vsplit
-      map kitty_mod+f7 layout_action rotate
+      map kitty_mod+b launch --location=hsplit
+      map kitty_mod+o launch --location=vsplit
+      map kitty_mod+j layout_action rotate
+
       map kitty_mod+f9 clear_terminal reset active
       map kitty_mod+f10 clear_terminal clear active
       map kitty_mod+f11 clear_terminal scrollback active
@@ -152,10 +153,10 @@
       map shift+down move_window down
 
       # Switch focus to the neighboring window in the indicated direction
-      map ctrl+left neighboring_window left
-      map ctrl+right neighboring_window right
-      map ctrl+up neighboring_window up
-      map ctrl+down neighboring_window down
+      map kitty_mod+left neighboring_window left
+      map kitty_mod+right neighboring_window right
+      map kitty_mod+up neighboring_window up
+      map kitty_mod+down neighboring_window down
 
       map ctrl+l combine : clear_terminal scroll active : send_text normal,application \x0c
 

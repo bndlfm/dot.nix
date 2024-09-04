@@ -32,7 +32,6 @@
       niri.url = "github:sodiboo/niri-flake";
   };
 
-
   outputs = {
     nixpkgs,
     nixos-cli,
@@ -65,12 +64,7 @@
             ## THEMING
               stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
             ## WINDOW MANAGERS
-              niri.homeModules.config (
-                {pkgs, niri, ...}:{
-                programs.niri = {
-                  enable = true;
-                };
-              })
+              niri.homeModules.niri ( import ./windowManagers/hm/niri.nix {inherit niri;})
             ## IMPORTS
               ./users/neko/home.nix
           ];
@@ -114,48 +108,3 @@
     };
   };
 }
-
-
-  ###
-  ###  NOTE: CONTAINERS
-  ###
-  /*
-  funkwhale = nixpkgs.lib.nixosSystem {
-    system = "x86_64-linux";
-
-    modules = [
-      funkwhale.nixosModules.default
-      ( { pkgs, ... }:
-      let
-        hostname = "funkwhale";
-        secretFile = pkgs.writeText "djangoSecret" "test123";
-      in {
-        boot.isContainer = true;
-        #system.configurationRevision = nixpkgs.lib.mkIf (self ? rev) self.rev;
-        system.stateVersion = "23.05";
-
-        networking = {
-          useDCHP = false;
-          firewall.allowedTCPPorts = [ 80 ];
-          hostName = "${hostname}";
-        };
-        nixpkgs.overlays = [ funkwhale.overlays.default ];
-
-        services.funkwhale = {
-          enable = true;
-          hostname = "${hostname}";
-          # typesenseKey = "my typesense key";
-          defaultFromEmail = "noreply@funkwhale.rhumbs.fr";
-          protocol = "http"; # no ssl for virtualbox
-          forceSSL = false; # uncomment when LetsEncrypt needs to access "http:" in order to check domain
-          api = {
-              djangoSecretKeyFile = "${secretFile}";
-          };
-        };
-        # Overrides default 30M
-        services.nginx.clientMaxBodySize = "100m";
-        #environment.systemPackages = with pkgs; [ neovim ];
-      })
-    ];
-  };
-  */

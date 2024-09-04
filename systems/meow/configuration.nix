@@ -19,8 +19,8 @@
       trusted-users = [ "root" "@wheel" ];
       trusted-substituters = [ ];
       trusted-public-keys = [ ];
+      };
     };
-  };
 
   nixpkgs = {
     config = {
@@ -29,13 +29,13 @@
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
           { inherit pkgs; };
-      };
+        };
       permittedInsecurePackages = [
         "fluffychat-linux-1.20.0"
-      ];
-    };
+        ];
+      };
     overlays = [ ];
-  };
+    };
 
   environment.systemPackages = with pkgs; [
     git
@@ -58,7 +58,6 @@
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_STATE_HOME = "$HOME/.local/state";
     XDG_BIN_HOME = "$HOME/.local/bin";
-    XDG_RUNTIME_DIR = "/run/user/$(id -u)";
   };
 
   #-------- PACKAGE MODULES --------#
@@ -66,43 +65,42 @@
     darling.enable = false;
     dconf = {
       enable = true;
-    };
+      };
     gamescope = {
       enable = true;
       capSysNice = true;
-    };
+      };
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
       pinentryPackage = pkgs.pinentry-curses;
-    };
+      };
     hyprland = {
       enable = true;
       xwayland.enable = true;
-    };
+      };
     nbd.enable = false;
     nh = {
       enable = true;
       flake = "/home/neko/.nixcfg";
-    };
+      };
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
         cmake
-      ];
-    };
+        ];
+      };
     steam = {
       enable = true;
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
+      };
     };
-  };
 
 #-------- CONTAINERS / VM --------#
   virtualisation = {
     containers = {
       enable = true;
-      cdi.dynamic.nvidia.enable = true;
       storage.settings = {
         storage = {
           driver = "overlay";
@@ -110,33 +108,33 @@
           graphroot = "/var/lib/containers/storage";
           rootless_storage_path = "/tmp/containers-$USER";
           options.overlay.mountopt = "nodev,metacopy=on";
+          };
         };
       };
-    };
     docker = {
       enable = false;
       daemon.settings = {
         default-runtime = "nvidia";
+        };
       };
-    };
     podman = {
       enable = true;
-      #dockerSocket.enable = true;
+      dockerSocket.enable = true;
       defaultNetwork.settings.dns_enabled = true;
-    };
+      };
     libvirtd = {
       enable = true;
       qemu = {
         swtpm.enable = true;
+        };
       };
-    };
     spiceUSBRedirection.enable = true;
     waydroid.enable = true;
-  };
+    };
   environment.extraInit = ''
-    if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-      export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-    fi
+      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+      fi
   '';
 
 
@@ -152,7 +150,7 @@
     description = "neko";
     extraGroups = [ "networkmanager" "wheel" "input" "docker" "libvirtd" "tss" ];
     linger = true;
-  };
+    };
 
   #-------- SECURITY --------#
   security = {
@@ -160,8 +158,8 @@
       enable = true;
       pkcs11.enable = true;
       tctiEnvironment.enable = true;
+      };
     };
-  };
 
   #-------- SERVICES --------#
   services = {
@@ -169,47 +167,48 @@
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
-    };
+      };
     blueman.enable = true;
     desktopManager = {};
     displayManager =  {
       defaultSession = "hyprland";
-    };
+      };
     fail2ban.enable = false;
     flatpak.enable = true;
-    #llama-cpp = {
-    #  enable = true;
-    #  openFirewall = true;
-    #  host = "192.168.1.5";
-    #};
+    llama-cpp = {
+      enable = false;
+      openFirewall = true;
+      extraFlags = [ "" ];
+      model = "/home/neko/ai/llm/kunoichi-dpo-v2-7b.Q6_K.gguf";
+      };
     monado = {
       enable = false;
       defaultRuntime = false;
-    };
+      };
     ollama = {
       enable = true;
       acceleration = "cuda";
-    };
+      };
     openssh.enable = true;
     printing.enable = true;
     udev.extraRules = ''
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="*",GROUP="users", MODE="0660"
-    '';
+      '';
     xserver = {
       enable = true;
       displayManager = {
         gdm.enable = true;
-      };
+        };
       desktopManager = {
         gnome.enable = true;
-      };
+        };
       windowManager = {
         bspwm.enable = false;
-      };
+        };
       xkb.layout = "us";
       xkb.variant = "";
+      };
     };
-  };
 
   #-------- SYSTEM --------#
   systemd = {
@@ -218,7 +217,7 @@
         monado.environment = {
           STEAMVR_LH_ENABLE = "1";
           XRT_COMPOSITOR_COMPUTE = "1";
-        };
+          };
         polkit-gnome-authentication-agent-1 = {
           description = "polkit gnome interface";
           wantedBy = [ "graphical-session.target" ];
@@ -230,10 +229,10 @@
             Restart = "on-failure";
             RestartSec = 1;
             TimeoutStopSec = 10;
+            };
           };
         };
       };
-    };
     extraConfig = ''
       DefaultTimeoutStopSec = 10s
     '';
@@ -244,11 +243,11 @@
     "/" = {
       device = "/dev/disk/by-uuid/8a82f24c-5b0d-4f5e-900d-a6e615f0dc77";
       fsType = "ext4";
-    };
+      };
     "/boot" = {
       device = "/dev/disk/by-uuid/6BFC-BE4E";
       fsType = "vfat";
-    };
+      };
     "/mnt/data" = {
       device = "/dev/disk/by-partuuid/37a21dd3-9547-4533-aaa5-440c4e2e16bd";
       fsType = "lowntfs-3g";
@@ -256,8 +255,8 @@
         "noatime"
         "nodiratime"
         "discard"
-      ];
-    };
+        ];
+      };
 
     "/media" = {
       device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
@@ -267,9 +266,9 @@
         "noatime"
         "nodiratime"
         "discard"
-      ];
+        ];
+      };
     };
-  };
 
   #-------- NETWORKING --------#
   hardware.bluetooth.enable = true; # enables support for Bluetooth

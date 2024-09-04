@@ -17,7 +17,7 @@ c.bind('H', ':tab-prev')
 
 c.bind('u', ':back')
 c.bind('U', ':forward')
-
+c.bind('xs', 'config-cycle --temp --print --pattern *://*.{url:host}/* content.javascript.enabled ;; reload')
 # Other Qutebrowser settings
 # ...
 

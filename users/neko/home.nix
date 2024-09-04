@@ -15,6 +15,7 @@
       ../../programs/hm/ranger.nix
       ../../programs/hm/rofi.nix
       ../../programs/hm/yazi.nix
+      ../../programs/hm/zellij.nix
 
       ../../programs/hm/misc_programs.nix
 
@@ -50,12 +51,27 @@
   home.packages = with pkgs; [
     #!!!! TEMP INSTALLS !!!!#
       #(pkgs.callPackage ../../programs/hm/warp-terminal.nix {})
+      (pkgs.warp-terminal.overrideAttrs (old: rec {
+        pname = "warp-terminal";
+        version = "0.2024.08.20.08.02.stable_00";
+        src = pkgs.fetchurl {
+          url = "https://releases.warp.dev/stable/v${version}/warp-terminal-v${version}-1-x86_64.pkg.tar.zst";
+          sha256 = "sha256-Uk5pSoAvEppjLnskLc5/ftcCaiJnXATJfCPDP2QpBo8=";
+        };
+        nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.makeWrapper pkgs.curl ];
+        postInstall = ''
+          wrapProgram $out/bin/warp-terminal --set WARP_ENABLE_WAYLAND 1 \
+              --prefix LD_LIBRARY_PATH : ${pkgs.wayland}/lib
+        '';
+        })
+      )
 
     ### APPLE (FUCK YOU!)
       uxplay
 
     ### BROWSERS
       #firefox see ~/.nixcfg/programs/hm/firefox.nix
+      qutebrowser
 
     ### CLI
       age
@@ -109,11 +125,11 @@
 
     ### GAMES
       crawlTiles
-      glfw-wayland-minecraft
+      #glfw-wayland-minecraft
       heroic
       libreoffice-qt
       lutris
-      (prismlauncher.override{withWaylandGLFW=true;})
+      #(prismlauncher.override{withWaylandGLFW=true;})
 
 
     ### MEDIA
@@ -131,6 +147,9 @@
         git-lfs
         git-credential-manager
         git-credential-gopass
+      ## PYTHON
+        python3
+        python3Packages.gguf
       godot_4
       godot_4-export-templates
       direnv
@@ -285,9 +304,9 @@
         source = ../../.config/tridactyl;
         recursive = true;
       };
-      "qutebrowser" = {
-        source = ../../.config/qutebrowser;
-        recursive = true;
+      "qutebrowser/config.py" = {
+        source = ../../.config/qutebrowser/config.py;
+        #recursive = true;
       };
       "waybar" = {
         source = ../../.config/waybar;

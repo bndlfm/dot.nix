@@ -3,8 +3,11 @@
     ### HYPRLAND TOOLS
       clipse
       hdrop
-      hyprpaper
+    #hyprpaper
+      nwg-look
+      nwg-displays
       hyprshot
+      swaybg
       swayidle
       swaylock
       swaynotificationcenter
@@ -77,7 +80,7 @@
           "float, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
           "size 615 346, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
           "move 1920 56, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
-          "nofocus, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
+          "noinitialfocus, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
         ## GPT FIREFOX
           "float, title:^(.*ChatGPTBox.*Firefox Developer Edition.*)$"
         ## Pin Entry (GPG)
@@ -228,7 +231,7 @@
         gaps_in = 5;
         gaps_out = 10;
         border_size = 4;
-        layout = "scroller";
+        layout = "dwindle";
 
         "col.active_border" = "rgba(99c0d0ff) rgba(5e81acff) 45deg";
         "col.inactive_border" = "rgba(2e3440ff)";
@@ -237,6 +240,7 @@
 
       dwindle = {
         force_split = 2;
+        preserve_split = true;
       };
 
       animations = {
@@ -253,15 +257,9 @@
       };
       decoration = {
         rounding = 7;
-        #"blur"= true;
-        #"blur_size" = 3;
-        #"blur_passes" = 2;
         drop_shadow = true;
         shadow_range = 4;
         shadow_render_power = 3;
-        #"col.shadow" = "rgba(1a1a1aee)";
-        #"col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-        #"col.shadow_inactive_border" = "rgba(595959aa)";
       };
       env = [
         "GBM_BACKEND,nvidia-drm"

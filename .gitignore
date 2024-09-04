@@ -2,9 +2,8 @@
 bin
 ./packages/TinyWiiBackupManager
 ./packages/tinyWiiBackupManager
-.config/nvim/lazy-lock.json
-.config/nvim/tmp
-.config/nvim/plugged
+.config/nvim
+.config/nvimBackup
 .config/page
 .config/systemd
 .config/environment.d
