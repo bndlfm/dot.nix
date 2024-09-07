@@ -27,7 +27,7 @@
     ]
   },
   {
-    "layer": "top",
+    "layer": "bottom",
     "position": "top",
     "output": [
       "HDMI-A-1",

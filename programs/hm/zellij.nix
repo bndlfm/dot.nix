@@ -1,7 +1,7 @@
 {...}:{
   programs.zellij = {
     enable = true;
-    enableFishIntegration = true;
+    enableFishIntegration = false;
     enableZshIntegration = true;
     enableBashIntegration = true;
   };

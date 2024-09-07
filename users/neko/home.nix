@@ -44,7 +44,7 @@
       ];
     };
     overlays = [
-      (import ../../overlays/overlays.nix)
+      #(import ../../overlays/overlays.nix)
     ];
   };
 
