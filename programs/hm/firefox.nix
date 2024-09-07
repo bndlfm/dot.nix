@@ -8,7 +8,7 @@ in {
       pkgs.gopass-jsonapi
       pkgs.plasma-browser-integration
     ];
-    package = pkgs.firefox-devedition;
+    package = pkgs.firefox;
     profiles = {
       "oli3t15x.default-release" = {
         id = 0;

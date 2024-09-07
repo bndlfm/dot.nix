@@ -44,33 +44,31 @@
       ];
     };
     overlays = [
-      #(import ../../overlays/overlays.nix)
     ];
   };
 
   home.packages = with pkgs; [
     #!!!! TEMP INSTALLS !!!!#
-      #(pkgs.callPackage ../../programs/hm/warp-terminal.nix {})
-      (pkgs.warp-terminal.overrideAttrs (old: rec {
-        pname = "warp-terminal";
-        version = "0.2024.08.20.08.02.stable_00";
-        src = pkgs.fetchurl {
-          url = "https://releases.warp.dev/stable/v${version}/warp-terminal-v${version}-1-x86_64.pkg.tar.zst";
-          sha256 = "sha256-Uk5pSoAvEppjLnskLc5/ftcCaiJnXATJfCPDP2QpBo8=";
-        };
-        nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.makeWrapper pkgs.curl ];
-        postInstall = ''
-          wrapProgram $out/bin/warp-terminal --set WARP_ENABLE_WAYLAND 1 \
-              --prefix LD_LIBRARY_PATH : ${pkgs.wayland}/lib
-        '';
-        })
-      )
+      #(pkgs.warp-terminal.overrideAttrs (old: rec {
+      #  pname = "warp-terminal";
+      #  version = "0.2024.08.20.08.02.stable_00";
+      #  src = pkgs.fetchurl {
+      #    url = "https://releases.warp.dev/stable/v${version}/warp-terminal-v${version}-1-x86_64.pkg.tar.zst";
+      #    sha256 = "sha256-Uk5pSoAvEppjLnskLc5/ftcCaiJnXATJfCPDP2QpBo8=";
+      #  };
+      #  nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.makeWrapper pkgs.curl ];
+      #  postInstall = old.postInstall ++ ''
+      #    wrapProgram $out/bin/warp-terminal --set WARP_ENABLE_WAYLAND 1 \
+      #        --prefix LD_LIBRARY_PATH : ${pkgs.wayland}/lib
+      #  '';
+      #  })
+      #)
+      (pkgs.callPackage ../../packages/cursor-ide.nix {})
 
     ### APPLE (FUCK YOU!)
       uxplay
 
     ### BROWSERS
-      #firefox see ~/.nixcfg/programs/hm/firefox.nix
       qutebrowser
 
     ### CLI
@@ -231,12 +229,13 @@
 
     ### MISC PACKAGES
       speechd
+      llama-cpp
   ];
 
 
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
-    DEFAULT_BROWSER = "${pkgs.firefox-devedition}/bin/firefox";
+    DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
     DOCKER_HOST = "unix:///run/user/1000/docker.sock";
     DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
     EDITOR  = "nvim";
