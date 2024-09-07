@@ -19,13 +19,9 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
       flatpak.url = "github:gmodena/nix-flatpak";
+      ffnightly.url = "github:nix-community/flake-firefox-nightly";
     ### SECRETS
       sops-nix.url = "github:Mic92/sops-nix";
-    ### VMs
-      microvm = {
-        url = "github:astro/microvm.nix";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
     ### WINDOW MANAGER
       hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
       hyprscroller.url = "github:dawsers/hyprscroller";
@@ -36,12 +32,15 @@
     nixpkgs,
     nixos-cli,
     home-manager,
+
     flatpak,
-    aagl,
-    microvm,
-    sops-nix,
+    ffnightly,
     spicetify-nix,
+
+    sops-nix,
+
     stylix,
+
     hyprland,
     niri,
     ...
@@ -57,6 +56,11 @@
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
             ## PROGRAMS
+              ({ pkgs, ... }:{
+                home.packages = [
+                  inputs.ffnightly.${pkgs.system}.firefox-nightly-bin
+                ];
+              })
               flatpak.homeManagerModules.nix-flatpak
               inputs.spicetify-nix.homeManagerModules.default ( import ./theme/spicetify.nix {inherit spicetify-nix;})
             ## SECRETS
@@ -84,7 +88,7 @@
             ## PROGRAMS
               nixos-cli.nixosModules.nixos-cli
               flatpak.nixosModules.nix-flatpak
-              aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
+              #aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
             ## SECRETS
               sops-nix.nixosModules.sops
             ## THEMING
