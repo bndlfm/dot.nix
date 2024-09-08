@@ -1,14 +1,10 @@
-*.orig
 bin
-./packages/TinyWiiBackupManager
-./packages/tinyWiiBackupManager
 .config/nvim
 .config/nvimBackup
 .config/page
 .config/systemd
 .config/environment.d
 .config/openairc
-sops/
 containers/khoj
 containers/arr apps
 containers/funkwhale

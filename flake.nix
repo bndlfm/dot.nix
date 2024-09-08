@@ -21,7 +21,10 @@
       flatpak.url = "github:gmodena/nix-flatpak";
       ffnightly.url = "github:nix-community/flake-firefox-nightly";
     ### SECRETS
-      sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ### WINDOW MANAGER
       hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
       hyprscroller.url = "github:dawsers/hyprscroller";
@@ -58,13 +61,17 @@
             ## PROGRAMS
               ({ pkgs, ... }:{
                 home.packages = [
-                  inputs.ffnightly.${pkgs.system}.firefox-nightly-bin
+                  inputs.ffnightly.packages.${pkgs.system}.firefox-nightly-bin
                 ];
+                programs.firefox.package = inputs.ffnightly.packages.${pkgs.system}.firefox-nightly-bin;
+                home.sessionVariables = {
+                  DEFAULT_BROWSER = "${inputs.ffnightly.packages.${pkgs.system}.firefox-nightly-bin}/bin/firefox";
+                };
               })
               flatpak.homeManagerModules.nix-flatpak
               inputs.spicetify-nix.homeManagerModules.default ( import ./theme/spicetify.nix {inherit spicetify-nix;})
             ## SECRETS
-              inputs.sops-nix.homeManagerModules.sops
+              inputs.sops-nix.homeManagerModules.sops ( import ./sops/sops.nix {inherit sops-nix;})
             ## THEMING
               stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
             ## WINDOW MANAGERS
@@ -90,7 +97,7 @@
               flatpak.nixosModules.nix-flatpak
               #aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
             ## SECRETS
-              sops-nix.nixosModules.sops
+              sops-nix.nixosModules.sops ( import ./sops/sops.nix { inherit sops-nix;})
             ## THEMING
               stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
             ## WINDOW MANAGERS

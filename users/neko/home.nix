@@ -90,6 +90,7 @@
       nix-index
       ripgrep
       silver-searcher
+      sops
       trashy
       unzip
       usbutils
@@ -230,21 +231,18 @@
     ### MISC PACKAGES
       speechd
       llama-cpp
+      tesseract
   ];
 
 
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
-    DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
     DOCKER_HOST = "unix:///run/user/1000/docker.sock";
     DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
     EDITOR  = "nvim";
     GPG_TTY ="$(tty)";
     _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd";
     PAGER = "nvim +Man!";
-    #    POSTGRES_USER = "postgres";
-    #    POSTGRES_PASSWORD = "postgres";
-    #    POSTGRES_HOST = "/run/postgresql/";
     MANPAGER = "nvim +Man!";
     MOZ_DBUS_REMOTE="1";
     NIXOS_OZONE_WL = "1";

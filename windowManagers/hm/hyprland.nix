@@ -29,18 +29,18 @@
   #-------- Startup --------#
     exec-once = [
       # Shibboleths for DBus / IBus
-          "ibus-daemon"
-          "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE"
-          "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all"
-          "export $(dbus-launch)"
+        "ibus-daemon"
+        "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE"
+        "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all"
+        "export $(dbus-launch)"
       # Idleing stuff
         #  "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
         #  "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
       # Clipboard Shenanigans
         "copyq --start-server"
       # KDE Connect
-          "${pkgs.kdeconnect}/libexec/kdeconnect"
-          "kdeconnect-indicator"
+        "${pkgs.kdeconnect}/libexec/kdeconnect"
+        "kdeconnect-indicator"
       "waybar"
       "blueman-applet" # Bluetooth
       "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/GoogleDrive" # Google Drive
@@ -49,7 +49,7 @@
       "hyprpaper"
       ];
 
-  #-------- Window Rules --------#
+    #-------- Window Rules --------#
       windowrule = [
         ## Chatterino/Streamlink-Twitch-GUI
           "workspace 10 silent, streamlink-twitch-gui"
@@ -81,6 +81,11 @@
           "size 615 346, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
           "move 1920 56, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
           "noinitialfocus, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
+          # firefox-nightly
+          "float, class:^(firefox-nightly)$, title:(.*)(Picture-in-Picture)(.*)"
+          "size 615 346, class:^(firefox-nightly)$, title:(.*)(Picture-in-Picture)(.*)"
+          "move 1920 56, class:^(firefox-nightly)$, title:(.*)(Picture-in-Picture)(.*)"
+          "noinitialfocus, class:^(firefox-nightly)$, title:(.*)(Picture-in-Picture)(.*)"
         ## GPT FIREFOX
           "float, title:^(.*ChatGPTBox.*Firefox Developer Edition.*)$"
         ## Pin Entry (GPG)
