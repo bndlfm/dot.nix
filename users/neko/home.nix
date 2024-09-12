@@ -48,22 +48,9 @@
   };
 
   home.packages = with pkgs; [
-    #!!!! TEMP INSTALLS !!!!#
-      #(pkgs.warp-terminal.overrideAttrs (old: rec {
-      #  pname = "warp-terminal";
-      #  version = "0.2024.08.20.08.02.stable_00";
-      #  src = pkgs.fetchurl {
-      #    url = "https://releases.warp.dev/stable/v${version}/warp-terminal-v${version}-1-x86_64.pkg.tar.zst";
-      #    sha256 = "sha256-Uk5pSoAvEppjLnskLc5/ftcCaiJnXATJfCPDP2QpBo8=";
-      #  };
-      #  nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.makeWrapper pkgs.curl ];
-      #  postInstall = old.postInstall ++ ''
-      #    wrapProgram $out/bin/warp-terminal --set WARP_ENABLE_WAYLAND 1 \
-      #        --prefix LD_LIBRARY_PATH : ${pkgs.wayland}/lib
-      #  '';
-      #  })
-      #)
-      (pkgs.callPackage ../../packages/cursor-ide.nix {})
+
+    ### AI
+      #aider-chat
 
     ### APPLE (FUCK YOU!)
       uxplay
@@ -77,11 +64,13 @@
       cachix
       chafa
       distrobox
+      duf
       eza
       fd
       ffmpeg-full
       file
       fzf
+      grex
       gnugrep
       gopass
       jq
@@ -89,7 +78,8 @@
       libqalculate
       nix-index
       ripgrep
-      silver-searcher
+      sd
+      silver-searcher #ag
       sops
       trashy
       unzip
@@ -123,6 +113,7 @@
 
 
     ### GAMES
+      BeatSaberModManager
       crawlTiles
       #glfw-wayland-minecraft
       heroic
@@ -230,7 +221,6 @@
 
     ### MISC PACKAGES
       speechd
-      llama-cpp
       tesseract
   ];
 
@@ -277,6 +267,10 @@
         source = ../../.config/mutt;
         recursive = true;
       };
+      #"niri" = {
+      #  source = ../../.config/niri;
+      #  recursive = true;
+      #};
       #"nvim" = {
       #  source = ./.config/nvim;
       #  recursive = true;

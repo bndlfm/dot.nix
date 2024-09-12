@@ -3,7 +3,7 @@
     ### HYPRLAND TOOLS
       clipse
       hdrop
-    #hyprpaper
+      hyprpaper
       nwg-look
       nwg-displays
       hyprshot

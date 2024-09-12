@@ -63,7 +63,9 @@
                 home.packages = [
                   inputs.ffnightly.packages.${pkgs.system}.firefox-nightly-bin
                 ];
-                programs.firefox.package = inputs.ffnightly.packages.${pkgs.system}.firefox-nightly-bin;
+                programs = {
+                  firefox.package = inputs.ffnightly.packages.${pkgs.system}.firefox-nightly-bin;
+                };
                 home.sessionVariables = {
                   DEFAULT_BROWSER = "${inputs.ffnightly.packages.${pkgs.system}.firefox-nightly-bin}/bin/firefox";
                 };
@@ -75,7 +77,7 @@
             ## THEMING
               stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
             ## WINDOW MANAGERS
-              niri.homeModules.niri ( import ./windowManagers/hm/niri.nix {inherit niri;})
+              #niri.homeModules.niri ( import ./windowManagers/hm/niri.nix {inherit niri;})
             ## IMPORTS
               ./users/neko/home.nix
           ];

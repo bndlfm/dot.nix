@@ -37,6 +37,7 @@
         p.bash
         p.c
         p.cpp
+        p.kdl
         p.lua
         p.ocaml
         p.nix

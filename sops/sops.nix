@@ -1,7 +1,7 @@
-{pkgs, inputs, config, ... }:
+{ sops-nix , ... }:
 {
-  sops.defaultSopsFile = "../secrets/secrets.yaml";
+  sops.defaultSopsFile = ../sops/secrets.yaml;
   sops.defaultSopsFormat = "yaml";
-  sops.age.keyFile = "/home/neko/.config/sops/age/key.txt";
-  sops.secrets."myservice/my_subdir/my_secret" = {};
+  sops.age.keyFile = "/home/neko/.config/sops/age/keys.txt";
+  sops.secrets."hyper-shell" = {};
 }

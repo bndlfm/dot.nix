@@ -1,0 +1,20 @@
+input {
+  keyboard = {}
+}
+output {
+  "DP-1" {
+    mode "2560x1440@143.97"
+    position x=1080 y=0
+    variable-refresh-rate
+  }
+  "DP-2" {
+    mode "1920x1080@60"
+    position x=3640 y=0
+    transform "270"
+  }
+  "HDMI-A-1" {
+    mode "1920x1080@60"
+    position x=0 y=0
+    transform "270"
+  }
+}

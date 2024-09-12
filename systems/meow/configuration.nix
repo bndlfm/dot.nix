@@ -87,7 +87,6 @@
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
-        cmake
         ];
       };
     steam = {
@@ -169,9 +168,12 @@
       openFirewall = true;
       };
     blueman.enable = true;
-    desktopManager = {};
+    desktopManager = {
+      plasma6.enable = true;
+      };
     displayManager =  {
       defaultSession = "hyprland";
+      sddm.enable = true;
       };
     fail2ban.enable = false;
     flatpak.enable = true;
@@ -186,7 +188,7 @@
       defaultRuntime = false;
       };
     ollama = {
-      enable = true;
+      enable = false;
       acceleration = "cuda";
       };
     openssh.enable = true;
@@ -197,10 +199,10 @@
     xserver = {
       enable = true;
       displayManager = {
-        gdm.enable = true;
+        gdm.enable = false;
         };
       desktopManager = {
-        gnome.enable = true;
+        gnome.enable = false;
         };
       windowManager = {
         bspwm.enable = false;
@@ -249,12 +251,12 @@
       fsType = "vfat";
       };
     "/mnt/data" = {
-      device = "/dev/disk/by-partuuid/37a21dd3-9547-4533-aaa5-440c4e2e16bd";
-      fsType = "lowntfs-3g";
+      device = "/dev/disk/by-uuid/ad281e3a-7c33-48e2-be75-2b6433acee04";
+      fsType = "ext4";
       options = [
         "noatime"
         "nodiratime"
-        "discard"
+        "defaults"
         ];
       };
 
@@ -286,7 +288,7 @@
       allowedTCPPorts = [
         5173 # Grimoire
         5930
-        8000
+        8333 # SillyTavern
         8096 # Jellyfin HTTP
         8920 # Jellyfin HTTPS
         11434 # Ollama
@@ -303,6 +305,7 @@
         5173 # Grimoire
         5353 # AirPlay (iOS)
         5930
+        8333 # SillyTavern
         11434 # Ollama
         5432 42110 # Khoj
         51820 # Wireguard port
@@ -337,7 +340,7 @@
     nvidia = {
       modesetting.enable = true;
       # Experimental, and can cause sleep/suspend to fail.
-      powerManagement.enable = false;
+      powerManagement.enable = true;
       # Fine-grained power management. Turns off GPU when not in use.
       # Experimental Turing+
       powerManagement.finegrained = false;

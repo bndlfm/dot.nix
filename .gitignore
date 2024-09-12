@@ -19,3 +19,4 @@ packages/TinyWiiBackupManager
 .config/hypr/plugins/hyprscroller.so
 virtMachines/
 theme/ComfyUI_00181_.png
+.aider*
