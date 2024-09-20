@@ -50,13 +50,16 @@
   home.packages = with pkgs; [
 
     ### AI
-      #aider-chat
+      aider-chat
+
 
     ### APPLE (FUCK YOU!)
       uxplay
 
+
     ### BROWSERS
       qutebrowser
+
 
     ### CLI
       age
@@ -81,7 +84,9 @@
       sd
       silver-searcher #ag
       sops
+      tesseract
       trashy
+      unrar
       unzip
       usbutils
       wireguard-tools
@@ -91,16 +96,9 @@
       zoxide
 
 
-    ### TUI
-      ### TOP-LIKES
-        btop
-        iotop
-        nvtopPackages.nvidia
-      ranger
-      joshuto
-        highlight
-      page
-      pulsemixer
+    ### Daemons
+      mpd-discord-rpc
+      yams
 
 
     ### EDITING TOOLS
@@ -108,26 +106,25 @@
       upscayl
 
 
-    ### NOTES
-      obsidian
-
-
     ### GAMES
       BeatSaberModManager
       crawlTiles
-      #glfw-wayland-minecraft
+      glfw-wayland-minecraft
       heroic
       libreoffice-qt
       lutris
-      #(prismlauncher.override{withWaylandGLFW=true;})
+      prismlauncher
 
 
     ### MEDIA
-      mpd-discord-rpc
       mpv
       ncmpcpp
       streamlink-twitch-gui-bin
         streamlink
+
+
+    ### NOTES
+      obsidian
 
 
     ### PROGRAMMING
@@ -138,8 +135,11 @@
         git-credential-manager
         git-credential-gopass
       ## PYTHON
-        python3
-        python3Packages.gguf
+      (python3.withPackages (pkgs: with pkgs; [
+        gguf
+        pynvim
+        ueberzug
+        ]))
       godot_4
       godot_4-export-templates
       direnv
@@ -149,6 +149,7 @@
 
     ### SOCIAL
       fluffychat
+      discord
 
 
     ### SYSTEM
@@ -173,6 +174,19 @@
       base16-schemes
       ocs-url
       volantes-cursors
+
+
+    ### TUI
+      ### TOP-LIKES
+        btop
+        iotop
+        nvtopPackages.nvidia
+      joshuto
+        highlight
+      page
+      pulsemixer
+      ranger
+      tdf
 
 
     ### UTILITIES
@@ -221,7 +235,6 @@
 
     ### MISC PACKAGES
       speechd
-      tesseract
   ];
 
 
@@ -236,20 +249,20 @@
     MANPAGER = "nvim +Man!";
     MOZ_DBUS_REMOTE="1";
     NIXOS_OZONE_WL = "1";
-    OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a";
-    OPENAI_API_BASE = "http://localhost:11434/v1/"; # https://localhost/v1/
-    QT_QPA_PLATFORMTHEME = "qt6ct";
-    QT_STYLE_OVERRIDE = "kvantum";
+    OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a"; # local key, not active
+    OPENAI_API_BASE = "http://localhost:11434/v1/";
+    #QT_QPA_PLATFORMTHEME = "qt6ct";
+    #QT_STYLE_OVERRIDE = "kvantum";
     STEAM_DISABLE_BROWSER_SHUTDOWN_WORKAROUND=1;
     SUDOEDITOR = "vim";
     VISUAL = "vim";
     XCURSOR = "volantes-cursors";
     XCURSOR_SIZE = "24";
-    # GPU STUFF
-    PROTON_ENABLE_NVAPI = "1";
-    PROTON_HIDE_NVIDIA_GPU = "0";
-    VKD3D_CONFIG = "dxr";
-    VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
+    ### GPU STUFF
+      PROTON_ENABLE_NVAPI = "1";
+      PROTON_HIDE_NVIDIA_GPU = "0";
+      VKD3D_CONFIG = "dxr";
+      VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
   };
 
   ######### (HM) DOTFILES ########

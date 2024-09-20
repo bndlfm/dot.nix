@@ -136,10 +136,15 @@
 
       map kitty_mod+d detach_tab ask
       map kitty_mod+a attach_tab ask
-
-      map kitty_mod+b launch --location=hsplit
-      map kitty_mod+o launch --location=vsplit
-      map kitty_mod+j layout_action rotate
+ 
+      ### BORDERS
+        draw_minimal_borders yes
+        window_border_width 2
+        active_border_color #00ff00
+        inactive_border_color #cccccc
+        map kitty_mod+b launch --location=hsplit
+        map kitty_mod+o launch --location=vsplit
+        map kitty_mod+j layout_action rotate
 
       map kitty_mod+f9 clear_terminal reset active
       map kitty_mod+f10 clear_terminal clear active

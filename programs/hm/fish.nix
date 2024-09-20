@@ -132,7 +132,7 @@
             nxcli = "NIXOS_CONFIG=~/.nixcfg/flake.nix#meow nix run github:water-sucks/nixos/0.11.0 -- option -i";
             nfu = "nix flake update ~/.nixcfg/";
             nxrb = "nh os switch ~/.nixcfg";
-            hmrb = "home-manager switch --flake ~/.nixcfg -b bak --impure";
+            hmrb = "nh home switch ~/.nixcfg/ -- --impure";
           ## GARBAGE COLLECTION
             nxgc = "sudo nix-collect-garbage -d";
             hmgc = "nix-collect-garbage -d";

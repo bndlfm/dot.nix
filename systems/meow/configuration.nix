@@ -78,6 +78,15 @@
     hyprland = {
       enable = true;
       xwayland.enable = true;
+      package = pkgs.hyprland.overrideAttrs {
+        src = pkgs.fetchFromGitHub {
+          owner = "hyprwm";
+          repo = "Hyprland";
+          fetchSubmodules = true;
+          rev = "v0.41.1";
+          hash = "sha256-hLnnNBWP1Qjs1I3fndMgp8rbWJruxdnGTq77A4Rv4R4=";
+          };
+        };
       };
     nbd.enable = false;
     nh = {
@@ -173,7 +182,7 @@
       };
     displayManager =  {
       defaultSession = "hyprland";
-      sddm.enable = true;
+      sddm.enable = false;
       };
     fail2ban.enable = false;
     flatpak.enable = true;
@@ -199,7 +208,7 @@
     xserver = {
       enable = true;
       displayManager = {
-        gdm.enable = false;
+        gdm.enable = true;
         };
       desktopManager = {
         gnome.enable = false;
@@ -238,6 +247,124 @@
     extraConfig = ''
       DefaultTimeoutStopSec = 10s
     '';
+    tmpfiles.rules = [
+      "L+ /run/gdm/.config/monitors.xml - - - - ${pkgs.writeText "gdm-monitors.xml" ''
+        <monitors version="2">
+          <configuration>
+            <logicalmonitor>
+              <x>0</x>
+              <y>147</y>
+              <scale>1</scale>
+              <transform>
+                <rotation>right</rotation>
+                <flipped>no</flipped>
+              </transform>
+              <monitor>
+                <monitorspec>
+                  <connector>HDMI-1</connector>
+                  <vendor>DEL</vendor>
+                  <product>DELL U2417H</product>
+                  <serial>XVNNT79EDJGL</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1080</height>
+                  <rate>60.000</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>3640</x>
+              <y>238</y>
+              <scale>1</scale>
+              <transform>
+                <rotation>right</rotation>
+                <flipped>no</flipped>
+              </transform>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-2</connector>
+                  <vendor>SAM</vendor>
+                  <product>SMS22A200/460</product>
+                  <serial>HCLC907701</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1080</height>
+                  <rate>60.000</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>1080</x>
+              <y>0</y>
+              <scale>1</scale>
+              <primary>yes</primary>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-1</connector>
+                  <vendor>AUS</vendor>
+                  <product>ASUS VG32V</product>
+                  <serial>0x0000ce0e</serial>
+                </monitorspec>
+                <mode>
+                  <width>2560</width>
+                  <height>1440</height>
+                  <rate>143.972</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+          </configuration>
+          <configuration>
+            <logicalmonitor>
+              <x>322</x>
+              <y>0</y>
+              <scale>1</scale>
+              <monitor>
+                <monitorspec>
+                  <connector>HDMI-1</connector>
+                  <vendor>DEL</vendor>
+                  <product>DELL U2417H</product>
+                  <serial>XVNNT79EDJGL</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1080</height>
+                  <rate>60.000</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>0</x>
+              <y>1080</y>
+              <scale>1</scale>
+              <primary>yes</primary>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-3</connector>
+                  <vendor>AUS</vendor>
+                  <product>ASUS VG32V</product>
+                  <serial>0x0000ce0e</serial>
+                </monitorspec>
+                <mode>
+                  <width>2560</width>
+                  <height>1440</height>
+                  <rate>143.972</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <disabled>
+              <monitorspec>
+                <connector>DP-1</connector>
+                <vendor>NVD</vendor>
+                <product>0x0000</product>
+                <serial>0x00000000</serial>
+              </monitorspec>
+            </disabled>
+          </configuration>
+        </monitors>
+        ''}"
+    ];
   };
 
   #-------- FILESYSTEM --------#
@@ -361,7 +488,7 @@
       DefaultDepth 24
       Option "Stereo" "0"
       Option "nvidiaXineramaInfoOrder" "DFP-7" 
-      Option "metamodes" "HDMI-0: nvidia-auto-select +640+0 {rotation=right, ForceCompositionPipeline=On}, DP-0: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, DP-3: nvidia-auto-select +2560+290 {rotation=right, ForceCompositionPipeline=On}"
+      Option "metamodes" "HDMI-0: nvidia-auto-select +640+0 {rotation=left, ForceCompositionPipeline=On}, DP-0: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, DP-3: nvidia-auto-select +2560+290 {rotation=left, ForceCompositionPipeline=On}"
       Option "SLI" "Off"
       Option "MultiGPU" "Off"
       Option "BaseMosaic" "off"

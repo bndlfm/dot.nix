@@ -21,13 +21,11 @@
       flatpak.url = "github:gmodena/nix-flatpak";
       ffnightly.url = "github:nix-community/flake-firefox-nightly";
     ### SECRETS
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+      sops-nix = {
+        url = "github:Mic92/sops-nix";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     ### WINDOW MANAGER
-      hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-      hyprscroller.url = "github:dawsers/hyprscroller";
       niri.url = "github:sodiboo/niri-flake";
   };
 
@@ -37,14 +35,12 @@
     home-manager,
 
     flatpak,
-    ffnightly,
     spicetify-nix,
 
     sops-nix,
 
     stylix,
 
-    hyprland,
     niri,
     ...
   }@inputs: let
@@ -58,18 +54,6 @@
         "neko" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [
-            ## PROGRAMS
-              ({ pkgs, ... }:{
-                home.packages = [
-                  inputs.ffnightly.packages.${pkgs.system}.firefox-nightly-bin
-                ];
-                programs = {
-                  firefox.package = inputs.ffnightly.packages.${pkgs.system}.firefox-nightly-bin;
-                };
-                home.sessionVariables = {
-                  DEFAULT_BROWSER = "${inputs.ffnightly.packages.${pkgs.system}.firefox-nightly-bin}/bin/firefox";
-                };
-              })
               flatpak.homeManagerModules.nix-flatpak
               inputs.spicetify-nix.homeManagerModules.default ( import ./theme/spicetify.nix {inherit spicetify-nix;})
             ## SECRETS
@@ -103,8 +87,8 @@
             ## THEMING
               stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
             ## WINDOW MANAGERS
-              hyprland.nixosModules.default
-              niri.nixosModules.niri ( import ./windowManagers/nx/niri.nix {inherit pkgs niri;})
+              #hyprland.nixosModules.default
+              #niri.nixosModules.niri ( import ./windowManagers/nx/niri.nix {inherit pkgs niri;})
             ## IMPORTS
               ./systems/meow/configuration.nix
               ./systems/meow/hardware-configuration.nix

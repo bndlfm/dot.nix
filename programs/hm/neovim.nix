@@ -1,11 +1,52 @@
-{ pkgs, ... }:{
+{ pkgs, ... }:
+let
+  magma-nvim = pkgs.vimUtils.buildVimPlugin {
+    pname = "magma";
+    version = "6.6.6";
+    src = pkgs.fetchFromGitHub {
+     owner = "dccsillag";
+     repo = "magma-nvim";
+     rev = "ff3deba8a879806a51c005e50782130246143d06";
+     sha256 = "sha256-IrMR57gk9iCk73esHO24KZeep9VrlkV5sOC4PzGexyo=";
+      };
+    passthru.python3Dependencies = ps:
+      with pkgs; [
+        pynvim
+        jupyter-client
+        ueberzug
+        pillow
+        cairosvg
+        plotly
+        ipykernel
+        pyperclip
+        pnglatex
+        ];
+    meta.homepage = "https://github.com/dccsillag/magma-nvim";
+  };
+
+in {
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-    extraLuaPackages = ps: [ ps.magick ];
+    extraLuaPackages = ps: with ps; [
+      luarocks
+      magick
+      ];
+    extraPython3Packages = ps: with ps; [
+      cairosvg
+      ipykernel
+      jupyter-client
+      pillow
+      pip
+      plotly
+      pnglatex
+      pyperclip
+      pynvim
+      ueberzug
+      ];
     extraPackages = with pkgs; [
       bash-language-server
       cargo
@@ -13,39 +54,38 @@
       gcc
       git
       gnumake
+      highlight
       imagemagick
       javascript-typescript-langserver
       lua-language-server
+      texlivePackages.latex
       lazygit
-      #nil
       nixd
       nodejs
-      ocaml
-      opam
       pyright
-      python3
-      python3Packages.pip
       shellcheck
       shfmt
       stylua
       unzip
       yarn
-    ];
+      ];
     plugins = with pkgs.vimPlugins; [
       vim-nix
-      (nvim-treesitter.withPlugins (p: [
-        p.bash
-        p.c
-        p.cpp
-        p.kdl
-        p.lua
-        p.ocaml
-        p.nix
-        p.python
-        p.rust
-        p.scheme
-        p.typescript
-      ]))
-    ];
+      molten-nvim
+      (nvim-treesitter.withPlugins (ps: with ps; [
+        bash
+        c
+        cpp
+        kdl
+        lua
+        ocaml
+        nix
+        python
+        regex
+        rust
+        scheme
+        typescript
+        ]))
+      ];
   };
 }
