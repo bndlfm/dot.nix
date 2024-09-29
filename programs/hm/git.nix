@@ -5,5 +5,6 @@ programs.git = {
     extraConfig = {
       credential.helper = "oauth";
     };
+    lfs.enable = true;
   };
 }

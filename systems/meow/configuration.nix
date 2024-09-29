@@ -78,15 +78,6 @@
     hyprland = {
       enable = true;
       xwayland.enable = true;
-      package = pkgs.hyprland.overrideAttrs {
-        src = pkgs.fetchFromGitHub {
-          owner = "hyprwm";
-          repo = "Hyprland";
-          fetchSubmodules = true;
-          rev = "v0.41.1";
-          hash = "sha256-hLnnNBWP1Qjs1I3fndMgp8rbWJruxdnGTq77A4Rv4R4=";
-          };
-        };
       };
     nbd.enable = false;
     nh = {
@@ -119,15 +110,15 @@
           };
         };
       };
-    docker = {
-      enable = false;
+    docker.rootless = {
+      enable = true;
       daemon.settings = {
         default-runtime = "nvidia";
         };
       };
     podman = {
       enable = true;
-      dockerSocket.enable = true;
+      dockerSocket.enable = false;
       defaultNetwork.settings.dns_enabled = true;
       };
     libvirtd = {
@@ -139,11 +130,11 @@
     spiceUSBRedirection.enable = true;
     waydroid.enable = true;
     };
-  environment.extraInit = ''
-      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-      fi
-  '';
+#  environment.extraInit = ''
+#      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+#        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+#      fi
+#  '';
 
 
   #-------- GROUPS ---------#
@@ -167,6 +158,7 @@
       pkcs11.enable = true;
       tctiEnvironment.enable = true;
       };
+      polkit.enable = true;
     };
 
   #-------- SERVICES --------#
@@ -181,7 +173,6 @@
       plasma6.enable = true;
       };
     displayManager =  {
-      defaultSession = "hyprland";
       sddm.enable = false;
       };
     fail2ban.enable = false;
@@ -208,13 +199,14 @@
     xserver = {
       enable = true;
       displayManager = {
-        gdm.enable = true;
+        gdm.enable = false;
+        lightdm.enable = true;
         };
       desktopManager = {
         gnome.enable = false;
         };
       windowManager = {
-        bspwm.enable = false;
+        bspwm.enable = true;
         };
       xkb.layout = "us";
       xkb.variant = "";
@@ -419,6 +411,8 @@
         8096 # Jellyfin HTTP
         8920 # Jellyfin HTTPS
         11434 # Ollama
+        25565 # MC SERVER
+        25575 # MC RCON
         5432 42110 # Khoj
       ];
       allowedTCPPortRanges = [
@@ -434,6 +428,8 @@
         5930
         8333 # SillyTavern
         11434 # Ollama
+        25565 # MC SERVER
+        25575 # MC RCON
         5432 42110 # Khoj
         51820 # Wireguard port
       ];
@@ -467,13 +463,11 @@
     nvidia = {
       modesetting.enable = true;
       # Experimental, and can cause sleep/suspend to fail.
-      powerManagement.enable = true;
       # Fine-grained power management. Turns off GPU when not in use.
       # Experimental Turing+
-      powerManagement.finegrained = false;
       # Use the NVidia open source dkms kernel module
       # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-      open = false;
+      open = true;
       nvidiaSettings = true;
     };
     nvidia-container-toolkit.enable = true;
@@ -515,9 +509,9 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    extraModprobeConfig = ''
-      options nvidia NVreg_EnableGpuFirmware=0
-    '';
+    #extraModprobeConfig = ''
+    #  options nvidia NVreg_EnableGpuFirmware=0
+    #'';
     kernelModules = [ "" ];
     kernelParams = [ "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.hdmi_deepcolor=1" "amd_pstate=active" ];
     kernelPackages = pkgs.linuxPackages_latest;

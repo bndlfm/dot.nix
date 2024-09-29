@@ -1,9 +1,9 @@
 return {
   "echasnovski/mini.surround",
-  enabled = false,
+  recommended = true,
   keys = function(_, keys)
     -- Populate the keys based on the user's options
-    --local opts = LazyVim.opts("mini.surround")
+    local opts = LazyVim.opts("mini.surround")
     local mappings = {
       { opts.mappings.add, desc = "Add Surrounding", mode = { "n", "v" } },
       { opts.mappings.delete, desc = "Delete Surrounding" },

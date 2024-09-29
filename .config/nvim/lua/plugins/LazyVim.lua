@@ -1,26 +1,51 @@
 return {
-  --!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--
-  --  WARNING: THIS IS A LOAD BEARING  --
-  --  OPT DICTIONARY THINGY AND BREAKS --
-  --  LOADING KEYMAPS FOR SOME REASON  --
-  --!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--
+  --"ellisonleao/gruvbox.nvim",
+  -- Configure LazyVim to load gruvbox
   {
-    --"ellisonleao/gruvbox.nvim",
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "nordic",
     },
   },
-  --!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--
-  --  END OF LOAD BEARING THEME SETUP  --
-  --!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--
 
+  -- change trouble config
   {
     "folke/trouble.nvim",
     enabled = true,
     -- opts will be merged with the parent spec
     opts = { use_diagnostic_signs = true },
   },
+
+  -- add symbols-outline
+  {
+    "simrat39/symbols-outline.nvim",
+    cmd = "SymbolsOutline",
+    keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
+    config = true,
+  },
+
+  -- for typescript, LazyVim also includes extra specs to properly setup lspconfig,
+  -- treesitter, mason and typescript.nvim. So instead of the above, you can use:
+  --{ import = "lazyvim.plugins.extras.lang.typescript" },
+
+  {
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+    opts = function()
+      return {
+        options = {
+          theme = "nordic",
+        },
+      }
+    end,
+  },
+
+  -- use mini.starter instead of alpha
+  --  { import = "lazyvim.plugins.extras.ui.mini-starter" },
+
+  -- add jsonls and schemastore packages, and setup treesitter for json, json5 and jsonc
+  --  { import = "lazyvim.plugins.extras.lang.json" },
+
   {
     "echasnovski/mini.ai",
     event = "VeryLazy",
@@ -64,11 +89,5 @@ return {
         indent_at_cursor = true,
       },
     },
-  },
-  {
-    "simrat39/symbols-outline.nvim",
-    cmd = "SymbolsOutline",
-    keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
-    config = true,
   },
 }

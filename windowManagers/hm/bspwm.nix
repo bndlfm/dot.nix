@@ -6,8 +6,8 @@
     alwaysResetDesktops = true;
     monitors = {
       HDMI-0 = [ "1" "2" "3" "4" ];
-      DP-4 = [ "5" "6" "7" "8" "9" ];
-      DP-3 = [ "0" ];
+      DP-0 = [ "5" "6" "7" "8" ];
+      DP-3 = [ "9" "0" ];
     };
     settings = {
       border_width = 6;
@@ -17,6 +17,7 @@
       gapless_monocle = true;
     };
     rules = {
+      "*:*:'Picture-in-Picture'" = { floating = true; focus = false; };
       "steam" = { floating = true; };
       "steam_app" = { floating = true; };
       "Steam" = { floating = true; };
@@ -25,6 +26,7 @@
       "blueman-applet" = { floating = true; };
     };
     startupPrograms = [
+      "nvidia-settings --assign CurrentMetaMode=\"HDMI-0: nvidia-auto-select +0+0 {rotation=right}, DP-0: nvidia-auto-select +1080+0, DP-3: nvidia-auto-select +3640+0 {rotation=right}\""
       "sxhkd"
       "~/.config/polybar/polybar.sh"
       "dunst"

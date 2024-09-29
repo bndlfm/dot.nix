@@ -1,9 +1,11 @@
-{ pkgs, ... }: {
+{ config, pkgs, inputs, ... }: {
   home.stateVersion = "23.11";
   home.username = "neko";
   home.homeDirectory = "/home/neko";
 
   imports = [
+    ../../sops/sops.nix
+
     ### PROGRAMS
       ../../programs/hm/firefox.nix
       ../../programs/hm/fish.nix
@@ -27,8 +29,9 @@
 
     ### WINDOW MANAGERS
       ../../windowManagers/hm/hyprland.nix
+      ../../windowManagers/hm/sway.nix
       ../../windowManagers/hm/bspwm.nix
-  ];
+    ];
 
   nixpkgs = {
     config = {
@@ -37,15 +40,15 @@
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
           { inherit pkgs; };
-      };
+        };
       permittedInsecurePackages = [
         "fluffychat-linux-1.20.0"
         "olm-3.2.16"
+        ];
+      };
+    overlays = [
       ];
     };
-    overlays = [
-    ];
-  };
 
   home.packages = with pkgs; [
 
@@ -251,6 +254,7 @@
     NIXOS_OZONE_WL = "1";
     OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a"; # local key, not active
     OPENAI_API_BASE = "http://localhost:11434/v1/";
+    OPENAI_API_KEY = "${config.sops.secrets.OPENAI_API_KEY.path}";
     #QT_QPA_PLATFORMTHEME = "qt6ct";
     #QT_STYLE_OVERRIDE = "kvantum";
     STEAM_DISABLE_BROWSER_SHUTDOWN_WORKAROUND=1;

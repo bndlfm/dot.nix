@@ -7,12 +7,9 @@ polybar-msg cmd quit
 # killall -q polybar
 
 # Launch bar1 and bar2
-echo "---" | tee -a /tmp/polybar1.log /tmp/polybar2.log
-MONITOR=DP-3 polybar top 2>&1 | tee -a /tmp/polybar2.log &
-disown
-MONITOR=DP-4 polybar bottom 2>&1 | tee -a /tmp/polybar1.log &
-disown
-MONITOR=HDMI-0 polybar top 2>&1 | tee -a /tmp/polybar2.log &
-disown
+echo "---" | tee -a /tmp/polybar1.log /tmp/polybar.log &
+MONITOR=DP-3 polybar left 2>&1 | tee -a /tmp/polybardp3.log &
+MONITOR=DP-0 polybar center 2>&1 | tee -a /tmp/polybardp0.log &
+MONITOR=HDMI-0 polybar right 2>&1 | tee -a /tmp/polybarhdmi0.log &
 
 echo "Bars launched..."
