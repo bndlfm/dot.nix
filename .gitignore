@@ -5,6 +5,7 @@ bin
 .config/systemd
 .config/environment.d
 .config/openairc
+.config/nvimWithoutLazy
 containers/khoj
 containers/arr apps
 containers/funkwhale
