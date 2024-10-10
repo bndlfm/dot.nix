@@ -47,7 +47,7 @@
         ];
       };
     overlays = [
-      (import ../../overlays/obsidian.nix)
+      #(import ../../overlays/obsidian.nix)
       ];
     };
 
