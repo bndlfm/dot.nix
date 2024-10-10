@@ -2,8 +2,8 @@
   stylix = {
     autoEnable = false;
 
-    image = ./wallpapers/nordic/wallpapers/nixos.png;
-    base16Scheme = ./nord.yaml;
+    image = ./wallpapers/eve-blue-girl.jpg;
+    #base16Scheme = ./nord.yaml;
     polarity = "dark";
 
     opacity = {

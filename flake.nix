@@ -12,7 +12,8 @@
         url = "github:Gerg-L/spicetify-nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-      stylix.url = "github:danth/stylix";
+      #stylix.url = "github:danth/stylix";
+      stylix.url = "github:Mikilio/stylix";
       tt-schemes = {
         url = "github:tinted-theming/schemes";
         flake = false;
@@ -66,7 +67,7 @@
             ## SECRETS
               inputs.sops-nix.homeManagerModules.sops
             ## THEMING
-              stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
+              #stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
             ## WINDOW MANAGERS
               niri.homeModules.niri ( import ./windowManagers/hm/niri.nix {inherit niri;})
             ## IMPORTS

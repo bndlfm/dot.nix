@@ -47,6 +47,7 @@
         ];
       };
     overlays = [
+      (import ../../overlays/obsidian.nix)
       ];
     };
 
