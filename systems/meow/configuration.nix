@@ -6,7 +6,7 @@
 
     #../../modules/nx/tailscale.nix
 
-    ../../services/nx/sunshine.nix
+#    ../../services/nx/sunshine.nix
 
     #../../containers/jellyfin.nix
     #../../services/nx/jellyfin.nix
@@ -130,11 +130,11 @@
     spiceUSBRedirection.enable = true;
     waydroid.enable = true;
     };
-#  environment.extraInit = ''
-#      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-#        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-#      fi
-#  '';
+  environment.extraInit = ''
+      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+      fi
+  '';
 
 
   #-------- GROUPS ---------#
@@ -147,7 +147,7 @@
   users.users.neko = {
     isNormalUser = true;
     description = "neko";
-    extraGroups = [ "networkmanager" "wheel" "input" "docker" "libvirtd" "tss" ];
+    extraGroups = [ "networkmanager" "wheel" "input" "docker" "distrobox" "libvirtd" "tss" ];
     linger = true;
     };
 
@@ -199,8 +199,8 @@
     xserver = {
       enable = true;
       displayManager = {
-        gdm.enable = false;
-        lightdm.enable = true;
+        gdm.enable = true;
+        lightdm.enable = false;
         };
       desktopManager = {
         gnome.enable = false;
@@ -463,11 +463,12 @@
     nvidia = {
       modesetting.enable = true;
       # Experimental, and can cause sleep/suspend to fail.
+      powerManagement.enable = true;
       # Fine-grained power management. Turns off GPU when not in use.
       # Experimental Turing+
       # Use the NVidia open source dkms kernel module
       # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-      open = true;
+      open = false;
       nvidiaSettings = true;
     };
     nvidia-container-toolkit.enable = true;
@@ -495,8 +496,8 @@
   # Setup displays
   services.xserver.displayManager.setupCommands =
     let
-      monitor-center = "DP-1";
-      monitor-left = "DP-2";
+      monitor-center = "DP-0";
+      monitor-left = "DP-1";
       monitor-right = "HDMI-A-1";
     in ''
       ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, ${monitor-left}: nvidia-auto-select +0+0 {rotate=right, ForceCompositionPipeline=On}, ${monitor-right}: nvidia-auto-select +3840+0 {rotation=right, ForceCompositionPipeline=On}"
@@ -509,10 +510,10 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    #extraModprobeConfig = ''
-    #  options nvidia NVreg_EnableGpuFirmware=0
-    #'';
-    kernelModules = [ "" ];
+    extraModprobeConfig = ''
+      options nvidia NVreg_EnableGpuFirmware=0
+    '';
+    kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
     kernelParams = [ "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.hdmi_deepcolor=1" "amd_pstate=active" ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {

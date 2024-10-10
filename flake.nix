@@ -13,6 +13,11 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
       stylix.url = "github:danth/stylix";
+      tt-schemes = {
+        url = "github:tinted-theming/schemes";
+        flake = false;
+      };
+      base16.url = "github:SenchoPens/base16.nix";
     ### PROGRAMS
       aagl = {
         url = "github:ezKEa/aagl-gtk-on-nix";
@@ -52,6 +57,9 @@
       homeConfigurations = {
         "neko" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
+          extraSpecialArgs = {
+            inherit inputs;
+            };
           modules = [
               flatpak.homeManagerModules.nix-flatpak
               inputs.spicetify-nix.homeManagerModules.default ( import ./theme/spicetify.nix {inherit spicetify-nix;})
@@ -63,8 +71,8 @@
               niri.homeModules.niri ( import ./windowManagers/hm/niri.nix {inherit niri;})
             ## IMPORTS
               ./users/neko/home.nix
-          ];
-        };
+            ];
+          };
         "server" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
           modules = [

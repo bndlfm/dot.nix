@@ -1,6 +1,7 @@
 -- override nvim-cmp and add cmp-emoji
 return {
   "hrsh7th/nvim-cmp",
+  enabled = false,
   priority = 50,
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",

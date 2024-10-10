@@ -267,24 +267,12 @@
         shadow_render_power = 3;
       };
       env = [
-        "GBM_BACKEND,nvidia-drm"
-        "GDK_BACKEND,wayland"
-        "__GL_GSYNC_ALLOWED,1"
-        "__GL_VRR_ALLOWED,1"
-        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
         "LIBVA_DRIVER_NAME,nvidia"
-        "MOZ_ENABLE_WAYLAND,1"
-        "QT_AUTO_SCREEN_SCALE_FACTOR,1"
-        "QT_QPA_PLATFORM,wayland"
-        "VRR,1"
-        "vrr,1"
-        "WLR_NO_HARDWARE_CURSORS,1"
-        "WLR_DRM_NO_ATOMIC,1"
+        "XDG_SESSION_TYPE,wayland"
+        "GBM_BACKEND,nvidia-drm"
+        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
         "XCURSOR,volantes-cursors"
         "XCURSOR_SIZE,24"
-        "XDG_SESSION_DESKTOP,hyprland"
-        "XDG_SESSION_TYPE,wayland"
-        "XDG_CURRENT_DESKTOP,hyprland"
       ];
 
       input = {
@@ -298,8 +286,8 @@
         sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
       };
       misc = {
-        vrr=1;
-        vfr=true;
+        #vrr=1;
+        #vfr=true;
       };
     };
 

@@ -117,6 +117,7 @@
       libreoffice-qt
       lutris
       prismlauncher
+      seventeenlands
 
 
     ### MEDIA
@@ -203,9 +204,9 @@
         wofi
         wttrbar
         wlr-randr
-        wl-clipboard
-        wl-clipboard-x11
-        wl-clip-persist
+#        wl-clipboard
+#        wl-clipboard-x11
+#        wl-clip-persist
         wl-gammactl
       ### XORG TOOLS
         dunst
@@ -218,6 +219,7 @@
         sxhkd
         tdrop
         xbindkeys
+        xclip
         xorg.xkill
         xorg.xhost
       appimage-run
@@ -253,8 +255,7 @@
     MOZ_DBUS_REMOTE="1";
     NIXOS_OZONE_WL = "1";
     OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a"; # local key, not active
-    OPENAI_API_BASE = "http://localhost:11434/v1/";
-    OPENAI_API_KEY = "${config.sops.secrets.OPENAI_API_KEY.path}";
+    OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
     #QT_QPA_PLATFORMTHEME = "qt6ct";
     #QT_STYLE_OVERRIDE = "kvantum";
     STEAM_DISABLE_BROWSER_SHUTDOWN_WORKAROUND=1;

@@ -3,7 +3,7 @@
     autoEnable = false;
 
     image = ./wallpapers/nordic/wallpapers/nixos.png;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
+    base16Scheme = ./nord.yaml;
     polarity = "dark";
 
     opacity = {
