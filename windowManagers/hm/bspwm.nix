@@ -35,7 +35,7 @@
       "xset m 0 0"
       "nitrogen --restore"
       "xsetroot -xcf ${pkgs.volantes-cursors}/share/icons/volantes_light_cursors/cursors/left_ptr 32"
-      "${pkgs.kdeconnect}/libexec/kdeconnectd"
+      "${pkgs.plasma5Packages.kdeconnect-kde}/libexec/kdeconnectd"
       "kdeconnect-indicator"
     ];
   };

@@ -75,7 +75,7 @@
       clipboard-jh
       google-drive-ocamlfuse
       grc
-      kdeconnect
+      plasma5Packages.kdeconnect-kde
       rofi
   ];
 

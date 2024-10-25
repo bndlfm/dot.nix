@@ -35,7 +35,7 @@
       # Clipboard Shenanigans
         "copyq --start-server"
       # KDE Connect
-          "${pkgs.kdeconnect}/libexec/kdeconnect"
+          "${pkgs.plasma5Packages.kdeconnect-kde}/libexec/kdeconnect"
           "kdeconnect-indicator"
       "waybar"
       "blueman-applet" # Bluetooth

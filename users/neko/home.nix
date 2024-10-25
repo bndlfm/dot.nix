@@ -23,7 +23,6 @@
 
     ### SERVICES
       ../../services/hm/espanso.nix
-      ../../services/hm/flatpak.nix
 
       ../../services/hm/misc_services.nix
 
@@ -42,7 +41,7 @@
           { inherit pkgs; };
         };
       permittedInsecurePackages = [
-        "fluffychat-linux-1.20.0"
+        "fluffychat-linux-1.22.1"
         "olm-3.2.16"
         ];
       };
@@ -54,7 +53,7 @@
   home.packages = with pkgs; [
 
     ### AI
-      aider-chat
+      #aider-chat
 
 
     ### APPLE (FUCK YOU!)
@@ -119,6 +118,7 @@
       lutris
       prismlauncher
       seventeenlands
+      steamtinkerlaunch
 
 
     ### MEDIA
@@ -153,7 +153,7 @@
 
 
     ### SOCIAL
-      fluffychat
+      #fluffychat
       discord
 
 
@@ -174,7 +174,14 @@
         rictydiminished-with-firacode
         font-awesome
         gyre-fonts
-        nerdfonts
+        (pkgs.nerdfonts.override {
+          fonts = [
+            "Inconsolata"
+            #"SauceCodePro"
+            "IosevkaTerm"
+            ];
+          }
+        )
         noto-fonts-emoji-blob-bin
       base16-schemes
       ocs-url
@@ -205,9 +212,9 @@
         wofi
         wttrbar
         wlr-randr
-#        wl-clipboard
-#        wl-clipboard-x11
-#        wl-clip-persist
+        #wl-clipboard
+        #wl-clipboard-x11
+        #wl-clip-persist
         wl-gammactl
       ### XORG TOOLS
         dunst
@@ -256,6 +263,7 @@
     MOZ_DBUS_REMOTE="1";
     NIXOS_OZONE_WL = "1";
     OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a"; # local key, not active
+    OLLAMA_HOST = "192.168.1.5";
     OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
     #QT_QPA_PLATFORMTHEME = "qt6ct";
     #QT_STYLE_OVERRIDE = "kvantum";

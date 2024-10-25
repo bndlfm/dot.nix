@@ -6,9 +6,10 @@
 
     #../../modules/nx/tailscale.nix
 
-#    ../../services/nx/sunshine.nix
+    ../../services/nx/sunshine.nix
 
-    #../../containers/jellyfin.nix
+
+    ../../containers/jellyfin.nix
     #../../services/nx/jellyfin.nix
   ];
 
@@ -170,7 +171,7 @@
       };
     blueman.enable = true;
     desktopManager = {
-      plasma6.enable = true;
+      plasma6.enable = false;
       };
     displayManager =  {
       sddm.enable = false;
@@ -188,8 +189,10 @@
       defaultRuntime = false;
       };
     ollama = {
-      enable = false;
+      enable = true;
       acceleration = "cuda";
+      host = "0.0.0.0";
+      openFirewall = true;
       };
     openssh.enable = true;
     printing.enable = true;
@@ -203,7 +206,7 @@
         lightdm.enable = false;
         };
       desktopManager = {
-        gnome.enable = false;
+        gnome.enable = true;
         };
       windowManager = {
         bspwm.enable = true;
@@ -397,20 +400,15 @@
   networking = {
     hostName = "meow";
     networkmanager.enable = true; # Enable Networking
-    #nat = {
-    #  enable = true;
-    #  externalInterface = "enp6s0";
-    #  internalInterfaces = [ "wg0" ];
-    #};
     firewall = {
       enable = true;
       allowedTCPPorts = [
         5173 # Grimoire
+        5432 # Postgres
         5930
         8333 # SillyTavern
         8096 # Jellyfin HTTP
         8920 # Jellyfin HTTPS
-        11434 # Ollama
         25565 # MC SERVER
         25575 # MC RCON
         5432 42110 # Khoj
@@ -425,12 +423,11 @@
         1900 7359 # Jellyfin service autodiscovery
         5173 # Grimoire
         5353 # AirPlay (iOS)
+        5432 # Postgres
         5930
         8333 # SillyTavern
-        11434 # Ollama
         25565 # MC SERVER
         25575 # MC RCON
-        5432 42110 # Khoj
         51820 # Wireguard port
       ];
       allowedUDPPortRanges = [
@@ -448,8 +445,10 @@
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
     pulse.enable = true;
     jack.enable = true;
   };
