@@ -51,6 +51,9 @@
     };
 
   home.packages = with pkgs; [
+      # Broken AGAIN
+      (_7zz.override { useUasm = true; })
+
 
     ### AI
       aider-chat
@@ -141,7 +144,6 @@
         git-credential-gopass
       ## PYTHON
       (python3.withPackages (pkgs: with pkgs; [
-        gguf
         pynvim
         ueberzug
         ]))
@@ -154,7 +156,7 @@
 
     ### SOCIAL
       discord
-
+      hexchat
 
     ### SYSTEM
       ### Plasma5-6/QT5-6

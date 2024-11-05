@@ -1,6 +1,10 @@
-{...}:{
+{ pkgs, ... }:{
   programs.yazi = {
     enable = true;
+    package = pkgs.yazi.override {
+      # Broken AGAIN
+      _7zz = (pkgs._7zz.override { useUasm = true; });
+    };
     enableFishIntegration = true;
     enableBashIntegration = true;
     enableZshIntegration = true;
