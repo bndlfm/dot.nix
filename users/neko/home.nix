@@ -53,7 +53,7 @@
   home.packages = with pkgs; [
 
     ### AI
-      #aider-chat
+      aider-chat
 
 
     ### APPLE (FUCK YOU!)
@@ -99,7 +99,7 @@
       zoxide
 
 
-    ### Daemons
+    ### DAEMONS
       mpd-discord-rpc
       yams
 
@@ -153,7 +153,6 @@
 
 
     ### SOCIAL
-      #fluffychat
       discord
 
 

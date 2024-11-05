@@ -130,7 +130,7 @@
             rnxc = "nvim ~/.nixcfg/systems/meow/configuration.nix";
           ## REBUILD SYSTEM
             nxcli = "NIXOS_CONFIG=~/.nixcfg/flake.nix#meow nix run github:water-sucks/nixos/0.11.0 -- option -i";
-            nfu = "nix flake update ~/.nixcfg/";
+            nfu = "nix flake update --flake ~/.nixcfg/";
             nxrb = "nh os switch ~/.nixcfg";
             hmrb = "nh home switch ~/.nixcfg/ -- --impure";
           ## GARBAGE COLLECTION

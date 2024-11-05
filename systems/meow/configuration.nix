@@ -2,15 +2,14 @@
   imports = [
     ./cachix.nix
 
-    #../../containers/pihole.nix
+    ### CONTAINERS
+      ../../containers/jellyfin.nix
+      #../../containers/pihole.nix
+    ### MODULES
+      ../../modules/nx/tailscale.nix
+    ### SERVICES
+      ../../services/nx/sunshine.nix
 
-    #../../modules/nx/tailscale.nix
-
-    ../../services/nx/sunshine.nix
-
-
-    ../../containers/jellyfin.nix
-    #../../services/nx/jellyfin.nix
   ];
 
   #-------- PACKAGES --------#
@@ -42,6 +41,7 @@
     git
     btrfs-progs
     home-manager
+    nvidia-vaapi-driver
     pinentry-curses
     polkit_gnome
     runc
@@ -112,13 +112,14 @@
         };
       };
     docker.rootless = {
-      enable = true;
+      enable = false;
       daemon.settings = {
         default-runtime = "nvidia";
         };
       };
     podman = {
       enable = true;
+      dockerCompat = true;
       dockerSocket.enable = false;
       defaultNetwork.settings.dns_enabled = true;
       };
@@ -180,9 +181,8 @@
     flatpak.enable = true;
     llama-cpp = {
       enable = false;
-      openFirewall = true;
+      openFirewall = false;
       extraFlags = [ "" ];
-      model = "/home/neko/ai/llm/kunoichi-dpo-v2-7b.Q6_K.gguf";
       };
     monado = {
       enable = false;
@@ -513,7 +513,7 @@
       options nvidia NVreg_EnableGpuFirmware=0
     '';
     kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
-    kernelParams = [ "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.hdmi_deepcolor=1" "amd_pstate=active" ];
+    kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.hdmi_deepcolor=1" "amd_pstate=active" ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
       "vm.overcommit_memory" = 1;
@@ -524,7 +524,7 @@
   };
 
   #-------- POWER --------#
-  powerManagement.enable = false;
+  powerManagement.enable = true;
 
   #-------- XDG PORTALS --------#
   xdg = {

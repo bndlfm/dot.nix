@@ -118,6 +118,7 @@
         "$mainMod, GRAVE, exec, hdrop -f -b -g 30 kitty --class kittydrop"
 
         # Rofi
+        #"$mainMod, SPACE, exec rofi -show run"
         "$mainMod, D, exec, wofi --show run"
         "$mainMod SHIFT, V, exec, copyq show"
 
@@ -220,6 +221,7 @@
       monitor = [
         "DP-1, 2560x1440@144, 1080x0, 1, bitdepth, 10"
         "DP-2, 1920x1080, 3640x0, 1, transform, 3"
+        "HDMI-A-1, 1920x1080, 0x0, 1, transform, 3"
         # See extraConfig below: "HDMI-A-1, 1920x1080, 0x0, 1, transform, 3"
       ];
 
@@ -260,17 +262,28 @@
           "workspaces, 1, 2, default"
         ];
       };
+
+      cursor = {
+        no_hardware_cursors = true;
+      };
+
+      debug = {
+        disable_logs = false;
+      };
+
       decoration = {
         rounding = 7;
         drop_shadow = true;
         shadow_range = 4;
         shadow_render_power = 3;
       };
+
       env = [
         "LIBVA_DRIVER_NAME,nvidia"
         "XDG_SESSION_TYPE,wayland"
         "GBM_BACKEND,nvidia-drm"
         "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+        "NVD_BACKEND,direct"
         "XCURSOR,volantes-cursors"
         "XCURSOR_SIZE,24"
       ];
@@ -286,13 +299,13 @@
         sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
       };
       misc = {
-        #vrr=1;
-        #vfr=true;
+        vrr=1;
+        vfr=true;
       };
     };
 
     extraConfig = ''
-      monitor=HDMI-A-1, 1920x1080, 0x0, 1, transform, 3
+      debug:disable_logs = falsee
     '';
   };
 }
