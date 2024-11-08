@@ -26,6 +26,11 @@ stdenv.mkDerivation rec {
   # Since there's no configure script, skip the configure phase
   configurePhase = "true";
 
+  installPhase = ''
+    mkdir -p $out/bin
+    install -m755 antifennel $out/bin/
+  '';
+
   # The default build and install phases will use make with makeFlags
   # No need to override them unless additional customization is required
 
