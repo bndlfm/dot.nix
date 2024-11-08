@@ -21,7 +21,6 @@ stdenv.mkDerivation rec {
   # Set the LUA variable for Make and the installation PREFIX
   makeFlags = [
     "LUA=${luaInterpreter}"
-    "PREFIX=$out"
   ];
 
   # Since there's no configure script, skip the configure phase
