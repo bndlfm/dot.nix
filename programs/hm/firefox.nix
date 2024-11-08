@@ -96,130 +96,10 @@ in {
         /* ---- userChrome ---- */
         userChrome = /* css */ ''
 
-          /*****************/
-          /** ARC FOX CSS **/
-          /*****************/
-          /**
-          #appcontent
-            > #tabbrowser-tabbox
-            > #tabbrowser-tabpanels
-            > .deck-selected
-            > .browserContainer
-            > .browserStack
-            > browser {
-            border-radius: 10px !important;
-            margin: 10px !important;
-          }
-
-          .browserStack {
-            background: #3b3f52;
-          }
-
-          .browserContainer {
-            background-color: var(
-              --lwt-accent-color-inactive,
-              var(--lwt-accent-color)
-            ) !important;
-            background-image: var(--lwt-header-image), var(--lwt-additional-images) !important;
-            background-repeat: no-repeat, var(--lwt-background-tiling) !important;
-            background-position: right top, var(--lwt-background-alignment) !important;
-          }
-
-          #titlebar {
-            display: none !important;
-          }
-
-          .titlebar-buttonbox-container {
-            display: none !important;
-          }
-
-          #forward-button,
-          #back-button,
-          #reload-button {
-            display: none !important;
-          }
-
-          #sidebar-button {
-            margin-left: 10px !important;
-          }
-
-          #navigator-toolbox:not(:hover) {
-            --is-bar-visible: hidden;
-            opacity: 0 !important;
-            transition: height 200ms ease-in-out, opacity 175ms ease-in-out;
-          }
-
-          #navigator-toolbox {
-            position: fixed;
-            z-index: 1;
-            height: 15px;
-            overflow: var(--is-bar-visible);
-            right: 0;
-            top: 0;
-            width: calc(100% - 310px);
-            transition: 0.1s !important;
-            background-color: transparent !important;
-            border-color: transparent !important;
-          }
-
-          #navigator-toolbox:hover {
-            height: 40px;
-            opacity: 1 !important;
-            transition: opacity 175ms ease-in-out;
-          }
-
-          #navigator-toolbox:focus-within {
-            height: 40px;
-            opacity: 1 !important;
-            transition: opacity 175ms ease-in-out;
-            --is-bar-visible: visible;
-          }
-
-          #nav-bar {
-            background-color: #3b3f52 !important;
-            border-radius: 10px;
-          }
-
-          #urlbar-background {
-            background-color: #323446 !important;
-          }
-
-          toolbarbutton[open="true"] {
-            --is-bar-visible: visible !important;
-          }
-
-          #sidebar-header {
-            display: none;
-          }
-
-          #sidebar-box {
-            min-width: 200px !important;
-            max-width: 300px !important;
-            min-height: unset !important;
-            max-height: unset !important;
-            border-right: none !important;
-          }
-
-          #sidebar-splitter {
-            background-color: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-          }
-
-          #main-window[BookmarksToolbarOverlapsBrowser] .newTabBrowserPanel,
-          #main-window[BookmarksToolbarOverlapsBrowser] #sidebar-box {
-            padding-top: 0 !important;
-          }
-          **/
-
           /****************************/
           /** OLD FIREFOX USERCHROME **/
           /****************************/
 
-          /*@import url(./hide_tabs_toolbar.css);*/
-
-          /* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/hide_tabs_toolbar.css made available under Mozilla Public License v. 2.0
-           See the above repository for updates as well as full license text. */
 
           /* Note, if you have either native titlebar or menubar enabled, then you don't really need this style.
             * In those cases you can just use: #TabsToolbar{ visibility: collapse !important } */
@@ -229,7 +109,7 @@ in {
             * Window controls will be all wrong without it
           */
 
-           :root[tabsintitlebar]{ --uc-toolbar-height: 40px; }
+          /* :root[tabsintitlebar]{ --uc-toolbar-height: 40px; }
            :root[tabsintitlebar][uidensity="compact"]{ --uc-toolbar-height: 32px }
 
            #TabsToolbar{ visibility: collapse !important }
@@ -278,17 +158,17 @@ in {
 
            /* Compatibility options for hide_tabs_toolbar.css and tabs_on_bottom.css at the end of this file */
 
-           :root{
+           /*:root{
              --uc-autohide-toolbox-delay: 200ms; /* Wait 0.1s before hiding toolbars */
-             --uc-toolbox-rotation: 82deg;  /* This may need to be lower on mac - like 75 or so */
-           }
+            /* --uc-toolbox-rotation: 82deg;  /* This may need to be lower on mac - like 75 or so */
+            /*}
 
            :root[sizemode="maximized"]{
              --uc-toolbox-rotation: 88.5deg;
            }
 
            /* Dummy variable to support versions 94-96, can be removed when 96 lands */
-           :root{ --lwt-frame: var(--lwt-accent-color) }
+           /*:root{ --lwt-frame: var(--lwt-accent-color) }
 
            @media  (-moz-platform: windows),
                    (-moz-os-version: windows-win7),
@@ -328,7 +208,7 @@ in {
 
            /* #mainPopupSet:hover ~ box > toolbox, */
            /* Uncomment the above line to make toolbar visible if some popup is hovered */
-           #navigator-toolbox:hover,
+           /*#navigator-toolbox:hover,
            #navigator-toolbox:focus-within{
              transition-delay: 33ms !important;
              transform: rotateX(0);
@@ -344,11 +224,11 @@ in {
            }
 
            /* These two exist for oneliner compatibility */
-           #nav-bar{ width: var(--uc-navigationbar-width,100vw) }
+           /*#nav-bar{ width: var(--uc-navigationbar-width,100vw) }
            #TabsToolbar{ width: calc(100vw - var(--uc-navigationbar-width,0px)) }
 
            /* Don't apply transform before window has been fully created */
-           :root:not([sessionrestored]) #navigator-toolbox{ transform:none !important }
+/*           :root:not([sessionrestored]) #navigator-toolbox{ transform:none !important }
 
            :root[customizing] #navigator-toolbox{
              position: relative !important;
@@ -373,11 +253,11 @@ in {
            */
 
            #sidebar-box {
-             --uc-sidebar-width: 34px;
+           /*  --uc-sidebar-width: 34px;
              --uc-sidebar-hover-width: 210px;
              --uc-autohide-sidebar-delay: 100ms;
              /* Wait 0.6s before hiding sidebar */
-             position: relative;
+           /*  position: relative;
              min-width: var(--uc-sidebar-width) !important;
              width: var(--uc-sidebar-width) !important;
              max-width: var(--uc-sidebar-width) !important;
@@ -451,8 +331,8 @@ in {
 
            /* Add sidebar divider and give it background */
 
-           #sidebar,
-           #sidebar-header {
+           /*#sidebar,
+           /*#sidebar-header {
              background-color: inherit !important;
              border-inline: 1px solid rgb(80,80,80);
              border-inline-width: 0px 1px;
@@ -465,8 +345,8 @@ in {
 
            /* Move statuspanel to the other side when sidebar is hovered so it doesn't get covered by sidebar */
 
-           #sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel {
-             inset-inline: auto 0px !important;
+           /*#sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel {
+           /*   inset-inline: auto 0px !important;
            }
 
            #sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel-label {
@@ -478,15 +358,15 @@ in {
            * BOOKMARK BAR FIX  *
            *********************/
 
-           #PersonalToolbar {
-             padding-left: 36px !important;
+           /*#PersonalToolbar {
+            /* padding-left: 36px !important;
            }
 
            /* hacky way to try and fix sidebar header appearing */
-           #TabsToolbar{ visibility: collapse !important }
-           #sidebar-header {
-             display: none;
-           }
+           /*#TabsToolbar{ visibility: collapse !important }
+           /*#sidebar-header {
+           /*  display: none;
+           /*}
         '';
       };
     };

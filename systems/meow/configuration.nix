@@ -179,6 +179,7 @@
       };
     fail2ban.enable = false;
     flatpak.enable = true;
+    guix.enable = true;
     llama-cpp = {
       enable = false;
       openFirewall = false;

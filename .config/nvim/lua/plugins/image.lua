@@ -1,9 +1,18 @@
 return {
   "3rd/image.nvim",
+  dependencies = {
+    "leafo/magick",
+    "nvim-treesitter/nvim-treesitter",
+    --{
+    --  "vhyrro/luarocks.nvim",
+    --  enabled = false,
+    --},
+  },
   config = function()
     -- default config
     require("image").setup({
       backend = "kitty",
+      kitty_method = "normal",
       integrations = {
         markdown = {
           enabled = true,

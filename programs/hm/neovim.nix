@@ -31,9 +31,8 @@ in {
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-    extraLuaPackages = ps: with ps; [
-      luarocks
-      magick
+    extraLuaPackages = ps: [
+      ps.magick
       ];
     extraPython3Packages = ps: with ps; [
       cairosvg
@@ -50,6 +49,8 @@ in {
     extraPackages = with pkgs; [
       bash-language-server
       cargo
+      fennel
+      fennel-ls
       fzf
       gcc
       git
