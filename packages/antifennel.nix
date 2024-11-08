@@ -9,17 +9,30 @@ stdenv.mkDerivation rec {
     rev = version;
     sha256 = "sha256-DGumkDX+srqmyrmUp0SOilgFCf6nGIbQe2OFgU+AqcE="; # Replace with the actual sha256 hash
   };
+  
+  buildInputs = [ luajit ]; # Choose the Lua implementation: luajit or lua5_4
 
-  buildInputs = [ luajit ];
+  nativeBuildInputs = [ makeWrapper ];
 
-  # Only the install phase is needed
-  phases = [ "installPhase" ];
+  # Set the LUA variable for Make and the installation PREFIX
+  makeFlags = [
+    "LUA=${lua.interpreter}"
+    "PREFIX=$(out)"
+  ];
 
-  installPhase = ''
-    mkdir -p $out/bin
-    install -m755 antifennel $out/bin/
+  # Define the build and install phases using GNU Make
+  buildPhase = ''
+    make ${makeFlags}
   '';
 
+  installPhase = ''
+    make install ${makeFlags}
+  '';
+
+  # Optional: If there are tests, you can define a checkPhase
+  # checkPhase = ''
+  #   make test ${makeFlags}
+  # '';
   meta = with lib; {
     homepage = "https://git.sr.ht/~technomancy/antifennel";
     longDescription = "A tool to turn Lua code into Fennel code (the opposite of what the Fennel compiler does)";
