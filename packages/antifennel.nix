@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, luajit, lib }:
+{ stdenv, fetchgit, luajit, lua5_4, lib }:
 
 stdenv.mkDerivation rec {
   pname = "antifennel";
@@ -7,32 +7,29 @@ stdenv.mkDerivation rec {
   src = fetchgit {
     url = "https://git.sr.ht/~technomancy/antifennel";
     rev = version;
-    sha256 = "sha256-DGumkDX+srqmyrmUp0SOilgFCf6nGIbQe2OFgU+AqcE="; # Replace with the actual sha256 hash
+    sha256 = "1hd9h17q31b3gg88c657zq4han4air2ag55rrakbmcpy6n8acsqc";
   };
-  
-  buildInputs = [ luajit ]; # Choose the Lua implementation: luajit or lua5_4
 
-  nativeBuildInputs = [ makeWrapper ];
+  # Choose the Lua implementation: luajit or lua5_4
+  lua = luajit; # Change to lua5_4 if preferred
+
+  buildInputs = [ lua ];
+
+  # Determine the Lua interpreter path
+  luaInterpreter = "${lua}/bin/luajit";
 
   # Set the LUA variable for Make and the installation PREFIX
   makeFlags = [
-    "LUA=${lua.interpreter}"
-    "PREFIX=$(out)"
+    "LUA=${luaInterpreter}"
+    "PREFIX=$out"
   ];
 
-  # Define the build and install phases using GNU Make
-  buildPhase = ''
-    make ${makeFlags}
-  '';
+  # Since there's no configure script, skip the configure phase
+  configurePhase = "true";
 
-  installPhase = ''
-    make install ${makeFlags}
-  '';
+  # The default build and install phases will use make with makeFlags
+  # No need to override them unless additional customization is required
 
-  # Optional: If there are tests, you can define a checkPhase
-  # checkPhase = ''
-  #   make test ${makeFlags}
-  # '';
   meta = with lib; {
     homepage = "https://git.sr.ht/~technomancy/antifennel";
     longDescription = "A tool to turn Lua code into Fennel code (the opposite of what the Fennel compiler does)";
