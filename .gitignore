@@ -1,22 +1,23 @@
 bin
-.config/nvim
-.config/nvimBackup
-.config/page
-.config/systemd
-.config/environment.d
-.config/openairc
-.config/nvimWithoutLazy
+
+### CONTAINERS
 containers/khoj
 containers/arr apps
 containers/funkwhale
 containers/grimoire
-virt-machines/
+
+### CONFIG
+.config/environment.d
+.config/nvim/*
+.config/nvimFnl
+.config/nvimWithoutLazy
+.config/page
+.config/systemd
+
+
 .mozilla/
 .fonts/
 publickey
-windows-11/
-windows-11.conf
-packages/TinyWiiBackupManager
 .config/hypr/plugins/hyprscroller.so
 virtMachines/
 theme/ComfyUI_00181_.png

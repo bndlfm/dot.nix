@@ -57,6 +57,7 @@
 
     ### AI
       aider-chat
+      upscayl
 
 
     ### APPLE (FUCK YOU!)
@@ -65,6 +66,7 @@
 
     ### BROWSERS
       qutebrowser
+      tor-browser
 
 
     ### CLI
@@ -82,6 +84,7 @@
       grex
       gnugrep
       gopass
+      harbor-cli
       jq
       libnotify
       libqalculate
@@ -109,18 +112,18 @@
 
     ### EDITING TOOLS
       gimp
-      upscayl
+      libreoffice-qt
 
 
     ### GAMES
+        ### EMULATION
+          shadps4
       BeatSaberModManager
       crawlTiles
       glfw-wayland-minecraft
       heroic
-      libreoffice-qt
       lutris
       prismlauncher
-      seventeenlands
       steamtinkerlaunch
 
 
@@ -214,9 +217,9 @@
         wofi
         wttrbar
         wlr-randr
-        #wl-clipboard
-        #wl-clipboard-x11
-        #wl-clip-persist
+        wl-clipboard
+        wl-clipboard-x11
+        wl-clip-persist
         wl-gammactl
       ### XORG TOOLS
         dunst
@@ -229,17 +232,19 @@
         sxhkd
         tdrop
         xbindkeys
-        xclip
+        #xclip
         xorg.xkill
         xorg.xhost
       appimage-run
       clipboard-jh
       copyq
+      gnome-tweaks
       google-drive-ocamlfuse
       gparted
       grc
       keymapp # For ErgoDox
         zsa-udev-rules
+      nicotine-plus
       pavucontrol
       qbittorrent
       qdirstat
@@ -342,10 +347,18 @@
       };
     };
   };
-  specialisation.familyTree.configuration = {
-    home.packages = with pkgs; [
-      ocrmypdf
-    ];
+
+  specialisation = {
+      gnome.configuration = {
+        home.packages = with pkgs; [
+          gnome-tweaks
+          ];
+        };
+
+      familyTree.configuration = {
+        home.packages = with pkgs; [
+          ocrmypdf
+        ];
+      };
   };
 }
-

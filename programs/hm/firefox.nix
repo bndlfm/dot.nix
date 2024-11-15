@@ -3,10 +3,11 @@ let
 in {
   programs.firefox = {
     enable = true;
-    nativeMessagingHosts = [
-      pkgs.tridactyl-native
-      pkgs.gopass-jsonapi
-      pkgs.plasma-browser-integration
+    nativeMessagingHosts = with pkgs; [
+      tridactyl-native
+      gopass-jsonapi
+      plasma-browser-integration
+      firefoxpwa
     ];
     package = pkgs.firefox-devedition;
     profiles = {
@@ -80,6 +81,7 @@ in {
           image-search-options
           localcdn
           lovely-forks
+          pwas-for-firefox
           return-youtube-dislikes
           sidebery
           simple-translate
@@ -95,312 +97,193 @@ in {
 
         /* ---- userChrome ---- */
         userChrome = /* css */ ''
+          /* NOTE: Hide tabs bar b/c of sideberry */
+              #TabsToolbar{ visibility: collapse !important }
 
-          /****************************/
-          /** OLD FIREFOX USERCHROME **/
-          /****************************/
-
-
-          /* Note, if you have either native titlebar or menubar enabled, then you don't really need this style.
-            * In those cases you can just use: #TabsToolbar{ visibility: collapse !important } */
-
-          /* IMPORTANT:
-            * Get window_control_placeholder_support.css
-            * Window controls will be all wrong without it
-          */
-
-          /* :root[tabsintitlebar]{ --uc-toolbar-height: 40px; }
-           :root[tabsintitlebar][uidensity="compact"]{ --uc-toolbar-height: 32px }
-
-           #TabsToolbar{ visibility: collapse !important }
-
-           :root[sizemode="fullscreen"] #TabsToolbar > :is(#window-controls,.titlebar-buttonbox-container){
-             visibility: visible !important;
-             z-index: 2;
-           }
-
-           :root:not([inFullscreen]) #nav-bar{
-             margin-top: calc(0px - var(--uc-toolbar-height,0px));
-           }
-
-           :root[tabsintitlebar] #toolbar-menubar[autohide="true"]{
-             min-height: unset !important;
-             height: var(--uc-toolbar-height,0px) !important;
-             position: relative;
-           }
-
-           #toolbar-menubar[autohide="false"]{
-             margin-bottom: var(--uc-toolbar-height,0px)
-           }
-
-           :root[tabsintitlebar] #toolbar-menubar[autohide="true"] #main-menubar{
-             -moz-box-flex: 1;
-             -moz-box-align: stretch;
-             background-color: var(--toolbar-bgcolor,--toolbar-non-lwt-bgcolor);
-             background-clip: padding-box;
-             border-right: 30px solid transparent;
-             border-image: linear-gradient(to left, transparent, var(--toolbar-bgcolor,--toolbar-non-lwt-bgcolor) 30px) 20 / 30px
-           }
-
-           #toolbar-menubar:not([inactive]){ z-index: 2 }
-           #toolbar-menubar[autohide="true"][inactive] > #menubar-items {
-             opacity: 0;
-             pointer-events: none;
-             margin-left: var(--uc-window-drag-space-pre,0px)
-           }
-
-           /*@import url(./autohide_toolbox.css);*/
-           /* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/autohide_toolbox.css made available under Mozilla Public License v. 2.0
-           See the above repository for updates as well as full license text. */
-
-           /* Hide the whole toolbar area unless urlbar is focused or cursor is over the toolbar */
-           /* Dimensions on non-Win10 OS probably needs to be adjusted */
-
-           /* Compatibility options for hide_tabs_toolbar.css and tabs_on_bottom.css at the end of this file */
-
-           /*:root{
-             --uc-autohide-toolbox-delay: 200ms; /* Wait 0.1s before hiding toolbars */
-            /* --uc-toolbox-rotation: 82deg;  /* This may need to be lower on mac - like 75 or so */
-            /*}
-
-           :root[sizemode="maximized"]{
-             --uc-toolbox-rotation: 88.5deg;
-           }
-
-           /* Dummy variable to support versions 94-96, can be removed when 96 lands */
-           /*:root{ --lwt-frame: var(--lwt-accent-color) }
-
-           @media  (-moz-platform: windows),
-                   (-moz-os-version: windows-win7),
-                   (-moz-os-version: windows-win10){
-
-             :root[tabsintitlebar][sizemode="maximized"]:not([inDOMFullscreen]) > body > box{ margin-top: 8px !important; }
-
-             @media screen and (min-resolution: 1.25dppx){
-               :root[tabsintitlebar][sizemode="maximized"]:not([inDOMFullscreen]) > body > box{ margin-top: 7px !important; }
+          /* NOTE: Hide side bar header for sidebery */
+             #sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar-header {
+               visibility: collapse;
              }
-             @media screen and (min-resolution: 1.5dppx){
-               :root[tabsintitlebar][sizemode="maximized"]:not([inDOMFullscreen]) > body > box{ margin-top: 6px !important; }
-             }
-             @media screen and (min-resolution: 2dppx){
-               :root[tabsintitlebar][sizemode="maximized"] #navigator-toolbox{ margin-top: -1px; }
-             }
-             #navigator-toolbox:not(:-moz-lwtheme){ background-color: -moz-dialog !important; }
-           }
 
-           :root[sizemode="fullscreen"],
-           #navigator-toolbox[inFullscreen]{ margin-top: 0 !important; }
+          /* NOTE: Hides the main toolbar and shows it when the cursor is over the tabs toolbar as well as whenever the focus is inside nav-bar, such as when urlbar is focused. */
+          /* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/autohide_main_toolbar.css */
+          /* See the above repository for updates as well as full license text. */
+              :root{
+                --uc-navbar-transform: -40px;
+                --uc-autohide-toolbar-delay: 1.8s;
+                --uc-autohide-toolbar-duration: 400ms;
+              }
+              :root[uidensity="compact"]{ --uc-navbar-transform: -34px }
 
-           #navigator-toolbox{
-             position: fixed !important;
-             display: block;
-             background-color: var(--lwt-frame,black) !important;
-             transition: transform 82ms linear, opacity 82ms linear !important;
-             transition-delay: var(--uc-autohide-toolbox-delay) !important;
-             transform-origin: top;
-             transform: rotateX(var(--uc-toolbox-rotation));
-             opacity: 0;
-             line-height: 0;
-             z-index: 1;
-             pointer-events: none;
-           }
+              #navigator-toolbox > div{ display: contents; }
+              :root[sessionrestored] :where(#nav-bar,#PersonalToolbar,#tab-notification-deck,.global-notificationbox){
+                transform: translateY(var(--uc-navbar-transform))
+              }
+              :root:is([customizing],[chromehidden*="toolbar"]) :where(#nav-bar,#PersonalToolbar,#tab-notification-deck,.global-notificationbox){
+                transform: none !important;
+                opacity: 1 !important;
+              }
 
+              #nav-bar:not([customizing]){
+                opacity: 0;
+                transition:  transform var(--uc-autohide-toolbar-duration) ease var(--uc-autohide-toolbar-delay), opacity var(--uc-autohide-toolbar-duration) ease var(--uc-autohide-toolbar-delay) !important;
+                position: relative;
+                z-index: 2;
+              }
+              #titlebar{ position: relative; z-index: 3 }
 
-           /* #mainPopupSet:hover ~ box > toolbox, */
-           /* Uncomment the above line to make toolbar visible if some popup is hovered */
-           /*#navigator-toolbox:hover,
-           #navigator-toolbox:focus-within{
-             transition-delay: 33ms !important;
-             transform: rotateX(0);
-             opacity: 1;
-           }
+              #navigator-toolbox,
+              #sidebar-box,
+              #sidebar-main,
+              #sidebar-splitter,
+              #tabbrowser-tabbox{
+                z-index: auto !important;
+              }
 
-           #navigator-toolbox > *{ line-height: normal; pointer-events: auto }
+              /* Show when toolbox is focused, like when urlbar has received focus */
+              #navigator-toolbox:focus-within > .browser-toolbar{
+                transform: translateY(0);
+                opacity: 1;
+                transition-duration: var(--uc-autohide-toolbar-duration), var(--uc-autohide-toolbar-duration) !important;
+                transition-delay: 0s !important;
+              }
 
-           #navigator-toolbox,
-           #navigator-toolbox > *{
-             width: 100vw;
-             -moz-appearance: none !important;
-           }
+              /* Show when toolbox is hovered */
+              #titlebar:hover ~ .browser-toolbar,
+              .browser-titlebar:hover ~ :is(#nav-bar,#PersonalToolbar),
+              #nav-bar:hover,
+              #nav-bar:hover + #PersonalToolbar{
+                transform: translateY(0);
+                opacity: 1;
+                transition-duration: var(--uc-autohide-toolbar-duration), var(--uc-autohide-toolbar-duration) !important;
+                transition-delay: 0s !important;
+              }
+              :root[sessionrestored] #urlbar[popover]{
+                opacity: 0;
+                pointer-events: none;
+                transition: transform var(--uc-autohide-toolbar-duration) ease var(--uc-autohide-toolbar-delay), opacity var(--uc-autohide-toolbar-duration) ease var(--uc-autohide-toolbar-delay);
+                transform: translateY(var(--uc-navbar-transform));
+              }
+              #mainPopupSet:has(> [role="group"][panelopen]) ~ toolbox #urlbar[popover],
+              .browser-titlebar:is(:hover,:focus-within) ~ #nav-bar #urlbar[popover],
+              #nav-bar:is(:hover,:focus-within) #urlbar[popover],
+              #urlbar-container > #urlbar[popover]:is([focused],[open]){
+                opacity: 1;
+                pointer-events: auto;
+                transition-delay: 0ms;
+                transform: translateY(0);
+              }
+              #urlbar-container > #urlbar[popover]:is([focused],[open]){
+               transition-duration: 100ms; /* Faster when focused */
+              }
+              /* This ruleset is separate, because not having :has support breaks other selectors as well */
+              #mainPopupSet:has(> [role="group"][panelopen]) ~ #navigator-toolbox > .browser-toolbar{
+                transition-delay: 33ms !important;
+                transform: translateY(0);
+                opacity: 1;
+              }
+              /* If tabs are in sidebar then nav-bar doesn't normally have its own background - so we nee to add it back */
+              #nav-bar.browser-titlebar{
+                background: inherit;
+              }
+              #toolbar-menubar:not([autohide="true"]) ~ #nav-bar.browser-titlebar{
+                background-position-y: -28px; /* best guess, could vary */
+                border-top: none !important;
+              }
 
-           /* These two exist for oneliner compatibility */
-           /*#nav-bar{ width: var(--uc-navigationbar-width,100vw) }
-           #TabsToolbar{ width: calc(100vw - var(--uc-navigationbar-width,0px)) }
+              /* Bookmarks toolbar needs so extra rules */
+              #PersonalToolbar{ transition: transform var(--uc-autohide-toolbar-duration) ease var(--uc-autohide-toolbar-delay) !important; position: relative; z-index: 1 }
 
-           /* Don't apply transform before window has been fully created */
-/*           :root:not([sessionrestored]) #navigator-toolbox{ transform:none !important }
+              /* Move up the content view */
+              :root[sessionrestored]:not([inFullscreen],[chromehidden~="toolbar"]) > body > #browser{ margin-top: var(--uc-navbar-transform); }
 
-           :root[customizing] #navigator-toolbox{
-             position: relative !important;
-             transform: none !important;
-             opacity: 1 !important;
-           }
+          /* NOTE: Show sidebar only when the cursor is over it.
 
-           #navigator-toolbox[inFullscreen] > #PersonalToolbar,
-           #PersonalToolbar[collapsed="true"]{ display: none }
+              /* The border controlling sidebar width will be removed so you'll need to modify these      */
+              /* values to change width, made available under Mozilla Public License v. 2.0               */
+              /* https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/autohide_sidebar.css   */
+              #sidebar-box{
+                --uc-sidebar-width: 40px;
+                --uc-sidebar-hover-width: 210px;
+                --uc-autohide-sidebar-delay: 600ms; /* Wait 0.6s before hiding sidebar */
+                --uc-autohide-transition-duration: 115ms;
+                --uc-autohide-transition-type: linear;
+                --browser-area-z-index-sidebar: 3;
+                position: relative;
+                min-width: var(--uc-sidebar-width) !important;
+                width: var(--uc-sidebar-width) !important;
+                max-width: var(--uc-sidebar-width) !important;
+                z-index: var(--browser-area-z-index-sidebar,3);
+              }
+              #sidebar-box[positionend]{ direction: rtl }
+              #sidebar-box[positionend] > *{ direction: ltr }
 
-           /* Uncomment this if tabs toolbar is hidden with hide_tabs_toolbar.css */
-           /*#titlebar{ margin-bottom: -9px }*/
+              #sidebar-box[positionend]:-moz-locale-dir(rtl){ direction: ltr }
+              #sidebar-box[positionend]:-moz-locale-dir(rtl) > *{ direction: rtl }
 
-           /*****************************************************
-           *** HIDES SIDEBERY TO X PIXELS UNTIL HOVERED OVER ***
-           *****************************************************/
+              #main-window[sizemode="fullscreen"] #sidebar-box{ --uc-sidebar-width: 1px; }
 
-           /*
-           * Show sidebar only when the cursor is over it:
-           * The border controlling sidebar width will be removed
-           * so you'll need to modify these values to change width
-           */
+              #sidebar-splitter{ display: none }
 
-           #sidebar-box {
-           /*  --uc-sidebar-width: 34px;
-             --uc-sidebar-hover-width: 210px;
-             --uc-autohide-sidebar-delay: 100ms;
-             /* Wait 0.6s before hiding sidebar */
-           /*  position: relative;
-             min-width: var(--uc-sidebar-width) !important;
-             width: var(--uc-sidebar-width) !important;
-             max-width: var(--uc-sidebar-width) !important;
-             z-index: 1;
-           }
+              #sidebar-header{
+                overflow: hidden;
+                color: var(--chrome-color, inherit) !important;
+                padding-inline: 0 !important;
+              }
 
-           #sidebar-box[positionend] {
-             direction: rtl;
-           }
+              #sidebar-header::before,
+              #sidebar-header::after{
+                content: "";
+                display: flex;
+                padding-left: 8px;
+              }
 
-           #sidebar-box[positionend] > * {
-             direction: ltr;
-           }
+              #sidebar-header,
+              #sidebar{
+                transition: min-width var(--uc-autohide-transition-duration) var(--uc-autohide-transition-type) var(--uc-autohide-sidebar-delay) !important;
+                min-width: var(--uc-sidebar-width) !important;
+                will-change: min-width;
+              }
+              #sidebar-box:hover > #sidebar-header,
+              #sidebar-box:hover > #sidebar{
+                min-width: var(--uc-sidebar-hover-width) !important;
+                transition-delay: 0ms !important;
+              }
 
-           #sidebar-box[positionend]:-moz-locale-dir(rtl) {
-             direction: ltr;
-           }
+              .sidebar-panel{
+                background-color: transparent !important;
+                color: var(--newtab-text-primary-color) !important;
+              }
 
-           #sidebar-box[positionend]:-moz-locale-dir(rtl) > * {
-             direction: rtl;
-           }
+              .sidebar-panel #search-box{
+                -moz-appearance: none !important;
+                background-color: rgba(249,249,250,0.1) !important; 
+                color: inherit !important;
+              }
 
-           #main-window[sizemode="fullscreen"] #sidebar-box {
-             --uc-sidebar-width: 1px;
-           }
+              /* Add sidebar divider and give it background */
+              #sidebar,
+              #sidebar-header{
+                background-color: inherit !important;
+                border-inline: 1px solid rgb(80,80,80);
+                border-inline-width: 0px 1px;
+              }
 
-           #sidebar-splitter {
-             display: none;
-           }
+              #sidebar-box:not([positionend]) > :-moz-locale-dir(rtl),
+              #sidebar-box[positionend] > *{
+                border-inline-width: 1px 0px;
+              }
 
-           #sidebar-header {
-             display: note;
-           }
-
-           #sidebar-header {
-             overflow: hidden;
-             color: var(--chrome-color, inherit) !important;
-             padding-inline: 0 !important;
-           }
-
-           #sidebar-header::before,
-           #sidebar-header::after {
-             content: "";
-             display: flex;
-             padding-left: 8px;
-           }
-
-           #sidebar-header,
-           #sidebar {
-             transition: min-width 115ms linear var(--uc-autohide-sidebar-delay) !important;
-             min-width: var(--uc-sidebar-width) !important;
-             will-change: min-width;
-           }
-
-           #sidebar-box:hover > #sidebar-header,
-           #sidebar-box:hover > #sidebar {
-             min-width: var(--uc-sidebar-hover-width) !important;
-             transition-delay: 0ms !important;
-           }
-
-           .sidebar-panel {
-             background-color: transparent !important;
-             color: var(--newtab-text-primary-color) !important;
-           }
-
-           .sidebar-panel #search-box {
-             -moz-appearance: none !important;
-             background-color: rgba(249,249,250,0.1) !important;
-             color: inherit !important;
-           }
-
-           /* Add sidebar divider and give it background */
-
-           /*#sidebar,
-           /*#sidebar-header {
-             background-color: inherit !important;
-             border-inline: 1px solid rgb(80,80,80);
-             border-inline-width: 0px 1px;
-           }
-
-           #sidebar-box:not([positionend]) > :-moz-locale-dir(rtl),
-           #sidebar-box[positionend] > * {
-             border-inline-width: 1px 0px;
-           }
-
-           /* Move statuspanel to the other side when sidebar is hovered so it doesn't get covered by sidebar */
-
-           /*#sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel {
-           /*   inset-inline: auto 0px !important;
-           }
-
-           #sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel-label {
-             margin-inline: 0px !important;
-             border-left-style: solid !important;
-           }
-
-           /*********************
-           * BOOKMARK BAR FIX  *
-           *********************/
-
-           /*#PersonalToolbar {
-            /* padding-left: 36px !important;
-           }
-
-           /* hacky way to try and fix sidebar header appearing */
-           /*#TabsToolbar{ visibility: collapse !important }
-           /*#sidebar-header {
-           /*  display: none;
-           /*}
+              /* Move statuspanel to the other side when sidebar is hovered so it doesn't get covered by sidebar */
+              #sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel{
+                inset-inline: auto 0px !important;
+              }
+              #sidebar-box:not([positionend]):hover ~ #appcontent #statuspanel-label{
+                margin-inline: 0px !important;
+                border-left-style: solid !important;
+              }
         '';
       };
     };
   };
 }
-
-#extensionsettings = {
-  #"*".installation_mode = "allowed";
-  #### Sidebery
-  #"{3c078156-979c-498b-8990-85f7987dd929}" = {
-  #  install_url = "https://addons.mozilla.org/firefox/downloads/file/4246774/latest.xpi";
-  #  installation_mode = "allowed";
-  #};
-  #### 10ten Japanese Reader
-  #"{59812185-ea92-4cca-8ab7-cfcacee81281}" = {
-  #  install_url = "https://addons.mozilla.org/firefox/downloads/file/4241410/latest.xpi";
-  #  installation_mode = "allowed";
-  #};
-  ### tridactyl
-  #{
-  #  git = {}
-  #}
-#};
-
-# TODO: Read this and do something with it
-# https://github.com/NixOS/nixpkgs/issues/171978
-# Firefox needs to be convinced to use p11-kit-proxy by running a command like this:
-#
-# modutil -add p11-kit-proxy -libfile ${p11-kit}/lib/p11-kit-proxy.so -dbdir ~/.mozilla/firefox/*.default
-# I was also able to accomplish the same by making use of extraPolciies when overriding the firefox package:
-#
-#         extraPolicies = {
-#           SecurityDevices.p11-kit-proxy = "${pkgs.p11-kit}/lib/p11-kit-proxy.so";
-#         };
-
-
-

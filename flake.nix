@@ -12,7 +12,6 @@
         url = "github:Gerg-L/spicetify-nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-      #stylix.url = "github:danth/stylix";
       stylix.url = "github:Mikilio/stylix";
       tt-schemes = {
         url = "github:tinted-theming/schemes";

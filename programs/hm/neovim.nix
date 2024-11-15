@@ -51,6 +51,7 @@ in {
       cargo
       fennel
       fennel-ls
+      fnlfmt
       fzf
       gcc
       git
@@ -61,6 +62,8 @@ in {
       lua-language-server
       texlivePackages.latex
       lazygit
+      lua51Packages.lua
+      lua51Packages.luarocks
       nixd
       nodejs
       pyright
@@ -77,6 +80,7 @@ in {
         bash
         c
         cpp
+        fennel
         kdl
         lua
         ocaml
