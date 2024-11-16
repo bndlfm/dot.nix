@@ -23,6 +23,10 @@
         url = "github:ezKEa/aagl-gtk-on-nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+      zen-browser = {
+        url = "github:MarceColl/zen-browser-flake";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     ### SECRETS
       sops-nix.url = "github:Mic92/sops-nix";
     ### WINDOW MANAGER
@@ -65,6 +69,9 @@
               stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
             ## IMPORTS
               ./users/neko/home.nix
+              {
+                  home.packages = [ inputs.zen-browser.packages."${system}".default ];
+              }
             ];
           };
         "server" = home-manager.lib.homeManagerConfiguration {

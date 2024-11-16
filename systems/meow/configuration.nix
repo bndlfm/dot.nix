@@ -2,9 +2,10 @@
   imports = [
     ./cachix.nix
 
+    # PROGRAMS
+      ../../programs/nx/steam.nix
     ### CONTAINERS
       ../../containers/jellyfin.nix
-      #../../containers/pihole.nix
     ### MODULES
       ../../modules/nx/tailscale.nix
     ### SERVICES

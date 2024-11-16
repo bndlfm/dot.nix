@@ -65,6 +65,7 @@
 
 
     ### BROWSERS
+      firefoxpwa
       qutebrowser
       tor-browser
 

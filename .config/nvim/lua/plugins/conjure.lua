@@ -4,23 +4,22 @@ return {
     enabled = true,
     ft = { "clojure", "fennel", "python" }, -- etc
     lazy = true,
+
+    -- Optional cmp-conjure integration
+    dependencies = { "PaterJason/cmp-conjure" },
+
+    config = function()
+      require("conjure.main").main()
+      require("conjure.mapping")["on-filetype"]()
+    end,
     init = function()
       -- Set configuration options here
       vim.g["conjure#debug"] = true
     end,
-
-    -- Optional cmp-conjure integration
-    dependencies = { "PaterJason/cmp-conjure" },
   },
   {
     "PaterJason/cmp-conjure",
     enabled = true,
     lazy = true,
-    config = function()
-      local cmp = require("cmp")
-      local config = cmp.get_config()
-      table.insert(config.sources, { name = "conjure" })
-      return cmp.setup(config)
-    end,
   },
 }
