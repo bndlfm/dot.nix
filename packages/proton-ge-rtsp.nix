@@ -9,8 +9,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   version = "GE-Proton9-20-rtsp15";
 
   src = fetchzip {
-    url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${finalAttrs.version}/${finalAttrs.version}.tar.gz";
-    hash = "sha256-1avkldg8iyr5fw04jvg0a8gm7q1qkmlkd85fn46xgwis8n2ldjl1";
+    url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${finalAttrs.version}-1/${finalAttrs.version}.tar.gz";
+    hash = "sha256-dj5qO1AmV0KinrfgUcv+bWzLN9aaAAKf/GxX5o9b6Dc=";
   };
 
   outputs = [
