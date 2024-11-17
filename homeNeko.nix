@@ -4,32 +4,32 @@
   home.homeDirectory = "/home/neko";
 
   imports = [
-    ../../sops/sops.nix
+    ./sops/sops.nix
 
     ### PROGRAMS
-      ../../programs/hm/firefox.nix
-      ../../programs/hm/fish.nix
-      ../../programs/hm/git.nix
-      ../../programs/hm/gnome-shell.nix
-      ../../programs/hm/kitty.nix
-      ../../programs/hm/ncmpcpp.nix
-      ../../programs/hm/neovim.nix
-      ../../programs/hm/ranger.nix
-      ../../programs/hm/rofi.nix
-      ../../programs/hm/yazi.nix
-      ../../programs/hm/zellij.nix
+      ./programs/hm/firefox.nix
+      ./programs/hm/fish.nix
+      ./programs/hm/git.nix
+      ./programs/hm/gnome-shell.nix
+      ./programs/hm/kitty.nix
+      ./programs/hm/ncmpcpp.nix
+      ./programs/hm/neovim.nix
+      ./programs/hm/ranger.nix
+      ./programs/hm/rofi.nix
+      ./programs/hm/yazi.nix
+      ./programs/hm/zellij.nix
 
-      ../../programs/hm/misc_programs.nix
+      ./programs/hm/misc_programs.nix
 
     ### SERVICES
-      ../../services/hm/espanso.nix
+      ./services/hm/espanso.nix
 
-      ../../services/hm/misc_services.nix
+      ./services/hm/misc_services.nix
 
     ### WINDOW MANAGERS
-      ../../windowManagers/hm/hyprland.nix
-      ../../windowManagers/hm/sway.nix
-      ../../windowManagers/hm/bspwm.nix
+      ./windowManagers/hm/hyprland.nix
+      ./windowManagers/hm/sway.nix
+      ./windowManagers/hm/bspwm.nix
     ];
 
   nixpkgs = {
@@ -52,7 +52,7 @@
 
   home.packages = with pkgs; [
       # Broken AGAIN
-      (_7zz.override { useUasm = true; })
+      #(_7zz.override { useUasm = true; })
 
 
     ### AI
@@ -147,11 +147,12 @@
         git-credential-manager
         git-credential-gopass
       ## PYTHON
-      (python3.withPackages (pkgs: with pkgs; [
-        pynvim
-        ueberzug
-        ]))
-      (pkgs.callPackage ../../packages/antifennel.nix {})
+        (python3.withPackages (pkgs: with pkgs; [
+          pynvim
+          ueberzug
+          ]))
+      ## FENNEL
+        (pkgs.callPackage ../../pkgs/antifennel.nix {})
       godot_4
       godot_4-export-templates
       direnv
@@ -291,19 +292,19 @@
   xdg = {
     configFile = {
       "hypr" = {
-        source = ../../.config/hypr;
+        source = ./.config/hypr;
         recursive = true;
       };
       "joshuto" = {
-        source = ../../.config/joshuto;
+        source = ./.config/joshuto;
         recursive = true;
       };
       "mutt" = {
-        source = ../../.config/mutt;
+        source = ./.config/mutt;
         recursive = true;
       };
       #"niri" = {
-      #  source = ../../.config/niri;
+      #  source = ./.config/niri;
       #  recursive = true;
       #};
       #"nvim" = {
@@ -311,39 +312,39 @@
       #  recursive = true;
       #};
       "polybar" = {
-        source = ../../.config/polybar;
+        source = ./.config/polybar;
         recursive = true;
       };
       "pulsemixer.cfg" = {
-        source = ../../.config/pulsemixer.cfg;
+        source = ./.config/pulsemixer.cfg;
         recursive = false;
       };
       "ranger" = {
-        source = ../../.config/ranger;
+        source = ./.config/ranger;
         recursive = true;
       };
       "rofi" = {
-        source = ../../.config/rofi;
+        source = ./.config/rofi;
         recursive = true;
       };
       "tridactyl" = {
-        source = ../../.config/tridactyl;
+        source = ./.config/tridactyl;
         recursive = true;
       };
       "qutebrowser/config.py" = {
-        source = ../../.config/qutebrowser/config.py;
+        source = ./.config/qutebrowser/config.py;
         #recursive = true;
       };
       "waybar" = {
-        source = ../../.config/waybar;
+        source = ./.config/waybar;
         recursive = true;
       };
       "yazi" = {
-        source = ../../.config/yazi;
+        source = ./.config/yazi;
         recursive = true;
       };
       "zathura" = {
-        source = ../../.config/zathura;
+        source = ./.config/zathura;
         recursive = true;
       };
     };

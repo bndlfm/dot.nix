@@ -1,6 +1,11 @@
 {pkgs, ... }:
 {
-  programs.steam.extraCompatPackages = [
-    (pkgs.callPackage ../../packages/proton-ge-rtsp.nix {})
-  ];
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    extraCompatPackages = [
+      (pkgs.callPackage ../../pkgs/proton-ge-rtsp.nix {})
+    ];
+  };
 }

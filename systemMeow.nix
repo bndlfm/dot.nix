@@ -2,14 +2,14 @@
   imports = [
     ./cachix.nix
 
-    # PROGRAMS
-      ../../programs/nx/steam.nix
+    ### PROGRAMS
+      ./programs/nx/steam.nix
     ### CONTAINERS
-      ../../containers/jellyfin.nix
+      ./containers/jellyfin.nix
     ### MODULES
-      ../../modules/nx/tailscale.nix
+      ./modules/nx/tailscale.nix
     ### SERVICES
-      ../../services/nx/sunshine.nix
+      ./services/nx/sunshine.nix
 
   ];
 
@@ -89,14 +89,9 @@
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
-        ];
-      };
-    steam = {
-      enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
-      };
+      ];
     };
+  };
 
 #-------- CONTAINERS / VM --------#
   virtualisation = {
