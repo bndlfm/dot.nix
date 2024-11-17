@@ -11,22 +11,25 @@
       spicetify-nix = {
         url = "github:Gerg-L/spicetify-nix";
         inputs.nixpkgs.follows = "nixpkgs";
-      };
-      stylix.url = "github:Mikilio/stylix";
+        };
+      stylix = {
+        url = "github:Mikilio/stylix";
+        inputs.nixpkgs.follows = "nixpkgs";
+        };
       tt-schemes = {
         url = "github:tinted-theming/schemes";
         flake = false;
-      };
+        };
       base16.url = "github:SenchoPens/base16.nix";
     ### PROGRAMS
       aagl = {
         url = "github:ezKEa/aagl-gtk-on-nix";
         inputs.nixpkgs.follows = "nixpkgs";
-      };
+        };
       zen-browser = {
         url = "github:MarceColl/zen-browser-flake";
         inputs.nixpkgs.follows = "nixpkgs";
-      };
+        };
     ### SECRETS
       sops-nix.url = "github:Mic92/sops-nix";
     ### WINDOW MANAGER
@@ -70,7 +73,7 @@
             ## IMPORTS
               ./nekoHome.nix
               {
-                  home.packages = [ inputs.zen-browser.packages."${system}".default ];
+                home.packages = [ inputs.zen-browser.packages."${system}".default ];
               }
             ];
           };
