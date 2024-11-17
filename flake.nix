@@ -68,7 +68,7 @@
             ## THEMING
               stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
             ## IMPORTS
-              ./homeNeko.nix
+              ./nekoHome.nix
               {
                   home.packages = [ inputs.zen-browser.packages."${system}".default ];
               }
@@ -96,8 +96,8 @@
             ## WINDOW MANAGERS
               hyprland.nixosModules.default
             ## IMPORTS
-              ./sysMeow.nix
-              ./hardwareMeow.nix
+              ./meowSystem.nix
+              ./meowHardware.nix
           ];
         };
         "nyaa" = nixpkgs.lib.nixosSystem {
