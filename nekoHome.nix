@@ -51,10 +51,6 @@
     };
 
   home.packages = with pkgs; [
-      # Broken AGAIN
-      #(_7zz.override { useUasm = true; })
-
-
     ### AI
       aider-chat
       upscayl
@@ -85,7 +81,6 @@
       grex
       gnugrep
       gopass
-      harbor-cli
       jq
       libnotify
       libqalculate
@@ -119,7 +114,7 @@
     ### GAMES
         ### EMULATION
           shadps4
-      BeatSaberModManager
+      (pkgs.callPackage ./pkgs/BeatSaberModManager.nix {})
       crawlTiles
       glfw-wayland-minecraft
       heroic
@@ -148,11 +143,13 @@
         git-credential-gopass
       ## PYTHON
         (python3.withPackages (pkgs: with pkgs; [
+          gguf
+          llama-cpp
           pynvim
           ueberzug
           ]))
       ## FENNEL
-        (pkgs.callPackage ../../pkgs/antifennel.nix {})
+        #(pkgs.callPackage ./pkgs/antifennel.nix {})
       godot_4
       godot_4-export-templates
       direnv

@@ -379,17 +379,17 @@
         ];
       };
 
-    "/media" = {
-      device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
-      fsType = "btrfs";
-      options = [
-        "subvol=@media"
-        "noatime"
-        "nodiratime"
-        "discard"
-        ];
-      };
-    };
+   # "/media" = {
+   #   device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
+   #   fsType = "btrfs";
+   #   options = [
+   #     "subvol=@media"
+   #     "noatime"
+   #     "nodiratime"
+   #     "discard"
+   #     ];
+   #   };
+   # };
 
   #-------- NETWORKING --------#
   hardware.bluetooth.enable = true; # enables support for Bluetooth

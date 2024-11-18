@@ -91,6 +91,11 @@
           modules = [
             ## PROGRAMS
               nixos-cli.nixosModules.nixos-cli
+              {
+                services.nixos-cli = {
+                  enable = true;
+                };
+              }
               #aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
             ## SECRETS
               sops-nix.nixosModules.sops
