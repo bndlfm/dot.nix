@@ -114,7 +114,7 @@
     ### GAMES
         ### EMULATION
           shadps4
-      (pkgs.callPackage ./pkgs/BeatSaberModManager.nix {})
+      (pkgs.callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix {})
       crawlTiles
       glfw-wayland-minecraft
       heroic
@@ -250,6 +250,11 @@
       rofi
       virt-manager
       zathura
+
+
+    ### VIRTUALISATION
+      virt-manager
+      (pkgs.callPackage ./containers/harbor/default.nix {})
 
 
     ### MISC PACKAGES
