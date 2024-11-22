@@ -817,6 +817,27 @@
         "type": "github"
       }
     },
+    "nixarr": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "vpnconfinement": "vpnconfinement"
+      },
+      "locked": {
+        "lastModified": 1732090122,
+        "narHash": "sha256-KN5jsK5O0QEWMXgCW9aa3sujIZQE1sSnpBOIXDXOeKU=",
+        "owner": "rasmus-kirk",
+        "repo": "nixarr",
+        "rev": "5dad51d4d4e0d71e8943b23b464230b190f1c259",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rasmus-kirk",
+        "repo": "nixarr",
+        "type": "github"
+      }
+    },
     "nixos-cli": {
       "inputs": {
         "flake-compat": "flake-compat_4",
@@ -1062,13 +1083,13 @@
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "hyprscroller": "hyprscroller",
+        "nixarr": "nixarr",
         "nixos-cli": "nixos-cli",
         "nixpkgs": "nixpkgs_5",
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
         "stylix": "stylix",
-        "tt-schemes": "tt-schemes",
-        "zen-browser": "zen-browser"
+        "tt-schemes": "tt-schemes"
       }
     },
     "sops-nix": {
@@ -1253,6 +1274,21 @@
         "type": "github"
       }
     },
+    "vpnconfinement": {
+      "locked": {
+        "lastModified": 1729977304,
+        "narHash": "sha256-T/ABQpSbPJxO7TGl1P2fBd87xsQmnVflIFgHQTxwvBs=",
+        "owner": "Maroka-chan",
+        "repo": "VPN-Confinement",
+        "rev": "3b11ba59f1c852493203b86c8acd715259a6c3cd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Maroka-chan",
+        "repo": "VPN-Confinement",
+        "type": "github"
+      }
+    },
     "xdph": {
       "inputs": {
         "hyprland-protocols": [
@@ -1328,26 +1364,6 @@
       "original": {
         "owner": "hyprwm",
         "repo": "xdg-desktop-portal-hyprland",
-        "type": "github"
-      }
-    },
-    "zen-browser": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1727721329,
-        "narHash": "sha256-QYlWZwUSwrM7BuO+dXclZIwoPvBIuJr6GpFKv9XKFPI=",
-        "owner": "MarceColl",
-        "repo": "zen-browser-flake",
-        "rev": "e6ab73f405e9a2896cce5956c549a9cc359e5fcc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MarceColl",
-        "repo": "zen-browser-flake",
         "type": "github"
       }
     },

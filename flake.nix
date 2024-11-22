@@ -8,28 +8,29 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
     ### CUSTOMIZATION
-      spicetify-nix = {
-        url = "github:Gerg-L/spicetify-nix";
-        inputs.nixpkgs.follows = "nixpkgs";
-        };
       stylix = {
         url = "github:Mikilio/stylix";
         inputs.nixpkgs.follows = "nixpkgs";
-        };
+      };
       tt-schemes = {
         url = "github:tinted-theming/schemes";
         flake = false;
-        };
+      };
       base16.url = "github:SenchoPens/base16.nix";
+    ### MEDIA
+      nixarr = {
+        url = "github:rasmus-kirk/nixarr";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+      spicetify-nix = {
+        url = "github:Gerg-L/spicetify-nix";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     ### PROGRAMS
       aagl = {
         url = "github:ezKEa/aagl-gtk-on-nix";
         inputs.nixpkgs.follows = "nixpkgs";
-        };
-      zen-browser = {
-        url = "github:MarceColl/zen-browser-flake";
-        inputs.nixpkgs.follows = "nixpkgs";
-        };
+      };
     ### SECRETS
       sops-nix.url = "github:Mic92/sops-nix";
     ### WINDOW MANAGER
@@ -37,11 +38,13 @@
       hyprscroller.url = "github:dawsers/hyprscroller";
   };
 
+
   outputs = {
     nixpkgs,
     nixos-cli,
     home-manager,
 
+    nixarr,
     spicetify-nix,
 
     sops-nix,
@@ -89,6 +92,8 @@
       nixosConfigurations = {
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
+            ## MEDIA
+              nixarr.nixosModules.default ( import ./modules/nx/nixarr.nix )
             ## PROGRAMS
               nixos-cli.nixosModules.nixos-cli
               {
@@ -107,6 +112,8 @@
               ./meowSystem.nix
               ./meowHardware.nix
           ];
+
+          specialArgs = { inherit inputs; };
         };
         "nyaa" = nixpkgs.lib.nixosSystem {
           modules = [

@@ -108,14 +108,11 @@
         };
       };
     docker.rootless = {
-      enable = false;
-      daemon.settings = {
-        default-runtime = "nvidia";
-        };
+      enable = true;
       };
     podman = {
       enable = true;
-      dockerCompat = true;
+      dockerCompat = false;
       dockerSocket.enable = false;
       defaultNetwork.settings.dns_enabled = true;
       };
@@ -128,15 +125,18 @@
     spiceUSBRedirection.enable = true;
     waydroid.enable = true;
     };
-  environment.extraInit = ''
-      if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-        export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-      fi
-  '';
+  #environment.extraInit = ''
+  #    if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
+  #      export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+  #    fi
+  #'';
 
 
   #-------- GROUPS ---------#
-  users.groups.distrobox = {};
+  users.groups = {
+    docker = {};
+    distrobox = {};
+  };
 
   #-------- USERS --------#
   ##########################
@@ -379,23 +379,26 @@
         ];
       };
 
-   # "/media" = {
-   #   device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
-   #   fsType = "btrfs";
-   #   options = [
-   #     "subvol=@media"
-   #     "noatime"
-   #     "nodiratime"
-   #     "discard"
-   #     ];
-   #   };
-   # };
+    "/media" = {
+      device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
+      fsType = "btrfs";
+      options = [
+        "subvol=@media"
+        "noatime"
+        "nodiratime"
+        "discard"
+        ];
+      };
+    };
 
   #-------- NETWORKING --------#
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller
   networking = {
     hostName = "meow";
+    nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+    search = [ "example.ts.net" ];
+    firewall.checkReversePath = "loose";
     networkmanager.enable = true; # Enable Networking
     firewall = {
       enable = true;

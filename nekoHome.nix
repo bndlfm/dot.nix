@@ -22,7 +22,7 @@
       ./programs/hm/misc_programs.nix
 
     ### SERVICES
-      ./services/hm/espanso.nix
+#      ./services/hm/espanso.nix
 
       ./services/hm/misc_services.nix
 
@@ -254,7 +254,6 @@
 
     ### VIRTUALISATION
       virt-manager
-      (pkgs.callPackage ./containers/harbor/default.nix {})
 
 
     ### MISC PACKAGES
