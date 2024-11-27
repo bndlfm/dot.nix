@@ -1,16 +1,17 @@
+{ ... }:{
 nixarr = {
     enable = true;
     # These two values are also the default, but you can set them to whatever
     # else you want
     # WARNING: Do _not_ set them to `/home/user/whatever`, it will not work!
-    mediaDir = "/media/content/";
-    stateDir = "/media/.state/nixarr";
+    #mediaDir = "/media/content/";
+    #stateDir = "/media/.state/nixarr";
 
     vpn = {
       enable = true;
       # WARNING: This file must _not_ be in the config git directory
       # You can usually get this wireguard file from your VPN provider
-      wgConf = "/media/.secret/vpn/wg.conf";
+      wgConf = "/data/.secret/vpn/wg.conf";
     };
 
     jellyfin = {
@@ -39,3 +40,4 @@ nixarr = {
     readarr.enable = true;
     sonarr.enable = true;
   };
+}

@@ -25,6 +25,7 @@
 "*** Set Options ***
 "*******************
   " General  {{{
+      set newtab
       set allowautofocus true
       set editorcmd kitty -e "nvim %f '+normal!%lGzv%c|'"
       set smoothscroll true

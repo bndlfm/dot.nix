@@ -5,7 +5,7 @@
     ### PROGRAMS
       ./programs/nx/steam.nix
     ### CONTAINERS
-      ./containers/jellyfin.nix
+     #./containers/jellyfin.nix
     ### MODULES
       ./modules/nx/tailscale.nix
     ### SERVICES
@@ -136,18 +136,69 @@
   users.groups = {
     docker = {};
     distrobox = {};
+    media = {
+      members = [
+        "radarr"
+        "sonarr"
+        "lidarr"
+        "readarr"
+      ];
+    };
   };
+
 
   #-------- USERS --------#
   ##########################
   # Don't forget password! #
   ##########################
-  users.users.neko = {
-    isNormalUser = true;
-    description = "neko";
-    extraGroups = [ "networkmanager" "wheel" "input" "docker" "distrobox" "libvirtd" "tss" ];
-    linger = true;
+    users.users.neko = {
+      isNormalUser = true;
+      description = "neko";
+      extraGroups = [ "networkmanager" "wheel" "input" "docker" "distrobox" "libvirtd" "tss" ];
+      linger = true;
+      };
+
+
+  ### NIXARR USERS
+    users.users = {
+      bazarr = {
+        isNormalUser = false;
+        description = "bazarr service user";
+        extraGroups = [ "media" ];
+        linger = true;
+      };
+      lidarr = {
+        isNormalUser = false;
+        description = "lidarr service user";
+        extraGroups = [ "media" ];
+        linger = true;
+      };
+      prowlarr = {
+        isNormalUser = false;
+        description = "prowlarr service user";
+        extraGroups = [ "media" ];
+        linger = true;
+      };
+      radarr = {
+        isNormalUser = false;
+        description = "radarr service user";
+        extraGroups = [ "media" ];
+        linger = true;
+      };
+      readarr = {
+        isNormalUser = false;
+  #      description = "readarr service user";
+        extraGroups = ["media"];
+        linger = true;
+      };
+      sonarr = {
+        isNormalUser = false;
+        description = "sonarr service user";
+        extraGroups = ["media"];
+        linger = true;
+      };
     };
+
 
   #-------- SECURITY --------#
   security = {
@@ -186,7 +237,7 @@
       defaultRuntime = false;
       };
     ollama = {
-      enable = true;
+      enable = false; ### SEE PODMAN + HARBOR
       acceleration = "cuda";
       host = "0.0.0.0";
       openFirewall = true;
@@ -369,6 +420,7 @@
       device = "/dev/disk/by-uuid/6BFC-BE4E";
       fsType = "vfat";
       };
+
     "/mnt/data" = {
       device = "/dev/disk/by-uuid/ad281e3a-7c33-48e2-be75-2b6433acee04";
       fsType = "ext4";
@@ -379,7 +431,7 @@
         ];
       };
 
-    "/media" = {
+    "/data" = {
       device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
       fsType = "btrfs";
       options = [
@@ -499,7 +551,7 @@
       monitor-left = "DP-1";
       monitor-right = "HDMI-A-1";
     in ''
-      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, ${monitor-left}: nvidia-auto-select +0+0 {rotate=right, ForceCompositionPipeline=On}, ${monitor-right}: nvidia-auto-select +3840+0 {rotation=right, ForceCompositionPipeline=On}"
+      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, ${monitor-right}: nvidia-auto-select +3840+0 {rotation=right, ForceCompositionPipeline=On}"
     '';
 
 
@@ -514,11 +566,11 @@
     '';
     kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
     kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.hdmi_deepcolor=1" "amd_pstate=active" ];
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_6_11;
     kernel.sysctl = {
       "vm.overcommit_memory" = 1;
-      "net.ipv4.ip_forward" = 1;
-      "net.ipv6.conf.all.forwarding" = 1;
+      #"net.ipv4.ip_forward" = 1; Overrode by Nixarr, which I think I want.
+      #"net.ipv6.conf.all.forwarding" = 1;
     };
     supportedFilesystems = [ "ntfs" ];
   };

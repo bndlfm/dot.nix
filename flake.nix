@@ -75,9 +75,6 @@
               stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
             ## IMPORTS
               ./nekoHome.nix
-              {
-                home.packages = [ inputs.zen-browser.packages."${system}".default ];
-              }
             ];
           };
         "server" = home-manager.lib.homeManagerConfiguration {

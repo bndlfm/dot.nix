@@ -119,7 +119,7 @@
 
         # Rofi
         #"$mainMod, SPACE, exec rofi -show run"
-        "$mainMod, D, exec, wofi --show run"
+        "$mainMod, D, exec, wofi --show drun"
         "$mainMod SHIFT, V, exec, copyq show"
 
         # Groups and Movement in / out of them
@@ -273,9 +273,9 @@
 
       decoration = {
         rounding = 7;
-        drop_shadow = true;
-        shadow_range = 4;
-        shadow_render_power = 3;
+        #drop_shadow = true;
+        #shadow_range = 4;
+        #shadow_render_power = 3;
       };
 
       env = [

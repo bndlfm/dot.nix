@@ -254,6 +254,7 @@
 
     ### VIRTUALISATION
       virt-manager
+      podman-desktop
 
 
     ### MISC PACKAGES
