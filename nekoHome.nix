@@ -5,6 +5,7 @@
 
   imports = [
     ./sops/sops.nix
+    #./modules/hm/OpenComposite.nix # MONADO
 
     ### PROGRAMS
       ./programs/hm/firefox.nix
@@ -43,6 +44,8 @@
       permittedInsecurePackages = [
         "fluffychat-linux-1.22.1"
         "olm-3.2.16"
+        "dotnet-runtime-wrapped-7.0.20"
+        "dotnet-runtime-7.0.20"
         ];
       };
     overlays = [
@@ -153,7 +156,6 @@
       godot_4
       godot_4-export-templates
       direnv
-      dotnet-sdk_7
       meld
 
 
@@ -178,15 +180,16 @@
         rictydiminished-with-firacode
         font-awesome
         gyre-fonts
-        (pkgs.nerdfonts.override {
-          fonts = [
-            "Inconsolata"
-            #"SauceCodePro"
-            "IosevkaTerm"
-            ];
-          }
-        )
         noto-fonts-emoji-blob-bin
+        nerd-fonts.caskaydia-cove
+        nerd-fonts.caskaydia-mono
+        nerd-fonts.d2coding
+        nerd-fonts.inconsolata
+        nerd-fonts.inconsolata-lgc
+        nerd-fonts.inconsolata-go
+        nerd-fonts.iosevka-term
+        nerd-fonts.sauce-code-pro
+        nerd-fonts.terminess-ttf
       base16-schemes
       ocs-url
       volantes-cursors
@@ -264,30 +267,45 @@
 
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
-    DOCKER_HOST = "unix:///run/user/1000/docker.sock";
-    DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
-    EDITOR  = "nvim";
-    GPG_TTY ="$(tty)";
-    _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd";
-    PAGER = "nvim +Man!";
-    MANPAGER = "nvim +Man!";
-    MOZ_DBUS_REMOTE="1";
-    NIXOS_OZONE_WL = "1";
-    OBSIDIAN_REST_API_KEY = "3944368ac24bde98e46ee2d5b6425ce57d03399d799cdbc2453e10b8c407618a"; # local key, not active
-    OLLAMA_HOST = "192.168.1.5";
-    OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
-    #QT_QPA_PLATFORMTHEME = "qt6ct";
-    #QT_STYLE_OVERRIDE = "kvantum";
-    STEAM_DISABLE_BROWSER_SHUTDOWN_WORKAROUND=1;
-    SUDOEDITOR = "vim";
-    VISUAL = "vim";
-    XCURSOR = "volantes-cursors";
-    XCURSOR_SIZE = "24";
+    ### API KEYS
+        OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
+        OBSIDIAN_REST_API_KEY = builtins.readFile "${config.sops.secrets.OBSIDIAN_REST_API_KEY.path}";
+
+    ### DEFAULTS
+        EDITOR  = "nvim";
+        GPG_TTY ="$(tty)";
+        _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=lcd";
+        PAGER = "nvim +Man!";
+        MANPAGER = "nvim +Man!";
+        SUDOEDITOR = "vim";
+        VISUAL = "vim";
+
     ### GPU STUFF
-      PROTON_ENABLE_NVAPI = "1";
-      PROTON_HIDE_NVIDIA_GPU = "0";
-      VKD3D_CONFIG = "dxr";
-      VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
+        PROTON_ENABLE_NVAPI = "1";
+        PROTON_HIDE_NVIDIA_GPU = "0";
+        VKD3D_CONFIG = "dxr";
+        VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
+
+    ### MAKE FIREFOX SEE DBUS
+        MOZ_DBUS_REMOTE="1";
+
+    ### NETWORK LOCATIONS
+        DOCKER_HOST = "unix:///run/user/1000/docker.sock";
+        #OLLAMA_HOST = "192.168.1.5";
+
+    ### NIX: FIXES ELECTRON APPS
+        NIXOS_OZONE_WL = "1";
+
+    ### QT STYLING
+        QT_QPA_PLATFORMTHEME = "qt6ct";
+        #QT_STYLE_OVERRIDE = "kvantum";
+
+    ### FIX... SOMETHING? TURNING OFF TO TEST
+        #STEAM_DISABLE_BROWSER_SHUTDOWN_WORKAROUND=1;
+
+    ### THEMING
+        XCURSOR = "volantes-cursors";
+        XCURSOR_SIZE = "24";
   };
 
   ######### (HM) DOTFILES ########

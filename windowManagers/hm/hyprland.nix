@@ -2,11 +2,12 @@
   home.packages = with pkgs; [
     ### HYPRLAND TOOLS
       clipse
+      fuzzel
       hdrop
       hyprpaper
+      hyprshot
       nwg-look
       nwg-displays
-      hyprshot
       swaybg
       swayidle
       swaylock
@@ -23,6 +24,7 @@
     };
 
     plugins = with pkgs; [
+      hyprlandPlugins.hyprscroller
     ];
 
     settings = {
@@ -119,7 +121,7 @@
 
         # Rofi
         #"$mainMod, SPACE, exec rofi -show run"
-        "$mainMod, D, exec, wofi --show drun"
+        "$mainMod, D, exec, fuzzel"
         "$mainMod SHIFT, V, exec, copyq show"
 
         # Groups and Movement in / out of them
@@ -221,8 +223,7 @@
       monitor = [
         "DP-1, 2560x1440@144, 1080x0, 1, bitdepth, 10"
         "DP-2, 1920x1080, 3640x0, 1, transform, 3"
-        "HDMI-A-1, 1920x1080, 0x0, 1, transform, 3"
-        # See extraConfig below: "HDMI-A-1, 1920x1080, 0x0, 1, transform, 3"
+        #"HDMI-A-1, 1920x1080, 0x0, 1, transform, 3"
       ];
 
       workspace = [
@@ -238,7 +239,7 @@
         gaps_in = 5;
         gaps_out = 10;
         border_size = 4;
-        layout = "dwindle";
+        layout = "scroller";
 
         "col.active_border" = "rgba(99c0d0ff) rgba(5e81acff) 45deg";
         "col.inactive_border" = "rgba(2e3440ff)";
@@ -268,7 +269,7 @@
       };
 
       debug = {
-        disable_logs = false;
+        disable_logs = true;
       };
 
       decoration = {
@@ -305,7 +306,6 @@
     };
 
     extraConfig = ''
-      debug:disable_logs = falsee
     '';
   };
 }

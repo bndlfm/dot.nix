@@ -14,7 +14,7 @@
 
     fonts = {
       serif = {
-        package = pkgs.inconsolata-nerdfont;
+        package = pkgs.nerd-fonts.inconsolata;
         name = "Inconsolata Nerd Font";
       };
 
@@ -24,7 +24,7 @@
       };
 
       monospace = {
-        package = pkgs.nerdfonts;
+        package = pkgs.nerd-fonts.inconsolata;
         name = "Inconsolata Nerd Font Mono";
       };
 

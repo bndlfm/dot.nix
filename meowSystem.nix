@@ -30,11 +30,14 @@
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
           { inherit pkgs; };
-        };
+      };
       permittedInsecurePackages = [
         "fluffychat-linux-1.20.0"
-        ];
-      };
+        "aspnetcore-runtime-wrapped-6.0.36"
+        "aspnetcore-runtime-6.0.36"
+        "dotnet-runtime-7.0.20"
+      ];
+    };
     overlays = [ ];
     };
 
@@ -160,44 +163,43 @@
 
 
   ### NIXARR USERS
-    users.users = {
-      bazarr = {
-        isNormalUser = false;
-        description = "bazarr service user";
-        extraGroups = [ "media" ];
-        linger = true;
-      };
-      lidarr = {
-        isNormalUser = false;
-        description = "lidarr service user";
-        extraGroups = [ "media" ];
-        linger = true;
-      };
-      prowlarr = {
-        isNormalUser = false;
-        description = "prowlarr service user";
-        extraGroups = [ "media" ];
-        linger = true;
-      };
-      radarr = {
-        isNormalUser = false;
-        description = "radarr service user";
-        extraGroups = [ "media" ];
-        linger = true;
-      };
-      readarr = {
-        isNormalUser = false;
-  #      description = "readarr service user";
-        extraGroups = ["media"];
-        linger = true;
-      };
-      sonarr = {
-        isNormalUser = false;
-        description = "sonarr service user";
-        extraGroups = ["media"];
-        linger = true;
-      };
-    };
+  #  users.users = {
+  #    bazarr = {
+  #      isNormalUser = false;
+  #      description = "bazarr service user";
+  #      extraGroups = [ "media" ];
+  #      linger = true;
+  #    };
+  #    lidarr = {
+  #      isNormalUser = false;
+  #      description = "lidarr service user";
+  #      extraGroups = [ "media" ];
+  #      linger = true;
+  #    };
+  #    prowlarr = {
+  #      isNormalUser = false;
+  #      description = "prowlarr service user";
+  #      extraGroups = [ "media" ];
+  #      linger = true;
+  #    };
+  #    radarr = {
+  #      isNormalUser = false;
+  #      description = "radarr service user";
+  #      extraGroups = [ "media" ];
+  #      linger = true;
+  #    };
+  #    readarr = {
+  #      isNormalUser = false;
+  #      extraGroups = ["media"];
+  #      linger = true;
+  #    };
+  #    sonarr = {
+  #      isNormalUser = false;
+  #      description = "sonarr service user";
+  #      extraGroups = ["media"];
+  #      linger = true;
+  #    };
+  #  };
 
 
   #-------- SECURITY --------#
@@ -219,7 +221,7 @@
       };
     blueman.enable = true;
     desktopManager = {
-      plasma6.enable = false;
+      plasma6.enable = true;
       };
     displayManager =  {
       sddm.enable = false;
@@ -233,7 +235,7 @@
       extraFlags = [ "" ];
       };
     monado = {
-      enable = false;
+      enable = true;
       defaultRuntime = false;
       };
     ollama = {
@@ -254,7 +256,7 @@
         lightdm.enable = false;
         };
       desktopManager = {
-        gnome.enable = true;
+        gnome.enable = false;
         };
       windowManager = {
         bspwm.enable = true;
@@ -492,8 +494,6 @@
   };
 
   #-------- AUDIO --------#
-  #sound.enable = true;
-  hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -502,9 +502,14 @@
       support32Bit = true;
     };
     pulse.enable = true;
-    jack.enable = true;
+    jack.enable = false;
   };
+  hardware.alsa.enablePersistence = true;
 
+          #"log.level" = 4;
+          #"default.clock.quantum"     = 256;
+          #"default.clock.min-quantum" = 256;
+          #"default.clock.max-quantum" = 256;
   #-------- GPU --------#
   hardware = {
     graphics = {
@@ -512,6 +517,7 @@
       enable32Bit = true;
     };
     nvidia = {
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
       modesetting.enable = true;
       # Experimental, and can cause sleep/suspend to fail.
       powerManagement.enable = true;
@@ -566,7 +572,7 @@
     '';
     kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
     kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.hdmi_deepcolor=1" "amd_pstate=active" ];
-    kernelPackages = pkgs.linuxPackages_6_11;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
       "vm.overcommit_memory" = 1;
       #"net.ipv4.ip_forward" = 1; Overrode by Nixarr, which I think I want.

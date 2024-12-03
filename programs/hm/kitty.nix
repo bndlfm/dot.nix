@@ -4,12 +4,13 @@
     shellIntegration.enableBashIntegration = true;
     shellIntegration.enableFishIntegration = true;
     extraConfig = /* fish */ ''
-      font_family      Inconsolata LGC Nerd Font Mono
-      bold_font        Inconsolata LGC Nerd Font Mono Bold
-      italic_font      Inconsolata LGC Nerd Font Mono Italic
-      bold_italic_font Inconsolata LGC Nerd Font Mono Bold Italic
+      font_family      InconsolataNFM-Regular
+      bold_font        InconsolataNFM-Bold
+      italic_font      InconsolataLGCNFM-Italic
+      bold_italic_font InconsolataLGCNFM-BoldItalic
 
-      font_size 12.0
+
+      font_size 15.0
 
       scrollback_lines 100000
 
@@ -36,7 +37,7 @@
       hide_window_decorations yes
 
       tab_bar_edge top
-      tab_bar_style custom
+      #tab_bar_style custom
       tab_bar_min_tabs 2
       tab_fade 0.25 0.5 0.75 1
 
