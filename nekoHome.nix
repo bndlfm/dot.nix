@@ -274,7 +274,7 @@
   home.sessionVariables = {
     ### API KEYS
         OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
-        #OBSIDIAN_REST_API_KEY = builtins.readFile "${config.sops.secrets.OBSIDIAN_REST_API_KEY.path}";
+        OBSIDIAN_REST_API_KEY = builtins.readFile "${config.sops.secrets.OBSIDIAN_REST_API_KEY.path}";
 
     ### DEFAULTS
         EDITOR  = "nvim";
