@@ -44,8 +44,13 @@
       permittedInsecurePackages = [
         "fluffychat-linux-1.22.1"
         "olm-3.2.16"
-        "dotnet-runtime-wrapped-7.0.20"
-        "dotnet-runtime-7.0.20"
+        ### NIXARR
+          "dotnet-runtime-wrapped-7.0.20"
+          "dotnet-sdk-wrapped-7.0.410"
+          "dotnet-runtime-7.0.20"
+          "dotnet-core-combined"
+          "dotnet-sdk-7.0.410"
+          "dotnet-sdk-6.0.428"
         ];
       };
     overlays = [

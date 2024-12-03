@@ -36,6 +36,7 @@
         "aspnetcore-runtime-wrapped-6.0.36"
         "aspnetcore-runtime-6.0.36"
         "dotnet-runtime-7.0.20"
+        "dotnet-core-combined"
       ];
     };
     overlays = [ ];

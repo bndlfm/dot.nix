@@ -16,7 +16,7 @@
 
       OBSIDIAN_REST_API_KEY = {
         format = "yaml";
-        sopsFile = ./secrets.yaml;
+        sopsFile = ./OBSIDIAN_REST_API_KEY.yaml;
       };
     };
   };

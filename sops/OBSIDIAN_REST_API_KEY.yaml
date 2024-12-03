@@ -1,0 +1,21 @@
+OBSIDIAN_REST_API_KEY: ENC[AES256_GCM,data:QS3KAuM7bkVYSkdNg5G/EUM599fHIAd/7nueDz1fhZYDzHhZyFui1E3nN7XZWqIVjU6vvEJLFV7Kt2IFyka/UA==,iv:1SHgPiVpnOQDWsrCKuIN8AD113tA1KX13dLQ8gacB38=,tag:U/xq+utW8fyh19CC7RuzEw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age177snhrqfd422qgm8425pzhrzzc9tt3asymt96mmrlmfg784casrs27frau
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB5VkNWdEJSVW9uOTI0MlZW
+            RktweVpKTFB6SUx6MlJsYXZpaEZMeGxBTW5BCkVwY0xhQmt4SDAxZU5pZTAzTEpJ
+            UkNQTk1Yb1BFU0ZkR3hVcVJSRzhRcjQKLS0tIDh3bkJBeVVUS1BOU3d0TjBPdWlI
+            bXBiakpPYmpxRjJnQk1iR3h6UXB1RDAK1FKMvjVG2bcXeIPNtXOMkvdoeba3TDoa
+            v4vLlsiyHH4GcFRCojFIa4tQqbpTV28jGxkA74/hXiRySVPgi9XZGg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-12-03T06:33:53Z"
+    mac: ENC[AES256_GCM,data:TUI5rbSjZyX/WbXRqSvZaKKrBzGlZH/x9tR/QbHEQoaVrVXN1rrk5MPyovTsV5ulr2fdo/iyXZdxp18KfJcO4VJSN5nqBrpVF9hP4BbiHCGLu4SWSVa+HbxTTL7yYldmOUQpkTFfDwmc3RRQNtI4pWDvdwYSbCeVzI9kLRGgkk0=,iv:RADNgZRlQVi9J+K0sB/inS8jLqGNuSurBzXl9607IV8=,tag:HIl1uzOYfT0SuLfc+gb5eA==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.9.1
