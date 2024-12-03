@@ -5,3 +5,8 @@ creation_rules:
     key_groups:
       - age:
         - *primary
+
+  - path_regex: sops/OBSIDIAN_REST_API_KEY.yaml$
+    key_groups:
+      - age:
+        - *primary
