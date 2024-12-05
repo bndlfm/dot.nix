@@ -6,8 +6,8 @@
     extraConfig = /* fish */ ''
       font_family      InconsolataNFM-Regular
       bold_font        InconsolataNFM-Bold
-      italic_font      InconsolataLGCNFM-Italic
-      bold_italic_font InconsolataLGCNFM-BoldItalic
+      italic_font      TerminessNF
+      bold_italic_font TerminessNF-Bold
 
 
       font_size 15.0

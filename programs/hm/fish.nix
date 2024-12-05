@@ -116,11 +116,12 @@
         # EDIT CONFIG #
         ###############
           ## WAYLAND
-            rchpp = "nvim ~/.nixcfg/modules/hm/hyprland.nix";
+            rchpp = "nvim ~/.nixcfg/windowManagers/hm/hyprland.nix";
           ## X WINDOW MANGERS
             rsxh = "nvim ~/.nixcfg/.config/sxhkd/sxhkdrc";
 
           ## OTHER CONFIG ABBR
+            dbx = "distrobox";
             rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
             rwb = "nvim ~/.nixcfg/.config/waybar/config";
           ## NIX SPECIFIC CONFIGS
@@ -129,7 +130,6 @@
             rnxf = "nvim ~/.nixcfg/flake.nix";
             rnxc = "nvim ~/.nixcfg/systems/meow/configuration.nix";
           ## REBUILD SYSTEM
-            nxcli = "NIXOS_CONFIG=~/.nixcfg/flake.nix#meow nix run github:water-sucks/nixos/0.11.0 -- option -i";
             nfu = "nix flake update --flake ~/.nixcfg/";
             nxrb = "nh os switch ~/.nixcfg";
             hmrb = "nh home switch ~/.nixcfg/ -- --impure";

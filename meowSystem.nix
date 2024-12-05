@@ -224,7 +224,7 @@
       };
     blueman.enable = true;
     desktopManager = {
-      plasma6.enable = true;
+      plasma6.enable = false;
       };
     displayManager =  {
       sddm.enable = false;
@@ -239,7 +239,7 @@
       };
     monado = {
       enable = true;
-      defaultRuntime = false;
+      defaultRuntime = true;
       };
     ollama = {
       enable = false; ### SEE PODMAN + HARBOR
@@ -259,7 +259,7 @@
         lightdm.enable = false;
         };
       desktopManager = {
-        gnome.enable = false;
+        gnome.enable = true;
         };
       windowManager = {
         bspwm.enable = true;
@@ -276,7 +276,7 @@
         monado.environment = {
           STEAMVR_LH_ENABLE = "1";
           XRT_COMPOSITOR_COMPUTE = "1";
-          };
+        };
         polkit-gnome-authentication-agent-1 = {
           description = "polkit gnome interface";
           wantedBy = [ "graphical-session.target" ];
@@ -288,10 +288,10 @@
             Restart = "on-failure";
             RestartSec = 1;
             TimeoutStopSec = 10;
-            };
           };
         };
       };
+    };
     extraConfig = ''
       DefaultTimeoutStopSec = 10s
     '';
@@ -522,16 +522,19 @@
     nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.beta;
       modesetting.enable = true;
-      # Experimental, and can cause sleep/suspend to fail.
-      powerManagement.enable = true;
-      # Fine-grained power management. Turns off GPU when not in use.
-      # Experimental Turing+
-      # Use the NVidia open source dkms kernel module
-      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
+
+      ### Experimental, and can cause sleep/suspend to fail.
+      powerManagement.enable = false;
+
+      ### Fine-grained power management. Turns off GPU when not in use.
+      ### Experimental Turing+
+      ### Use the NVidia open source dkms kernel module
+      ### https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
       open = false;
       nvidiaSettings = true;
     };
     nvidia-container-toolkit.enable = true;
+    steam-hardware.enable = true;
   };
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -584,8 +587,10 @@
     supportedFilesystems = [ "ntfs" ];
   };
 
+
   #-------- POWER --------#
   powerManagement.enable = true;
+
 
   #-------- XDG PORTALS --------#
   xdg = {
@@ -636,21 +641,21 @@
 
   #-------- TZ/i18n --------#
   # Set your time zone.
-  time.timeZone = "America/Chicago";
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
+    time.timeZone = "America/Chicago";
 
+  # Select internationalisation properties.
+    i18n.defaultLocale = "en_US.UTF-8";
+    i18n.extraLocaleSettings = {
+      LC_ADDRESS = "en_US.UTF-8";
+      LC_IDENTIFICATION = "en_US.UTF-8";
+      LC_MEASUREMENT = "en_US.UTF-8";
+      LC_MONETARY = "en_US.UTF-8";
+      LC_NAME = "en_US.UTF-8";
+      LC_NUMERIC = "en_US.UTF-8";
+      LC_PAPER = "en_US.UTF-8";
+      LC_TELEPHONE = "en_US.UTF-8";
+      LC_TIME = "en_US.UTF-8";
+    };
 
 
   ##############################################################################

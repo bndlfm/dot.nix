@@ -1,4 +1,7 @@
-{ config, pkgs, inputs, ... }: {
+{ config, pkgs, inputs, ... }:
+let
+  lutrisCustom = pkgs.callPackage ./pkgs/lutris/fhsenv.nix { };
+in {
   home.stateVersion = "23.11";
   home.username = "neko";
   home.homeDirectory = "/home/neko";
@@ -120,13 +123,13 @@
 
 
     ### GAMES
-        ### EMULATION
-          shadps4
+      ### EMULATION
+        shadps4
       (pkgs.callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix {})
       crawlTiles
       glfw-wayland-minecraft
       heroic
-      lutris
+      lutrisCustom
       prismlauncher
       steamtinkerlaunch
 
@@ -263,6 +266,7 @@
     ### VIRTUALISATION
       virt-manager
       podman-desktop
+      boxbuddy
 
 
     ### MISC PACKAGES

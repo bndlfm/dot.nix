@@ -53,23 +53,23 @@
 
     #-------- Window Rules --------#
       windowrule = [
-        ## Chatterino/Streamlink-Twitch-GUI
+        ### Chatterino/Streamlink-Twitch-GUI
           "workspace 10 silent, streamlink-twitch-gui"
           "workspace 10 silent, chatterino"
-        ## Copyq Clipboard Manager
+        ### Copyq Clipboard Manager
           "float, com.github.hluk.copyq"
-        ## Discord
+        ### Discord
           "workspace 10 silent, vencorddesktop"
-        ## MPV Picture-in-Picture
+        ### MPV Picture-in-Picture
           "workspace 10, mpv_pip"
           "float, mpv_pip"
           "size 659 369, mpv_pip"
           "move 416 33, mpv_pip"
           "pin, mpv_pip"
-        ## Steam
+        ### Steam
           "workspace 7 silent, steam"
           "float, steam"
-         ];
+      ];
       windowrulev2 = [
         ## Clipboard
           "float, class:(clipse)"
@@ -119,100 +119,143 @@
 
         "$mainMod, GRAVE, exec, hdrop -f -b -g 30 kitty --class kittydrop"
 
-        # Rofi
-        #"$mainMod, SPACE, exec rofi -show run"
+        # (not)Rofi
         "$mainMod, D, exec, fuzzel"
         "$mainMod SHIFT, V, exec, copyq show"
 
         # Groups and Movement in / out of them
         "$mainMod, G, togglegroup"
-        "$mainMod, C, changegroupactive"
+        "$mainMod, tab, changegroupactive"
         "$mainMod ALT, left, moveintogroup, l"
         "$mainMod ALT, right, moveintogroup, r"
         "$mainMod ALT, up, moveintogroup, u"
         "$mainMod ALT, down, moveintogroup, d"
-        "$mainMod, R, moveoutofgroup"
+        "$mainMod, X, moveoutofgroup"
 
-        # Move Focus
-        "$mainMod, H, movefocus, l"
-        "$mainMod, N, movefocus, d"
-        "$mainMod, E, movefocus, u"
-        "$mainMod, I, movefocus, r"
+        ############################################################
+        #                       hyprscroller                       #
+        ############################################################
+          ### Move Focus
+            "$mainMod, H, scroller:movefocus, l"
+            "$mainMod, N, scroller:movefocus, d"
+            "$mainMod, E, scroller:movefocus, u"
+            "$mainMod, I, scroller:movefocus, r"
+
+            #"$mainMod, H, movefocus, l"
+            #"$mainMod, N, movefocus, d"
+            #"$mainMod, E, movefocus, u"
+            #"$mainMod, I, movefocus, r"
+
+          ### Push to new column
+            "$mainMod, P, scroller:admitwindow"
+            "$mainMod SHIFT, P, scroller:expelwindow"
+
+          ### Move Windows
+            "$mainMod SHIFT, H, scroller:movewindow, l"
+            "$mainMod SHIFT, N, scroller:movewindow, d"
+            "$mainMod SHIFT, E, scroller:movewindow, u"
+            "$mainMod SHIFT, I, scroller:movewindow, r"
+
+          ### Change monitor focus
+            "$mainMod CONTROL, H, focusmonitor, l"
+            "$mainMod CONTROL, N, focusmonitor, d"
+            "$mainMod CONTROL, E, focusmonitor, u"
+            "$mainMod CONTROL, I, focusmonitor, r"
+
+          ### Move Window to Orthagonal Monitor
+            #"$mainMod SHIFT CONTROL, H, "
+
+          ### Align Windows
+            "$mainMod ALT, H, scroller:alignwindow, l"
+            "$mainMod ALT, N, scroller:alignwindow, d"
+            "$mainMod ALT, E, scroller:alignwindow, u"
+            "$mainMod ALT, I, scroller:alignwindow, r"
+            "$mainMod ALT, C, scroller:alignwindow, c" # center
+
+          # Window Control
+            "$mainMod, R, scroller:setmode, row"
+            "$mainMod, C, scroller:setmode, col"
+
+            "$mainMod, minus, scroller:cyclesize, next"
+            "$mainMod SHIFT, equal, scroller:cyclesize, prev"
+
+
+        ############################################################
 
         # Cycle focus between floating windows
-        "$mainMod, Tab, cyclenext"
-        "$mainMod, Tab, bringactivetotop"
+          "$mainMod, Tab, cyclenext"
+          "$mainMod, Tab, bringactivetotop"
 
         # Presel split
-        "$mainMod CONTROL SHIFT, E, layoutmsg, preselect u"
-        "$mainMod CONTROL SHIFT, N, layoutmsg, preselect d"
-        "$mainMod CONTROL SHIFT, H, layoutmsg, preselect l"
-        "$mainMod CONTROL SHIFT, I, layoutmsg, preselect r"
+          "$mainMod CONTROL SHIFT, E, layoutmsg, preselect u"
+          "$mainMod CONTROL SHIFT, N, layoutmsg, preselect d"
+          "$mainMod CONTROL SHIFT, H, layoutmsg, preselect l"
+          "$mainMod CONTROL SHIFT, I, layoutmsg, preselect r"
 
         # Switch Workspaces
-        "$mainMod, 1, workspace, 1"
-        "$mainMod, 2, workspace, 2"
-        "$mainMod, 3, workspace, 3"
-        "$mainMod, 4, workspace, 4"
-        "$mainMod, 5, workspace, 5"
-        "$mainMod, 6, workspace, 6"
-        "$mainMod, 7, workspace, 7"
-        "$mainMod, 8, workspace, 8"
-        "$mainMod, 9, workspace, 9"
-        "$mainMod, 0, workspace, 10"
+          "$mainMod, 1, workspace, 1"
+          "$mainMod, 2, workspace, 2"
+          "$mainMod, 3, workspace, 3"
+          "$mainMod, 4, workspace, 4"
+          "$mainMod, 5, workspace, 5"
+          "$mainMod, 6, workspace, 6"
+          "$mainMod, 7, workspace, 7"
+          "$mainMod, 8, workspace, 8"
+          "$mainMod, 9, workspace, 9"
+          "$mainMod, 0, workspace, 10"
 
         # Cycle Workspaces on Monitor
-        "$mainMod, comma, workspace, m-1"
-        "$mainMod, period, workspace, m+1"
+          "$mainMod, comma, workspace, m-1"
+          "$mainMod, period, workspace, m+1"
 
         # Move Active Window to Workspace
-        "$mainMod SHIFT, 1, movetoworkspace, 1"
-        "$mainMod SHIFT, 2, movetoworkspace, 2"
-        "$mainMod SHIFT, 3, movetoworkspace, 3"
-        "$mainMod SHIFT, 4, movetoworkspace, 4"
-        "$mainMod SHIFT, 5, movetoworkspace, 5"
-        "$mainMod SHIFT, 6, movetoworkspace, 6"
-        "$mainMod SHIFT, 7, movetoworkspace, 7"
-        "$mainMod SHIFT, 8, movetoworkspace, 8"
-        "$mainMod SHIFT, 9, movetoworkspace, 9"
-        "$mainMod SHIFT, 0, movetoworkspace, 10"
+          "$mainMod SHIFT, 1, movetoworkspace, 1"
+          "$mainMod SHIFT, 2, movetoworkspace, 2"
+          "$mainMod SHIFT, 3, movetoworkspace, 3"
+          "$mainMod SHIFT, 4, movetoworkspace, 4"
+          "$mainMod SHIFT, 5, movetoworkspace, 5"
+          "$mainMod SHIFT, 6, movetoworkspace, 6"
+          "$mainMod SHIFT, 7, movetoworkspace, 7"
+          "$mainMod SHIFT, 8, movetoworkspace, 8"
+          "$mainMod SHIFT, 9, movetoworkspace, 9"
+          "$mainMod SHIFT, 0, movetoworkspace, 10"
 
         # Scroll Through Workspaces
-        "$mainMod, mouse_down, workspace, e+1"
-        "$mainMod, mouse_up, workspace, e-1"
+          "$mainMod, mouse_down, workspace, e+1"
+          "$mainMod, mouse_up, workspace, e-1"
 
         # Screenshot / Capture
-        "SHIFT, PRINT, exec, hyprshot -m window"  # Screenshot a window
-        ", PRINT, exec, hyprshot -m output"  # Screenshot a monitor
-        "CONTROL, PRINT, exec, hyprshot -m region"  # Screenshot a region
+          "SHIFT, PRINT, exec, hyprshot -m window"  # Screenshot a window
+          ", PRINT, exec, hyprshot -m output"  # Screenshot a monitor
+          "CONTROL, PRINT, exec, hyprshot -m region"  # Screenshot a region
 
         # Volume
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+          ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
+          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
       ];
       binde = [
         # Move Windows
-        "$mainMod SHIFT, H, exec, ~/.config/hypr/move-windows.sh l"
-        "$mainMod SHIFT, N, exec, ~/.config/hypr/move-windows.sh d"
-        "$mainMod SHIFT, E, exec, ~/.config/hypr/move-windows.sh u"
-        "$mainMod SHIFT, I, exec, ~/.config/hypr/move-windows.sh r"
+        #"$mainMod SHIFT, H, exec, ~/.config/hypr/move-windows.sh l"
+        #"$mainMod SHIFT, N, exec, ~/.config/hypr/move-windows.sh d"
+        #"$mainMod SHIFT, E, exec, ~/.config/hypr/move-windows.sh u"
+        #"$mainMod SHIFT, I, exec, ~/.config/hypr/move-windows.sh r"
 
 
-        "$mainMod SHIFT, left, moveactive, -10 0"
-        "$mainMod SHIFT, down, moveactive, 0 10"
-        "$mainMod SHIFT, up, moveactive, 0 -10"
-        "$mainMod SHIFT, right, moveactive, 10 0"
+        #"$mainMod SHIFT, left, moveactive, -10 0"
+        #"$mainMod SHIFT, down, moveactive, 0 10"
+        #"$mainMod SHIFT, up, moveactive, 0 -10"
+        #"$mainMod SHIFT, right, moveactive, 10 0"
 
-        # sets repeatable binds for resizing the active window
-        "$mainMod CONTROL, H, resizeactive, -30 0"
-        "$mainMod CONTROL, N, resizeactive, 0 30"
-        "$mainMod CONTROL, E, resizeactive, 0 -30"
-        "$mainMod CONTROL, I, resizeactive, 30 0"
+        ## sets repeatable binds for resizing the active window
+        #"$mainMod CONTROL, H, resizeactive, -30 0"
+        #"$mainMod CONTROL, N, resizeactive, 0 30"
+        #"$mainMod CONTROL, E, resizeactive, 0 -30"
+        #"$mainMod CONTROL, I, resizeactive, 30 0"
 
-        "$mainMod CONTROL, left, resizeactive, -10 0"
-        "$mainMod CONTROL, right, resizeactive, 10 0"
-        "$mainMod CONTROL, up, resizeactive, 0 -10"
-        "$mainMod CONTROL, down, resizeactive, 0 10"
+        #"$mainMod CONTROL, left, resizeactive, -10 0"
+        #"$mainMod CONTROL, right, resizeactive, 10 0"
+        #"$mainMod CONTROL, up, resizeactive, 0 -10"
+        #"$mainMod CONTROL, down, resizeactive, 0 10"
       ];
       bindm = [
         # Move/resize windows with mainMod + LMB/RMB and dragging
@@ -274,9 +317,6 @@
 
       decoration = {
         rounding = 7;
-        #drop_shadow = true;
-        #shadow_range = 4;
-        #shadow_render_power = 3;
       };
 
       env = [
