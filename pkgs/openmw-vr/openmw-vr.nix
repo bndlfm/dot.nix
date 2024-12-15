@@ -42,12 +42,27 @@ let
     ];
   });
 
-  openxr_sdk = fetchFromGitHub{
-    owner = "KhronosGroup";
-    repo = "OpenXR-SDK";
-    rev = "b7ada0bdecd9830f27c2221dad6f0bb933c64f15";
-    hash = "sha256-YsT6z0uymEF35US1ux7E4JOAK6YeOzryulYVGRi0EjA=";
-  };
+  getFetchContentFlags = file:
+    let
+      inherit (builtins) head elemAt match;
+      parse = match
+        "(.*)\nFetchContent_Declare\\(\n  ([^\n]*)\n([^)]*)\\).*"
+        file;
+      name = elemAt parse 1;
+      content = elemAt parse 2;
+      getKey = key: elemAt
+        (match "(.*\n)?  ${key} ([^\n]*)(\n.*)?" content) 1;
+      url = getKey "GIT_REPOSITORY";
+      pkg = pkgs.fetchFromGitHub {
+        owner = head (match ".*github.com/([^/]*)/.*" url);
+        repo = head (match ".*/([^/]*)\\.git" url);
+        rev = getKey "GIT_TAG";
+        hash = getKey "# hash:";
+      };
+    in
+    if (parse == null) then [ ] else
+    ([ "-DFETCHCONTENT_SOURCE_DIR_${lib.toUpper name}=${pkg}" ] ++
+      getFetchContentFlags (head parse));
 
 in
 
@@ -60,14 +75,11 @@ in
       repo = "openmw";
       rev = "770584c5112e46be1a00b9e357b0b7f6b449cac5";
       hash = "sha256-C8lFjKIdbHyvRcZzJNUj8Lif9IqNvuYURwRMpb4sxiQ=";
-      fetchSubmodules = true;
     };
 
     postPatch = /* sh */ ''
       ### gcc12
         sed '1i#include <memory>' -i components/myguiplatform/myguidatamanager.cpp
-      ### Patch to disable openxr fetch
-        sed -i 's/option(OPENXR_POPULATE "Build openxr support" ON)/option(OPENXR_POPULATE "Build openxr support" OFF)/' extern/CMakeLists.txt
     '' + lib.optionalString stdenv.hostPlatform.isDarwin /* sh */ ''
       ### Don't fix Darwin app bundle
         sed -i '/fixup_bundle/d' CMakeLists.txt
@@ -98,11 +110,11 @@ in
       VideoToolbox
     ];
 
-    cmakeFlags = [
+    cmakeFlags = getFetchContentFlags
+      (builtins.readFile ./CMakeLists.txt)
+    ++ [
       "-DOpenGL_GL_PREFERENCE=${GL}"
       "-DOPENMW_USE_SYSTEM_RECASTNAVIGATION=1"
-      "-DOPENXR_SDK_SOURCE=${openxr_sdk}"
-      "-DOPENXR_POPULATE=OFF"
     ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
       "-DOPENMW_OSX_DEPLOYMENT=ON"
     ];
