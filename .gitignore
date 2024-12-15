@@ -1,5 +1,8 @@
 bin
 
+### AIDER BS
+.aider*
+
 ### CONTAINERS
 containers/khoj
 containers/arr apps
