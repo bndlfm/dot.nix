@@ -141,15 +141,6 @@
   #-------- GROUPS ---------#
   users.groups = {
     docker = {};
-    distrobox = {};
-    media = {
-      members = [
-        "radarr"
-        "sonarr"
-        "lidarr"
-        "readarr"
-      ];
-    };
   };
 
 
@@ -160,50 +151,9 @@
     users.users.neko = {
       isNormalUser = true;
       description = "neko";
-      extraGroups = [ "networkmanager" "wheel" "input" "docker" "distrobox" "libvirtd" "tss" ];
+      extraGroups = [ "networkmanager" "wheel" "input" "docker" "media" "libvirtd" "tss" ];
       linger = true;
       };
-
-
-  ### NIXARR USERS
-  #  users.users = {
-  #    bazarr = {
-  #      isNormalUser = false;
-  #      description = "bazarr service user";
-  #      extraGroups = [ "media" ];
-  #      linger = true;
-  #    };
-  #    lidarr = {
-  #      isNormalUser = false;
-  #      description = "lidarr service user";
-  #      extraGroups = [ "media" ];
-  #      linger = true;
-  #    };
-  #    prowlarr = {
-  #      isNormalUser = false;
-  #      description = "prowlarr service user";
-  #      extraGroups = [ "media" ];
-  #      linger = true;
-  #    };
-  #    radarr = {
-  #      isNormalUser = false;
-  #      description = "radarr service user";
-  #      extraGroups = [ "media" ];
-  #      linger = true;
-  #    };
-  #    readarr = {
-  #      isNormalUser = false;
-  #      extraGroups = ["media"];
-  #      linger = true;
-  #    };
-  #    sonarr = {
-  #      isNormalUser = false;
-  #      description = "sonarr service user";
-  #      extraGroups = ["media"];
-  #      linger = true;
-  #    };
-  #  };
-
 
   #-------- SECURITY --------#
   security = {
@@ -245,7 +195,7 @@
       enable = false; ### SEE PODMAN + HARBOR
       acceleration = "cuda";
       host = "0.0.0.0";
-      openFirewall = true;
+      openFirewall = false;
       };
     openssh.enable = true;
     printing.enable = true;
@@ -457,6 +407,7 @@
     search = [ "example.ts.net" ];
     firewall.checkReversePath = "loose";
     networkmanager.enable = true; # Enable Networking
+    interfaces."enp6s0".wakeOnLan.enable = true;
     firewall = {
       enable = true;
       allowedTCPPorts = [
@@ -505,14 +456,39 @@
       support32Bit = true;
     };
     pulse.enable = true;
-    jack.enable = false;
+    jack.enable = true;
+    #extraConfig = {
+    #  pipewire."92-low-latency" = {
+    #    context.properties = {
+    #      "log.level" = 4;
+    #      "default.clock.quantum"     = 256;
+    #      "default.clock.min-quantum" = 256;
+    #      "default.clock.max-quantum" = 256;
+    #    };
+    #  };
+    #  pipewire-pulse."92-low-latency" = {
+    #    "context.properties" = [
+    #      {
+    #        name = "libpipewire-module-protocol-pulse";
+    #        args = { };
+    #      }
+    #    ];
+    #    "pulse.properties" = {
+    #      "pulse.min.req" = "32/48000";
+    #      "pulse.default.req" = "32/48000";
+    #      "pulse.max.req" = "32/48000";
+    #      "pulse.min.quantum" = "32/48000";
+    #      "pulse.max.quantum" = "32/48000";
+    #    };
+    #    "stream.properties" = {
+    #      "node.latency" = "32/48000";
+    #      "resample.quality" = 1;
+    #    };
+    #  };
+    #};
   };
   hardware.alsa.enablePersistence = true;
 
-          #"log.level" = 4;
-          #"default.clock.quantum"     = 256;
-          #"default.clock.min-quantum" = 256;
-          #"default.clock.max-quantum" = 256;
   #-------- GPU --------#
   hardware = {
     graphics = {

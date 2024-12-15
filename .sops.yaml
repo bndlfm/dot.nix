@@ -10,3 +10,8 @@ creation_rules:
     key_groups:
       - age:
         - *primary
+
+  - path_regex: sops/HUGGINGFACE_API_KEY.yaml$
+    key_groups:
+      - age:
+        - *primary

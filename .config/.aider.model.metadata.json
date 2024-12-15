@@ -1,0 +1,19 @@
+{
+    "huggingface/Qwen/QwQ-32B-Preview": {
+        "max_tokens": 32768,
+        "input_cost_per_token": 0.00000000,
+        "output_cost_per_token": 0.00000000,
+        "litellm_provider": "huggingface",
+        "mode": "chat"
+    },
+    "openai/qwen-coder": {
+        "max_tokens": 32768,
+        "max_input_tokens": 32768,
+        "max_output_tokens": 8192,
+        "input_cost_per_token": 0.00000014,
+        "output_cost_per_token": 0.00000028,
+        "litellm_provider": "openai",
+        "mode": "chat"
+    }
+}
+

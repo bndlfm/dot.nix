@@ -1,6 +1,5 @@
 { config, pkgs, inputs, ... }:
 let
-  lutrisCustom = pkgs.callPackage ./pkgs/lutris/fhsenv.nix { };
 in {
   home.stateVersion = "23.11";
   home.username = "neko";
@@ -26,7 +25,7 @@ in {
       ./programs/hm/misc_programs.nix
 
     ### SERVICES
-#      ./services/hm/espanso.nix
+      ./services/hm/espanso.nix
 
       ./services/hm/misc_services.nix
 
@@ -48,12 +47,15 @@ in {
         "fluffychat-linux-1.22.1"
         "olm-3.2.16"
         ### NIXARR
-          "dotnet-runtime-wrapped-7.0.20"
-          "dotnet-sdk-wrapped-7.0.410"
-          "dotnet-runtime-7.0.20"
+          "dotnet-combined"
           "dotnet-core-combined"
-          "dotnet-sdk-7.0.410"
+          "dotnet-runtime-7.0.20"
+          "dotnet-runtime-wrapped-7.0.20"
+          "dotnet-wrapped-combined"
           "dotnet-sdk-6.0.428"
+          "dotnet-sdk-wrapped-6.0.428"
+          "dotnet-sdk-7.0.410"
+          "dotnet-sdk-wrapped-7.0.410"
         ];
       };
     overlays = [
@@ -114,6 +116,7 @@ in {
 
     ### DAEMONS
       mpd-discord-rpc
+      #wine-discord-ipc-bridge
       yams
 
 
@@ -126,10 +129,12 @@ in {
       ### EMULATION
         shadps4
       (pkgs.callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix {})
+      (pkgs.libsForQt5.callPackage ./pkgs/openmw-vr/openmw-vr.nix {inherit CoreMedia VideoDecodeAcceleration VideoToolbox;})
       crawlTiles
       glfw-wayland-minecraft
       heroic
-      lutrisCustom
+      lutris
+      mangohud
       prismlauncher
       steamtinkerlaunch
 
@@ -158,12 +163,13 @@ in {
           llama-cpp
           pynvim
           ueberzug
-          ]))
+        ]))
       ## FENNEL
-        #(pkgs.callPackage ./pkgs/antifennel.nix {})
+        (pkgs.callPackage ./pkgs/antifennel.nix {})
       godot_4
       godot_4-export-templates
       direnv
+      nix-prefetch
       meld
 
 
@@ -255,6 +261,7 @@ in {
       keymapp # For ErgoDox
         zsa-udev-rules
       nicotine-plus
+      nix-prefetch
       pavucontrol
       qbittorrent
       qdirstat
@@ -264,6 +271,7 @@ in {
 
 
     ### VIRTUALISATION
+      nur.repos.ataraxiasjel.waydroid-script
       virt-manager
       podman-desktop
       boxbuddy
@@ -277,6 +285,7 @@ in {
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
     ### API KEYS
+        HUGGINGFACE_API_KEY = builtins.readFile "${config.sops.secrets.HUGGINGFACE_API_KEY.path}";
         OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
         OBSIDIAN_REST_API_KEY = builtins.readFile "${config.sops.secrets.OBSIDIAN_REST_API_KEY.path}";
 
@@ -318,78 +327,83 @@ in {
   };
 
   ######### (HM) DOTFILES ########
-  xdg = {
-    configFile = {
-      "hypr" = {
-        source = ./.config/hypr;
-        recursive = true;
-      };
-      "joshuto" = {
-        source = ./.config/joshuto;
-        recursive = true;
-      };
-      "mutt" = {
-        source = ./.config/mutt;
-        recursive = true;
-      };
-      #"niri" = {
-      #  source = ./.config/niri;
-      #  recursive = true;
-      #};
-      #"nvim" = {
-      #  source = ./.config/nvim;
-      #  recursive = true;
-      #};
-      "polybar" = {
-        source = ./.config/polybar;
-        recursive = true;
-      };
-      "pulsemixer.cfg" = {
-        source = ./.config/pulsemixer.cfg;
-        recursive = false;
-      };
-      "ranger" = {
-        source = ./.config/ranger;
-        recursive = true;
-      };
-      "rofi" = {
-        source = ./.config/rofi;
-        recursive = true;
-      };
-      "tridactyl" = {
-        source = ./.config/tridactyl;
-        recursive = true;
-      };
-      "qutebrowser/config.py" = {
-        source = ./.config/qutebrowser/config.py;
-        #recursive = true;
-      };
-      "waybar" = {
-        source = ./.config/waybar;
-        recursive = true;
-      };
-      "yazi" = {
-        source = ./.config/yazi;
-        recursive = true;
-      };
-      "zathura" = {
-        source = ./.config/zathura;
-        recursive = true;
+    home.file = {
+      ".aider.model.metadata.json" = {
+        source = ./.config/.aider.model.metadata.json;
       };
     };
-  };
+
+    xdg = {
+      configFile = {
+        "hypr" = {
+          source = ./.config/hypr;
+          recursive = true;
+        };
+        "joshuto" = {
+          source = ./.config/joshuto;
+          recursive = true;
+        };
+        "mutt" = {
+          source = ./.config/mutt;
+          recursive = true;
+        };
+        #"niri" = {
+        #  source = ./.config/niri;
+        #  recursive = true;
+        #};
+        #"nvim" = {
+        #  source = ./.config/nvim;
+        #  recursive = true;
+        #};
+        "polybar" = {
+          source = ./.config/polybar;
+          recursive = true;
+        };
+        "pulsemixer.cfg" = {
+          source = ./.config/pulsemixer.cfg;
+          recursive = false;
+        };
+        "ranger" = {
+          source = ./.config/ranger;
+          recursive = true;
+        };
+        "rofi" = {
+          source = ./.config/rofi;
+          recursive = true;
+        };
+        "tridactyl" = {
+          source = ./.config/tridactyl;
+          recursive = true;
+        };
+        "qutebrowser/config.py" = {
+          source = ./.config/qutebrowser/config.py;
+        };
+        "waybar" = {
+          source = ./.config/waybar;
+          recursive = true;
+        };
+        "yazi" = {
+          source = ./.config/yazi;
+          recursive = true;
+        };
+        "zathura" = {
+          source = ./.config/zathura;
+          recursive = true;
+        };
+      };
+    };
 
   specialisation = {
-      gnome.configuration = {
-        home.packages = with pkgs; [
-          gnome-tweaks
-          ];
-        };
-
-      familyTree.configuration = {
-        home.packages = with pkgs; [
-          ocrmypdf
+    gnome.configuration = {
+      home.packages = with pkgs; [
+        gnome-tweaks
         ];
       };
+
+    familyTree.configuration = {
+      home.packages = with pkgs; [
+        ocrmypdf
+      ];
+    };
   };
 }

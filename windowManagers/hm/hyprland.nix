@@ -79,11 +79,11 @@
           "size 1060 960, title:(.*)(Select a)(.*)"
           "center, title:(.*)(Select a)(.*)"
         ## FIREFOX Picture-in-Picture
-          "float, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
-          "size 615 346, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
-          "move 1920 56, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
-          "noinitialfocus, class:^(firefox)$, title:(.*)(Picture-in-Picture)(.*)"
-          # firefox-nightly
+          "float, class:^(firefox-devedition)$, title:(.*)(Picture-in-Picture)(.*)"
+          "size 615 346, class:^(firefox-devedition)$, title:(.*)(Picture-in-Picture)(.*)"
+          "move 1920 56, class:^(firefox-devedition)$, title:(.*)(Picture-in-Picture)(.*)"
+          "noinitialfocus, class:^(firefox-devedition)$, title:(.*)(Picture-in-Picture)(.*)"
+          # FIREFOX-NIGHTLY Picture-in-Picture
           "float, class:^(firefox-nightly)$, title:(.*)(Picture-in-Picture)(.*)"
           "size 615 346, class:^(firefox-nightly)$, title:(.*)(Picture-in-Picture)(.*)"
           "move 1920 56, class:^(firefox-nightly)$, title:(.*)(Picture-in-Picture)(.*)"
@@ -130,7 +130,7 @@
         "$mainMod ALT, right, moveintogroup, r"
         "$mainMod ALT, up, moveintogroup, u"
         "$mainMod ALT, down, moveintogroup, d"
-        "$mainMod, X, moveoutofgroup"
+        "$mainMod, M, moveoutofgroup"
 
         ############################################################
         #                       hyprscroller                       #
@@ -147,8 +147,8 @@
             #"$mainMod, I, movefocus, r"
 
           ### Push to new column
-            "$mainMod, P, scroller:admitwindow"
-            "$mainMod SHIFT, P, scroller:expelwindow"
+            "$mainMod, A, scroller:admitwindow"
+            "$mainMod, X, scroller:expelwindow"
 
           ### Move Windows
             "$mainMod SHIFT, H, scroller:movewindow, l"
@@ -157,20 +157,10 @@
             "$mainMod SHIFT, I, scroller:movewindow, r"
 
           ### Change monitor focus
-            "$mainMod CONTROL, H, focusmonitor, l"
-            "$mainMod CONTROL, N, focusmonitor, d"
-            "$mainMod CONTROL, E, focusmonitor, u"
-            "$mainMod CONTROL, I, focusmonitor, r"
-
-          ### Move Window to Orthagonal Monitor
-            #"$mainMod SHIFT CONTROL, H, "
-
-          ### Align Windows
-            "$mainMod ALT, H, scroller:alignwindow, l"
-            "$mainMod ALT, N, scroller:alignwindow, d"
-            "$mainMod ALT, E, scroller:alignwindow, u"
-            "$mainMod ALT, I, scroller:alignwindow, r"
-            "$mainMod ALT, C, scroller:alignwindow, c" # center
+            "$mainMod ALT, H, focusmonitor, l"
+            "$mainMod ALT, N, focusmonitor, d"
+            "$mainMod ALT, E, focusmonitor, u"
+            "$mainMod ALT, I, focusmonitor, r"
 
           # Window Control
             "$mainMod, R, scroller:setmode, row"
@@ -187,10 +177,10 @@
           "$mainMod, Tab, bringactivetotop"
 
         # Presel split
-          "$mainMod CONTROL SHIFT, E, layoutmsg, preselect u"
-          "$mainMod CONTROL SHIFT, N, layoutmsg, preselect d"
-          "$mainMod CONTROL SHIFT, H, layoutmsg, preselect l"
-          "$mainMod CONTROL SHIFT, I, layoutmsg, preselect r"
+          #"$mainMod CONTROL SHIFT, E, layoutmsg, preselect u"
+          #"$mainMod CONTROL SHIFT, N, layoutmsg, preselect d"
+          #"$mainMod CONTROL SHIFT, H, layoutmsg, preselect l"
+          #"$mainMod CONTROL SHIFT, I, layoutmsg, preselect r"
 
         # Switch Workspaces
           "$mainMod, 1, workspace, 1"
@@ -247,15 +237,15 @@
         #"$mainMod SHIFT, right, moveactive, 10 0"
 
         ## sets repeatable binds for resizing the active window
-        #"$mainMod CONTROL, H, resizeactive, -30 0"
-        #"$mainMod CONTROL, N, resizeactive, 0 30"
-        #"$mainMod CONTROL, E, resizeactive, 0 -30"
-        #"$mainMod CONTROL, I, resizeactive, 30 0"
+        "$mainMod CONTROL, H, resizeactive, -30 0"
+        "$mainMod CONTROL, N, resizeactive, 0 30"
+        "$mainMod CONTROL, E, resizeactive, 0 -30"
+        "$mainMod CONTROL, I, resizeactive, 30 0"
 
-        #"$mainMod CONTROL, left, resizeactive, -10 0"
-        #"$mainMod CONTROL, right, resizeactive, 10 0"
-        #"$mainMod CONTROL, up, resizeactive, 0 -10"
-        #"$mainMod CONTROL, down, resizeactive, 0 10"
+        "$mainMod CONTROL, left, resizeactive, -10 0"
+        "$mainMod CONTROL, right, resizeactive, 10 0"
+        "$mainMod CONTROL, up, resizeactive, 0 -10"
+        "$mainMod CONTROL, down, resizeactive, 0 10"
       ];
       bindm = [
         # Move/resize windows with mainMod + LMB/RMB and dragging

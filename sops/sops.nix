@@ -9,6 +9,11 @@
     defaultSecretsMountPoint = "/run/user/1000/secrets.d";
 
     secrets = {
+      HUGGINGFACE_API_KEY = {
+        format = "yaml";
+        sopsFile = ./HUGGINGFACE_API_KEY.yaml;
+      };
+
       OPENAI_API_KEY = {
         format = "yaml";
         sopsFile = ./secrets.yaml;
