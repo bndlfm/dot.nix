@@ -35,9 +35,7 @@
       sops-nix.url = "github:Mic92/sops-nix";
     ### WINDOW MANAGER
       hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-      #hyprscroller.url = "github:dawsers/hyprscroller";
   };
-
 
   outputs = {
     nixpkgs,

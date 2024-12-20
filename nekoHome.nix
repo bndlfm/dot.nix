@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 let
 in {
   home.stateVersion = "23.11";
@@ -129,7 +129,7 @@ in {
       ### EMULATION
         shadps4
       (pkgs.callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix {})
-      (pkgs.libsForQt5.callPackage ./pkgs/openmw-vr/openmw-vr.nix {inherit CoreMedia VideoDecodeAcceleration VideoToolbox;})
+      (pkgs.callPackage ./pkgs/openmw-vr/openmw-vr.nix {inherit pkgs lib; })
       crawlTiles
       glfw-wayland-minecraft
       heroic

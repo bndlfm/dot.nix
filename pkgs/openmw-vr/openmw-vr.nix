@@ -1,39 +1,9 @@
-{ lib
-, stdenv
-, fetchFromGitLab
-, fetchFromGitHub
-, git
-, cmake
-, pkg-config
-, wrapQtAppsHook
-, SDL2
-, CoreMedia
-, VideoToolbox
-, VideoDecodeAcceleration
-, boost
-, bullet
-# Please unpin this on the next OpenMW release.
-, ffmpeg_6
-, libXt
-, luajit
-, lz4
-, mygui
-, openal
-, openscenegraph
-, recastnavigation
-, unshield
-, yaml-cpp
-}:
-
+{ pkgs, lib }:
 let
-
-  pkgs = import <nixpkgs> {};
-
-  mkDerivation = pkgs.libsForQt5.callPackage ({ mkDerivation }: mkDerivation) {};
 
   GL = "GLVND"; # or "LEGACY";
 
-  bullet' = bullet.overrideDerivation (old: {
+  bullet' = pkgs.bullet.overrideDerivation (old: {
     cmakeFlags = (old.cmakeFlags or [ ]) ++ [
       "-Wno-dev"
       "-DOpenGL_GL_PREFERENCE=${GL}"
@@ -42,89 +12,101 @@ let
     ];
   });
 
-  getFetchContentFlags = file:
-    let
-      inherit (builtins) head elemAt match;
-      parse = match
-        "(.*)\nFetchContent_Declare\\(\n  ([^\n]*)\n([^)]*)\\).*"
-        file;
-      name = elemAt parse 1;
-      content = elemAt parse 2;
-      getKey = key: elemAt
-        (match "(.*\n)?  ${key} ([^\n]*)(\n.*)?" content) 1;
-      url = getKey "GIT_REPOSITORY";
-      pkg = pkgs.fetchFromGitHub {
-        owner = head (match ".*github.com/([^/]*)/.*" url);
-        repo = head (match ".*/([^/]*)\\.git" url);
-        rev = getKey "GIT_TAG";
-        hash = getKey "# hash:";
-      };
-    in
-    if (parse == null) then [ ] else
-    ([ "-DFETCHCONTENT_SOURCE_DIR_${lib.toUpper name}=${pkg}" ] ++
-      getFetchContentFlags (head parse));
+  qtMkDerivation = pkgs.libsForQt5.callPackage ({ mkDerivation }: mkDerivation) {};
 
 in
 
-  mkDerivation {
-    pname = "openmw-vr";
+  qtMkDerivation {
+    pname = "openmw_vr";
     version = "0.48.0";
 
-    src = fetchFromGitLab {
+    src = pkgs.fetchFromGitLab {
       owner = "madsbuvi";
       repo = "openmw";
-      rev = "770584c5112e46be1a00b9e357b0b7f6b449cac5";
-      hash = "sha256-C8lFjKIdbHyvRcZzJNUj8Lif9IqNvuYURwRMpb4sxiQ=";
+      rev = "cac0667193434af3a419d3b14029d2956cf46f5d";
+      hash = "sha256-oAr3Ii8ph8MbsxhLT3Q8W/rjdDvEDo5EuCFkIbzg+UI=";
     };
 
-    postPatch = /* sh */ ''
-      ### gcc12
-        sed '1i#include <memory>' -i components/myguiplatform/myguidatamanager.cpp
-    '' + lib.optionalString stdenv.hostPlatform.isDarwin /* sh */ ''
-      ### Don't fix Darwin app bundle
-        sed -i '/fixup_bundle/d' CMakeLists.txt
+    postPatch = /*sh*/ ''
+      sed '1i#include <memory>' -i components/myguiplatform/myguidatamanager.cpp ### gcc12
     '';
 
-    nativeBuildInputs = [ cmake git pkg-config wrapQtAppsHook ];
-
-    # If not set, OSG plugin .so files become shell scripts on Darwin.
-    dontWrapQtApps = stdenv.hostPlatform.isDarwin;
-
-    buildInputs = [
-      SDL2
+    buildInputs = with pkgs; [
       boost
       bullet'
+      doxygen
       ffmpeg_6
-      libXt
+      graphviz
+      jsoncpp
+      libglvnd
       luajit
       lz4
+      mesa
       mygui
       openal
       openscenegraph
       recastnavigation
+      SDL2
       unshield
       yaml-cpp
-    ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
-      CoreMedia
-      VideoDecodeAcceleration
-      VideoToolbox
+      xorg.libXdmcp
+      xorg.libXrandr
+      xorg.libXt
+      xorg.libXxf86vm
     ];
 
-    cmakeFlags = getFetchContentFlags
-      (builtins.readFile ./CMakeLists.txt)
-    ++ [
-      "-DOpenGL_GL_PREFERENCE=${GL}"
-      "-DOPENMW_USE_SYSTEM_RECASTNAVIGATION=1"
-    ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
-      "-DOPENMW_OSX_DEPLOYMENT=ON"
+    nativeBuildInputs = with pkgs; [
+      cmake
+      pkg-config
+      python3
+      libsForQt5.wrapQtAppsHook
     ];
+
+    enableParallelBuilding = true;
+
+    cmakeFlags = let
+      openxr-sdk = pkgs.fetchFromGitHub {
+        owner = "KhronosGroup";
+        repo = "OpenXR-SDK";
+        rev = "1ca7bec6b531185530c9b4f1e7a50e1fd55e7641";
+        hash = "sha256-JrmC4kPDqI06Vm6h216zyTCk0REkpxcvYbyIMTxf1C0=";
+        postFetch = /*sh*/ ''
+          ### PATCH openxr.pc.in TO FIX libdir= //PATH
+          sed -i 's|libdir=\''${exec_prefix}/@CMAKE_INSTALL_LIBDIR@|libdir=@CMAKE_INSTALL_FULL_LIBDIR@|' $out/src/loader/openxr.pc.in
+        '';
+      };
+    in [
+      "-DOpenGL_GL_PREFERENCE=LEGACY"
+      "-DOPENMW_USE_SYSTEM_RECASTNAVIGATION=1"
+      "-DFETCHCONTENT_SOURCE_DIR_OPENXR=${openxr-sdk}"
+      "-DCMAKE_SKIP_BUILD_RPATH=ON"
+      "-DBUILD_OPENMW_VR=ON"
+    ];
+
+    qtWrapperArgs = [ ''
+      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ pkgs.libglvnd pkgs.libuuid pkgs.SDL2]}
+    ''];
+
+    installPhase = /*sh*/ ''
+      runHook preInstall
+
+      ### Run the default install phase provided by CMake
+      cmake --build . --target install
+
+      ### Copy the openmw_vr binary to the output directory.
+      install -m755 ./openmw_vr $out/bin
+
+      runHook postInstall
+    '';
+
 
     meta = with lib; {
       description = "Unofficial VR open source engine reimplementation of the game Morrowind";
       homepage = "https://openmw.org";
       license = licenses.gpl3Plus;
-      maintainers = with maintainers; [ abbradar marius851000 ];
-      platforms = platforms.linux ++ platforms.darwin;
+      mainProgram = "openmw-launcher";
+      maintainers = with maintainers; [ bndlfm ];
+      platforms = platforms.linux;
     };
   }
 

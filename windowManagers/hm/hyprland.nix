@@ -24,7 +24,8 @@
     };
 
     plugins = with pkgs; [
-      hyprlandPlugins.hyprscroller
+      #hyprlandPlugins.hyprscroller
+      (pkgs.callPackage ../../pkgs/hyprscroller {inherit lib mkHyprlandPlugin hyprland cmake fetchFromGitHub nix-update-script;} )
     ];
 
     settings = {
@@ -132,42 +133,47 @@
         "$mainMod ALT, down, moveintogroup, d"
         "$mainMod, M, moveoutofgroup"
 
+        ### MOVE FOCUS
+        "$mainMod, H, movefocus, l"
+        "$mainMod, N, movefocus, d"
+        "$mainMod, E, movefocus, u"
+        "$mainMod, I, movefocus, r"
         ############################################################
         #                       hyprscroller                       #
         ############################################################
-          ### Move Focus
-            "$mainMod, H, scroller:movefocus, l"
-            "$mainMod, N, scroller:movefocus, d"
-            "$mainMod, E, scroller:movefocus, u"
-            "$mainMod, I, scroller:movefocus, r"
+        #  ### Move Focus
+        #    "$mainMod, H, scroller:movefocus, l"
+        #    "$mainMod, N, scroller:movefocus, d"
+        #    "$mainMod, E, scroller:movefocus, u"
+        #    "$mainMod, I, scroller:movefocus, r"
 
-            #"$mainMod, H, movefocus, l"
-            #"$mainMod, N, movefocus, d"
-            #"$mainMod, E, movefocus, u"
-            #"$mainMod, I, movefocus, r"
+        #    #"$mainMod, H, movefocus, l"
+        #    #"$mainMod, N, movefocus, d"
+        #    #"$mainMod, E, movefocus, u"
+        #    #"$mainMod, I, movefocus, r"
 
-          ### Push to new column
-            "$mainMod, A, scroller:admitwindow"
-            "$mainMod, X, scroller:expelwindow"
+        #  ### Push to new column
+        #    "$mainMod, A, scroller:admitwindow"
+        #    "$mainMod, X, scroller:expelwindow"
 
-          ### Move Windows
-            "$mainMod SHIFT, H, scroller:movewindow, l"
-            "$mainMod SHIFT, N, scroller:movewindow, d"
-            "$mainMod SHIFT, E, scroller:movewindow, u"
-            "$mainMod SHIFT, I, scroller:movewindow, r"
+        #  ### Move Windows
+        #    "$mainMod SHIFT, H, scroller:movewindow, l"
+        #    "$mainMod SHIFT, N, scroller:movewindow, d"
+        #    "$mainMod SHIFT, E, scroller:movewindow, u"
+        #    "$mainMod SHIFT, I, scroller:movewindow, r"
 
-          ### Change monitor focus
-            "$mainMod ALT, H, focusmonitor, l"
-            "$mainMod ALT, N, focusmonitor, d"
-            "$mainMod ALT, E, focusmonitor, u"
-            "$mainMod ALT, I, focusmonitor, r"
+        #  ### Change monitor focus
+        #    "$mainMod ALT, H, focusmonitor, l"
+        #    "$mainMod ALT, N, focusmonitor, d"
+        #    "$mainMod ALT, E, focusmonitor, u"
+        #    "$mainMod ALT, I, focusmonitor, r"
 
-          # Window Control
-            "$mainMod, R, scroller:setmode, row"
-            "$mainMod, C, scroller:setmode, col"
+        #  # Window Control
+        #    "$mainMod, R, scroller:setmode, row"
+        #    "$mainMod, C, scroller:setmode, col"
 
-            "$mainMod, minus, scroller:cyclesize, next"
-            "$mainMod SHIFT, equal, scroller:cyclesize, prev"
+        #    "$mainMod, minus, scroller:cyclesize, next"
+        #    "$mainMod SHIFT, equal, scroller:cyclesize, prev"
 
 
         ############################################################
@@ -177,10 +183,10 @@
           "$mainMod, Tab, bringactivetotop"
 
         # Presel split
-          #"$mainMod CONTROL SHIFT, E, layoutmsg, preselect u"
-          #"$mainMod CONTROL SHIFT, N, layoutmsg, preselect d"
-          #"$mainMod CONTROL SHIFT, H, layoutmsg, preselect l"
-          #"$mainMod CONTROL SHIFT, I, layoutmsg, preselect r"
+          "$mainMod CONTROL SHIFT, E, layoutmsg, preselect u"
+          "$mainMod CONTROL SHIFT, N, layoutmsg, preselect d"
+          "$mainMod CONTROL SHIFT, H, layoutmsg, preselect l"
+          "$mainMod CONTROL SHIFT, I, layoutmsg, preselect r"
 
         # Switch Workspaces
           "$mainMod, 1, workspace, 1"
@@ -225,16 +231,16 @@
       ];
       binde = [
         # Move Windows
-        #"$mainMod SHIFT, H, exec, ~/.config/hypr/move-windows.sh l"
-        #"$mainMod SHIFT, N, exec, ~/.config/hypr/move-windows.sh d"
-        #"$mainMod SHIFT, E, exec, ~/.config/hypr/move-windows.sh u"
-        #"$mainMod SHIFT, I, exec, ~/.config/hypr/move-windows.sh r"
+        "$mainMod SHIFT, H, exec, ~/.config/hypr/move-windows.sh l"
+        "$mainMod SHIFT, N, exec, ~/.config/hypr/move-windows.sh d"
+        "$mainMod SHIFT, E, exec, ~/.config/hypr/move-windows.sh u"
+        "$mainMod SHIFT, I, exec, ~/.config/hypr/move-windows.sh r"
 
 
-        #"$mainMod SHIFT, left, moveactive, -10 0"
-        #"$mainMod SHIFT, down, moveactive, 0 10"
-        #"$mainMod SHIFT, up, moveactive, 0 -10"
-        #"$mainMod SHIFT, right, moveactive, 10 0"
+        "$mainMod SHIFT, left, moveactive, -10 0"
+        "$mainMod SHIFT, down, moveactive, 0 10"
+        "$mainMod SHIFT, up, moveactive, 0 -10"
+        "$mainMod SHIFT, right, moveactive, 10 0"
 
         ## sets repeatable binds for resizing the active window
         "$mainMod CONTROL, H, resizeactive, -30 0"
@@ -272,7 +278,7 @@
         gaps_in = 5;
         gaps_out = 10;
         border_size = 4;
-        layout = "scroller";
+        layout = "dwindle";
 
         "col.active_border" = "rgba(99c0d0ff) rgba(5e81acff) 45deg";
         "col.inactive_border" = "rgba(2e3440ff)";
