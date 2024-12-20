@@ -23,10 +23,30 @@
       enable = true;
     };
 
-    plugins = with pkgs; [
-      #hyprlandPlugins.hyprscroller
-      (callPackage ../../pkgs/hyprscroller.nix {} )
-    ];
+    plugins = with pkgs;
+      let
+        mkHyprlandPlugin =
+          hyprland:
+          args@{ pluginName, ... }:
+          gcc14Stdenv.mkDerivation (
+            args
+            // {
+              pname = "${pluginName}";
+              nativeBuildInputs = [ pkg-config ] ++ args.nativeBuildInputs or [ ];
+              buildInputs = [ hyprland ] ++ hyprland.buildInputs ++ (args.buildInputs or [ ]);
+              meta = args.meta // {
+                description = args.meta.description or "";
+                longDescription =
+                  (args.meta.longDescription or "")
+                  + "\n\nPlugins can be installed via a plugin entry in the Hyprland NixOS or Home Manager options.";
+              };
+            }
+          );
+      in
+      [
+        #hyprlandPlugins.hyprscroller
+        (callPackage ../../pkgs/hyprscroller.nix {inherit mkHyprlandPlugin;} )
+      ];
 
     settings = {
   #-------- Startup --------#
