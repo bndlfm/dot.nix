@@ -25,7 +25,7 @@
 
     plugins = with pkgs; [
       #hyprlandPlugins.hyprscroller
-      (pkgs.callPackage ../../pkgs/hyprscroller.nix {inherit lib mkHyprlandPlugin hyprland cmake fetchFromGitHub nix-update-script;} )
+      (callPackage ../../pkgs/hyprscroller.nix {} )
     ];
 
     settings = {
