@@ -10,6 +10,10 @@ containers/funkwhale
 containers/grimoire
 
 ### CONFIG
+
+#DONT LEAK API KEY:
+.config/litellm
+
 .config/environment.d
 .config/nvim/*
 .config/nvimFnl
@@ -25,3 +29,4 @@ publickey
 virtMachines/
 theme/ComfyUI_00181_.png
 ./.aider*
+templates/*
