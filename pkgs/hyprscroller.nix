@@ -15,7 +15,7 @@ mkHyprlandPlugin hyprland {
     owner = "dawsers";
     repo = "hyprscroller";
     rev = "51449714022257b5dd9b4b66bbb8424f718ff416";
-    hash = "";
+    hash = "sha256-DpSsTv1YauRn9Us+bMVmj5SrwT16vr+I9+40Ulcj8d8=";
   };
 
   nativeBuildInputs = [ cmake ];

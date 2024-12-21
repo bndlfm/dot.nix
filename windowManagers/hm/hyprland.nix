@@ -45,7 +45,7 @@
       in
       [
         #hyprlandPlugins.hyprscroller
-        (callPackage ../../pkgs/hyprscroller.nix {inherit mkHyprlandPlugin;} )
+        #(callPackage ../../pkgs/hyprscroller.nix {inherit mkHyprlandPlugin;} )
       ];
 
     settings = {

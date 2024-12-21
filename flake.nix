@@ -42,6 +42,8 @@
     nixos-cli,
     home-manager,
 
+    aagl,
+
     nixarr,
     spicetify-nix,
 
@@ -96,7 +98,7 @@
                   enable = true;
                 };
               }
-              #aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
+              aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
             ## SECRETS
               sops-nix.nixosModules.sops
             ## THEMING
