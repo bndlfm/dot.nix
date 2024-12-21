@@ -98,7 +98,14 @@
                   enable = true;
                 };
               }
-              aagl.nixosModules.default ( import ./programs/nx/an-anime-game-launcher.nix {inherit aagl;})
+              {
+                imports = [ aagl.nixosModules.default ];
+                nix.settings = aagl.nixConfig;
+                programs = {
+                  anime-game-launcher.enable = true;
+                  sleepy-launcher.enable = true;
+                };
+              }
             ## SECRETS
               sops-nix.nixosModules.sops
             ## THEMING
