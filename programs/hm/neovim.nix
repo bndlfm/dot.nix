@@ -64,7 +64,7 @@ in {
       lazygit
       lua51Packages.lua
       lua51Packages.luarocks
-      nixd
+      #nixd
       nodejs
       pyright
       shellcheck

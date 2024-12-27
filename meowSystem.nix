@@ -85,6 +85,7 @@
       };
     hyprland = {
       enable = true;
+      withUWSM = true;
       xwayland.enable = true;
       };
     nbd.enable = false;
@@ -114,8 +115,12 @@
         };
       };
     docker.rootless = {
+      package = pkgs.docker_27;
       enable = true;
       };
+    docker = {
+      enable = true;
+    };
     podman = {
       enable = true;
       dockerCompat = false;

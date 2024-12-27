@@ -2,7 +2,6 @@
   inputs = {
     ### NIX
       nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-      nixos-cli.url = "github:water-sucks/nixos";
       home-manager = {
         url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -31,18 +30,30 @@
         url = "github:ezKEa/aagl-gtk-on-nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+      deejavu = {
+        url = "github:bndlfm/deejavu";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+      openmw-vr = {
+        url = "github:bndlfm/openmw-vr.nix";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
     ### SECRETS
       sops-nix.url = "github:Mic92/sops-nix";
     ### WINDOW MANAGER
-      hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      hyprland = {
+        url = "git+https://github.com/hyprwm/Hyprland?submodules=1&tag=v0.46.2";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
   };
 
   outputs = {
+    self,
     nixpkgs,
-    nixos-cli,
     home-manager,
 
     aagl,
+    deejavu,
 
     nixarr,
     spicetify-nix,
@@ -54,19 +65,37 @@
     hyprland,
     ...
   }@inputs: let
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-  in {
+      inherit (self) outputs;
+      #Supported systems for your flake packages, shell, etc.
+      systems = [
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
+      # This is a function that generates an attribute by calling a function you
+      # pass to it, with each system as an argument
+      forAllSystems = nixpkgs.lib.genAttrs systems;
+    in {
+      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+      overlays = import ./overlays {inherit inputs;};
+      nixosModules = import ./modules/nixos;
+      homeManagerModules = import ./modules/home-manager;
 
-
-    packages.x86_64-linux = {
+     /***********************
+      * HOME CONFIGURATIONS *
+      ***********************/
       homeConfigurations = {
-        "neko" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
+        "neko@nyaa" = home-manager.lib.homeManagerConfiguration {
+          pkgs = forAllSystems (system: nixpkgs.legacyPackages.${system});
           extraSpecialArgs = {
-            inherit inputs;
+            inherit inputs outputs;
             };
           modules = [
+            {
+              home.packages = [
+                inputs.openmw-vr.packages.x86_64-linux.default
+              ];
+            }
             ## SPOTIFY
               inputs.spicetify-nix.homeManagerModules.default ( import ./theme/spicetify.nix {inherit spicetify-nix;})
             ## SECRETS
@@ -77,8 +106,8 @@
               ./nekoHome.nix
             ];
           };
-        "server" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
+        "neko@server" = home-manager.lib.homeManagerConfiguration {
+          pkgs = forAllSystems (system: nixpkgs.legacyPackages.${system});
           modules = [
             inputs.sops-nix.homeManagerModules.sops
             ./users/server/home.nix
@@ -86,18 +115,16 @@
         };
       };
 
+
+     /************************
+      * NIXOS CONFIGURATIONS *
+      ************************/
       nixosConfigurations = {
         "meow" = nixpkgs.lib.nixosSystem {
           modules = [
             ## MEDIA
               nixarr.nixosModules.default ( import ./modules/nx/nixarr.nix )
             ## PROGRAMS
-              nixos-cli.nixosModules.nixos-cli
-              {
-                services.nixos-cli = {
-                  enable = true;
-                };
-              }
               {
                 imports = [ aagl.nixosModules.default ];
                 nix.settings = aagl.nixConfig;
@@ -126,6 +153,5 @@
           ];
         };
       };
-    };
   };
 }

@@ -44,21 +44,16 @@
           );
       in
       [
-        #hyprlandPlugins.hyprscroller
+        hyprlandPlugins.hyprscroller
         #(callPackage ../../pkgs/hyprscroller.nix {inherit mkHyprlandPlugin;} )
       ];
 
     settings = {
   #-------- Startup --------#
     exec-once = [
-      # Shibboleths for DBus / IBus
-        "ibus-daemon"
-        "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE"
-        "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all"
-        "export $(dbus-launch)"
       ## Idleing stuff
-        #  "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
-        #  "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
+        "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
+        "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
       ## Clipboard Shenanigans
         "copyq --start-server"
       ## KDE Connect
@@ -153,49 +148,42 @@
         "$mainMod ALT, down, moveintogroup, d"
         "$mainMod, M, moveoutofgroup"
 
-        ### MOVE FOCUS
-        "$mainMod, H, movefocus, l"
-        "$mainMod, N, movefocus, d"
-        "$mainMod, E, movefocus, u"
-        "$mainMod, I, movefocus, r"
+        #### MOVE FOCUS
+        #"$mainMod, H, movefocus, l"
+        #"$mainMod, N, movefocus, d"
+        #"$mainMod, E, movefocus, u"
+        #"$mainMod, I, movefocus, r"
         ############################################################
         #                       hyprscroller                       #
         ############################################################
-        #  ### Move Focus
-        #    "$mainMod, H, scroller:movefocus, l"
-        #    "$mainMod, N, scroller:movefocus, d"
-        #    "$mainMod, E, scroller:movefocus, u"
-        #    "$mainMod, I, scroller:movefocus, r"
-
-        #    #"$mainMod, H, movefocus, l"
-        #    #"$mainMod, N, movefocus, d"
-        #    #"$mainMod, E, movefocus, u"
-        #    #"$mainMod, I, movefocus, r"
+          ### Move Focus
+            "$mainMod, H, scroller:movefocus, l"
+            "$mainMod, N, scroller:movefocus, d"
+            "$mainMod, E, scroller:movefocus, u"
+            "$mainMod, I, scroller:movefocus, r"
 
         #  ### Push to new column
-        #    "$mainMod, A, scroller:admitwindow"
-        #    "$mainMod, X, scroller:expelwindow"
+            "$mainMod, A, scroller:admitwindow"
+            "$mainMod, X, scroller:expelwindow"
 
         #  ### Move Windows
-        #    "$mainMod SHIFT, H, scroller:movewindow, l"
-        #    "$mainMod SHIFT, N, scroller:movewindow, d"
-        #    "$mainMod SHIFT, E, scroller:movewindow, u"
-        #    "$mainMod SHIFT, I, scroller:movewindow, r"
+            "$mainMod SHIFT, H, scroller:movewindow, l"
+            "$mainMod SHIFT, N, scroller:movewindow, d"
+            "$mainMod SHIFT, E, scroller:movewindow, u"
+            "$mainMod SHIFT, I, scroller:movewindow, r"
 
         #  ### Change monitor focus
-        #    "$mainMod ALT, H, focusmonitor, l"
-        #    "$mainMod ALT, N, focusmonitor, d"
-        #    "$mainMod ALT, E, focusmonitor, u"
-        #    "$mainMod ALT, I, focusmonitor, r"
+            "$mainMod ALT, H, focusmonitor, l"
+            "$mainMod ALT, N, focusmonitor, d"
+            "$mainMod ALT, E, focusmonitor, u"
+            "$mainMod ALT, I, focusmonitor, r"
 
         #  # Window Control
-        #    "$mainMod, R, scroller:setmode, row"
-        #    "$mainMod, C, scroller:setmode, col"
+            "$mainMod, R, scroller:setmode, row"
+            "$mainMod, C, scroller:setmode, col"
 
-        #    "$mainMod, minus, scroller:cyclesize, next"
-        #    "$mainMod SHIFT, equal, scroller:cyclesize, prev"
-
-
+            "$mainMod, minus, scroller:cyclesize, next"
+            "$mainMod SHIFT, equal, scroller:cyclesize, prev"
         ############################################################
 
         # Cycle focus between floating windows
@@ -298,7 +286,7 @@
         gaps_in = 5;
         gaps_out = 10;
         border_size = 4;
-        layout = "dwindle";
+        layout = "scroller";
 
         "col.active_border" = "rgba(99c0d0ff) rgba(5e81acff) 45deg";
         "col.inactive_border" = "rgba(2e3440ff)";
@@ -362,6 +350,12 @@
     };
 
     extraConfig = ''
+      plugin {
+        scroller {
+          column_widths = onethird onehalf twothirds one
+          window_heights - onethird onehalf twothirds one
+          }
+        }
     '';
   };
 }

@@ -1,5 +1,6 @@
 return {
   "karb94/neoscroll.nvim",
+  enabled = true,
   config = function()
     require("neoscroll").setup({
       -- All these keys will be mapped to their corresponding default scrolling animation
