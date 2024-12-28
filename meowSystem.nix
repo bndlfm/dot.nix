@@ -1,15 +1,22 @@
-{ config, pkgs, ... }:{
+{
+  config,
+  pkgs,
+  inputs,
+  outputs,
+  ...
+}:{
   imports = [
     ./cachix.nix
 
     ### PROGRAMS
       ./programs/nx/steam.nix
     ### CONTAINERS
-     #./containers/jellyfin.nix
     ### MODULES
       ./modules/nx/tailscale.nix
     ### SERVICES
       ./services/nx/sunshine.nix
+    ### WINDOW MANAGERS
+      ./windowManagers/niriNX.nix
 
   ];
 
@@ -186,7 +193,7 @@
       };
     fail2ban.enable = false;
     flatpak.enable = true;
-    guix.enable = true;
+    guix.enable = false;
     llama-cpp = {
       enable = false;
       openFirewall = false;

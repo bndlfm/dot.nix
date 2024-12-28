@@ -11,31 +11,52 @@
   home.homeDirectory = "/home/neko";
 
   imports = [
-    ./sops/sops.nix
-    #./modules/hm/OpenComposite.nix
+    /**************
+    * MONADO (VR) *
+    **************/
+      #./modules/hm/OpenComposite.nix
 
-    ### PROGRAMS
-    ./programs/hm/firefox.nix
-    ./programs/hm/fish.nix
-    ./programs/hm/git.nix
-    ./programs/hm/gnome-shell.nix
-    ./programs/hm/kitty.nix
-    ./programs/hm/ncmpcpp.nix
-    ./programs/hm/neovim.nix
-    ./programs/hm/ranger.nix
-    ./programs/hm/rofi.nix
-    ./programs/hm/yazi.nix
-    ./programs/hm/zellij.nix
+    /***********
+    * PROGRAMS *
+    ************/
+      ./programs/hm/an-anime-game-launcher.nix
+      ./programs/hm/firefox.nix
+      ./programs/hm/fish.nix
+      ./programs/hm/git.nix
+      ./programs/hm/gnome-shell.nix
+      ./programs/hm/kitty.nix
+      ./programs/hm/ncmpcpp.nix
+      ./programs/hm/neovim.nix
+      ./programs/hm/ranger.nix
+      ./programs/hm/rofi.nix
+      #./programs/hm/yazi.nix
+      ./programs/hm/zellij.nix
 
-    ./programs/hm/misc_programs.nix
+      ./programs/hm/misc_programs.nix
 
-    ### SERVICES
-    ./services/hm/espanso.nix
+    /**********
+    * SECRETS *
+    **********/
+      inputs.sops-nix.homeManagerModules.sops
+      ./sops/sops.nix
 
-    ./services/hm/misc_services.nix
+    /***********
+    * SERVICES *
+    ***********/
+      ./services/hm/espanso.nix
 
-    ### WINDOW MANAGERS
-    ./windowManagers/hm/hyprland.nix
+      ./services/hm/misc_services.nix
+
+    /**********
+    * SPOTIFY *
+    **********/
+      inputs.spicetify-nix.homeManagerModules.default
+      ./theme/spicetify.nix
+
+    /******************
+    * WINDOW MANAGERS *
+    ******************/
+      ./windowManagers/hm/hyprland.nix
   ];
 
   nixpkgs = {
@@ -48,7 +69,7 @@
         };
       };
       permittedInsecurePackages = [
-        ### NIXARR
+        ## NIXARR
         "dotnet-combined"
         "dotnet-core-combined"
         "dotnet-runtime-7.0.20"
@@ -132,20 +153,20 @@
         ];
 
         gaming = [
-          ### DECOMP
-            sm64ex-coop
-            shipwright # Ocarina of Time
-            _2ship2harkinian # Majora's Mask
-          ### EMULATION
-            shadps4
-          ### GAMING UTILITIES
-            (callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix { })
-            mangohud
-            steamtinkerlaunch
-          ### LAUNCHERS
-            heroic
-            lutris
-            prismlauncher
+          ## DECOMP
+          sm64ex-coop
+          #shipwright # Ocarina of Time
+          _2ship2harkinian # Majora's Mask
+          ## EMULATION
+          shadps4
+          ## GAMING UTILITIES
+          (callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix { })
+          mangohud
+          steamtinkerlaunch
+          ## LAUNCHERS
+          #heroic
+          lutris
+          prismlauncher
           clonehero
           crawlTiles
           glfw-wayland-minecraft
@@ -164,13 +185,13 @@
         ];
 
         programming = [
-          # Git tools
+          ## GIT TOOLS
           git
           git-filter-repo
           git-lfs
           git-credential-manager
           git-credential-gopass
-          # PYTHON
+          ## PYTHON
           (python3.withPackages (
             pkgs: with pkgs; [
               gguf
@@ -199,7 +220,7 @@
           qt6Packages.qt6ct
           qt6Packages.qtstyleplugin-kvantum
           ksshaskpass
-          # Wine
+          # Wine/Proton
           winetricks
           wineWowPackages.stable
           protonup
@@ -233,11 +254,11 @@
         };
 
         tui = [
-          # System monitors
+          ## SYSTEM MONITORS
           btop
           iotop
           nvtopPackages.nvidia
-          # File managers and utilities
+          # FILE MANAGERS AND UTILITIES
           joshuto
           highlight
           page
@@ -365,10 +386,7 @@
 
       ### QT STYLING
       QT_QPA_PLATFORMTHEME = "qt6ct";
-      #QT_STYLE_OVERRIDE = "kvantum";
-
-      ### FIX... SOMETHING? TURNING OFF TO TEST
-      #STEAM_DISABLE_BROWSER_SHUTDOWN_WORKAROUND=1;
+      QT_STYLE_OVERRIDE = "kvantum";
 
       ### THEMING
       XCURSOR = "volantes-cursors";

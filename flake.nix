@@ -41,10 +41,10 @@
     ### SECRETS
       sops-nix.url = "github:Mic92/sops-nix";
     ### WINDOW MANAGER
-      hyprland = {
-        url = "git+https://github.com/hyprwm/Hyprland?submodules=1&tag=v0.46.2";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
+      #hyprland = {
+      #    url = "git+https://github.com/hyprwm/Hyprland?submodules=1&tag=v0.46.2";
+      #    inputs.nixpkgs.follows = "nixpkgs";
+      #  };
   };
 
   outputs = {
@@ -62,7 +62,6 @@
 
     stylix,
 
-    hyprland,
     ...
   }@inputs: let
       inherit (self) outputs;
@@ -85,29 +84,20 @@
       * HOME CONFIGURATIONS *
       ***********************/
       homeConfigurations = {
-        "neko@nyaa" = home-manager.lib.homeManagerConfiguration {
-          pkgs = forAllSystems (system: nixpkgs.legacyPackages.${system});
+        "neko@meow" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = {
             inherit inputs outputs;
             };
           modules = [
-            {
-              home.packages = [
-                inputs.openmw-vr.packages.x86_64-linux.default
-              ];
-            }
-            ## SPOTIFY
-              inputs.spicetify-nix.homeManagerModules.default ( import ./theme/spicetify.nix {inherit spicetify-nix;})
-            ## SECRETS
-              inputs.sops-nix.homeManagerModules.sops
             ## THEMING
-              stylix.homeManagerModules.stylix ( import ./theme/hmStylix.nix )
+              stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
             ## IMPORTS
               ./nekoHome.nix
             ];
           };
-        "neko@server" = home-manager.lib.homeManagerConfiguration {
-          pkgs = forAllSystems (system: nixpkgs.legacyPackages.${system});
+        "neko@nyaa" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [
             inputs.sops-nix.homeManagerModules.sops
             ./users/server/home.nix
@@ -121,30 +111,20 @@
       ************************/
       nixosConfigurations = {
         "meow" = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
           modules = [
             ## MEDIA
               nixarr.nixosModules.default ( import ./modules/nx/nixarr.nix )
-            ## PROGRAMS
-              {
-                imports = [ aagl.nixosModules.default ];
-                nix.settings = aagl.nixConfig;
-                programs = {
-                  anime-game-launcher.enable = true;
-                  sleepy-launcher.enable = true;
-                };
-              }
             ## SECRETS
               sops-nix.nixosModules.sops
             ## THEMING
               stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
             ## WINDOW MANAGERS
-              hyprland.nixosModules.default
+              #hyprland.nixosModules.default
             ## IMPORTS
               ./meowSystem.nix
               ./meowHardware.nix
           ];
-
-          specialArgs = { inherit inputs; };
         };
         "nyaa" = nixpkgs.lib.nixosSystem {
           modules = [

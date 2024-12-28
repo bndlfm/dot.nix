@@ -1,8 +1,8 @@
-{ spicetify-nix, ... }:{
+{ inputs, ... }:{
   programs.spicetify =
     let
       system = "x86_64-linux";
-      spicePkgs = spicetify-nix.legacyPackages.${system};
+      spicePkgs = inputs.spicetify-nix.legacyPackages.${system};
     in {
       enable = true;
       enabledExtensions = with spicePkgs.extensions; [

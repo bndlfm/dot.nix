@@ -44,7 +44,7 @@
           );
       in
       [
-        hyprlandPlugins.hyprscroller
+        #hyprlandPlugins.hyprscroller
         #(callPackage ../../pkgs/hyprscroller.nix {inherit mkHyprlandPlugin;} )
       ];
 
@@ -149,42 +149,42 @@
         "$mainMod, M, moveoutofgroup"
 
         #### MOVE FOCUS
-        #"$mainMod, H, movefocus, l"
-        #"$mainMod, N, movefocus, d"
-        #"$mainMod, E, movefocus, u"
-        #"$mainMod, I, movefocus, r"
+        "$mainMod, H, movefocus, l"
+        "$mainMod, N, movefocus, d"
+        "$mainMod, E, movefocus, u"
+        "$mainMod, I, movefocus, r"
         ############################################################
         #                       hyprscroller                       #
         ############################################################
-          ### Move Focus
-            "$mainMod, H, scroller:movefocus, l"
-            "$mainMod, N, scroller:movefocus, d"
-            "$mainMod, E, scroller:movefocus, u"
-            "$mainMod, I, scroller:movefocus, r"
+        #  ### Move Focus
+        #    "$mainMod, H, scroller:movefocus, l"
+        #    "$mainMod, N, scroller:movefocus, d"
+        #    "$mainMod, E, scroller:movefocus, u"
+        #    "$mainMod, I, scroller:movefocus, r"
 
-        #  ### Push to new column
-            "$mainMod, A, scroller:admitwindow"
-            "$mainMod, X, scroller:expelwindow"
+        #   ### Push to new column
+        #    "$mainMod, A, scroller:admitwindow"
+        #    "$mainMod, X, scroller:expelwindow"
 
-        #  ### Move Windows
-            "$mainMod SHIFT, H, scroller:movewindow, l"
-            "$mainMod SHIFT, N, scroller:movewindow, d"
-            "$mainMod SHIFT, E, scroller:movewindow, u"
-            "$mainMod SHIFT, I, scroller:movewindow, r"
+        #   ### Move Windows
+        #    "$mainMod SHIFT, H, scroller:movewindow, l"
+        #    "$mainMod SHIFT, N, scroller:movewindow, d"
+        #    "$mainMod SHIFT, E, scroller:movewindow, u"
+        #    "$mainMod SHIFT, I, scroller:movewindow, r"
 
         #  ### Change monitor focus
-            "$mainMod ALT, H, focusmonitor, l"
-            "$mainMod ALT, N, focusmonitor, d"
-            "$mainMod ALT, E, focusmonitor, u"
-            "$mainMod ALT, I, focusmonitor, r"
+        #    "$mainMod ALT, H, focusmonitor, l"
+        #    "$mainMod ALT, N, focusmonitor, d"
+        #    "$mainMod ALT, E, focusmonitor, u"
+        #    "$mainMod ALT, I, focusmonitor, r"
 
-        #  # Window Control
-            "$mainMod, R, scroller:setmode, row"
-            "$mainMod, C, scroller:setmode, col"
+        #  ### Window Control
+        #    "$mainMod, R, scroller:setmode, row"
+        #    "$mainMod, C, scroller:setmode, col"
 
-            "$mainMod, minus, scroller:cyclesize, next"
-            "$mainMod SHIFT, equal, scroller:cyclesize, prev"
-        ############################################################
+        #    "$mainMod, minus, scroller:cyclesize, next"
+        #    "$mainMod SHIFT, equal, scroller:cyclesize, prev"
+        #############################################################
 
         # Cycle focus between floating windows
           "$mainMod, Tab, cyclenext"
@@ -286,7 +286,7 @@
         gaps_in = 5;
         gaps_out = 10;
         border_size = 4;
-        layout = "scroller";
+        layout = "dwindle";
 
         "col.active_border" = "rgba(99c0d0ff) rgba(5e81acff) 45deg";
         "col.inactive_border" = "rgba(2e3440ff)";
@@ -350,12 +350,6 @@
     };
 
     extraConfig = ''
-      plugin {
-        scroller {
-          column_widths = onethird onehalf twothirds one
-          window_heights - onethird onehalf twothirds one
-          }
-        }
     '';
   };
 }

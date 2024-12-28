@@ -1,4 +1,8 @@
-{ pkgs, ... }:{
+{
+pkgs,
+...
+}:
+{
   stylix = {
     autoEnable = false;
 
