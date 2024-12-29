@@ -1,17 +1,17 @@
 {
+  nixpkgs,
   config,
-  lib,
-  pkgs,
   inputs,
-  outputs,
   ...
-}:{
+}:
+let
+  pkgs = nixpkgs.legacyPackages.x86_64-linux;
+in {
     nixpkgs.overlays = [
       inputs.niri.overlays.niri
     ];
     programs.niri = {
       enable = true;
-      package = pkgs.niri-unstable;
       settings = {
         outputs = {
           "DP-1" = {
@@ -51,7 +51,7 @@
             then "Alt"
             else "Mod";
         in
-          lib.attrsets.mergeAttrsList [
+          pkgs.lib.attrsets.mergeAttrsList [
           {
             "${Mod}+Enter".action = spawn "kitty";
             "${Mod}+D".action = spawn "fuzzel";
@@ -130,9 +130,7 @@
             "${Mod}+Shift+Ctrl+T".action = toggle-debug-tint;
           }
         ];
-          "XF86AudioRaiseVolume".action.spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"];
-          "XF86AudioLowerVolume".action.spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"];
-        };
       };
+    };
 }
 

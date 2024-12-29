@@ -1,8 +1,6 @@
 {
   config,
   pkgs,
-  inputs,
-  outputs,
   ...
 }:{
   imports = [
@@ -15,9 +13,6 @@
       ./modules/nx/tailscale.nix
     ### SERVICES
       ./services/nx/sunshine.nix
-    ### WINDOW MANAGERS
-      ./windowManagers/niriNX.nix
-
   ];
 
   #-------- PACKAGES --------#
@@ -49,7 +44,7 @@
       ];
     };
     overlays = [ ];
-    };
+  };
 
   environment.systemPackages = with pkgs; [
     git

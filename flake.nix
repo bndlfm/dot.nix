@@ -51,17 +51,12 @@
     self,
     nixpkgs,
     home-manager,
-
     aagl,
     deejavu,
-
     nixarr,
     spicetify-nix,
-
     sops-nix,
-
     stylix,
-
     ...
   }@inputs: let
       inherit (self) outputs;
@@ -79,6 +74,7 @@
       overlays = import ./overlays {inherit inputs;};
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
+
 
      /***********************
       * HOME CONFIGURATIONS *
@@ -133,5 +129,6 @@
           ];
         };
       };
+
   };
 }
