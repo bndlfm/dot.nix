@@ -41,6 +41,10 @@
     ### SECRETS
       sops-nix.url = "github:Mic92/sops-nix";
     ### WINDOW MANAGER
+      niri = {
+        url = "github:sodiboo/niri-flake";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
       #hyprland = {
       #    url = "git+https://github.com/hyprwm/Hyprland?submodules=1&tag=v0.46.2";
       #    inputs.nixpkgs.follows = "nixpkgs";
@@ -54,6 +58,7 @@
     aagl,
     deejavu,
     nixarr,
+    niri,
     spicetify-nix,
     sops-nix,
     stylix,
@@ -86,6 +91,9 @@
             inherit inputs outputs;
             };
           modules = [
+            ## NIRI
+              niri.homeModules.niri
+              ./windowManagers/niri-hm.nix
             ## THEMING
               stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
             ## IMPORTS
@@ -110,13 +118,20 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             ## MEDIA
-              nixarr.nixosModules.default ( import ./modules/nx/nixarr.nix )
+              nixarr.nixosModules.default (import ./modules/nx/nixarr.nix)
             ## SECRETS
               sops-nix.nixosModules.sops
             ## THEMING
-              stylix.nixosModules.stylix ( import ./theme/nxStylix.nix )
+              stylix.nixosModules.stylix (import ./theme/nxStylix.nix)
             ## WINDOW MANAGERS
               #hyprland.nixosModules.default
+              niri.nixosModules.niri
+              {
+                programs.niri = {
+                  enable = true;
+                };
+                niri-flake.cache.enable = true;
+              }
             ## IMPORTS
               ./meowSystem.nix
               ./meowHardware.nix
