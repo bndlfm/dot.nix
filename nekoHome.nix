@@ -29,7 +29,7 @@
       ./programs/hm/neovim.nix
       ./programs/hm/ranger.nix
       ./programs/hm/rofi.nix
-      #./programs/hm/yazi.nix
+      ./programs/hm/yazi.nix
       ./programs/hm/zellij.nix
 
       ./programs/hm/misc_programs.nix
@@ -56,7 +56,9 @@
     /******************
     * WINDOW MANAGERS *
     ******************/
-      ./windowManagers/hm/hyprland.nix
+      ./windowManagers/hyprlandHome.nix
+      ./windowManagers/bspwmHome.nix
+      ./windowManagers/niriHome.nix
   ];
 
   nixpkgs = {
@@ -274,9 +276,9 @@
             slurp
             nwg-look
             waybar
-            wofi
             wttrbar
             wlr-randr
+            wlrctr
             wl-clipboard
             wl-clipboard-x11
             wl-clip-persist

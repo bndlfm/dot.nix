@@ -93,8 +93,9 @@
           modules = [
             ## NIRI
               niri.homeModules.niri
-              ./windowManagers/niri-hm.nix
+              #./windowManagers/niriHome.nix
             ## THEMING
+              niri.homeModules.stylix
               stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
             ## IMPORTS
               ./nekoHome.nix
@@ -124,11 +125,11 @@
             ## THEMING
               stylix.nixosModules.stylix (import ./theme/nxStylix.nix)
             ## WINDOW MANAGERS
-              #hyprland.nixosModules.default
               niri.nixosModules.niri
               {
                 programs.niri = {
                   enable = true;
+                  package = inputs.niri.packages.x86_64-linux.niri-unstable;
                 };
                 niri-flake.cache.enable = true;
               }

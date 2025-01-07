@@ -4,7 +4,7 @@ pkgs,
 }:
 {
   stylix = {
-    autoEnable = false;
+    autoEnable = true;
 
     image = ./wallpapers/nordic/wallpapers/nixos.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
@@ -13,7 +13,7 @@ pkgs,
     opacity = {
       desktop = 1;
       popups = 0.85;
-      terminal = 0.9;
+      terminal = 0.90;
     };
 
     cursor = {
@@ -53,26 +53,29 @@ pkgs,
       fish.enable = true;
       fzf.enable = true;
       gtk.enable = true;
-      hyprland.enable = true;
       kitty.enable = true;
       lazygit.enable = true;
       qutebrowser.enable = true;
       rofi.enable = true;
+      vim.enable = false;
+      xresources.enable = true;
+      yazi.enable = true;
+      zathura.enable = true;
+      zellij.enable = true;
+
+      hyprland.enable = true;
       swaylock = {
         enable = true;
         useImage = false;
       };
-      vim.enable = false;
+
       waybar = {
         enable = true;
         enableCenterBackColors = false;
         enableLeftBackColors = false;
         enableRightBackColors = false;
       };
-      xresources.enable = true;
-      yazi.enable = true;
-      zathura.enable = true;
-      zellij.enable = true;
+
     };
   };
 }
