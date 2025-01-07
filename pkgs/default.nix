@@ -3,6 +3,7 @@
 pkgs: {
   antifennel = pkgs.callPackage ./antifennel.nix { };
   beatSaberModManager = pkgs.callPackage ./BeatSaberModManager/BeatSaberModManager.nix { };
+  ndrop = pkgs.callPackage ./ndrop.nix { };
   proton-ge-rtsp = ./proton-ge-rtsp.nix { };
   openmw-vr = pkgs.callPackage ./openmw-vr/openmw-vr.nix { };
 }

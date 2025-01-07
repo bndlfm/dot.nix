@@ -155,24 +155,25 @@
         ];
 
         gaming = [
+          ## RHYTHM GAMES
+            clonehero
           ## DECOMP
-          sm64ex-coop
-          #shipwright # Ocarina of Time
-          _2ship2harkinian # Majora's Mask
+            sm64ex-coop
+            #shipwright # Ocarina of Time
+            _2ship2harkinian # Majora's Mask
           ## EMULATION
-          shadps4
+            shadps4
           ## GAMING UTILITIES
-          (callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix { })
-          mangohud
-          steamtinkerlaunch
+            (callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix { })
+            mangohud
+            steamtinkerlaunch
           ## LAUNCHERS
           #heroic
-          lutris
-          prismlauncher
-          clonehero
-          crawlTiles
-          glfw-wayland-minecraft
-          inputs.openmw-vr.packages.x86_64-linux.default
+            lutris
+            prismlauncher
+            crawlTiles
+            glfw-wayland-minecraft
+            inputs.openmw-vr.packages.x86_64-linux.default
         ];
 
         media = [
@@ -257,16 +258,16 @@
 
         tui = [
           ## SYSTEM MONITORS
-          btop
-          iotop
-          nvtopPackages.nvidia
-          # FILE MANAGERS AND UTILITIES
-          joshuto
-          highlight
-          page
-          pulsemixer
-          ranger
-          tdf
+            btop
+            iotop
+            nvtopPackages.nvidia
+          ## FILE MANAGERS AND UTILITIES
+            joshuto
+            highlight
+            page
+            pulsemixer
+            ranger
+            tdf
         ];
 
         utilities = {
@@ -278,7 +279,6 @@
             waybar
             wttrbar
             wlr-randr
-            wlrctr
             wl-clipboard
             wl-clipboard-x11
             wl-clip-persist

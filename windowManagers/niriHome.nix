@@ -20,6 +20,10 @@
   programs = {
     niri = {
       settings = {
+        cursor = {
+          size = 32;
+          theme = "${pkgs.volantes-cursors}";
+        };
         environment = {
           DISPLAY = ":0";
         };
@@ -55,15 +59,35 @@
             transform.rotation = 270;
           };
         };
-        cursor = {
-          size = 32;
-          theme = "${pkgs.volantes-cursors}";
+        layout = {
+          preset-column-widths = [
+            { proportion = 1. / 3.; }
+            { proportion = 1. / 2.; }
+            { proportion = 2. / 3.; }
+            { proportion = 4. / 5.; }
+            { proportion = 1. / 1.; }
+          ];
+          preset-window-heights = [
+            { proportion = 1. / 3.; }
+            { proportion = 1. / 2.; }
+            { proportion = 2. / 3.; }
+            { proportion = 4. / 5.; }
+            { proportion = 1. / 1.; }
+          ];
         };
+        workspaces = {
+          "ndrop" = {};
+        };
+
         spawn-at-startup = [
           {
             command = [ "xwayland-satellite" ":0" ];
           }
+          {
+            command = [ "niri" "msg" "action" "focus-workspace-down" ];
+          }
         ];
+
         binds = with config.lib.niri.actions; let
           Mod = "Mod";
           suffixes = builtins.listToAttrs (map (n: {
@@ -75,6 +99,8 @@
             "${Mod}+T".action.spawn = "kitty";
             "${Mod}+D".action.spawn = "fuzzel";
             "${Mod}+Q".action.close-window = [];
+
+            "${Mod}+Grave".action.spawn = [ "ndrop" "kitty" "--class" "kitty_dropdown" ];
 
             #"${Mod}+W".action.spawn = "sh -c" (builtins.concatStringsSep "; " [
             #  "systemctl --user restart waybar.service"
@@ -102,7 +128,10 @@
             "${Mod}+C".action.consume-window-into-column = [];
             "${Mod}+X".action.expel-window-from-column = [];
 
-            "${Mod}+R".action = switch-preset-column-width;
+            "${Mod}+B".action = switch-preset-column-width;
+            #"${Mod}+Shift+B".action = switch-preset-window-width;
+            "${Mod}+V".action = switch-preset-window-height;
+
             "${Mod}+F".action = maximize-column;
             "${Mod}+Shift+F".action = fullscreen-window;
             "${Mod}+Alt+C".action = center-column;
@@ -242,6 +271,8 @@
           ];
         };
       };
+
+
     waybar = {
       enable = true;
       settings =
