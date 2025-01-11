@@ -14,7 +14,7 @@
     /**************
     * MONADO (VR) *
     **************/
-      #./modules/hm/OpenComposite.nix
+      #./modules/openCompositeHome.nix
 
     /***********
     * PROGRAMS *
@@ -45,9 +45,8 @@
     /***********
     * SERVICES *
     ***********/
-      ./services/hm/espanso.nix
-
-      ./services/hm/misc_services.nix
+      ./services/espansoHome.nix
+      ./services/servicesHome.nix
 
     /**********
     * SPOTIFY *

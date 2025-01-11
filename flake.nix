@@ -115,7 +115,7 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             ## MEDIA
-              nixarr.nixosModules.default (import ./modules/nx/nixarr.nix)
+              nixarr.nixosModules.default (import ./modules/nixarrSystem.nix)
             ## SECRETS
               sops-nix.nixosModules.sops
             ## THEMING

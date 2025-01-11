@@ -7,12 +7,13 @@
     ./cachix.nix
 
     ### PROGRAMS
-      ./programs/nx/steam.nix
+      ./programs/steamSystem.nix
     ### CONTAINERS
+
     ### MODULES
-      ./modules/nx/tailscale.nix
+      ./modules/tailscaleSystem.nix
     ### SERVICES
-      ./services/nx/sunshine.nix
+      ./services/sunshineSystem.nix
   ];
 
   #-------- PACKAGES --------#
