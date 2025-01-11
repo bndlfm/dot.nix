@@ -9,6 +9,11 @@
     defaultSecretsMountPoint = "/run/user/1000/secrets.d";
 
     secrets = {
+      GMAIL_APP_PASS = {
+        format = "yaml";
+        sopsFile = ./GMAIL_APP_PASS.yaml;
+      };
+
       HUGGINGFACE_API_KEY = {
         format = "yaml";
         sopsFile = ./HUGGINGFACE_API_KEY.yaml;
@@ -23,6 +28,7 @@
         format = "yaml";
         sopsFile = ./OBSIDIAN_REST_API_KEY.yaml;
       };
+
     };
   };
 

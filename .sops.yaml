@@ -6,6 +6,11 @@ creation_rules:
       - age:
         - *primary
 
+  - path_regex: sops/GMAIL_APP_PASS.yaml$
+    key_groups:
+      - age:
+        - *primary
+
   - path_regex: sops/OBSIDIAN_REST_API_KEY.yaml$
     key_groups:
       - age:

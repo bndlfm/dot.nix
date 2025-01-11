@@ -8,10 +8,12 @@ pkgs.stdenv.mkDerivation {
     owner = "Schweber"; # Assuming this is the correct owner from the README
     repo = "ndrop";
     rev = "main"; # Or a specific tag/commit
-    sha256 = ""; # Replace with actual sha256
+    sha256 = "sha256-K3r+qGwaRKuolLQF5qB5ujyIvEZ8B5z0FM/O+lY1zpw"; # Replace with actual sha256
   };
 
   buildInputs = [ pkgs.bash pkgs.jq ];
+
+  dontBuild = true;
 
   installPhase = ''
     mkdir -p $out/bin
@@ -21,9 +23,9 @@ pkgs.stdenv.mkDerivation {
 
   meta = with pkgs.lib; {
     description = "Bash script to emulate tdrop in niri";
-    homepage = "https://github.com/Schweber/ndrop"; # Adjust if the owner is different
-    license = licenses.agpl3; # Check the repository for the actual license
+    homepage = "https://github.com/Schweber/ndrop";
+    license = licenses.gpl3;
     platforms = platforms.linux;
-    maintainers = with maintainers; [ ]; # Add your nixos.org username if you maintain it
+    maintainers = with maintainers; [ ];
   };
 }

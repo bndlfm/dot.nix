@@ -260,6 +260,297 @@
       "L+ /run/gdm/.config/monitors.xml - - - - ${pkgs.writeText "gdm-monitors.xml" ''
         <monitors version="2">
           <configuration>
+            <layoutmode>logical</layoutmode>
+            <logicalmonitor>
+              <x>322</x>
+              <y>0</y>
+              <scale>1</scale>
+              <monitor>
+                <monitorspec>
+                  <connector>HDMI-1</connector>
+                  <vendor>DEL</vendor>
+                  <product>DELL U2417H</product>
+                  <serial>XVNNT79EDJGL</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1080</height>
+                  <rate>60.000</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>0</x>
+              <y>1080</y>
+              <scale>1</scale>
+              <primary>yes</primary>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-3</connector>
+                  <vendor>AUS</vendor>
+                  <product>ASUS VG32V</product>
+                  <serial>0x0000ce0e</serial>
+                </monitorspec>
+                <mode>
+                  <width>2560</width>
+                  <height>1440</height>
+                  <rate>143.972</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <disabled>
+              <monitorspec>
+                <connector>DP-1</connector>
+                <vendor>NVD</vendor>
+                <product>0x0000</product>
+                <serial>0x00000000</serial>
+              </monitorspec>
+            </disabled>
+          </configuration>
+          <configuration>
+            <layoutmode>physical</layoutmode>
+            <logicalmonitor>
+              <x>3760</x>
+              <y>0</y>
+              <scale>1</scale>
+              <transform>
+                <rotation>right</rotation>
+                <flipped>no</flipped>
+              </transform>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-3</connector>
+                  <vendor>DEL</vendor>
+                  <product>DELL U2412M</product>
+                  <serial>YMYH14740GTS</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1200</height>
+                  <rate>59.950</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>1200</x>
+              <y>0</y>
+              <scale>1</scale>
+              <primary>yes</primary>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-1</connector>
+                  <vendor>AUS</vendor>
+                  <product>ASUS VG32V</product>
+                  <serial>0x0000ce0e</serial>
+                </monitorspec>
+                <mode>
+                  <width>2560</width>
+                  <height>1440</height>
+                  <rate>143.972</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>0</x>
+              <y>0</y>
+              <scale>1</scale>
+              <transform>
+                <rotation>right</rotation>
+                <flipped>no</flipped>
+              </transform>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-2</connector>
+                  <vendor>DEL</vendor>
+                  <product>DELL U2412M</product>
+                  <serial>YMYH142S5K9S</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1200</height>
+                  <rate>59.950</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+          </configuration>
+          <configuration>
+            <layoutmode>physical</layoutmode>
+            <logicalmonitor>
+              <x>0</x>
+              <y>0</y>
+              <scale>1</scale>
+              <primary>yes</primary>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-1</connector>
+                  <vendor>AUS</vendor>
+                  <product>ASUS VG32V</product>
+                  <serial>0x0000ce0e</serial>
+                </monitorspec>
+                <mode>
+                  <width>2560</width>
+                  <height>1440</height>
+                  <rate>143.972</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>2560</x>
+              <y>0</y>
+              <scale>1</scale>
+              <transform>
+                <rotation>right</rotation>
+                <flipped>no</flipped>
+              </transform>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-2</connector>
+                  <vendor>SAM</vendor>
+                  <product>SMS22A200/460</product>
+                  <serial>HCLC907701</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1080</height>
+                  <rate>60.000</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+          </configuration>
+          <configuration>
+            <layoutmode>logical</layoutmode>
+            <logicalmonitor>
+              <x>0</x>
+              <y>0</y>
+              <scale>1</scale>
+              <transform>
+                <rotation>right</rotation>
+                <flipped>no</flipped>
+              </transform>
+              <monitor>
+                <monitorspec>
+                  <connector>HDMI-1</connector>
+                  <vendor>DEL</vendor>
+                  <product>DELL U2417H</product>
+                  <serial>XVNNT79EDJGL</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1080</height>
+                  <rate>60.000</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>1080</x>
+              <y>0</y>
+              <scale>1</scale>
+              <primary>yes</primary>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-1</connector>
+                  <vendor>AUS</vendor>
+                  <product>ASUS VG32V</product>
+                  <serial>0x0000ce0e</serial>
+                </monitorspec>
+                <mode>
+                  <width>2560</width>
+                  <height>1440</height>
+                  <rate>143.972</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>4720</x>
+              <y>0</y>
+              <scale>1</scale>
+              <monitor>
+                <monitorspec>
+                  <connector>None-1</connector>
+                  <vendor>unknown</vendor>
+                  <product>unknown</product>
+                  <serial>unknown</serial>
+                </monitorspec>
+                <mode>
+                  <width>1024</width>
+                  <height>768</height>
+                  <rate>59.999</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>3640</x>
+              <y>0</y>
+              <scale>1</scale>
+              <transform>
+                <rotation>right</rotation>
+                <flipped>no</flipped>
+              </transform>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-2</connector>
+                  <vendor>SAM</vendor>
+                  <product>SMS22A200/460</product>
+                  <serial>HCLC907701</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1080</height>
+                  <rate>60.000</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+          </configuration>
+          <configuration>
+            <layoutmode>physical</layoutmode>
+            <logicalmonitor>
+              <x>322</x>
+              <y>0</y>
+              <scale>1</scale>
+              <monitor>
+                <monitorspec>
+                  <connector>HDMI-1</connector>
+                  <vendor>DEL</vendor>
+                  <product>DELL U2417H</product>
+                  <serial>XVNNT79EDJGL</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1080</height>
+                  <rate>60.000</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>0</x>
+              <y>1080</y>
+              <scale>1</scale>
+              <primary>yes</primary>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-3</connector>
+                  <vendor>AUS</vendor>
+                  <product>ASUS VG32V</product>
+                  <serial>0x0000ce0e</serial>
+                </monitorspec>
+                <mode>
+                  <width>2560</width>
+                  <height>1440</height>
+                  <rate>143.972</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <disabled>
+              <monitorspec>
+                <connector>DP-1</connector>
+                <vendor>NVD</vendor>
+                <product>0x0000</product>
+                <serial>0x00000000</serial>
+              </monitorspec>
+            </disabled>
+          </configuration>
+          <configuration>
+            <layoutmode>physical</layoutmode>
             <logicalmonitor>
               <x>0</x>
               <y>147</y>
@@ -325,10 +616,15 @@
             </logicalmonitor>
           </configuration>
           <configuration>
+            <layoutmode>physical</layoutmode>
             <logicalmonitor>
-              <x>322</x>
+              <x>0</x>
               <y>0</y>
               <scale>1</scale>
+              <transform>
+                <rotation>right</rotation>
+                <flipped>no</flipped>
+              </transform>
               <monitor>
                 <monitorspec>
                   <connector>HDMI-1</connector>
@@ -344,13 +640,13 @@
               </monitor>
             </logicalmonitor>
             <logicalmonitor>
-              <x>0</x>
-              <y>1080</y>
+              <x>1080</x>
+              <y>0</y>
               <scale>1</scale>
               <primary>yes</primary>
               <monitor>
                 <monitorspec>
-                  <connector>DP-3</connector>
+                  <connector>DP-1</connector>
                   <vendor>AUS</vendor>
                   <product>ASUS VG32V</product>
                   <serial>0x0000ce0e</serial>
@@ -362,17 +658,115 @@
                 </mode>
               </monitor>
             </logicalmonitor>
-            <disabled>
-              <monitorspec>
-                <connector>DP-1</connector>
-                <vendor>NVD</vendor>
-                <product>0x0000</product>
-                <serial>0x00000000</serial>
-              </monitorspec>
-            </disabled>
+            <logicalmonitor>
+              <x>4720</x>
+              <y>0</y>
+              <scale>1</scale>
+              <monitor>
+                <monitorspec>
+                  <connector>None-1</connector>
+                  <vendor>unknown</vendor>
+                  <product>unknown</product>
+                  <serial>unknown</serial>
+                </monitorspec>
+                <mode>
+                  <width>1024</width>
+                  <height>768</height>
+                  <rate>59.999</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>3640</x>
+              <y>0</y>
+              <scale>1</scale>
+              <transform>
+                <rotation>right</rotation>
+                <flipped>no</flipped>
+              </transform>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-2</connector>
+                  <vendor>SAM</vendor>
+                  <product>SMS22A200/460</product>
+                  <serial>HCLC907701</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1080</height>
+                  <rate>60.000</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+          </configuration>
+          <configuration>
+            <layoutmode>logical</layoutmode>
+            <logicalmonitor>
+              <x>0</x>
+              <y>147</y>
+              <scale>1</scale>
+              <transform>
+                <rotation>right</rotation>
+                <flipped>no</flipped>
+              </transform>
+              <monitor>
+                <monitorspec>
+                  <connector>HDMI-1</connector>
+                  <vendor>DEL</vendor>
+                  <product>DELL U2417H</product>
+                  <serial>XVNNT79EDJGL</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1080</height>
+                  <rate>60.000</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>3640</x>
+              <y>238</y>
+              <scale>1</scale>
+              <transform>
+                <rotation>right</rotation>
+                <flipped>no</flipped>
+              </transform>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-2</connector>
+                  <vendor>SAM</vendor>
+                  <product>SMS22A200/460</product>
+                  <serial>HCLC907701</serial>
+                </monitorspec>
+                <mode>
+                  <width>1920</width>
+                  <height>1080</height>
+                  <rate>60.000</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
+            <logicalmonitor>
+              <x>1080</x>
+              <y>0</y>
+              <scale>1</scale>
+              <primary>yes</primary>
+              <monitor>
+                <monitorspec>
+                  <connector>DP-1</connector>
+                  <vendor>AUS</vendor>
+                  <product>ASUS VG32V</product>
+                  <serial>0x0000ce0e</serial>
+                </monitorspec>
+                <mode>
+                  <width>2560</width>
+                  <height>1440</height>
+                  <rate>143.972</rate>
+                </mode>
+              </monitor>
+            </logicalmonitor>
           </configuration>
         </monitors>
-        ''}"
+      ''}"
     ];
   };
 
@@ -498,7 +892,6 @@
     #  };
     #};
   };
-  hardware.alsa.enablePersistence = true;
 
   #-------- GPU --------#
   hardware = {

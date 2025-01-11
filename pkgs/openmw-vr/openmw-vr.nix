@@ -12,11 +12,11 @@ let
     ];
   });
 
-  qtMkDerivation = pkgs.libsForQt5.callPackage ({ mkDerivation }: mkDerivation) {};
+  #qtMkDerivation = pkgs.libsForQt5.callPackage ({ mkDerivation }: mkDerivation) {};
 
 in
 
-  qtMkDerivation {
+  pkgs.stdenv.mkDerivation {
     pname = "openmw_vr";
     version = "0.48.0";
 

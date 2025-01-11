@@ -32,6 +32,7 @@
       ./programs/hm/yazi.nix
       ./programs/hm/zellij.nix
 
+      ./programs/emailHome.nix
       ./programs/hm/misc_programs.nix
 
     /**********
@@ -158,7 +159,7 @@
           ## RHYTHM GAMES
             clonehero
           ## DECOMP
-            sm64ex-coop
+            sm64coopdx
             #shipwright # Ocarina of Time
             _2ship2harkinian # Majora's Mask
           ## EMULATION
@@ -272,9 +273,8 @@
 
         utilities = {
           wayland = [
+            (pkgs.callPackage ./pkgs/azote.nix {})
             gammastep
-            grimblast
-            slurp
             nwg-look
             waybar
             wttrbar

@@ -31,8 +31,8 @@
     "layer": "bottom",
     "position": "top",
     "output": [
-      "HDMI-A-1",
-      "DP-2"
+      "DP-2",
+      "DP-3"
     ],
     "include": [
       "~/.config/waybar/default_modules.json"

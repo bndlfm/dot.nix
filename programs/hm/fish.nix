@@ -2,7 +2,7 @@
   programs = {
     fish = {
       enable = true;
-      interactiveShellInit = /* fish */ ''
+      interactiveShellInit = /*sh*/ ''
         set PATH $PATH /home/neko/.local/bin
         set fish_greeting
 
@@ -95,8 +95,8 @@
           src = pkgs.fetchFromGitHub {
             owner = "Realiserad";
             repo = "fish-ai";
-            rev = "9c40b4af5d837565be803dd15a6f85671ec29884";
-            sha256 = "NTGIBFoYdYZWf2YF5Di2/rYBtGHy4qpOiIvGMn/sh+A=";
+            rev = "6fbcf9739a02844b99960c5ba5100911e4e657c9";
+            sha256 = "sha256-/IscCr/KRkYV19EprvaVGo84G7T9y2A8QaFrKTnqRL4=";
           };
         }
         { name = "grc"; src = pkgs.fishPlugins.grc.src; }
@@ -112,6 +112,7 @@
         { name = "tide"; src = pkgs.fishPlugins.tide.src; }
       ];
       shellAbbrs = {
+        mutt = "neomutt";
         ###############
         # EDIT CONFIG #
         ###############
@@ -119,7 +120,6 @@
             rchpp = "nvim ~/.nixcfg/windowManagers/hm/hyprland.nix";
           ## X WINDOW MANGERS
             rsxh = "nvim ~/.nixcfg/.config/sxhkd/sxhkdrc";
-
           ## OTHER CONFIG ABBR
             dbx = "distrobox";
             rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";

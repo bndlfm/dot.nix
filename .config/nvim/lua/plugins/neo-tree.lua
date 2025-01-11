@@ -4,7 +4,7 @@ return {
     enabled = true,
     cmd = "Neotree",
     keys = {
-      { "<leader>e", "<cmd>Neotree float<cr>", desc = "Find files floating" },
+      { "<leader>fe", "<cmd>Neotree float<cr>", desc = "Find files floating" },
     },
     requires = {
       "nvim-lua/plenary.nvim",
@@ -47,12 +47,12 @@ return {
           ["<2-LeftMouse>"] = "open",
           ["<cr>"] = "open",
           ["<esc>"] = "cancel", -- close preview or floating neo-tree window
-          --["P"] = { "toggle_preview", config = { use_float = true } },
+          ["P"] = { "toggle_preview", config = { use_float = true } },
           ["l"] = "focus_preview",
-          ["S"] = "open_split",
-          --["S"] = "split_with_window_picker",
-          ["s"] = "open_vsplit",
-          --["s"] = "vsplit_with_window_picker",
+          --["S"] = "open_split",
+          ["S"] = "split_with_window_picker",
+          --["s"] = "open_vsplit",
+          ["s"] = "vsplit_with_window_picker",
           ["t"] = "open_tabnew",
           -- ["<cr>"] = "open_drop",
           -- ["t"] = "open_tab_drop",
