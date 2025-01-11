@@ -19,21 +19,22 @@
     /***********
     * PROGRAMS *
     ************/
-      ./programs/hm/an-anime-game-launcher.nix
-      ./programs/hm/firefox.nix
-      ./programs/hm/fish.nix
-      ./programs/hm/git.nix
-      ./programs/hm/gnome-shell.nix
-      ./programs/hm/kitty.nix
-      ./programs/hm/ncmpcpp.nix
-      ./programs/hm/neovim.nix
-      ./programs/hm/ranger.nix
-      ./programs/hm/rofi.nix
-      ./programs/hm/yazi.nix
-      ./programs/hm/zellij.nix
-
       ./programs/emailHome.nix
-      ./programs/hm/misc_programs.nix
+      ./programs/programsHome.nix
+
+      ./programs/aglHome.nix
+      ./programs/firefoxHome.nix
+      ./programs/fishHome.nix
+      ./programs/gitHome.nix
+      ./programs/gnome-shellHome.nix
+      ./programs/kittyHome.nix
+      ./programs/ncmpcppHome.nix
+      ./programs/neovimHome.nix
+      ./programs/rangerHome.nix
+      ./programs/rofiHome.nix
+      ./programs/yaziHome.nix
+      ./programs/zellijHome.nix
+
 
     /**********
     * SECRETS *
