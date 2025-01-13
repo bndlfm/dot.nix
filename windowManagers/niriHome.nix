@@ -152,9 +152,9 @@
               /**********************
               * MULTIMEDIA CONTROLS *
               **********************/
-                "XF86AudioRaiseVolume".action.spawn = "sh -c wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+";
-                "XF86AudioLowerVolume".action.spawn = "sh -c wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
-                "XF86AudioMute".action.spawn = "sh -c wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+                "XF86AudioRaiseVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+";
+                "XF86AudioLowerVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
+                "XF86AudioMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
                 "XF86AudioNext".action = focus-column-right;
                 "XF86AudioPrev".action = focus-column-left;
 
@@ -170,11 +170,16 @@
                   "${Mod}+Tab".action = switch-focus-between-floating-and-tiling;
 
                 ## RESIZE WINDOWS (WIDTH RESIZES COLUMNS)
+                  ## CYCLE WINDOW SIZE
+                    "${Mod}+B".action = switch-preset-column-width;
+                    "${Mod}+Shift+B".action = switch-preset-window-width;
+                    "${Mod}+V".action = switch-preset-window-height;
+
                   ## MANUAL RESIZE
-                    "${Mod}+Ctrl+H".action = set-window-width  "-10%";
-                    "${Mod}+Ctrl+N".action = set-window-height "+10%";
-                    "${Mod}+Ctrl+E".action = set-window-height "-10%";
-                    "${Mod}+Ctrl+I".action = set-window-width  "+10%";
+                    "${Mod}+Ctrl+H".action = set-window-width  "-5%";
+                    "${Mod}+Ctrl+N".action = set-window-height "+5%";
+                    "${Mod}+Ctrl+E".action = set-window-height "-5%";
+                    "${Mod}+Ctrl+I".action = set-window-width  "+5%";
 
                   ## FULLSCREEN
                     "${Mod}+F".action = maximize-column;
@@ -259,6 +264,18 @@
                     opacity = 0.90;
                   }
 
+                ## FLOAT FF PIP
+                  {
+                    matches = [
+                      {
+                        app-id = "^firefox-devedition$";
+                        title = "^Picture-in-Picture$";
+                      }
+                    ];
+                    opacity = 0.9;
+                    open-floating = true;
+                  }
+
                 ## KITTY TRANSPARENCY SET THROUGH STYLIX
                   {
                     matches = [
@@ -267,15 +284,12 @@
                     opacity = 1.0;
                   }
 
-                ## FLOAT FF PIP
+                ## KITTY DROPDOWN
                   {
                     matches = [
-                      {
-                        app-id = "^firefox-devedition$";
-                        title = "^Picture-in-Picture";
-                      }
+                      { app-id = "^kitty_dropdown$"; }
                     ];
-                    opacity = 0.8;
+                    open-floating = true;
                   }
 
                 ## HIGHLIGHT PRIVATE BROWSING

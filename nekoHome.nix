@@ -26,7 +26,7 @@
       ./programs/firefoxHome.nix
       ./programs/fishHome.nix
       ./programs/gitHome.nix
-      ./programs/gnome-shellHome.nix
+      ./programs/gnomeShellHome.nix
       ./programs/kittyHome.nix
       ./programs/ncmpcppHome.nix
       ./programs/neovimHome.nix
@@ -156,6 +156,9 @@
         ];
 
         gaming = [
+            crawlTiles
+            glfw-wayland-minecraft
+            inputs.openmw-vr.packages.x86_64-linux.default
           ## RHYTHM GAMES
             clonehero
           ## DECOMP
@@ -169,19 +172,19 @@
             mangohud
             steamtinkerlaunch
           ## LAUNCHERS
-          #heroic
+            #heroic
+            itch
             lutris
             prismlauncher
-            crawlTiles
-            glfw-wayland-minecraft
-            inputs.openmw-vr.packages.x86_64-linux.default
         ];
 
         media = [
           mpv
           ncmpcpp
-          streamlink
-          streamlink-twitch-gui-bin
+          ## TWITCH
+            streamlink
+            streamlink-twitch-gui-bin
+            twitch-tui
         ];
 
         notes = [
@@ -190,28 +193,28 @@
 
         programming = [
           ## GIT TOOLS
-          git
-          git-filter-repo
-          git-lfs
-          git-credential-manager
-          git-credential-gopass
+            git
+            git-filter-repo
+            git-lfs
+            git-credential-manager
+            git-credential-gopass
           ## PYTHON
-          (python3.withPackages (
-            pkgs: with pkgs; [
-              gguf
-              llama-cpp
-              pynvim
-              ueberzug
-            ]
-          ))
+            (python3.withPackages (
+              pkgs: with pkgs; [
+                gguf
+                llama-cpp
+                pynvim
+                ueberzug
+              ]
+            ))
           # FENNEL
-          (pkgs.callPackage ./pkgs/antifennel.nix { })
+            (pkgs.callPackage ./pkgs/antifennel.nix { })
           # OTHER DEV TOOLS
-          godot_4
-          godot_4-export-templates
-          direnv
-          nix-prefetch
-          meld
+            godot_4
+            godot_4-export-templates
+            direnv
+            nix-prefetch
+            meld
         ];
 
         social = [
@@ -221,13 +224,13 @@
 
         system = [
           # Plasma/QT
-          qt6Packages.qt6ct
-          qt6Packages.qtstyleplugin-kvantum
-          ksshaskpass
+            qt6Packages.qt6ct
+            qt6Packages.qtstyleplugin-kvantum
+            ksshaskpass
           # Wine/Proton
-          winetricks
-          wineWowPackages.stable
-          protonup
+            winetricks
+            wineWowPackages.stable
+            protonup
         ];
 
         theming = {
@@ -321,13 +324,13 @@
         };
 
         virtualization = [
-          ### CONTAINER
-          boxbuddy
-          podman
-          podman-compose
-          podman-desktop
           nur.repos.ataraxiasjel.waydroid-script
-          virt-manager
+          ### CONTAINER
+            boxbuddy
+            podman
+            podman-compose
+            podman-desktop
+            virt-manager
         ];
 
         misc = [
@@ -417,10 +420,6 @@
         source = ./.config/mutt;
         recursive = true;
       };
-      #"niri" = {
-      #  source = ./.config/niri;
-      #  recursive = true;
-      #};
       #"nvim" = {
       #  source = ./.config/nvim;
       #  recursive = true;

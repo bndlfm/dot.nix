@@ -1,12 +1,12 @@
 {
   inputs = {
-    ## NIX
+    ### NIX
       nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
       home-manager = {
         url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-    ## CUSTOMIZATION
+    ### CUSTOMIZATION
       stylix = {
         url = "github:Mikilio/stylix";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -16,7 +16,7 @@
         flake = false;
       };
       base16.url = "github:SenchoPens/base16.nix";
-    ## MEDIA
+    ### MEDIA
       nixarr = {
         url = "github:rasmus-kirk/nixarr";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -25,7 +25,7 @@
         url = "github:Gerg-L/spicetify-nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-    ## PROGRAMS
+    ### PROGRAMS
       aagl = {
         url = "github:ezKEa/aagl-gtk-on-nix";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -38,13 +38,17 @@
         url = "github:bndlfm/openmw-vr.nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-    ## SECRETS
+    ### SECRETS
       sops-nix.url = "github:Mic92/sops-nix";
-    ## WINDOW MANAGER
+    ### WINDOW MANAGER
       niri = {
         url = "github:sodiboo/niri-flake";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+      #hyprland = {
+      #    url = "git+https://github.com/hyprwm/Hyprland?submodules=1&tag=v0.46.2";
+      #    inputs.nixpkgs.follows = "nixpkgs";
+      #  };
   };
 
   outputs = {
@@ -122,6 +126,13 @@
               stylix.nixosModules.stylix (import ./theme/nxStylix.nix)
             ## WINDOW MANAGERS
               niri.nixosModules.niri
+              {
+                programs.niri = {
+                  enable = true;
+                  package = inputs.niri.packages.x86_64-linux.niri-unstable;
+                };
+                niri-flake.cache.enable = true;
+              }
             ## IMPORTS
               ./meowSystem.nix
               ./meowHardware.nix
