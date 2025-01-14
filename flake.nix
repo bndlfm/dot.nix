@@ -34,6 +34,10 @@
         url = "github:bndlfm/deejavu";
         inputs.nixpkgs.follows = "nixpkgs";
       };
+      nur = {
+        url = "github:nix-community/NUR";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
       openmw-vr = {
         url = "github:bndlfm/openmw-vr.nix";
         inputs.nixpkgs.follows = "nixpkgs";
@@ -55,7 +59,6 @@
     self,
     nixpkgs,
     home-manager,
-    aagl,
     deejavu,
     nixarr,
     niri,

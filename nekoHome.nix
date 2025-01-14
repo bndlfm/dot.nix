@@ -14,26 +14,27 @@
     /**************
     * MONADO (VR) *
     **************/
-      #./modules/openCompositeHome.nix
+      #./modules/openComposite.home.nix
 
     /***********
     * PROGRAMS *
     ************/
-      ./programs/emailHome.nix
-      ./programs/programsHome.nix
+      ./programs/email.home.nix
+      ./programs/programs.home.nix
 
-      ./programs/aglHome.nix
-      ./programs/firefoxHome.nix
-      ./programs/fishHome.nix
-      ./programs/gitHome.nix
-      ./programs/gnomeShellHome.nix
-      ./programs/kittyHome.nix
-      ./programs/ncmpcppHome.nix
-      ./programs/neovimHome.nix
-      ./programs/rangerHome.nix
-      ./programs/rofiHome.nix
-      ./programs/yaziHome.nix
-      ./programs/zellijHome.nix
+      ./programs/gnomeShell.home.nix
+
+      ./programs/firefox.home.nix
+      ./programs/fish.home.nix
+      ./programs/git.home.nix
+      ./programs/kitty.home.nix
+      ./programs/ncmpcpp.home.nix
+      ./programs/neovim.home.nix
+      ./programs/password-store.home.nix
+      ./programs/ranger.home.nix
+      ./programs/rofi.home.nix
+      ./programs/yazi.home.nix
+      ./programs/zellij.home.nix
 
 
     /**********
@@ -45,8 +46,8 @@
     /***********
     * SERVICES *
     ***********/
-      ./services/espansoHome.nix
-      ./services/servicesHome.nix
+      ./services/espanso.home.nix
+      ./services/services.home.nix
 
     /**********
     * SPOTIFY *
@@ -57,20 +58,20 @@
     /******************
     * WINDOW MANAGERS *
     ******************/
-      ./windowManagers/hyprlandHome.nix
-      ./windowManagers/bspwmHome.nix
-      ./windowManagers/niriHome.nix
+      ./windowManagers/hyprland.home.nix
+      ./windowManagers/bspwm.home.nix
+      ./windowManagers/niri.home.nix
   ];
 
   nixpkgs = {
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
-      packageOverrides = pkgs: {
-        nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-          inherit pkgs;
-        };
-      };
+      #packageOverrides = pkgs: {
+      #  nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+      #    inherit pkgs;
+      #  };
+      #};
       permittedInsecurePackages = [
         ## NIXARR
         "dotnet-combined"
@@ -85,6 +86,7 @@
       ];
     };
     overlays = [
+      inputs.nur.overlays.default
       #(import ../../overlays/obsidian.nix)
     ];
   };

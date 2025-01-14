@@ -1,6 +1,5 @@
 { pkgs, ... }:
-let
-in {
+{
   programs.firefox = {
     enable = true;
     nativeMessagingHosts = with pkgs; [
