@@ -1,4 +1,4 @@
-{pkgs,...}:{
+{ config, pkgs, ...}:{
   programs = {
     fish = {
       enable = true;
@@ -64,117 +64,88 @@
             echo 'Usage: mkcd <directory>'
           end
         '';
-        smt-cp = /*fish*/ ''
-          set -l api_endpoint "https://api.groq.com/openai/v1/chat/completions"
-          set -l api_key "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"
-          set -l model "llama-3.3-70b-versatile"
-          set -l num_recent_commands 5
-          set -l scrollback_lines 50
+        sy = /* fish */ ''
+          set -l api_endpoint "https://api.groq.com/openai/v1/chat/completions" # Replace with your endpoint if needed
+          set -l api_key ${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path} # Replace with your actual API key
+          set -l model "llama-3.3-70b-versatile" # Or your preferred model
+          set -l num_recent_commands 5 # Number of recent commands to include in the prompt
+          set -l scrollback_lines 50 # Number of scrollback lines to send to the LLM
 
+          # Get recent shell commands
+          set -l recent_commands (history --prefix ''' | tail -n $num_recent_commands | string join '\n')
 
-          # --- Tests ---
-          echo "--- Running llm_copy tests ---"
+          # Get scrollback
+          set -l scrollback (history --show-time | tail -n $scrollback_lines | string join '\n')
 
-          # Test: API Key is set (basic sanity check)
-          echo "Test: API Key is set"
-          if not set -q api_key
-            echo "  FAIL: api_key is not set!"
-            return 1
-          else
-            echo "  PASS: api_key is set"
+          # Construct the prompt for the LLM
+          set -l prompt_content "Analyze the following terminal scrollback and recent commands to identify potential targets for copying (like file paths, URLs, specific values, error messages, etc.). Focus on items relevant to what the user might be doing based on the recent commands. Provide a newline-separated [\\n] list of these potential copy targets. Return only the candidates and no other text or it will break the script."
+
+          if string length -- "$recent_commands" >0
+              set prompt_content "$prompt_content\n\nRecent Commands:\n$recent_commands"
           end
 
-          # Test: Get recent shell commands
-          echo "Test: Get recent shell commands"
-          set -l recent_commands_test (history --prefix ''' | tail -n $num_recent_commands)
-          if not count $recent_commands_test > 0
-            echo "  FAIL: Could not retrieve recent commands"
-          else
-            echo "  PASS: Retrieved recent commands:" $recent_commands_test
-          end
-          set -l recent_commands (string join '\n' $recent_commands_test)
-
-          # Test: Get scrollback
-          echo "Test: Get scrollback"
-          set -l scrollback_test (history --show-time | tail -n $scrollback_lines)
-          if not count $scrollback_test > 0
-            echo "  FAIL: Could not retrieve scrollback"
-          else
-            echo "  PASS: Retrieved scrollback (first line):" (head -n 1 $scrollback_test)
-          end
-          set -l scrollback (string join '\n' $scrollback_test)
-
-          # Test: Construct the prompt
-          echo "Test: Construct the prompt"
-          set -l prompt "Analyze the following terminal scrollback and recent commands to identify potential targets for copying (like file paths, URLs, specific values, error messages, etc.). Focus on items relevant to what the user might be doing based on the recent commands. Provide a newline-separated list of these potential copy targets.\n\nRecent Commands:\n$recent_commands\n\nScrollback:\n$scrollback"
-          echo "  Prompt (first few lines):" (head -n 3 <<< "$prompt")
-
-          # Test: Make the API call (output the curl command for debugging)
-          echo "Test: Make the API call (check curl command)"
-          set -l curl_command "curl -s -H 'Content-Type: application/json' -H 'Authorization: Bearer \$api_key' -d (printf '{\"model\": \"%s\", \"messages\": [{\"role\": \"user\", \"content\": \"%s\"}]}' \$model (string replace -a '\''' '\''' -- \"\$prompt\")) \$api_endpoint"
-          echo "  Executing curl command:" $curl_command
-          set -l response
-          set response (curl -s \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $api_key" \
-            -d (printf '{"model": "%s", "messages": [{"role": "user", "content": "%s"}]}' $model "$prompt") "$api_endpoint"
-
-          echo "  LLM Response:" $response
-
-          # Test: Extract the LLM's suggested copy targets
-          echo "Test: Extract the LLM's suggested copy targets"
-          if string length -- "\$response"
-            set -l copy_targets (echo "\$response" | jq -r '.choices[0].message.content')
-            echo "  Copy Targets:" \$copy_targets
-          else
-            echo "  LLM response was empty."
-            set -l copy_targets ""
+          if string length -- "$scrollback" >0
+              set prompt_content "$prompt_content\n\nScrollback:\n$scrollback"
           end
 
-          # Test: Handle empty or error responses from the LLM
-          echo "Test: Handle empty LLM response"
-          if not string length -- "$copy_targets"
-            echo "  LLM did not suggest any copy targets."
-          else
-            echo "  LLM suggested targets. Proceeding to fzf."
-            # Test: Pass the targets to fzf for selection
-            echo "Test: Pass the targets to fzf"
-            if command -sq fzf
-              echo "$copy_targets" | fzf
-              set -l selected_target $status # Capture fzf's exit status (0 for selection, 1 for no selection)
-              echo "  fzf executed (status: $selected_target)"
-              if string length -- "$selected_target"
-                echo "  User selected: $selected_target"
-                # Test: Copy to clipboard
-                echo "Test: Copy to clipboard"
-                if test -n "$WAYLAND_DISPLAY"
+          # Escape backslashes for JSON
+          set -l escaped_prompt_content (echo "$prompt_content" | string replace -a '\\' '\\\\')
+
+          # Make the API call to the LLM
+          set -l copy_targets_json (
+              curl -s \
+                  -H "Content-Type: application/json" \
+                  -H "Authorization: Bearer $api_key" \
+                  -d (printf '{"model": "%s", "temperature": 0.2, "messages": [{"role": "user", "content": "%s"}]}' $model "$escaped_prompt_content") \
+                  $api_endpoint
+          )
+
+          # Extract the LLM's suggested copy targets
+          set -l copy_targets_raw (echo "$copy_targets_json" | jq -r '.choices[0].message.content')
+
+          # Handle empty or error responses from the LLM
+          if not string length -- "$copy_targets_raw"
+              echo "LLM did not suggest any copy targets."
+              return 1
+          end
+
+          # Debug: Inspect the raw output of jq
+          echo "DEBUG: jq output:"
+          echo "$copy_targets_raw" | cat -vte
+
+          # Split the space-separated output into lines for fzf
+          echo "$copy_targets_raw" | tr ' ' '\n' | fzf | read -g selected_target
+
+          # If a target is selected, copy it to the clipboard
+          if string length -- "$selected_target"
+              # Determine if Wayland or X11 is being used
+              if test -n "$WAYLAND_DISPLAY"
                   echo "$selected_target" | wl-copy
-                  echo "  Copied to clipboard (Wayland): $selected_target"
-                else if command -sq xclip
+                  echo "Copied to clipboard (Wayland): $selected_target"
+              else if command -sq xclip
                   echo "$selected_target" | xclip -selection clipboard
-                  echo "  Copied to clipboard (X11): $selected_target"
-                else
-                  echo "  Neither wl-copy nor xclip found."
-                end
+                  echo "Copied to clipboard (X11): $selected_target"
               else
-                echo "  No target selected in fzf."
+                  echo "Neither wl-copy nor xclip found. Please install one of them to copy to the clipboard."
               end
-            else
-              echo "  fzf not found."
-            end
           end
 
-          echo "--- llm_copy tests finished ---"
-          end
           # Create a key binding (optional)
-
-          if not bind | grep llm_copy &>/dev/null
-            bind \\cg llm_copy # Bind to Ctrl+g
-          end
+          #if not bind | grep llm_copy &>/dev/null
+          #  bind \\cg llm_copy # Bind to Ctrl+g
+          #end
         '';
       };
       plugins = [
         #{ name = "autopair"; src = pkgs.fishPlugins.autopair.src; }
+        { name = "fisher";
+          src = pkgs.fetchFromGitHub {
+            owner = "jorgebucaran";
+            repo = "fisher";
+            rev = "1f0dc2b4970da160605638cb0f157079660d6e04";
+            sha256 = "sha256-pR5RKU+zIb7CS0Y6vjx2QIZ8Iu/3ojRfAcAdjCOxl1U=";
+          };
+        }
         { name = "pisces"; src = pkgs.fishPlugins.pisces.src; }
         { name = "colored-man-pages"; src = pkgs.fishPlugins.colored-man-pages.src; }
         { name = "done"; src = pkgs.fishPlugins.done.src; }
@@ -330,7 +301,7 @@
           ssce = "sudo systemctl edit --runtime";
 
           scuf = "systemctl --user --failed";
-          sscf = "sudo systemctl --failed"; 
+          sscf = "sudo systemctl --failed";
 
 
         #####################
@@ -342,13 +313,27 @@
           ls = "eza --group-directories-first --icons --color-scale all";
           suvi = "sudoedit";
           yay = "nix search nixpkgs";
-          #pass = "gopass";
           fpk = "flatpak";
       };
       shellAliases = {
-        cb = "flatpak run app.getclipboard.Clipboard";
         "..." = "cd ../..";
         "...." = "cd ../../..";
+      };
+    };
+  };
+  xdg = {
+    configFile = {
+      "fish-ai.ini" = {
+        source = pkgs.writeText ''
+          [fish-ai]
+          configuration = self-hosted
+
+          [self-hosted]
+          provider = self-hosted
+          server = https://api.groq.com/openai/v1
+          model = llama-3.3-70b-versatile
+          api_key = ${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path}
+        '';
       };
     };
   };

@@ -14,6 +14,11 @@
         sopsFile = ./GMAIL_APP_PASS.yaml;
       };
 
+      GROQ_SECRET_KEY = {
+        format = "yaml";
+        sopsFile = ./GROQ_SECRET_KEY.yaml;
+      };
+
       HUGGINGFACE_API_KEY = {
         format = "yaml";
         sopsFile = ./HUGGINGFACE_API_KEY.yaml;
