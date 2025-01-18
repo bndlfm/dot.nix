@@ -166,15 +166,15 @@
             sha256 = "iu7zNO7yKVK2bhIIlj4UKHHqDaGe4q2tIdNgifxPev4=";
           };
         }
-        {
-          name = "fish-ai";
-          src = pkgs.fetchFromGitHub {
-            owner = "Realiserad";
-            repo = "fish-ai";
-            rev = "6fbcf9739a02844b99960c5ba5100911e4e657c9";
-            sha256 = "sha256-/IscCr/KRkYV19EprvaVGo84G7T9y2A8QaFrKTnqRL4=";
-          };
-        }
+        #{
+        #  name = "fish-ai";
+        #  src = pkgs.fetchFromGitHub {
+        #    owner = "Realiserad";
+        #    repo = "fish-ai";
+        #    rev = "6fbcf9739a02844b99960c5ba5100911e4e657c9";
+        #    sha256 = "sha256-/IscCr/KRkYV19EprvaVGo84G7T9y2A8QaFrKTnqRL4=";
+        #  };
+        #}
         { name = "grc"; src = pkgs.fishPlugins.grc.src; }
         {
           name = "tacklebox";
@@ -323,7 +323,18 @@
       "fish-ai.ini" = {
         source = pkgs.writeText "fish-ai.ini" ''
           [fish-ai]
-          configuration = self-hosted
+          configuration = openai
+
+          [openai]
+          provider = openai
+          model = gpt-4o
+          api_key = ${builtins.readFile config.sops.secrets.OPENAI_API_KEY.path}
+
+          [huggingface]
+          provider = huggingface
+          email = firefliesandlightningbugs@gmail.com
+          password = ${builtins.readFile config.sops.secrets.HUGGINGFACE_PASSWD.path}
+          model = meta-llama/Llama-3.3-70B-Instruct
 
           [self-hosted]
           provider = self-hosted

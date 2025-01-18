@@ -4,6 +4,7 @@ pkgs: {
   antifennel = pkgs.callPackage ./antifennel.nix { };
   azote = pkgs.callPackage ./azote.nix { };
   beatSaberModManager = pkgs.callPackage ./BeatSaberModManager/BeatSaberModManager.nix { };
+  fishai = pkgs.callPackage ./fish-ai.nix { };
   gsh = pkgs.callPackage ./generativeShell.nix { };
   ndrop = pkgs.callPackage ./ndrop.nix { };
   proton-ge-rtsp = ./proton-ge-rtsp.nix { };

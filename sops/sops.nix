@@ -24,6 +24,11 @@
         sopsFile = ./HUGGINGFACE_API_KEY.yaml;
       };
 
+      HUGGINGFACE_PASSWD = {
+        format = "yaml";
+        sopsFile = ./HUGGINGFACE_PASSWD.yaml;
+      };
+
       OPENAI_API_KEY = {
         format = "yaml";
         sopsFile = ./secrets.yaml;
