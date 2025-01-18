@@ -67,11 +67,6 @@
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
-      #packageOverrides = pkgs: {
-      #  nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-      #    inherit pkgs;
-      #  };
-      #};
       permittedInsecurePackages = [
         ## NIXARR
         "dotnet-combined"
@@ -87,7 +82,6 @@
     };
     overlays = [
       inputs.nur.overlays.default
-      #(import ../../overlays/obsidian.nix)
     ];
   };
   home = {
@@ -158,9 +152,9 @@
         ];
 
         gaming = [
-            crawlTiles
-            glfw-wayland-minecraft
-            inputs.openmw-vr.packages.x86_64-linux.default
+          crawlTiles
+          glfw-wayland-minecraft
+          inputs.openmw-vr.packages.x86_64-linux.default
           ## RHYTHM GAMES
             clonehero
           ## DECOMP

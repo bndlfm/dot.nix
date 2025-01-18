@@ -3,7 +3,13 @@
   config,
   inputs,
   ...
-}: {
+}: let
+  displays = {
+    left = "HDMI-A-1";
+    center = "DP-1";
+    right = "HDMI-A-3";
+  };
+in {
     nixpkgs.overlays = [
       inputs.niri.overlays.niri
     ];
@@ -35,21 +41,8 @@
             };
           };
           outputs = {
-            ## CENTER MONITOR
-              "DP-1" = {
-                enable = true;
-                mode = {
-                  width = 2560;
-                  height = 1440;
-                };
-                position = {
-                  x = 1200;
-                  y = 0;
-                };
-                variable-refresh-rate = true;
-              };
             ## LEFT MONITOR
-              "DP-2" = {
+              "${displays.left}" = {
                 enable = true;
                 mode = {
                   width = 1920;
@@ -61,8 +54,21 @@
                 };
                 transform.rotation = 270;
               };
+            ## CENTER MONITOR
+              "${displays.center}" = {
+                enable = true;
+                mode = {
+                  width = 2560;
+                  height = 1440;
+                };
+                position = {
+                  x = 1200;
+                  y = 0;
+                };
+                variable-refresh-rate = true;
+              };
             ## RIGHT MONITOR
-              "DP-3" = {
+              "${displays.right}" = {
                 enable = true;
                 mode = {
                   width = 1920;
@@ -93,23 +99,63 @@
 
           spawn-at-startup = [
             {
+              command = [ "niri" "msg" "action" "focus-workspace-down" ];
+            }
+
+            #### BLUE LIGHT FILTER AT NIGHT ####
+            {
+              command = [ "gammastep-indicator" "-l" "38.0628:-91.4035" "-t" "6500:4800" ];
+            }
+
+            #### BLUETOOOTH ####
+            {
+              command = [ "blueman-applet" ];
+            }
+
+
+            #### GDRIVE #####
+            {
+              command = [ "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse" "~/Documents/GoogleDrive/" ];
+            }
+
+
+            #### KDE-CONNECT #####
+            {
+              command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect"];
+            }
+            {
+              command = ["kdeconnect-indicator"];
+            }
+
+
+            #### POWER SAVINGS ####
+            {
+              command = [ "swayidle" "-w" "timeout" "601" "'niri msg action power-off-monitors'" "timeout" "600" "'swaylock -f'" "before-sleep" "'swaylock -f'" ];
+            }
+
+
+            #### SYNC CLIPBOARD + SAVE COPY HISTORY ####
+            {
+              command = [ "copyq" "--start-server" ];
+            }
+
+
+            ##### WALLPAPER ####
+            {
+              command = [ "swaybg" "-i" "~/.nixcfg/theme/wallpapers/japan street night rain umbrella 1.png" "-o" "DP-1" ];
+            }
+
+            ####  GAMMA-INDICATOR ####
+            {
+              command = [ "gammastep-indicator" "-l" "38.0638:-191.4035" "-t" "6500:4500"];
+            }
+
+            #### XWAYLAND ####
+            {
               command = [ "xwayland-satellite" ":0" ];
             }
             {
               command = [ "xrandr" "--output" "DP-1" "--primary" ];
-            }
-            {
-              command = [ "niri" "msg" "action" "focus-workspace-down" ];
-            }
-            {
-              command = [ "swayidle" "-w" "timeout" "601" "'niri msg action power-off-monitors'" "timeout" "600" "'swaylock -f'" "before-sleep" "'swaylock -f'" ];
-            }
-            {
-              command = [
-                "swaybg" "-i" "~/.nixcfg/theme/wallpapers/japan\ street\ night\ rain\ umbrella\ 1.png" "-o" "DP-1"
-                         "-i" "~/Pictures/Wallpapers/4K/Westfjords region Iceland white house red roof mountain.jpg" "-o" "DP-2"
-                         "-i" "~/.nixcfg/theme/wallpapers/japan alley night.png" "-o" "DP-3"
-              ];
             }
           ];
 
@@ -300,14 +346,6 @@
                   };
                 }
 
-                ### KITTY TRANSPARENCY SET THROUGH STYLIX
-                #{
-                #  matches = [
-                #    { app-id = "^kitty$"; }
-                #  ];
-                #  opacity = 1.0;
-                #}
-
                 ## KITTY DROPDOWN
                 {
                   matches = [
@@ -355,7 +393,7 @@
             layer="top";
             position="top";
             output = [
-              "DP-1"
+              "${displays.center}"
             ];
             include = [
               "~/.config/waybar/default_modules.json"
@@ -383,8 +421,8 @@
             layer = "bottom";
             position = "top";
             output = [
-              "DP-2"
-              "DP-3"
+              "${displays.left}"
+              "${displays.right}"
             ];
             include= [
               "~/.config/waybar/default_modules.json"

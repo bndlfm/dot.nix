@@ -64,6 +64,114 @@
             echo 'Usage: mkcd <directory>'
           end
         '';
+        smt-cp = /*fish*/ ''
+          set -l api_endpoint "https://api.groq.com/openai/v1/chat/completions"
+          set -l api_key "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"
+          set -l model "llama-3.3-70b-versatile"
+          set -l num_recent_commands 5
+          set -l scrollback_lines 50
+
+
+          # --- Tests ---
+          echo "--- Running llm_copy tests ---"
+
+          # Test: API Key is set (basic sanity check)
+          echo "Test: API Key is set"
+          if not set -q api_key
+            echo "  FAIL: api_key is not set!"
+            return 1
+          else
+            echo "  PASS: api_key is set"
+          end
+
+          # Test: Get recent shell commands
+          echo "Test: Get recent shell commands"
+          set -l recent_commands_test (history --prefix ''' | tail -n $num_recent_commands)
+          if not count $recent_commands_test > 0
+            echo "  FAIL: Could not retrieve recent commands"
+          else
+            echo "  PASS: Retrieved recent commands:" $recent_commands_test
+          end
+          set -l recent_commands (string join '\n' $recent_commands_test)
+
+          # Test: Get scrollback
+          echo "Test: Get scrollback"
+          set -l scrollback_test (history --show-time | tail -n $scrollback_lines)
+          if not count $scrollback_test > 0
+            echo "  FAIL: Could not retrieve scrollback"
+          else
+            echo "  PASS: Retrieved scrollback (first line):" (head -n 1 $scrollback_test)
+          end
+          set -l scrollback (string join '\n' $scrollback_test)
+
+          # Test: Construct the prompt
+          echo "Test: Construct the prompt"
+          set -l prompt "Analyze the following terminal scrollback and recent commands to identify potential targets for copying (like file paths, URLs, specific values, error messages, etc.). Focus on items relevant to what the user might be doing based on the recent commands. Provide a newline-separated list of these potential copy targets.\n\nRecent Commands:\n$recent_commands\n\nScrollback:\n$scrollback"
+          echo "  Prompt (first few lines):" (head -n 3 <<< "$prompt")
+
+          # Test: Make the API call (output the curl command for debugging)
+          echo "Test: Make the API call (check curl command)"
+          set -l curl_command "curl -s -H 'Content-Type: application/json' -H 'Authorization: Bearer \$api_key' -d (printf '{\"model\": \"%s\", \"messages\": [{\"role\": \"user\", \"content\": \"%s\"}]}' \$model (string replace -a '\''' '\''' -- \"\$prompt\")) \$api_endpoint"
+          echo "  Executing curl command:" $curl_command
+          set -l response
+          set response (curl -s \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $api_key" \
+            -d (printf '{"model": "%s", "messages": [{"role": "user", "content": "%s"}]}' $model "$prompt") "$api_endpoint"
+
+          echo "  LLM Response:" $response
+
+          # Test: Extract the LLM's suggested copy targets
+          echo "Test: Extract the LLM's suggested copy targets"
+          if string length -- "\$response"
+            set -l copy_targets (echo "\$response" | jq -r '.choices[0].message.content')
+            echo "  Copy Targets:" \$copy_targets
+          else
+            echo "  LLM response was empty."
+            set -l copy_targets ""
+          end
+
+          # Test: Handle empty or error responses from the LLM
+          echo "Test: Handle empty LLM response"
+          if not string length -- "$copy_targets"
+            echo "  LLM did not suggest any copy targets."
+          else
+            echo "  LLM suggested targets. Proceeding to fzf."
+            # Test: Pass the targets to fzf for selection
+            echo "Test: Pass the targets to fzf"
+            if command -sq fzf
+              echo "$copy_targets" | fzf
+              set -l selected_target $status # Capture fzf's exit status (0 for selection, 1 for no selection)
+              echo "  fzf executed (status: $selected_target)"
+              if string length -- "$selected_target"
+                echo "  User selected: $selected_target"
+                # Test: Copy to clipboard
+                echo "Test: Copy to clipboard"
+                if test -n "$WAYLAND_DISPLAY"
+                  echo "$selected_target" | wl-copy
+                  echo "  Copied to clipboard (Wayland): $selected_target"
+                else if command -sq xclip
+                  echo "$selected_target" | xclip -selection clipboard
+                  echo "  Copied to clipboard (X11): $selected_target"
+                else
+                  echo "  Neither wl-copy nor xclip found."
+                end
+              else
+                echo "  No target selected in fzf."
+              end
+            else
+              echo "  fzf not found."
+            end
+          end
+
+          echo "--- llm_copy tests finished ---"
+          end
+          # Create a key binding (optional)
+
+          if not bind | grep llm_copy &>/dev/null
+            bind \\cg llm_copy # Bind to Ctrl+g
+          end
+        '';
       };
       plugins = [
         #{ name = "autopair"; src = pkgs.fishPlugins.autopair.src; }
@@ -234,7 +342,7 @@
           ls = "eza --group-directories-first --icons --color-scale all";
           suvi = "sudoedit";
           yay = "nix search nixpkgs";
-          pass = "gopass";
+          #pass = "gopass";
           fpk = "flatpak";
       };
       shellAliases = {
