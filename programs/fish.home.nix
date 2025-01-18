@@ -33,11 +33,8 @@
                 bind -s --preset -M insert \cy "commandline -f accept-autosuggestion execute"
 
             # CODEX.FISH OPENAI CODEX PLUGIN
-                bind --erase -M insert --preset \cx
-                bind --erase -M visual --preset \cx
-                bind --erase --preset \cx
-                bind -M insert \cx create_completion
-                bind -M visual \cx create_completion
+              bind \cX _fish_ai_codify_or_explain
+              bind -k nul _fish_ai_autocomplete_or_fix
         end
 
         ## more fish vi key fixes
@@ -324,15 +321,15 @@
   xdg = {
     configFile = {
       "fish-ai.ini" = {
-        source = pkgs.writeText ''
+        source = pkgs.writeText "fish-ai.ini" ''
           [fish-ai]
           configuration = self-hosted
 
           [self-hosted]
           provider = self-hosted
-          server = https://api.groq.com/openai/v1
-          model = llama-3.3-70b-versatile
-          api_key = ${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path}
+          server = http://localhost:33841/v1/
+          model = qwencoder
+          api_key = sk-litellm
         '';
       };
     };
