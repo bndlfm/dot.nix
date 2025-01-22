@@ -10,7 +10,7 @@
       bold_italic_font TerminessNF-Bold
 
 
-      font_size 15.0
+      font_size 14.0
 
       scrollback_lines 100000
 
@@ -77,7 +77,7 @@
       map kitty_mod+v  paste_from_clipboard
       map kitty_mod+s  paste_from_selection
       map shift+insert paste_from_selection
-      map kitty_mod+o  pass_selection_to_program
+      #map kitty_mod+o  pass_selection_to_program
       map kitty_mod+y new_window less @selection
 
       map kitty_mod+up        scroll_line_up

@@ -1,4 +1,8 @@
 { config, pkgs, ...}:{
+  home.packages = with pkgs; [
+    inshellisense
+  ];
+
   programs = {
   /*************
   * FISH SHELL *
@@ -51,10 +55,6 @@
                 echo -n "<nix-shell> "
               end
             )
-
-        zoxide init fish | source
-        carapace _carapace fish | source
-        direnv hook fish | source
       '';
       functions = {
         mkcd = ''
@@ -197,7 +197,6 @@
           vi = "nvim";
           vim = "nvim";
 
-
         ### EDIT CONFIG ###
           # wayland
             rchpp = "nvim ~/.nixcfg/windowManagers/hm/hyprland.nix";
@@ -220,7 +219,6 @@
             nxgc = "sudo nix-collect-garbage -d";
             hmgc = "nix-collect-garbage -d";
 
-
         ### (G)O TO DIR ###
           #fish
             gfsh = { position = "anywhere"; setCursor = true; expansion = "~/.config/fish/%"; };
@@ -239,7 +237,6 @@
           #~/.local/containers/
             gcont = { position = "anywhere"; setCursor = true; expansion = "~/.local/containers/%"; };
 
-
         ### CURL SHENANIGANS ###
           #cheat.sh
             cht = { setCursor = true; expansion = "curl cht.sh/%"; };
@@ -249,7 +246,6 @@
           #get ip
             gIPv4-way = "bash -c 'curl icanhazip.com | tee >(wl-copy)'";
             gIPv4-x11 = "bash -c 'curl icanhazip.com | xclip -i -selection clipboard'";
-
 
         ### GIT SHORTCUTS ###
           g = "git";
@@ -272,7 +268,6 @@
           gd = "git diff";
           gdc = "git diff --cached";
           gdt = "git difftool";
-
 
         ### SYSTEMCTL ###
           #systemctl
@@ -309,7 +304,6 @@
             scuf = "systemctl --user --failed";
             sscf = "sudo systemctl --failed";
 
-
         ### GENERAL SHORTCUTS ###
           c = "clear";
           del = "trash";
@@ -325,11 +319,88 @@
     };
 
 
-  /**********
-  * NUSHELL *
-  **********/
+  /***********
+  * NU SHELL *
+  ***********/
     nushell = {
       enable = true;
+      configFile.text = /* nu */''
+        # Disable the annoying banner
+        $env.config.show_banner = false
+
+        ### OH-MY-POSH INIT ####
+          # make sure we have the right prompt render correctly
+          if ($env.config? | is-not-empty) {
+              $env.config = ($env.config | upsert render_right_prompt_on_last_line true)
+          }
+
+          $env.POWERLINE_COMMAND = 'oh-my-posh'
+          $env.POSH_THEME = (echo ''')
+          $env.PROMPT_INDICATOR = ""
+          $env.POSH_SESSION_ID = (echo "1f750297-cc8c-4e57-8cba-96439fd91b2f")
+          $env.POSH_SHELL = "nu"
+          $env.POSH_SHELL_VERSION = (version | get version)
+
+          let _omp_executable: string = (echo "/nix/store/gh3piimq1ablp550qb00wc98smsym6p8-oh-my-posh-24.11.4/bin/oh-my-posh")
+
+          # PROMPTS
+
+          def --wrapped _omp_get_prompt [
+              type: string,
+              ...args: string
+          ] {
+              mut execution_time = -1
+              mut no_status = true
+              # We have to do this because the initial value of `$env.CMD_DURATION_MS` is always `0823`, which is an official setting.
+              # See https://github.com/nushell/nushell/discussions/6402#discussioncomment-3466687.
+              if $env.CMD_DURATION_MS != '0823' {
+                  $execution_time = $env.CMD_DURATION_MS
+                  $no_status = false
+              }
+
+              (
+                  ^$_omp_executable print $type
+                      --save-cache
+                      --shell=nu
+                      $"--shell-version=($env.POSH_SHELL_VERSION)"
+                      $"--status=($env.LAST_EXIT_CODE)"
+                      $"--no-status=($no_status)"
+                      $"--execution-time=($execution_time)"
+                      $"--terminal-width=((term size).columns)"
+                      ...$args
+              )
+          }
+
+          $env.PROMPT_MULTILINE_INDICATOR = (
+              ^$_omp_executable print secondary
+                  --shell=nu
+                  $"--shell-version=($env.POSH_SHELL_VERSION)"
+          )
+
+          $env.PROMPT_COMMAND = {||
+              # hack to set the cursor line to 1 when the user clears the screen
+              # this obviously isn't bulletproof, but it's a start
+              mut clear = false
+              if $nu.history-enabled {
+                  $clear = (history | is-empty) or ((history | last 1 | get 0.command) == "clear")
+              }
+
+              if ($env.SET_POSHCONTEXT? | is-not-empty) {
+                  do --env $env.SET_POSHCONTEXT
+              }
+
+              _omp_get_prompt primary $"--cleared=($clear)"
+          }
+
+          $env.PROMPT_COMMAND_RIGHT = {|| _omp_get_prompt right }
+
+          $env.TRANSIENT_PROMPT_COMMAND = {|| _omp_get_prompt transient }
+        ## pay-respects
+          def --env f [] {
+                  let dir = (with-env { _PR_LAST_COMMAND: (history | last).command, _PR_SHELL: nu } { /home/neko/.nix-profile/bin/pay-respects })
+                  cd $dir
+          }
+      '';
     };
 
 
@@ -337,58 +408,74 @@
   * SHELL INTEGRATIONS *
   *********************/
     broot = {
+      enable = true;
       enableFishIntegration = true;
       enableNushellIntegration = true;
     };
     carapace = {
+      enable = true;
       enableFishIntegration = true;
       enableNushellIntegration = true;
     };
     dircolors = {
+      enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
+      #enableNushellIntegration = true;
     };
     eza = {
+      enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
+      enableNushellIntegration = false;
     };
     fzf = {
+      enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
+      #enableNushellIntegration = true;
     };
     mcfly = {
+      enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
+      #enableNushellIntegration = true;
     };
     navi = {
+      enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
+      #enableNushellIntegration = true;
     };
     nix-your-shell = {
+      enable = true;
       enableFishIntegration = true;
       enableNushellIntegration = true;
     };
     nix-index = {
+      enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
+      #enableNushellIntegration = true;
     };
     oh-my-posh = {
-      enableFishIntegration = true;
+      enable = true;
+      useTheme = "clean-detailed";
+      enableFishIntegration = false;
       enableNushellIntegration = true;
     };
     pay-respects = {
+      enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
+      enableNushellIntegration = false;
     };
     yazi = {
       enableFishIntegration = true;
       enableNushellIntegration = true;
     };
     zellij = {
-      enableFishIntegration = true;
-      enableNushellIntegration = true;
+      enableFishIntegration = false;
+      #enableNushellIntegration = true;
+      settings = {
+        default_shell = "fish";
+      };
     };
     zoxide = {
+      enable = true;
       enableFishIntegration = true;
       enableNushellIntegration = true;
     };

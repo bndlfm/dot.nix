@@ -83,14 +83,14 @@ in {
           };
           layout = {
             preset-column-widths = [
-              { proportion = 1. / 3.; }
-              { proportion = 2. / 3.; }
-              { proportion = 1. / 1.; }
+              { proportion = 1. / 4.; }
+              { proportion = 1. / 2.; }
+              { proportion = 3. / 4.; }
             ];
             preset-window-heights = [
-              { proportion = 1. / 3.; }
-              { proportion = 2. / 3.; }
-              { proportion = 1. / 1.; }
+              { proportion = 1. / 4.; }
+              { proportion = 1. / 2.; }
+              { proportion = 3. / 4.; }
             ];
           };
           workspaces = {
@@ -130,7 +130,7 @@ in {
 
             #### POWER SAVINGS ####
             {
-              command = [ "swayidle" "-w" "timeout" "601" "'niri msg action power-off-monitors'" "timeout" "600" "'swaylock -f'" "before-sleep" "'swaylock -f'" ];
+              command = [ "swayidle" "-w" "timeout 601" "'niri msg action power-off-monitors'" "timeout 600" "'swaylock -f'" "before-sleep" "'swaylock -f'" ];
             }
 
 
@@ -142,7 +142,7 @@ in {
 
             ##### WALLPAPER ####
             {
-              command = [ "swaybg" "-i" "~/.nixcfg/theme/wallpapers/japan street night rain umbrella 1.png" "-o" "DP-1" ];
+              command = [ "swaybg" "-i ~/.nixcfg/theme/wallpapers/japan street night rain umbrella 1.png -o DP-1" ];
             }
 
             ####  GAMMA-INDICATOR ####
@@ -185,7 +185,6 @@ in {
                 ## TERMINAL/LAUNCHER
                   "${Mod}+D".action.spawn = "fuzzel";
                   "${Mod}+BackSpace".action.spawn = "kitty";
-                  "${Mod}+T".action.spawn = "kitty";
                   "${Mod}+Grave".action.spawn = [ "ndrop" "kitty" "--class" "kitty_dropdown" ];
 
                 ## RESTART WAYBAR/SWAYBAR
@@ -341,7 +340,7 @@ in {
                   default-window-height.fixed = 250;
                   default-floating-position = {
                     relative-to = "top-right";
-                    x = 50;
+                    x = 75;
                     y = 50;
                   };
                 }

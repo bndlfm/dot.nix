@@ -1,12 +1,12 @@
 { pkgs, ... }:{
   programs.rofi = {
-    enable = true;
-    cycle = true;
-    font = "Inconsolata Nerd Font 12";
-    location = "center";
+    enable = false;
+    #cycle = true;
+    #font = "Inconsolata Nerd Font 12";
+    #location = "center";
     package = pkgs.rofi-wayland-unwrapped;
     plugins = with pkgs; [
-      #rofi-pass-wayland
+      rofi-pass-wayland
       #rofi-calc
       #rofi-pulse-select
       #rofi-systemd

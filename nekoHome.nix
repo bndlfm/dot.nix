@@ -24,8 +24,9 @@
 
       ./programs/gnomeShell.home.nix
 
+      ./programs/shell.home.nix
+
       ./programs/firefox.home.nix
-      ./programs/fish.home.nix
       ./programs/git.home.nix
       ./programs/kitty.home.nix
       ./programs/ncmpcpp.home.nix
@@ -89,6 +90,7 @@
       with pkgs;
       let
         ai = [
+          aichat
           aider-chat
           upscayl
         ];
