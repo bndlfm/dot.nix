@@ -93,6 +93,7 @@
           aichat
           aider-chat
           upscayl
+          warp-terminal
         ];
 
         apple = [
