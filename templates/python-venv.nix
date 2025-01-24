@@ -3,7 +3,7 @@ with import <nixpkgs> { };
 let
   pythonPackages = python3Packages;
 in pkgs.mkShell rec {
-  name = "NHPApyenv";
+  name = "pyenv";
   venvDir = "./.venv";
   buildInputs = [
     # A Python interpreter including the 'venv' module is required to bootstrap

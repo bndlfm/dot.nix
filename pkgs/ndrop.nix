@@ -8,7 +8,7 @@ pkgs.stdenv.mkDerivation {
     owner = "Schweber"; # Assuming this is the correct owner from the README
     repo = "ndrop";
     rev = "main"; # Or a specific tag/commit
-    sha256 = "sha256-K3r+qGwaRKuolLQF5qB5ujyIvEZ8B5z0FM/O+lY1zpw"; # Replace with actual sha256
+    sha256 = "sha256-/a0W2/c4RW/ZGJ5uhk4r0VRyLI1uOb5ef7Ww+T9Yh+0="; # Replace with actual sha256
   };
 
   buildInputs = [ pkgs.bash pkgs.jq ];

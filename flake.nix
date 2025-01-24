@@ -1,58 +1,65 @@
 {
   inputs = {
-    ### NIX
-      nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-      home-manager = {
-        url = "github:nix-community/home-manager";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-    ### CUSTOMIZATION
-      stylix = {
-        url = "github:Mikilio/stylix";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-      tt-schemes = {
-        url = "github:tinted-theming/schemes";
-        flake = false;
-      };
-      base16.url = "github:SenchoPens/base16.nix";
-    ### MEDIA
-      nixarr = {
-        url = "github:rasmus-kirk/nixarr";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-      spicetify-nix = {
-        url = "github:Gerg-L/spicetify-nix";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-    ### PROGRAMS
-      aagl = {
-        url = "github:ezKEa/aagl-gtk-on-nix";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-      deejavu = {
-        url = "github:bndlfm/deejavu";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-      nur = {
-        url = "github:nix-community/NUR";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-      openmw-vr = {
-        url = "github:bndlfm/openmw-vr.nix";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-    ### SECRETS
-      sops-nix.url = "github:Mic92/sops-nix";
-    ### WINDOW MANAGER
-      niri = {
-        url = "github:sodiboo/niri-flake";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-      #hyprland = {
-      #    url = "git+https://github.com/hyprwm/Hyprland?submodules=1&tag=v0.46.2";
-      #    inputs.nixpkgs.follows = "nixpkgs";
-      #  };
+   /***************
+    * TEMP INPUTS *
+    ***************/
+      ### NOTE: Check if fixed upstream!
+        aiderFix.url = "github:NixOS/nixpkgs/2769361092ed57715c3ced6b0ede3fcfa8d20280";
+        sunshineFix.url = "github:NixOS/nixpkgs/2364607ec91c0aa8f5028aead070ead6da27007b";
+
+   /********************
+    * PERMANENT INPUTS *
+    ********************/
+      ### NIX
+        nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+        nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+        home-manager = {
+          url = "github:nix-community/home-manager";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
+      ### CUSTOMIZATION
+        stylix = {
+          url = "github:Mikilio/stylix";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
+        tt-schemes = {
+          url = "github:tinted-theming/schemes";
+          flake = false;
+        };
+        base16.url = "github:SenchoPens/base16.nix";
+      ### MEDIA
+        nixarr = {
+          url = "github:rasmus-kirk/nixarr";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
+        spicetify-nix = {
+          url = "github:Gerg-L/spicetify-nix";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
+      ### PROGRAMS
+        aagl = {
+          url = "github:ezKEa/aagl-gtk-on-nix";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
+        deejavu = {
+          url = "github:bndlfm/deejavu";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
+        nur = {
+          url = "github:nix-community/NUR";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
+        openmw-vr = {
+          url = "github:bndlfm/openmw-vr.nix";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
+      ### SECRETS
+        sops-nix.url = "github:Mic92/sops-nix";
+      ### WINDOW MANAGER
+        niri = {
+          url = "github:sodiboo/niri-flake";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
   };
 
   outputs = {
@@ -66,20 +73,29 @@
     sops-nix,
     stylix,
     ...
-  }@inputs: let
+  }@inputs:
+
+    let
       inherit (self) outputs;
-      #Supported systems for your flake packages, shell, etc.
+
       systems = [
         "aarch64-linux"
         "x86_64-linux"
       ];
-      # This is a function that generates an attribute by calling a function you
+
+      # Fctunction that generates an attribute by calling a function you
       # pass to it, with each system as an argument
       forAllSystems = nixpkgs.lib.genAttrs systems;
+
+      # Convert overlays to a list
+      overlays = with (import ./overlays {inherit inputs;}); [
+        additions
+        modifications
+        nixpkgs-stable
+      ];
     in {
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
-      overlays = import ./overlays {inherit inputs;};
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
 
@@ -89,14 +105,13 @@
       ***********************/
       homeConfigurations = {
         "neko@meow" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays overlays;
           extraSpecialArgs = {
             inherit inputs outputs;
             };
           modules = [
             ## NIRI
               niri.homeModules.niri
-              #./windowManagers/niriHome.nix
             ## THEMING
               niri.homeModules.stylix
               stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
@@ -121,6 +136,7 @@
         "meow" = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
+              ({ nixpkgs.overlays = overlays; })
             ## MEDIA
               nixarr.nixosModules.default (import ./modules/nixarr.sys.nix)
             ## SECRETS

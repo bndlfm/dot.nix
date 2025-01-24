@@ -139,8 +139,8 @@
       map kitty_mod+a attach_tab ask
  
       ### BORDERS
-        draw_minimal_borders yes
-        window_border_width 2
+        draw_minimal_borders no
+        window_border_width 3
         active_border_color #00ff00
         inactive_border_color #cccccc
         map kitty_mod+b launch --location=hsplit

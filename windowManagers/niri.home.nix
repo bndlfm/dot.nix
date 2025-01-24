@@ -227,10 +227,10 @@ in {
                     "${Mod}+V".action = switch-preset-window-height;
 
                   ## MANUAL RESIZE
-                    "${Mod}+Ctrl+H".action = set-window-width  "-5%";
-                    "${Mod}+Ctrl+N".action = set-window-height "+5%";
-                    "${Mod}+Ctrl+E".action = set-window-height "-5%";
-                    "${Mod}+Ctrl+I".action = set-window-width  "+5%";
+                    "${Mod}+Ctrl+H".action = set-window-width  "-1%";
+                    "${Mod}+Ctrl+N".action = set-window-height "+1%";
+                    "${Mod}+Ctrl+E".action = set-window-height "-1%";
+                    "${Mod}+Ctrl+I".action = set-window-width  "+1%";
 
                   ## FULLSCREEN
                     "${Mod}+F".action = maximize-column;

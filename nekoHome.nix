@@ -155,6 +155,7 @@
 
         gaming = [
           crawlTiles
+          gamma-launcher
           glfw-wayland-minecraft
           inputs.openmw-vr.packages.x86_64-linux.default
           ## RHYTHM GAMES
@@ -164,7 +165,7 @@
             #shipwright # Ocarina of Time
             _2ship2harkinian # Majora's Mask
           ## EMULATION
-            shadps4
+            #shadps4
           ## GAMING UTILITIES
             (callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix { })
             mangohud
@@ -264,7 +265,6 @@
             iotop
             nvtopPackages.nvidia
           ## FILE MANAGERS AND UTILITIES
-            joshuto
             highlight
             page
             pulsemixer

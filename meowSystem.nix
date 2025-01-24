@@ -2,7 +2,50 @@
   config,
   pkgs,
   ...
-}:{
+}:
+let
+  monitors = {
+    left = {
+      output = "HDMI-A-1";
+      pos = {
+        x = "0";
+        y = "0";
+      };
+      resolution = {
+        width = 1920;
+        height = 1200;
+      };
+      rate = 60;
+    };
+
+    center = {
+      output = "DP-1";
+      pos = {
+        x = "1200";
+        y = "0";
+      };
+      resolution = {
+        width = 2560;
+        height = 1440;
+      };
+      rate = 144;
+    };
+
+    right = {
+      output = "HDMI-A-3";
+      pos = {
+        x = "3760";
+        y = "0";
+      };
+      resolution = {
+        width = 1920;
+        height = 1200;
+      };
+      rate = 60;
+    };
+  };
+in
+{
   imports = [
     ./cachix.nix
 
@@ -35,7 +78,6 @@
           { inherit pkgs; };
       };
       permittedInsecurePackages = [
-        "fluffychat-linux-1.20.0"
         "aspnetcore-runtime-wrapped-6.0.36"
         "aspnetcore-runtime-6.0.36"
         "dotnet-runtime-7.0.20"
@@ -51,7 +93,6 @@
     git
     btrfs-progs
     home-manager
-    nvidia-vaapi-driver
     pinentry-curses
     polkit_gnome
     runc
@@ -139,11 +180,6 @@
     spiceUSBRedirection.enable = true;
     waydroid.enable = true;
     };
-  #environment.extraInit = ''
-  #    if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-  #      export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-  #    fi
-  #'';
 
 
   #-------- GROUPS ---------#
@@ -163,6 +199,7 @@
       linger = true;
       };
 
+
   #-------- SECURITY --------#
   security = {
     tpm2 = {
@@ -172,6 +209,7 @@
       };
       polkit.enable = true;
     };
+
 
   #-------- SERVICES --------#
   services = {
@@ -230,6 +268,7 @@
       xkb.variant = "";
       };
     };
+
 
   #-------- SYSTEM --------#
   systemd = {
@@ -818,14 +857,11 @@
       enable = true;
       allowedTCPPorts = [
         5173 # Grimoire
-        5432 # Postgres
-        5930
         8333 # SillyTavern
         8096 # Jellyfin HTTP
         8920 # Jellyfin HTTPS
-        25565 # MC SERVER
-        25575 # MC RCON
-        5432 42110 # Khoj
+        #25565 # MC SERVER
+        #25575 # MC RCON
       ];
       allowedTCPPortRanges = [
         {
@@ -837,11 +873,9 @@
         1900 7359 # Jellyfin service autodiscovery
         5173 # Grimoire
         5353 # AirPlay (iOS)
-        5432 # Postgres
-        5930
         8333 # SillyTavern
-        25565 # MC SERVER
-        25575 # MC RCON
+        #25565 # MC SERVER
+        #25575 # MC RCON
         51820 # Wireguard port
       ];
       allowedUDPPortRanges = [
@@ -863,35 +897,6 @@
     };
     pulse.enable = true;
     jack.enable = true;
-    #extraConfig = {
-    #  pipewire."92-low-latency" = {
-    #    context.properties = {
-    #      "log.level" = 4;
-    #      "default.clock.quantum"     = 256;
-    #      "default.clock.min-quantum" = 256;
-    #      "default.clock.max-quantum" = 256;
-    #    };
-    #  };
-    #  pipewire-pulse."92-low-latency" = {
-    #    "context.properties" = [
-    #      {
-    #        name = "libpipewire-module-protocol-pulse";
-    #        args = { };
-    #      }
-    #    ];
-    #    "pulse.properties" = {
-    #      "pulse.min.req" = "32/48000";
-    #      "pulse.default.req" = "32/48000";
-    #      "pulse.max.req" = "32/48000";
-    #      "pulse.min.quantum" = "32/48000";
-    #      "pulse.max.quantum" = "32/48000";
-    #    };
-    #    "stream.properties" = {
-    #      "node.latency" = "32/48000";
-    #      "resample.quality" = 1;
-    #    };
-    #  };
-    #};
   };
 
   #-------- GPU --------#
@@ -899,9 +904,12 @@
     graphics = {
       enable = true;
       enable32Bit = true;
+      extraPackages = with pkgs; [
+        nvidia-vaapi-driver
+      ];
     };
     nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
       modesetting.enable = true;
 
       ### Experimental, and can cause sleep/suspend to fail.
@@ -919,15 +927,15 @@
   };
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text = /* sh */ ''
+  environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text = ''
     Section "Screen"
       Identifier "Screen0"
       Device "Device0"
       Monitor "Monitor0"
       DefaultDepth 24
       Option "Stereo" "0"
-      Option "nvidiaXineramaInfoOrder" "DFP-7" 
-      Option "metamodes" "HDMI-0: nvidia-auto-select +640+0 {rotation=left, ForceCompositionPipeline=On}, DP-0: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, DP-3: nvidia-auto-select +2560+290 {rotation=left, ForceCompositionPipeline=On}"
+      Option "nvidiaXineramaInfoOrder" "DFP-7"
+      Option "metamodes" "${monitors.left.output}: nvidia-auto-select +${monitors.left.pos.x}+${monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, ${monitors.center.output}: nvidia-auto-select +${monitors.center.pos.x}+${monitors.center.pos.y} {AllowGSYNCCompatible=On}, ${monitors.right.output}: nvidia-auto-select +${monitors.right.pos.x}+${monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
       Option "SLI" "Off"
       Option "MultiGPU" "Off"
       Option "BaseMosaic" "off"
@@ -938,14 +946,12 @@
   '';
 
   # Setup displays
-  services.xserver.displayManager.setupCommands =
-    let
-      monitor-center = "DP-0";
-      monitor-left = "DP-1";
-      monitor-right = "HDMI-A-1";
-    in ''
-      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode="${monitor-center}: nvidia-auto-select +0+1080 {AllowGSYNCCompatible=On}, ${monitor-right}: nvidia-auto-select +3840+0 {rotation=right, ForceCompositionPipeline=On}"
-    '';
+  services.xserver.displayManager.setupCommands = ''
+    ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode=" \
+    ${monitors.left.output}: nvidia-auto-select +${monitors.left.pos.x}+${monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, \
+    ${monitors.center.output}: nvidia-auto-select +${monitors.center.pos.x}+${monitors.center.pos.y} {AllowGSYNCCompatible=On}, \
+    ${monitors.right.output}: nvidia-auto-select +${monitors.right.pos.x}+${monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
+  '';
 
 
   #-------- BOOTLOADER --------#
