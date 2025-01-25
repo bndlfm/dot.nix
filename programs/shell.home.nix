@@ -13,6 +13,20 @@
         set PATH $PATH /home/neko/.local/bin
         set fish_greeting
 
+        # Set up command output logging
+        function --on-event fish_postexec
+            set -l cmd $argv[1]
+            set -l output (eval "$cmd 2>&1")
+            set -l history_file ~/.local/share/fish/command_outputs.log
+            
+            # Don't log sy commands themselves
+            if not string match -q "sy*" $cmd
+                echo "TIME: "(date '+%Y-%m-%d %H:%M:%S')" CMD: $cmd" >> $history_file
+                echo "OUTPUT: $output" >> $history_file
+                echo "---" >> $history_file
+            end
+        end
+
         function fish_user_key_bindings --description 'Colemak vi-keys'
             fish_default_key_bindings -M insert
             fish_vi_key_bindings --no-erase insert # Without --no-erase fish_vi_key_bindings will reset all bindings.
@@ -81,21 +95,41 @@
           # Get recent commands
           set -l recent_commands (history --show-time --max $num_recent_commands | string join '\n')
 
-          # Get scrollback with command outputs
-          set -l scrollback ""
-          for cmd in (history --max $scrollback_lines)
-              # Add the command
-              set scrollback "$scrollback\nCommand: $cmd"
-              
-              # Try to get the command output from history
-              if set -l output (eval "$cmd 2>&1")
-                  set scrollback "$scrollback\nOutput: $output"
-              end
+          # Initialize history file if it doesn't exist
+          set -l history_file ~/.local/share/fish/command_outputs.log
+          if not test -f $history_file
+              touch $history_file
           end
 
-          # Combine stdin if present (for piped input)
+          # Function to log command and output
+          function log_command
+              set -l cmd $argv[1]
+              set -l output $argv[2]
+              echo "TIME: "(date '+%Y-%m-%d %H:%M:%S')" CMD: $cmd" >> $history_file
+              echo "OUTPUT: $output" >> $history_file
+              echo "---" >> $history_file
+          end
+
+          # Get recent command history with outputs
+          set -l scrollback ""
+          
+          # First, add any piped input if present
           if test -n "$stdin_content"
-              set scrollback "$scrollback\n\nPiped Input:\n$stdin_content"
+              set scrollback "$scrollback\n\nPiped Input:\n$stdin_content\n"
+          end
+          
+          # Get the last N commands and their outputs from the log file
+          set -l num_commands $scrollback_lines
+          set -l log_entries (tac $history_file | string collect | string split -- "---" | head -n $num_commands)
+          
+          for entry in $log_entries
+              set scrollback "$scrollback\n$entry"
+          end
+
+          # Also log the current command's output if we're getting it via pipe
+          if test -n "$stdin_content"
+              set -l current_cmd (history --max 1)[1]
+              log_command $current_cmd $stdin_content
           end
 
           # Handle optional extra instruction
