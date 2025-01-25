@@ -65,69 +65,102 @@
           end
         '';
         sy = /* fish */ ''
-          set -l api_endpoint "https://api.groq.com/openai/v1/chat/completions" # Replace with your endpoint if needed
-          set -l api_key ${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path} # Replace with your actual API key
+          set -l api_endpoint "https://api.groq.com/openai/v1/chat/completions" # Replace with your endpoint
+          set -l api_key ${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path} # Replace with your API key
           set -l model "llama-3.3-70b-versatile" # Or your preferred model
-          set -l num_recent_commands 5 # Number of recent commands to include in the prompt
-          set -l scrollback_lines 50 # Number of scrollback lines to send to the LLM
 
-          # Get recent shell commands
-          set -l recent_commands (history --prefix ''' | tail -n $num_recent_commands | string join '\n')
+          # LLM tuning
+          set -l num_recent_commands 7
+          set -l scrollback_lines 15
+          set -l temperature 0.2 # DEFAULT: 1
+          set -l top_p 1 # DEFAULT: 1
+
+
+          # Get recent commands
+          set -l recent_commands (history --show-time --max $num_recent_commands | string join '\n')
+
 
           # Get scrollback
-          set -l scrollback (history --show-time | tail -n $scrollback_lines | string join '\n')
+          set -l scrollback (history --max $scrollback_lines | string join '\n')
 
-          # Construct the prompt for the LLM
-          set -l prompt_content "Analyze the following terminal scrollback and recent commands to identify potential targets for copying (like file paths, URLs, specific values, error messages, etc.). Focus on items relevant to what the user might be doing based on the recent commands. Provide a newline-separated [\\n] list of these potential copy targets. Return only the candidates and no other text or it will break the script."
-
-          if string length -- "$recent_commands" >0
-              set prompt_content "$prompt_content\n\nRecent Commands:\n$recent_commands"
+          # Handle optional extra instruction
+          set -l extra_instruction ""
+          if test (count $argv) -gt 0
+              set extra_instruction "Focus on extracting $argv."
           end
 
-          if string length -- "$scrollback" >0
-              set prompt_content "$prompt_content\n\nScrollback:\n$scrollback"
+          # Construct the prompt
+          set -l prompt "Analyze the following terminal scrollback and recent commands to identify potential targets for copying (like file paths, URLs, specific values, error messages, etc.). Focus on items relevant to what the user might be doing based on the recent commands. $extra_instruction Provide a list of 20 potential copy targets. Return only the candidates and no other text or it will break the script. DO NOT RETURN A NUMBERED LIST. DO NOT RETURN EMPTY LINES AS PART OF THE LIST. \n\n Recent Commands: \n $recent_commands \n\n Scrollback:\n $scrollback"
+
+          # Escape the prompt for JSON using jq
+          set -l escaped_prompt (echo "$prompt" | jq -Rs .)
+
+
+          # Construct the JSON payload
+          set -l json_payload (jq -n \
+              --arg model "$model" \
+              --arg content "$escaped_prompt" \
+              --arg temperature "$temperature" \
+              --arg top_p "$top_p" \
+              '{model: $model, messages: [{role: "user", content: $content}], temperature: ($temperature|tonumber), top_p: ($top_p|tonumber)}')
+
+          # Make the API call and capture stdout
+          set -l response (curl -s \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer $api_key" \
+              -d "$json_payload" \
+              $api_endpoint)
+
+
+          # Check for curl errors
+          set -l curl_status $status
+          if test $curl_status -ne 0
+              echo "Error: curl command failed with status code $curl_status"
+              return 1
           end
 
-          # Escape backslashes for JSON
-          set -l escaped_prompt_content (echo "$prompt_content" | string replace -a '\\' '\\\\')
 
-          # Make the API call to the LLM
-          set -l copy_targets_json (
-              curl -s \
-                  -H "Content-Type: application/json" \
-                  -H "Authorization: Bearer $api_key" \
-                  -d (printf '{"model": "%s", "temperature": 0.2, "messages": [{"role": "user", "content": "%s"}]}' $model "$escaped_prompt_content") \
-                  $api_endpoint
-          )
+          # Extract copy targets
+          set -l copy_targets (echo "$response" | jq -r '.choices[0].message.content')
+          set -l jq_status $status
 
-          # Extract the LLM's suggested copy targets
-          set -l copy_targets_raw (echo "$copy_targets_json" | jq -r '.choices[0].message.content')
+          if test $jq_status -ne 0
+              echo "Error parsing JSON with jq. Status code: $jq_status"
+              echo "Raw response: $response"
+              return 1
+          end
 
-          # Handle empty or error responses from the LLM
-          if not string length -- "$copy_targets_raw"
+
+          # Handle empty or error responses
+          if not string length -- "$copy_targets"
               echo "LLM did not suggest any copy targets."
               return 1
           end
 
-          # Debug: Inspect the raw output of jq
-          echo "DEBUG: jq output:"
-          echo "$copy_targets_raw" | cat -vte
 
-          # Split the space-separated output into lines for fzf
-          echo "$copy_targets_raw" | tr ' ' '\n' | fzf | read -g selected_target
+          # Pass targets to fzf
+          set -l selected_target (string split ' ' "$copy_targets" | fzf)
+          set -l fzf_status $status
 
-          # If a target is selected, copy it to the clipboard
-          if string length -- "$selected_target"
-              # Determine if Wayland or X11 is being used
-              if test -n "$WAYLAND_DISPLAY"
-                  echo "$selected_target" | wl-copy
-                  echo "Copied to clipboard (Wayland): $selected_target"
-              else if command -sq xclip
-                  echo "$selected_target" | xclip -selection clipboard
-                  echo "Copied to clipboard (X11): $selected_target"
-              else
-                  echo "Neither wl-copy nor xclip found. Please install one of them to copy to the clipboard."
+
+          # Copy to clipboard if a target is selected
+          if test $fzf_status -eq 0
+              # Only proceed if fzf had a selection (status 0)
+              if string length -- "$selected_target"
+                  if test -n "$WAYLAND_DISPLAY"
+                      echo "$selected_target" | wl-copy
+                      echo "Copied to clipboard (Wayland): $selected_target"
+                  else if command -sq xclip
+                      echo "$selected_target" | xclip -selection clipboard
+                      echo "Copied to clipboard (X11): $selected_target"
+                  else
+                      echo "Neither wl-copy nor xclip found. Please install one of them to copy to the clipboard."
+                  end
               end
+          else if test $fzf_status -eq 130
+              echo "No selection made in fzf."
+          else
+              echo "fzf exited with an error: $fzf_status"
           end
 
           # Create a key binding (optional)
