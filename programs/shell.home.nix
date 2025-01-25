@@ -75,13 +75,19 @@
           set -l temperature 0.2 # DEFAULT: 1
           set -l top_p 1 # DEFAULT: 1
 
-
+          # Check if we have stdin input
+          read -z stdin_content
+          
           # Get recent commands
           set -l recent_commands (history --show-time --max $num_recent_commands | string join '\n')
 
-
           # Get scrollback
           set -l scrollback (history --max $scrollback_lines | string join '\n')
+
+          # Combine stdin if present
+          if test -n "$stdin_content"
+              set scrollback "$scrollback\n\nCommand Output:\n$stdin_content"
+          end
 
           # Handle optional extra instruction
           set -l extra_instruction ""
