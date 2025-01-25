@@ -81,12 +81,21 @@
           # Get recent commands
           set -l recent_commands (history --show-time --max $num_recent_commands | string join '\n')
 
-          # Get scrollback
-          set -l scrollback (history --max $scrollback_lines | string join '\n')
+          # Get scrollback with command outputs
+          set -l scrollback ""
+          for cmd in (history --max $scrollback_lines)
+              # Add the command
+              set scrollback "$scrollback\nCommand: $cmd"
+              
+              # Try to get the command output from history
+              if set -l output (eval "$cmd 2>&1")
+                  set scrollback "$scrollback\nOutput: $output"
+              end
+          end
 
-          # Combine stdin if present
+          # Combine stdin if present (for piped input)
           if test -n "$stdin_content"
-              set scrollback "$scrollback\n\nCommand Output:\n$stdin_content"
+              set scrollback "$scrollback\n\nPiped Input:\n$stdin_content"
           end
 
           # Handle optional extra instruction
