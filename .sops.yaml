@@ -6,6 +6,11 @@ creation_rules:
       - age:
         - *primary
 
+  - path_regex: sops/ANTHROPIC_API_KEY.yaml$
+    key_groups:
+      - age:
+        - *primary
+
   - path_regex: sops/GROQ_SECRET_KEY.yaml$
     key_groups:
       - age:

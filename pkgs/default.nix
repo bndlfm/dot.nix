@@ -8,6 +8,7 @@ pkgs: {
   gamma-launcher = pkgs.callPackage ./gamma-launcher.nix { };
   gsh = pkgs.callPackage ./generativeShell.nix { };
   ndrop = pkgs.callPackage ./ndrop.nix { };
-  proton-ge-rtsp = ./proton-ge-rtsp.nix { };
   openmw-vr = pkgs.callPackage ./openmw-vr/openmw-vr.nix { };
+  proton-ge-rtsp = ./proton-ge-rtsp.nix { };
+  vintagestory = ./vintagestory.nix { };
 }

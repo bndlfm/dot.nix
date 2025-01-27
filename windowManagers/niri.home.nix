@@ -142,7 +142,7 @@ in {
 
             ##### WALLPAPER ####
             {
-              command = [ "swaybg" "-i ~/.nixcfg/theme/wallpapers/japan street night rain umbrella 1.png -o DP-1" ];
+              command = [ "swaybg -i ~/.nixcfg/theme/wallpapers/japan street night rain umbrella 1.png -o DP-1" ];
             }
 
             ####  GAMMA-INDICATOR ####

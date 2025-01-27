@@ -9,6 +9,11 @@
     defaultSecretsMountPoint = "/run/user/1000/secrets.d";
 
     secrets = {
+      ANTHROPIC_API_KEY = {
+        format = "yaml";
+        sopsFile = ./ANTHROPIC_API_KEY.yaml;
+      };
+
       GMAIL_APP_PASS = {
         format = "yaml";
         sopsFile = ./GMAIL_APP_PASS.yaml;

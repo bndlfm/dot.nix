@@ -53,13 +53,13 @@
     /**********
     * SPOTIFY *
     **********/
-      inputs.spicetify-nix.homeManagerModules.default
-      ./theme/spicetify.nix
+      #inputs.spicetify-nix.homeManagerModules.default
+      #./theme/spicetify.nix
 
     /******************
     * WINDOW MANAGERS *
     ******************/
-      ./windowManagers/hyprland.home.nix
+      #./windowManagers/hyprland.home.nix
       ./windowManagers/bspwm.home.nix
       ./windowManagers/niri.home.nix
   ];
@@ -85,6 +85,7 @@
       inputs.nur.overlays.default
     ];
   };
+
   home = {
     packages =
       with pkgs;
@@ -102,7 +103,7 @@
 
         browsers = [
           #firefox-devedition: programs/hm/firefox.nix
-          firefoxpwa
+          chromium
           qutebrowser
           tor-browser
         ];
@@ -155,10 +156,12 @@
         ];
 
         gaming = [
+          airshipper
           crawlTiles
           gamma-launcher
           glfw-wayland-minecraft
           inputs.openmw-vr.packages.x86_64-linux.default
+          vintagestory
           ## RHYTHM GAMES
             clonehero
           ## DECOMP
@@ -166,13 +169,13 @@
             #shipwright # Ocarina of Time
             _2ship2harkinian # Majora's Mask
           ## EMULATION
-            #shadps4
+            shadps4
           ## GAMING UTILITIES
             (callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix { })
             mangohud
             steamtinkerlaunch
           ## LAUNCHERS
-            #heroic
+            heroic
             itch
             lutris
             prismlauncher
@@ -359,6 +362,7 @@
     ### (HM) ENVIRONMENT VARIABLES ###
     sessionVariables = {
       ### API KEYS
+      ANTHROPIC_API_KEY = builtins.readFile "${config.sops.secrets.ANTHROPIC_API_KEY.path}";
       HUGGINGFACE_API_KEY = builtins.readFile "${config.sops.secrets.HUGGINGFACE_API_KEY.path}";
       OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
       OBSIDIAN_REST_API_KEY = builtins.readFile "${config.sops.secrets.OBSIDIAN_REST_API_KEY.path}";
@@ -383,7 +387,7 @@
 
       ### NETWORK LOCATIONS
       DOCKER_HOST = "unix:///run/user/1000/docker.sock";
-      #OLLAMA_HOST = "192.168.1.5";
+        #OLLAMA_HOST = "192.168.1.5";
 
       ### NIX: FIXES ELECTRON APPS
       NIXOS_OZONE_WL = "1";
@@ -459,6 +463,13 @@
         recursive = true;
       };
     };
+  };
+
+  systemd.user.targets.tray = {
+          Unit = {
+                  Description = "Home Manager System Tray";
+                  Requires = [ "graphical-session-pre.target" ];
+          };
   };
 
   specialisation = {
