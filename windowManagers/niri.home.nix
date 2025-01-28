@@ -94,7 +94,7 @@ in {
             ];
           };
           workspaces = {
-            "ndrop" = {};
+            "niri" = {};
           };
 
           spawn-at-startup = [
@@ -115,7 +115,7 @@ in {
 
             #### GDRIVE #####
             {
-              command = [ "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse" "~/Documents/GoogleDrive/" ];
+              command = [ "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse" "/home/neko/Documents/GoogleDrive/" ];
             }
 
 
@@ -130,7 +130,7 @@ in {
 
             #### POWER SAVINGS ####
             {
-              command = [ "swayidle" "-w" "timeout 601" "'niri msg action power-off-monitors'" "timeout 600" "'swaylock -f'" "before-sleep" "'swaylock -f'" ];
+              command = [ "sh" "-c" "swayidle -w timeout 601 'niri msg action power-off-monitors' timeout 600 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'" ];
             }
 
 
@@ -142,7 +142,7 @@ in {
 
             ##### WALLPAPER ####
             {
-              command = [ "swaybg -i ~/.nixcfg/theme/wallpapers/japan street night rain umbrella 1.png -o DP-1" ];
+              command = [ "swaybg" "-i" "/home/neko/Pictures/Wallpapers/4K/Weather/Wallpaper forest, trees, snow, winter, 4k, Nature 8421417542.jpg" ];
             }
 
             ####  GAMMA-INDICATOR ####
@@ -305,14 +305,14 @@ in {
                   clip-to-geometry = true;
                 }
 
-                ## DRAW UNFOCUSED WITH 90% OPACITY
+                ## DRAW UNFOCUSED WITH OPACITY
                 {
                   matches = [
                     {
                       is-focused = false;
                     }
                   ];
-                  opacity = 0.98;
+                  opacity = 0.95;
                 }
 
                 ## MAKE MPV OPAQUE
@@ -336,6 +336,7 @@ in {
                   ];
                   opacity = 0.9;
                   open-floating = true;
+                  open-focused = false;
                   default-column-width.fixed = 425;
                   default-window-height.fixed = 250;
                   default-floating-position = {
@@ -374,7 +375,7 @@ in {
                   block-out-from = "screencast";
                 }
 
-                ## GUESSING THIS PREVENTS NIRI WM FROM BEING TRANSPARENT?
+                ## THIS PREVENTS NIRI WM HELP MENU FROM BEING TRANSPARENT I THINK
                 {
                   matches = [{app-id = "^niri$";}];
                   opacity = 1.0;

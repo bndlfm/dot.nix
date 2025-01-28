@@ -45,6 +45,10 @@
           url = "github:bndlfm/deejavu";
           inputs.nixpkgs.follows = "nixpkgs";
         };
+        isd = {
+          url = "github:isd-project/isd";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
         nur = {
           url = "github:nix-community/NUR";
           inputs.nixpkgs.follows = "nixpkgs";
