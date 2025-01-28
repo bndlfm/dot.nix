@@ -103,7 +103,6 @@
 
         browsers = [
           #firefox-devedition: programs/hm/firefox.nix
-          chromium
           qutebrowser
           tor-browser
         ];
@@ -264,6 +263,7 @@
         };
 
         tui = [
+          inputs.isd.packages.${pkgs.system}.isd
           ## SYSTEM MONITORS
             btop
             iotop
@@ -445,6 +445,10 @@
       };
       "tridactyl" = {
         source = ./.config/tridactyl;
+        recursive = true;
+      };
+      "twt" = {
+        source = ./.config/twt;
         recursive = true;
       };
       "qutebrowser/config.py" = {
