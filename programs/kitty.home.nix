@@ -53,7 +53,8 @@
         map kitty_mod+s  paste_from_selection
         map shift+insert paste_from_selection
         #map kitty_mod+o  pass_selection_to_program
-        map kitty_mod+y kitten smartYank.py --api-key "${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path}"
+        map kitty_mod+y kitten foo.py
+        #map kitty_mod+y kitten smartYank.py --api-key "${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path}"
         # --api-endpoint "https://api.groq.com/openai/v1/chat/completions" --model "llama-3.3-70b-versatile"
 
         map kitty_mod+up        scroll_line_up

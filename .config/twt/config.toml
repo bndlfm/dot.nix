@@ -1,6 +1,6 @@
 [twitch]
 username = "mamimi___"
-channel = "FredrikKnudsen"
+channel = "mamimi___"
 server = "irc.chat.twitch.tv"
 token = "oauth:4q5l3jx79devz794fz1ivt39500yv1"
 
@@ -19,7 +19,7 @@ enabled = false
 reversed = false
 
 [frontend]
-favorite_channels = [ "tomato", "meat", "grimmiVT", "strippin", "Tsoding" ]
+favorite_channels = [ "tomato", "meat", "criken", "beribug", "grimmiVT" ]
 show_datetimes = true
 datetime_format = "%a %b %e %T %Y"
 username_shown = true
