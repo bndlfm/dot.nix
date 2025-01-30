@@ -21,6 +21,7 @@
     ************/
       ./programs/email.home.nix
       ./programs/programs.home.nix
+      ./programs/twitch.home.nix
 
       ./programs/gnomeShell.home.nix
 
@@ -183,10 +184,6 @@
         media = [
           mpv
           ncmpcpp
-          ## TWITCH
-            streamlink
-            streamlink-twitch-gui-bin
-            twitch-tui
         ];
 
         notes = [

@@ -1,4 +1,4 @@
-{ sops-nix , ... }:
+{ ... }:
 {
 
   sops = {
@@ -44,7 +44,10 @@
         sopsFile = ./OBSIDIAN_REST_API_KEY.yaml;
       };
 
+      TWITCH_IRC_OAUTH = {
+        format = "yaml";
+        sopsFile = ./TWITCH_IRC_OAUTH.yaml;
+      };
     };
   };
-
 }
