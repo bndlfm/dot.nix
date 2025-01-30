@@ -53,8 +53,8 @@
     /**********
     * SPOTIFY *
     **********/
-      #inputs.spicetify-nix.homeManagerModules.default
-      #./theme/spicetify.nix
+      inputs.spicetify-nix.homeManagerModules.default
+      ./theme/spicetify.nix
 
     /******************
     * WINDOW MANAGERS *
@@ -364,7 +364,9 @@
       ### API KEYS
       ANTHROPIC_API_KEY = builtins.readFile "${config.sops.secrets.ANTHROPIC_API_KEY.path}";
       HUGGINGFACE_API_KEY = builtins.readFile "${config.sops.secrets.HUGGINGFACE_API_KEY.path}";
+      GROQ_SECRET_KEY = builtins.readFile "${config.sops.secrets.GROQ_SECRET_KEY.path}";
       OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
+
       OBSIDIAN_REST_API_KEY = builtins.readFile "${config.sops.secrets.OBSIDIAN_REST_API_KEY.path}";
 
       ### DEFAULTS
@@ -470,10 +472,10 @@
   };
 
   systemd.user.targets.tray = {
-          Unit = {
-                  Description = "Home Manager System Tray";
-                  Requires = [ "graphical-session-pre.target" ];
-          };
+      Unit = {
+          Description = "Home Manager System Tray";
+          Requires = [ "graphical-session-pre.target" ];
+      };
   };
 
   specialisation = {
