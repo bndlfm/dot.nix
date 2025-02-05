@@ -61,6 +61,7 @@
     * WINDOW MANAGERS *
     ******************/
       #./windowManagers/hyprland.home.nix
+      ./modules/home-manager/hyprland.mod.home.nix
       ./windowManagers/bspwm.home.nix
       ./windowManagers/niri.home.nix
   ];
@@ -86,6 +87,8 @@
       inputs.nur.overlays.default
     ];
   };
+
+  neko.hyprland.enable = true;
 
   home = {
     packages =
@@ -128,6 +131,7 @@
           libnotify
           libqalculate
           nix-index
+          pass
           ripgrep
           sd
           silver-searcher

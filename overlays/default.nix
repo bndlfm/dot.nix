@@ -6,8 +6,8 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    sunshine = inputs.sunshineFix.legacyPackages.${final.system}.sunshine;
-    aider-chat = inputs.aiderFix.legacyPackages.${final.system}.aider-chat;
+    #sunshine = inputs.sunshineFix.legacyPackages.${final.system}.sunshine;
+    #aider-chat = inputs.aiderFix.legacyPackages.${final.system}.aider-chat;
   };
 
   # When applied, the stable nixpkgs set (declared in the flake inputs) will

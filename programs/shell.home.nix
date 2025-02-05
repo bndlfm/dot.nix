@@ -178,22 +178,26 @@
 
         ### GIT SHORTCUTS ###
           g = "git";
-          gst = "git status";
-          glg = "git log --graph --oneline --all";
           gco = "git checkout";
+          gcl = "git clone";
+          gcp = "git cherry-pick";
+          glg = "git log --graph --oneline --all";
+          gst = "git status";
+          #git branch
           gb = "git branch";
           gba = "git branch -a";
+          #git commit
           gc = "git commit";
           gca = "git commit -a";
           gcm = { setCursor = true; expansion = "git commit -m '%'";};
-          gcp = "git cherry-pick";
+          #git pull/push
           gp = "git pull";
           gph = "git push";
+          #git add
           ga = "git add";
           gau = "git add -u";
           gaa = "git add -all";
-          gcl = "git clone";
-
+          #git diff
           gd = "git diff";
           gdc = "git diff --cached";
           gdt = "git difftool";
@@ -354,7 +358,6 @@
     eza = {
       enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = false;
     };
     fzf = {
       enable = true;

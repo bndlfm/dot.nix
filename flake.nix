@@ -4,8 +4,6 @@
     * TEMP INPUTS *
     ***************/
       ### NOTE: Check if fixed upstream!
-        aiderFix.url = "github:NixOS/nixpkgs/2769361092ed57715c3ced6b0ede3fcfa8d20280";
-        sunshineFix.url = "github:NixOS/nixpkgs/2364607ec91c0aa8f5028aead070ead6da27007b";
 
    /********************
     * PERMANENT INPUTS *
@@ -60,6 +58,14 @@
       ### SECRETS
         sops-nix.url = "github:Mic92/sops-nix";
       ### WINDOW MANAGER
+        cosmic = {
+          url = "github:lilyinstarlight/nixos-cosmic";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
+        hyprland = {
+          url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
         niri = {
           url = "github:sodiboo/niri-flake";
           inputs.nixpkgs.follows = "nixpkgs";
@@ -72,7 +78,9 @@
     home-manager,
     deejavu,
     nixarr,
+    cosmic,
     niri,
+    hyprland,
     spicetify-nix,
     sops-nix,
     stylix,
@@ -140,7 +148,7 @@
         "meow" = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-              ({ nixpkgs.overlays = overlays; })
+            ({ nixpkgs.overlays = overlays; })
             ## MEDIA
               nixarr.nixosModules.default (import ./modules/nixarr.sys.nix)
             ## SECRETS

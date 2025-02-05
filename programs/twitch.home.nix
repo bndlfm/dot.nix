@@ -15,13 +15,13 @@ pkgs,
 
   xdg = {
     configFile = {
-      "~/.config/twt/config.toml" = {
+      "twt/config.toml" = {
         source = pkgs.writeText "config.toml" ''
           [twitch]
           username = "mamimi___"
           channel = "mamimi___"
           server = "irc.chat.twitch.tv"
-          token = ""
+          token = "${builtins.readFile config.sops.secrets.TWITCH_IRC_OAUTH.path}"
 
           [terminal]
           delay = 30
@@ -38,7 +38,7 @@ pkgs,
           reversed = false
 
           [frontend]
-          favorite_channels = [ "tomato", "meat", "beribug", "grimmiVT", "strippin" ]
+          favorite_channels = [ "vinesauce", "vargskelethor", "tomato", "meat", "margo", "beribug", "grimmi" ]
           show_datetimes = true
           datetime_format = "%a %b %e %T %Y"
           username_shown = true

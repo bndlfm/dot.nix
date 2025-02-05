@@ -112,70 +112,72 @@ in {
 
 
         spawn-at-startup = [
-          {
-            command = [ "niri" "msg" "action" "focus-workspace-down" ];
-          }
+          #### FOR NDROP ####
+            {
+              command = [ "niri" "msg" "action" "focus-workspace-down" ];
+            }
 
           #### FOR WAYBAR INDICATOR AND DARK AND DARKER
-          {
-            command = [ "wl-gammarelay-rs" ];
-          }
+            {
+              command = [ "wl-gammarelay-rs" ];
+            }
 
           #### BLUE LIGHT FILTER AT NIGHT ####
-          {
-            command = [ "gammastep-indicator" "-l" "38.0628:-91.4035" "-t" "6500:4800" ];
-          }
+            {
+              command = [ "gammastep-indicator" "-l" "38.0628:-91.4035" "-t" "6500:4800" ];
+            }
 
           #### BLUETOOOTH ####
-          {
-            command = [ "blueman-applet" ];
-          }
+            {
+              command = [ "blueman-applet" ];
+            }
 
+          ### CLIPBOARD ###
+            {
+              command = [ "copyq" "--start-server" ];
+            }
 
           #### GDRIVE #####
-          {
-            command = [ "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse" "/home/neko/Documents/GoogleDrive/" ];
-          }
-
+            {
+              command = [ "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse" "/home/neko/Documents/GoogleDrive/" ];
+            }
 
           #### KDE-CONNECT #####
-          {
-            command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect"];
-          }
-          {
-            command = ["kdeconnect-indicator"];
-          }
-
+            {
+              command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect"];
+            }
+            {
+              command = ["kdeconnect-indicator"];
+            }
 
           #### POWER SAVINGS ####
-          {
-            command = [ "sh" "-c" "swayidle -w timeout 601 'niri msg action power-off-monitors' timeout 600 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'" ];
-          }
-
+            {
+              command = [ "sh" "-c" "swayidle -w timeout 601 'niri msg action power-off-monitors' timeout 600 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'" ];
+            }
 
           #### SYNC CLIPBOARD + SAVE COPY HISTORY ####
-          {
-            command = [ "copyq" "--start-server" ];
-          }
+            {
+              command = [ "copyq" "--start-server" ];
+            }
 
 
           ##### WALLPAPER ####
-          {
-            command = [ "swaybg" "-i" "/home/neko/Pictures/Wallpapers/4K/Weather/Wallpaper forest, trees, snow, winter, 4k, Nature 8421417542.jpg" ];
-          }
+            {
+              command = [ "swaybg" "-i" "/home/neko/Pictures/Wallpapers/4K/Weather/Wallpaper forest, trees, snow, winter, 4k, Nature 8421417542.jpg" ];
+            }
 
           ####  GAMMA-INDICATOR ####
-          {
-            command = [ "gammastep-indicator" "-l" "38.0638:-191.4035" "-t" "6500:4500"];
-          }
+            {
+              command = [ "gammastep-indicator" "-l" "38.0638:-191.4035" "-t" "6500:4500"];
+            }
 
           #### XWAYLAND ####
-          {
-            command = [ "xwayland-satellite" ":0" ];
-          }
-          {
-            command = [ "xrandr" "--output" "DP-1" "--primary" ];
-          }
+            {
+              command = [ "xwayland-satellite" ":0" ];
+            }
+            {
+              command = [ "xrandr" "--output" "DP-1" "--primary" ];
+            }
         ];
 
 
@@ -212,6 +214,11 @@ in {
                   "systemctl --user restart waybar.service"
                   "systemctl --user restart swaybg.service"
                 ]);
+
+            /************
+            * CLIPBOARD *
+            *************/
+              "${Mod}+Control+C".action.spawn = [ "copyq" "show"];
 
             /*************
             * SCREENSHOT *
@@ -292,6 +299,12 @@ in {
                 "${Mod}+Shift+N".action = move-window-down-or-to-workspace-down;
                 "${Mod}+Shift+E".action = move-window-up-or-to-workspace-up;
                 "${Mod}+Shift+I".action = move-column-right-or-to-monitor-right;
+
+              ## MOVE WINDOW TO MONITOR WITH ARROW KEYS
+                "${Mod}+Control+Left".action = move-window-to-monitor-left;
+                "${Mod}+Control+Down".action = move-window-to-monitor-down;
+                "${Mod}+Control+Up".action = move-window-to-monitor-up;
+                "${Mod}+Control+Right".action = move-window-to-monitor-right;
 
               ## MOVE WINDOW TO WORKSPACE
                 "${Mod}+Shift+1".action = move-window-to-workspace 1;
