@@ -23,7 +23,7 @@
       ./programs/programs.home.nix
       ./programs/twitch.home.nix
 
-      ./programs/gnomeShell.home.nix
+      #./programs/gnomeShell.home.nix
 
       ./programs/shell.home.nix
 
@@ -60,7 +60,6 @@
     /******************
     * WINDOW MANAGERS *
     ******************/
-      #./windowManagers/hyprland.home.nix
       ./modules/home-manager/hyprland.mod.home.nix
       ./windowManagers/bspwm.home.nix
       ./windowManagers/niri.home.nix
@@ -88,7 +87,7 @@
     ];
   };
 
-  neko.hyprland.enable = true;
+  neko.hyprland.enable = false;
 
   home = {
     packages =

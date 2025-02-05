@@ -24,7 +24,7 @@
   };
 
   config = lib.mkIf config.neko.hyprland.enable {
-    home-manager.home.packages = with pkgs; [
+    home.packages = with pkgs; [
       copyq
       fuzzel
       hdrop
@@ -37,15 +37,17 @@
       wayland-utils
     ] ++ config.neko.hyprland.packages; # Include user-defined extra packages
 
-    home-manager.wayland.windowManager.hyprland = {
+    wayland.windowManager.hyprland = {
       enable = true;
 
       systemd = {
         enable = true;
       };
 
-      plugins = with pkgs; [
-      ];
+      plugins =
+        with pkgs;
+        [
+        ];
 
       settings =
         # Merge default settings with user-provided settings
@@ -85,7 +87,7 @@
             ### Steam
               "workspace 7 silent, steam"
               "float, steam"
-          ];
+            ];
           windowrulev2 = [
             ## Clipboard
               "float, class:(clipse)"
@@ -113,7 +115,7 @@
               "immediate, class:^(steam_app_(.*))"
             ## qBittorrent
               "workspace 9 silent, class:org.qbittorrent.qBittorrent"
-          ];
+            ];
 
           #-------- Key Bindings --------#
           "$mainMod" = "SUPER";
@@ -268,21 +270,21 @@
           ];
 
           monitor = [
-            "DP-1, 2560x1440@144, 0x1200, 1, bitdepth, 10"
-            "HDMI-A-1, 1920x1080, 0x0, 1, transform, 3"
-            "HDMI-A-3, 1920x1080, 0x3760, 1, transform, 3"
+            "DP-1, 2560x1440@144, 1200x0, 1"
+            "HDMI-A-1, 1920x1200, 0x0, 1, transform, 3"
+            "HDMI-A-3, 1920x1200, 3760x0, 1, transform, 3"
           ];
 
           workspace = [
-            "10, monitor:HDMI-A-3, default:true"
-            "1, monitor:DP-1, default:true"
-            "7, monitor:DP-1"
+            #"10, monitor:HDMI-A-3, default:true"
+            #"1, monitor:DP-1, default:true"
+            #"7, monitor:DP-1"
           ];
 
           #-------- Hyprland Variables --------#
           general = {
             # https://wiki.hyprland.org/Configuring/Variables/ for more
-            allow_tearing = true;
+            allow_tearing = false;
             gaps_in = 5;
             gaps_out = 10;
             border_size = 4;
@@ -307,7 +309,7 @@
           };
 
           cursor = {
-            no_hardware_cursors = true;
+            no_hardware_cursors = false;
           };
 
           dwindle = {
@@ -316,7 +318,7 @@
           };
 
           debug = {
-            disable_logs = true;
+            disable_logs = false;
           };
 
           decoration = {

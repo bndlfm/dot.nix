@@ -90,7 +90,7 @@ in
     overlays = [ ];
   };
 
-  neko.hyprland.enable = true;
+  neko.hyprland.enable = false;
 
   environment.systemPackages = with pkgs; [
     git
@@ -129,12 +129,6 @@ in
       enable = true;
       enableSSHSupport = true;
       pinentryPackage = pkgs.pinentry-curses;
-      };
-    hyprland = {
-      enable = false;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      withUWSM = true;
-      xwayland.enable = true;
       };
     nbd.enable = false;
     nh = {
@@ -227,7 +221,7 @@ in
       plasma6.enable = false;
       };
     displayManager =  {
-      sddm.enable = true;
+      sddm.enable = false;
       };
     fail2ban.enable = false;
     flatpak.enable = true;
@@ -259,11 +253,11 @@ in
     xserver = {
       enable = true;
       displayManager = {
-        gdm.enable = false;
+        gdm.enable = true;
         lightdm.enable = false;
         };
       desktopManager = {
-        gnome.enable = true;
+        gnome.enable = false;
         };
       windowManager = {
         bspwm.enable = true;
