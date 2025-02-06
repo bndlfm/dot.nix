@@ -12,6 +12,7 @@ in{
   ndrop = pkgs.callPackage ./ndrop.nix { };
   openmw-vr = pkgs.callPackage ./openmw-vr/openmw-vr.nix { };
   pass2bw = cPkg ./pass2bw.nix { };
+  pass2bitwarden = cPkg ./pass2bitwarden.nix { };
   proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
   vintageStory = cPkg ./vintageStory.nix { };
 }
