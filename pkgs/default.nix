@@ -3,16 +3,17 @@
 pkgs: let
   cPkg = pkgs.callPackage;
 in{
-  antifennel = pkgs.callPackage ./antifennel.nix { };
-  azote = pkgs.callPackage ./azote.nix { };
-  beatSaberModManager = pkgs.callPackage ./BeatSaberModManager/BeatSaberModManager.nix { };
-  fishai = pkgs.callPackage ./fish-ai.nix { };
-  gamma-launcher = pkgs.callPackage ./gamma-launcher.nix { };
-  gsh = pkgs.callPackage ./generativeShell.nix { };
-  ndrop = pkgs.callPackage ./ndrop.nix { };
-  openmw-vr = pkgs.callPackage ./openmw-vr/openmw-vr.nix { };
+  antifennel = cPkg ./antifennel.nix { };
+  azote = cPkg ./azote.nix { };
+  beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix { };
+  fishai = cPkg ./fish-ai.nix { };
+  gamma-launcher = cPkg ./gamma-launcher.nix { };
+  gsh = cPkg ./generativeShell.nix { };
+  ndrop = cPkg ./ndrop.nix { };
+  openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };
   pass2bw = cPkg ./pass2bw.nix { };
   pass2bitwarden = cPkg ./pass2bitwarden.nix { };
+  pass-export = cPkg ./pass-export.nix { };
   proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
   vintageStory = cPkg ./vintageStory.nix { };
 }

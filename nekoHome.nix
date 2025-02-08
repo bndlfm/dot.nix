@@ -23,8 +23,6 @@
       ./programs/programs.home.nix
       ./programs/twitch.home.nix
 
-      #./programs/gnomeShell.home.nix
-
       ./programs/shell.home.nix
 
       ./programs/firefox.home.nix
@@ -45,11 +43,13 @@
       inputs.sops-nix.homeManagerModules.sops
       ./sops/sops.nix
 
+
     /***********
     * SERVICES *
     ***********/
       ./services/espanso.home.nix
       ./services/services.home.nix
+
 
     /**********
     * SPOTIFY *
@@ -57,10 +57,12 @@
       inputs.spicetify-nix.homeManagerModules.default
       ./theme/spicetify.nix
 
+
     /******************
     * WINDOW MANAGERS *
     ******************/
       ./modules/home-manager/hyprland.mod.home.nix
+      #./programs/gnomeShell.home.nix
       ./windowManagers/bspwm.home.nix
       ./windowManagers/niri.home.nix
   ];
@@ -88,12 +90,15 @@
   };
 
   neko.hyprland.enable = false;
+  nix.package = pkgs.nix; # Required for Chaotic Nyx
 
   home = {
     packages =
       with pkgs;
       let
         ai = [
+          keepass
+          keepassxc
           aichat
           aider-chat
           upscayl
@@ -130,7 +135,7 @@
           libnotify
           libqalculate
           nix-index
-          pass
+          (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
           ripgrep
           sd
           silver-searcher

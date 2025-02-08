@@ -90,6 +90,12 @@ in
     overlays = [ ];
   };
 
+  chaotic.duckdns = {
+    enable = true;
+    ipv6.device = "enp6s0";
+    domain = "caonima.duckdns.org";
+  };
+
   neko.hyprland.enable = false;
 
   environment.systemPackages = with pkgs; [
@@ -223,7 +229,7 @@ in
     displayManager =  {
       sddm.enable = false;
       };
-    fail2ban.enable = false;
+    fail2ban.enable = true;
     flatpak.enable = true;
     guix.enable = false;
     llama-cpp = {
@@ -254,10 +260,9 @@ in
       enable = true;
       displayManager = {
         gdm.enable = true;
-        lightdm.enable = false;
         };
       desktopManager = {
-        gnome.enable = false;
+        gnome.enable = true;
         };
       windowManager = {
         bspwm.enable = true;
@@ -332,6 +337,7 @@ in
       };
     };
 
+
   #-------- NETWORKING --------#
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller
@@ -376,6 +382,7 @@ in
     };
   };
 
+
   #-------- AUDIO --------#
   security.rtkit.enable = true;
   services.pipewire = {
@@ -388,6 +395,7 @@ in
     jack.enable = true;
   };
 
+
   #-------- GPU --------#
   hardware = {
     graphics = {
@@ -398,7 +406,7 @@ in
       ];
     };
     nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
       modesetting.enable = true;
 
       ### Experimental, and can cause sleep/suspend to fail.
@@ -415,7 +423,12 @@ in
     steam-hardware.enable = true;
   };
   services.xserver.videoDrivers = [ "nvidia" ];
-
+  environment.variables = {
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    MOZ_DISABLE_RDD_SANDBOX= "1" ;
+    LIBVA_DRIVER_NAME = "nvidia";
+  };
   environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text = ''
     Section "Screen"
       Identifier "Screen0"
@@ -433,7 +446,6 @@ in
       EndSubSection
     EndSection
   '';
-
   # Setup displays
   services.xserver.displayManager.setupCommands = ''
     ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode=" \
@@ -462,6 +474,7 @@ in
     };
     supportedFilesystems = [ "ntfs" ];
   };
+  #services.scx.enable = true; # for sched-ext schedulers from Chaotix-Nyx
 
 
   #-------- POWER --------#

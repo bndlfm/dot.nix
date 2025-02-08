@@ -1,0 +1,21 @@
+DUCK_DNS_TOKEN: ENC[AES256_GCM,data:ZZvYO3u6Qo538/VG+l+dgy4W2a7awkkpzK8xd7bG7QvBx2g7,iv:LgqiF0CbniErKZYcK9LmDJtKhhZ+6ca2y9potDFuKS0=,tag:AUO/S1gSyqvetfIAz8HhHA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age177snhrqfd422qgm8425pzhrzzc9tt3asymt96mmrlmfg784casrs27frau
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBYbVZEdDFiV3pxKzc3aWF4
+            bHNvWFQxSzNvSWM0L2M5RDRHY3ovUWIvQW1rCndiRWpMZDZFcllsV2Q4cUFXaU5R
+            MkdpRFN2VHB0eEJOakcwZFJXenNXbWcKLS0tIEJGai9zWS9YTlBpMWE4d0Jmc0kr
+            OUZOUC9XcThxOVErcTN5dXJEQW1SWkUKyeLWjtS7SefpewxtQbzWCguns97YnShw
+            E08fRKSiYtn4vY5GOQfd3kaostT8ioUmPVosm7nt01MwUt2u5coCoA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-02-08T05:04:00Z"
+    mac: ENC[AES256_GCM,data:dj7FkO9179jCRX6lPjBeIkW59qk5DTGjckSGLmy7Y8S6rkoiggXXZPdb7/7ccEUXA9GqjGpLfVcwjqW42uJFsHBt65QLXSpHE1UOs6gy+Anh7GTuB/GKlTs+GZxc7F//F5o8C029RLMjFUfxElFTAriF2jsdzfysG9eWIzYl2Ys=,iv:fkOrRwCmVxJK3kMPuXFcY1n8wQMjkEfmD+vUSJduGhk=,tag:GEfqnEgEbasz01I3WfkF8g==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.9.4

@@ -13,12 +13,16 @@
         nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
         home-manager = {
           url = "github:nix-community/home-manager";
-          inputs.nixpkgs.follows = "nixpkgs";
+        };
+        nur = {
+          url = "github:nix-community/NUR";
+        };
+        chaotic = {
+          url = "github:chaotic-cx/nyx";
         };
       ### CUSTOMIZATION
         stylix = {
           url = "github:Mikilio/stylix";
-          inputs.nixpkgs.follows = "nixpkgs";
         };
         tt-schemes = {
           url = "github:tinted-theming/schemes";
@@ -28,47 +32,34 @@
       ### MEDIA
         nixarr = {
           url = "github:rasmus-kirk/nixarr";
-          inputs.nixpkgs.follows = "nixpkgs";
         };
         spicetify-nix = {
           url = "github:Gerg-L/spicetify-nix";
-          inputs.nixpkgs.follows = "nixpkgs";
         };
       ### PROGRAMS
         aagl = {
           url = "github:ezKEa/aagl-gtk-on-nix";
-          inputs.nixpkgs.follows = "nixpkgs";
         };
         deejavu = {
           url = "github:bndlfm/deejavu";
-          inputs.nixpkgs.follows = "nixpkgs";
         };
         isd = {
           url = "github:isd-project/isd";
-          inputs.nixpkgs.follows = "nixpkgs";
-        };
-        nur = {
-          url = "github:nix-community/NUR";
-          inputs.nixpkgs.follows = "nixpkgs";
         };
         openmw-vr = {
           url = "github:bndlfm/openmw-vr.nix";
-          inputs.nixpkgs.follows = "nixpkgs";
         };
       ### SECRETS
         sops-nix.url = "github:Mic92/sops-nix";
       ### WINDOW MANAGER
         cosmic = {
           url = "github:lilyinstarlight/nixos-cosmic";
-          inputs.nixpkgs.follows = "nixpkgs";
         };
         hyprland = {
           url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-          inputs.nixpkgs.follows = "nixpkgs";
         };
         niri = {
           url = "github:sodiboo/niri-flake";
-          inputs.nixpkgs.follows = "nixpkgs";
         };
   };
 
@@ -76,11 +67,11 @@
     self,
     nixpkgs,
     home-manager,
+    nur,
+    chaotic,
     deejavu,
     nixarr,
-    cosmic,
     niri,
-    hyprland,
     spicetify-nix,
     sops-nix,
     stylix,
@@ -122,6 +113,7 @@
             inherit inputs outputs;
             };
           modules = [
+            chaotic.homeManagerModules.default
             ## NIRI
               niri.homeModules.niri
             ## THEMING
@@ -149,6 +141,7 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             ({ nixpkgs.overlays = overlays; })
+            chaotic.nixosModules.default
             ## MEDIA
               nixarr.nixosModules.default (import ./modules/nixarr.sys.nix)
             ## SECRETS
@@ -176,6 +169,5 @@
           ];
         };
       };
-
   };
 }
