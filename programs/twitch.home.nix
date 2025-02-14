@@ -38,7 +38,7 @@ pkgs,
           reversed = false
 
           [frontend]
-          favorite_channels = [ "vinesauce", "vargskelethor", "tomato", "meat", "margo", "beribug", "grimmi" ]
+          favorite_channels = [ "vinesauce", "vargskelethor", "tomato", "meat", "margo", "beribug", "grimmi", "criken" ]
           show_datetimes = true
           datetime_format = "%a %b %e %T %Y"
           username_shown = true

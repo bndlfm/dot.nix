@@ -69,17 +69,14 @@
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
           augmented-steam
           blocktube
-          #          bypass-paywalls-clean
+          #bypass-paywalls-clean
           chatgptbox
           clearurls
           copy-selection-as-markdown
           darkreader
           dearrow
           furiganaize
-          gopass-bridge
           image-search-options
-          localcdn
-          lovely-forks
           pwas-for-firefox
           return-youtube-dislikes
           sidebery
@@ -99,10 +96,49 @@
           /* NOTE: Hide tabs bar b/c of sideberry */
               #TabsToolbar{ visibility: collapse !important }
 
+
           /* NOTE: Hide side bar header for sidebery */
              #sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar-header {
                visibility: collapse;
              }
+
+
+            /*NOTE: collapses sidebery unless hovered (hopefully)*/
+            /*#sidebar-box {
+            /*  background-color: #2B2A33;
+            /*  overflow: hidden;
+            /*  height: calc(100% + 6px);
+            /*  position: fixed;
+            /*  max-width: 26em !important;
+            /*  width: 100% !important;
+            /*  display: block;
+            /*  transition: 90ms;
+            /*}
+
+            /*#sidebar-box:hover {
+            /*  padding-bottom: 50px;
+            /*  position: absolute;
+            /*  z-index: 1;
+            /*}
+
+            /*#sidebar-header {
+            /*  background-color: #2B2A33;
+            /*}
+
+            /*#sidebar {
+            /*  width: calc(45px * 7) !important;
+            /*  max-width: 50vw !important;
+            /*  height: 100%;
+            /*}
+
+            /*#sidebar:hover {
+            /*  max-width: 100% !important;
+            /*}
+
+            /*#appcontent {
+            /*  margin-left: 45px;
+            /*}
+
 
           /* NOTE: Hides the main toolbar and shows it when the cursor is over the tabs toolbar as well as whenever the focus is inside nav-bar, such as when urlbar is focused. */
           /* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/autohide_main_toolbar.css */

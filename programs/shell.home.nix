@@ -163,8 +163,10 @@
           #weather
             wttr = "curl wttr.in";
           #get ip
-            gIPv4-way = "bash -c 'curl icanhazip.com | tee >(wl-copy)'";
-            gIPv4-x11 = "bash -c 'curl icanhazip.com | xclip -i -selection clipboard'";
+            gIPv4-way = "bash -c 'curl ipv4.icanhazip.com | tee >(wl-copy)'";
+            gIPv6-way = "bash -c 'curl ipv6.icanhazip.com | tee >(wl-copy)'";
+            gIPv4-x11 = "bash -c 'curl ipv4.icanhazip.com | xclip -i -selection clipboard'";
+            gIPv6-x11 = "bash -c 'curl ipv6.icanhazip.com | xclip -i -selection clipboard'";
 
         ### GIT SHORTCUTS ###
           g = "git";

@@ -11,7 +11,7 @@ creation_rules:
       - age:
         - *primary
 
-  - path_regex: sops/DUCK_DNS_TOKEN.yaml$
+  - path_regex: sops/DUCKDNS_TOKEN.yaml$
     key_groups:
       - age:
         - *primary

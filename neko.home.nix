@@ -62,7 +62,7 @@
     * WINDOW MANAGERS *
     ******************/
       ./modules/home-manager/hyprland.mod.home.nix
-      #./programs/gnomeShell.home.nix
+    #./programs/gnome-shell.home.nix
       ./windowManagers/bspwm.home.nix
       ./windowManagers/niri.home.nix
   ];
@@ -111,6 +111,7 @@
 
         browsers = [
           #firefox-devedition: programs/hm/firefox.nix
+          inputs.zen-browser.packages.x86_64-linux.twilight
           qutebrowser
           tor-browser
         ];
@@ -190,6 +191,7 @@
         ];
 
         media = [
+          freetube
           mpv
           ncmpcpp
         ];
@@ -208,7 +210,6 @@
           ## PYTHON
             (python3.withPackages (
               pkgs: with pkgs; [
-                gguf
                 llama-cpp
                 pynvim
                 ueberzug

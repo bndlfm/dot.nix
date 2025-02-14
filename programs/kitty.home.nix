@@ -1,4 +1,4 @@
-{ config, ... }:{
+{ config, pkgs, ... }:{
   programs.kitty = {
     enable = true;
     shellIntegration = {
@@ -53,9 +53,7 @@
         map kitty_mod+s  paste_from_selection
         map shift+insert paste_from_selection
         #map kitty_mod+o  pass_selection_to_program
-        map kitty_mod+y kitten foo.py
-        #map kitty_mod+y kitten smartYank.py --api-key "${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path}"
-        # --api-endpoint "https://api.groq.com/openai/v1/chat/completions" --model "llama-3.3-70b-versatile"
+        map kitty_mod+y  launch --allow-remote-control --location=hsplit --stdin-add-formatting --stdin-source=@screen_scrollback ~/.config/kitty/smartYank.sh @active-kitty-window-id
 
         map kitty_mod+up        scroll_line_up
         map kitty_mod+down      scroll_line_down
@@ -191,4 +189,121 @@
         inactive_border_color #4C566A
     '';
   };
+  xdg.configFile = {
+      "kitty/smartYank.sh" = {
+        source = pkgs.writeShellScript "smartYank.sh" ''
+          #!/usr/bin/env bash
+          #############################
+          #   SMART YANK: Smart copy  #
+          # targets from kitty screen #
+          #  using Groq / fzf in bash #
+          #############################
+
+          #########################
+          # --- Configuration --- #
+          #########################
+          API_ENDPOINT="https://api.groq.com/openai/v1/chat/completions"
+          MODEL="llama-3.3-70b-versatile"
+          API_KEY="${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path}"
+
+          ########################
+          # --- Script Start --- #
+          ########################
+          ### 1. Read screen content from stdin and remove ansi codes with sed ###
+          SCREEN_CONTENT=$(cat - | tail -n 100 | sed -r 's/\x1B\[([0-9]{1,3}(;[0-9]{1,3})*)?[mGKH]//g')
+          PROMPT_PREFIX="Based upon the data provided under Screen Content identify any possible copy targets for the user. URLS, COMMANDS, THE RESULT OF COMMANDS (COMMAND OUTPUT), ETC.\n1. If you choose a command as a possible copy target suggest possible arguments, JUST THE COMMAND ITSELF IS NOT USEFUL.\n2. Use the most recent commands to try and identify relevance of copy targets.\n3. RETURN ONLY COPY TARGETS OR YOU WILL BREAK THE STRING, DO NOT NUMBER THE LIST.\n5. DO NOT RETURN THE SAME TARGET MULTIPLE TIMES. IF YOU CANNOT FIND THE NUMBER OF COPY TARGETS REQUESTED RETURN AS MANY AS YOU CAN.\n6. Invert the list so the most promising candidate is the last you return.\n7. Return 20 possible copy targets.\n\nScreen Content:\n\n "
+
+          if [ -z "$SCREEN_CONTENT" ]; then
+            echo "Error: No screen content received." >>smartyank.log
+            exit 1
+          else
+            echo "--- SCREEN_CONTENT ---" >>smartyank.log
+            echo "$SCREEN_CONTENT" >>smartyank.log
+            echo "--- END SCREEN_CONTENT ---" >>smartyank.log
+          fi
+
+          ### 2. Construct Prompt and JSON Payload ###
+          PROMPT="''${PROMPT_PREFIX}''${SCREEN_CONTENT}"
+
+          if [ -z "$API_KEY" ]; then
+            echo "Error: GROQ_SECRET_KEY environment variable not set." >&2
+            exit 1
+          else
+            echo "--- API KEY ---" >>smartyank.log
+            echo "$API_KEY" >>smartyank.log
+            echo "--- END API KEY ---\n" >>smartyank.log
+          fi
+
+          JSON_PAYLOAD=$(
+            cat <<EOF
+          {
+            "model": "''${MODEL}",
+            "messages": [{"role": "user", "content": $(jq -sRc '.' <<<"''${PROMPT}")}]
+          }
+          EOF
+          )
+          echo "--- JSON_PAYLOAD ---" >>smartyank.log
+          echo "$JSON_PAYLOAD" >>smartyank.log
+          echo "--- END JSON_PAYLOAD ---\n" >>smartyank.log
+
+          ### 3. Call Groq API using curl ###
+          LLM_RESPONSE=$(curl -s -X POST \
+            -H "Authorization: Bearer ''${API_KEY}" \
+            -H 'Content-Type: application/json' \
+            --data "$JSON_PAYLOAD" \
+            "''${API_ENDPOINT}")
+
+          if [ -z "$LLM_RESPONSE" ]; then
+            echo "Error: Empty response from LLM API." >&2
+            exit 1
+          else
+            echo "--- RAW LLM RESPONSE ---" >>smartyank.log
+            echo "$LLM_RESPONSE" >>smartyank.log
+            echo "--- END RAW LLM RESPONSE ---\n" >>smartyank.log
+          fi
+
+          ### 4. Extract copy targets from LLM response using jq ###
+          COPY_TARGETS=$(echo "$LLM_RESPONSE" | jq -r '.choices[0].message.content')
+          if [ -z "$COPY_TARGETS" ]; then
+            echo "No copy targets found in LLM response." >&2
+            exit 1
+          else
+            echo "--- COPY TARGETS ---" >>smartyank.log
+            echo "$COPY_TARGETS" >>smartyank.log
+            echo "--- END COPY TARGETS ---\n" >>smartyank.log
+          fi
+
+          ### 5. Select copy target using fzf ###
+          SELECTED_TARGET=$(echo "$COPY_TARGETS" | fzf --no-sort --reverse)
+
+          if [ -z "$SELECTED_TARGET" ]; then
+            echo "No item selected in fzf." >&2
+            exit 0 # User cancelled, not an error
+          else
+            ## DEBUG ##
+            echo "--- SELECTED_TARGET ---" >>smartyank.log
+            echo "$SELECTED_TARGET" >>smartyank.log
+            echo "--- END SELECTED_TARGET ---\n" >>smartyank.log
+            ## END DEBUG ##
+          fi
+
+          ### 6. Copy to clipboard (wl-copy, xclip, clip) ###
+          if command -v wl-copy >/dev/null 2>&1; then
+            echo "$SELECTED_TARGET" | wl-copy
+          elif command -v xclip >/dev/null 2>&1; then
+            echo "$SELECTED_TARGET" | xclip -i -selection clipboard
+          elif command -v clip >/dev/null 2>&1; then
+            echo "$SELECTED_TARGET" | clip
+          else
+            echo "Warning: No clipboard tool (wl-copy, xclip, clip) found. Printing to stdout:" >&2
+            echo "$SELECTED_TARGET"
+            sleep 1
+            exit 0
+          fi
+
+          echo "Copied to clipboard." >&2
+          exit 0
+        '';
+      };
+    };
 }

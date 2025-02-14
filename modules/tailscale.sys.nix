@@ -1,23 +1,22 @@
 {
-  pkgs,
+  lib,
   config,
+  pkgs,
   ...
 }:{
-  environment.systemPackages = with pkgs; [ tailscale ];
+  environment.systemPackages = [
+    pkgs.tailscale
+    pkgs.networkd-dispatcher
+  ];
 
   services = {
     networkd-dispatcher = {
       enable = true;
       rules = {
-        "tailscale" = {
-          onState = [ "routable" ];
+        "50-tailscale" = {
+          onState = ["routable"];
           script = ''
-            #!${pkgs.runtimeShell}
-            echo "Fixing UDP-GRO for Tailscale...."
-            NETDEV=$(ip route show 0/0 | cut -f5 -d' ')
-            ethtool -K $NETDEV rx-udp-gro-forwarding on rx-gro-list off
-
-            exit 0
+            ${lib.getExe pkgs.ethtool} -K enp6s0 rx-udp-gro-forwarding on rx-gro-list off
           '';
         };
       };
@@ -29,36 +28,44 @@
     port = 41641;
   };
 
-  networking.firewall = {
-    enable = true;
-    trustedInterfaces = [ "tailscale0" ];
-    allowedUDPPorts = [ config.services.tailscale.port ];
-    allowedTCPPorts = [ config.services.tailscale.port ];
+  networking = {
+    firewall = {
+      enable = true;
+      trustedInterfaces = [ "tailscale0" ];
+      allowedUDPPorts = [ config.services.tailscale.port ];
+      allowedTCPPorts = [ config.services.tailscale.port ];
+    };
+    interfaces."tailscale0" = {
+      useDHCP = false;
+      wakeOnLan.enable = true;
+    };
   };
 
-  #systemd.services.tailscale-autoconnect = {
-  #  description = "Automatic connection to Tailscale";
+  systemd.services.tailscale-funnel = {
+    description = "Automatic connection to Tailscale";
 
-  #  # make sure tailscale is running before trying to connect to tailscale
-  #  after = [ "network-pre.target" "tailscale.service" ];
-  #  wants = [ "network-pre.target" "tailscale.service" ];
-  #  wantedBy = [ "multi-user.target" ];
+    # make sure tailscale is running before trying to connect to tailscale
+    after = [ "network-pre.target" "tailscale.service" ];
+    wants = [ "network-pre.target" "tailscale.service" ];
+    wantedBy = [ "multi-user.target" ];
 
-  #  serviceConfig.Type = "oneshot";
+    serviceConfig.Type = "oneshot";
 
-  #  script = with pkgs; /* bash */ ''
-  #    # wait for tailscaled to settle
-  #    sleep 2
-  #    # check if we are already authenticated to tailscale
-  #    status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
+    script = with pkgs; /* bash */ ''
+      # wait for tailscaled to settle
+      sleep 5
+      # check if we are already authenticated to tailscale
+      status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
 
-  #    if [ $status = "Running" ]; then # if so, then do nothing
-  #      exit 0
-  #    fi
+      if [ $status = "Running" ]; then # if so, then do nothing
+        exit 0
+      fi
 
-  #    # otherwise authenticate with tailscale
-  #    ### ..../bin/tailscale up -authkey tskey-examplekeyhere # get this from admin console
-  #    ${tailscale}/bin/tailscale up --accept-routes --advertise-routes=192.168.1.0/24
-  #  '';
-  #};
+      # otherwise authenticate with tailscale
+      ### ..../bin/tailscale up -authkey tskey-examplekeyhere # get this from admin console
+      ${tailscale}/bin/tailscale up --advertise-routes=192.168.1.0/24
+      ${tailscale}/bin/tailscale funnel --bg 8096
+
+    '';
+  };
 }

@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
 }:
@@ -50,6 +51,9 @@ in
   imports = [
     ./cachix.nix
 
+    ## SECRETS
+      inputs.sops-nix.nixosModules.sops
+      #./sops/sops.nix
     ### PROGRAMS
       ./programs/steam.sys.nix
     ### MODULES
@@ -90,13 +94,6 @@ in
     overlays = [ ];
   };
 
-  chaotic.duckdns = {
-    enable = true;
-    ipv6.device = "enp6s0";
-    domain = "caonima.duckdns.org";
-  };
-
-  neko.hyprland.enable = false;
 
   environment.systemPackages = with pkgs; [
     git
@@ -108,6 +105,12 @@ in
     tailscale
   ];
 
+
+  #------- MODULES -------#
+  neko.hyprland.enable = false;
+
+
+  #--------- ENV ---------#
   environment.variables= {
     QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
     QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
@@ -120,6 +123,7 @@ in
     XDG_STATE_HOME = "$HOME/.local/state";
     XDG_BIN_HOME = "$HOME/.local/bin";
   };
+
 
   #-------- PACKAGE MODULES --------#
   programs = {
@@ -218,9 +222,9 @@ in
   #-------- SERVICES --------#
   services = {
     avahi = { # CUPS (printing)
-      enable = true;
-      nssmdns4 = true;
-      openFirewall = true;
+      enable = false;
+      nssmdns4 = false;
+      openFirewall = false;
       };
     blueman.enable = true;
     desktopManager = {
@@ -249,6 +253,7 @@ in
       };
     openssh.enable = true;
     printing.enable = true;
+    resolved.enable = true;
     udev.extraRules = ''
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="*",GROUP="users", MODE="0660"
       '';
@@ -469,12 +474,12 @@ in
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
       "vm.overcommit_memory" = 1;
+      "vm.max_map_count" = lib.mkForce 16777216; # for S&BOX
       #"net.ipv4.ip_forward" = 1; Overrode by Nixarr, which I think I want.
       #"net.ipv6.conf.all.forwarding" = 1;
     };
     supportedFilesystems = [ "ntfs" ];
   };
-  #services.scx.enable = true; # for sched-ext schedulers from Chaotix-Nyx
 
 
   #-------- POWER --------#

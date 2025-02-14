@@ -14,9 +14,9 @@
         sopsFile = ./ANTHROPIC_API_KEY.yaml;
       };
 
-      DUCK_DNS_TOKEN = {
+      DUCKDNS_TOKEN = {
         format = "yaml";
-        sopsFile = ./DUCK_DNS_TOKEN.yaml;
+        sopsFile = ./DUCKDNS_TOKEN.yaml;
       };
 
       GMAIL_APP_PASS = {

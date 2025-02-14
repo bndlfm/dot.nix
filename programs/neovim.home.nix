@@ -58,7 +58,6 @@ in {
       gnumake
       highlight
       imagemagick
-      javascript-typescript-langserver
       lua-language-server
       texlivePackages.latex
       lazygit

@@ -220,7 +220,7 @@ in {
              /************
              * CLIPBOARD *
              *************/
-               "${Mod}+Control+C".action.spawn = [ "copyq" "show"];
+               "${Mod}+Control+V".action.spawn = [ "copyq" "show"];
 
              /*************
              * SCREENSHOT *
@@ -382,14 +382,14 @@ in {
              }
 
              ## COPYQ CLIPBOARD MANAGER
-             {
-               matches = [
-                 {
-                   app-id = "^com.github.hluk.copyq$";
-                 }
-               ];
-               open-floating = true;
-             }
+            {
+              matches = [
+                {
+                  app-id = "^com.github.hluk.copyq$";
+                }
+              ];
+              open-floating = true;
+            }
 
             ## CLIPSE CLIPBOARD MANAGER
             {

@@ -1,4 +1,4 @@
-DUCK_DNS_TOKEN: ENC[AES256_GCM,data:ZZvYO3u6Qo538/VG+l+dgy4W2a7awkkpzK8xd7bG7QvBx2g7,iv:LgqiF0CbniErKZYcK9LmDJtKhhZ+6ca2y9potDFuKS0=,tag:AUO/S1gSyqvetfIAz8HhHA==,type:str]
+DUCKDNS_TOKEN: ENC[AES256_GCM,data:fN5i3Oop19l/iVdnOGGqAruKDDAwiYmiHCaTOr7R4qVGMCjG,iv:6FHFLgsTQKpFiPhZuQh0EkwtCTCdIxCfARL+P+5cz4c=,tag:8O/GTv1dfxQMaCAgvx9q0g==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -14,8 +14,8 @@ sops:
             OUZOUC9XcThxOVErcTN5dXJEQW1SWkUKyeLWjtS7SefpewxtQbzWCguns97YnShw
             E08fRKSiYtn4vY5GOQfd3kaostT8ioUmPVosm7nt01MwUt2u5coCoA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-02-08T05:04:00Z"
-    mac: ENC[AES256_GCM,data:dj7FkO9179jCRX6lPjBeIkW59qk5DTGjckSGLmy7Y8S6rkoiggXXZPdb7/7ccEUXA9GqjGpLfVcwjqW42uJFsHBt65QLXSpHE1UOs6gy+Anh7GTuB/GKlTs+GZxc7F//F5o8C029RLMjFUfxElFTAriF2jsdzfysG9eWIzYl2Ys=,iv:fkOrRwCmVxJK3kMPuXFcY1n8wQMjkEfmD+vUSJduGhk=,tag:GEfqnEgEbasz01I3WfkF8g==,type:str]
+    lastmodified: "2025-02-08T06:15:25Z"
+    mac: ENC[AES256_GCM,data:1tdOi9QRlILzq4XdRW4Qx8PHfzxGnmZUAUndFtkiI3rQ+iUznuXuX2cCnmNv1unC923TkTdbXWwJJWwFDBMrC6mE6EMhDPjoBRvX13NwJtfHQo1Amm6vuBixSqi9krHJ+G6BkjLkytfeA6ZwzNmmiY+S63VHaEPHSa6Sa8nGkC8=,iv:NZQYi9d+4HXaSEJkXGBo5bTS6N4nyHDCARyJzQSBVj8=,tag:kHP5uBgJ9aF5VgN1xHyUYA==,type:str]
     pgp: []
     unencrypted_suffix: _unencrypted
     version: 3.9.4

@@ -18,6 +18,7 @@
     extraCompatPackages = with pkgs; [
       (pkgs.callPackage ../pkgs/proton-ge-rtsp.nix {})
       proton-ge-bin
+      gamescope
     ];
   };
 }

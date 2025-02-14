@@ -1,66 +1,46 @@
 {
   inputs = {
-   /***************
-    * TEMP INPUTS *
-    ***************/
-      ### NOTE: Check if fixed upstream!
+  /***************
+  * TEMP INPUTS *
+  ***************/
+  ## NOTE: Check if fixed upstream!
 
-   /********************
-    * PERMANENT INPUTS *
-    ********************/
-      ### NIX
-        nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-        nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
-        home-manager = {
-          url = "github:nix-community/home-manager";
-        };
-        nur = {
-          url = "github:nix-community/NUR";
-        };
-        chaotic = {
-          url = "github:chaotic-cx/nyx";
-        };
-      ### CUSTOMIZATION
-        stylix = {
-          url = "github:Mikilio/stylix";
-        };
-        tt-schemes = {
-          url = "github:tinted-theming/schemes";
-          flake = false;
-        };
-        base16.url = "github:SenchoPens/base16.nix";
-      ### MEDIA
-        nixarr = {
-          url = "github:rasmus-kirk/nixarr";
-        };
-        spicetify-nix = {
-          url = "github:Gerg-L/spicetify-nix";
-        };
-      ### PROGRAMS
-        aagl = {
-          url = "github:ezKEa/aagl-gtk-on-nix";
-        };
-        deejavu = {
-          url = "github:bndlfm/deejavu";
-        };
-        isd = {
-          url = "github:isd-project/isd";
-        };
-        openmw-vr = {
-          url = "github:bndlfm/openmw-vr.nix";
-        };
-      ### SECRETS
-        sops-nix.url = "github:Mic92/sops-nix";
-      ### WINDOW MANAGER
-        cosmic = {
-          url = "github:lilyinstarlight/nixos-cosmic";
-        };
-        hyprland = {
-          url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-        };
-        niri = {
-          url = "github:sodiboo/niri-flake";
-        };
+  /********************
+  * PERMANENT INPUTS *
+  ********************/
+  ## NIX
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    home-manager.url = "github:nix-community/home-manager";
+    nur.url = "github:nix-community/NUR";
+    chaotic.url = "github:chaotic-cx/nyx";
+
+  ## CUSTOMIZATION
+    stylix.url = "github:Mikilio/stylix";
+    tt-schemes = {
+      url = "github:tinted-theming/schemes";
+      flake = false;
+    };
+    base16.url = "github:SenchoPens/base16.nix";
+
+  ## MEDIA
+    nixarr.url = "github:rasmus-kirk/nixarr";
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+
+  ## PROGRAMS
+    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
+    deejavu.url = "github:bndlfm/deejavu";
+    isd.url = "github:isd-project/isd";
+    openmw-vr.url = "github:bndlfm/openmw-vr.nix";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
+
+  ## SECRETS
+    sops-nix.url = "github:Mic92/sops-nix";
+
+  ## WINDOW MANAGER
+    cosmic.url = "github:lilyinstarlight/nixos-cosmic";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    niri.url = "github:sodiboo/niri-flake";
   };
 
   outputs = {
@@ -120,7 +100,7 @@
               #niri.homeModules.stylix
               stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
             ## IMPORTS
-              ./nekoHome.nix
+              ./neko.home.nix
             ];
           };
         "neko@nyaa" = home-manager.lib.homeManagerConfiguration {
@@ -158,8 +138,8 @@
                 niri-flake.cache.enable = true;
               }
             ## IMPORTS
-              ./meowSystem.nix
-              ./meowHardware.nix
+              ./meow.sys.nix
+              ./meow.hardware.nix
           ];
         };
         "nyaa" = nixpkgs.lib.nixosSystem {
