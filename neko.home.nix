@@ -97,10 +97,9 @@
       with pkgs;
       let
         ai = [
-          keepass
-          keepassxc
           aichat
           aider-chat
+          gsh
           upscayl
           warp-terminal
         ];
@@ -155,6 +154,7 @@
 
         daemons = [
           inputs.deejavu.packages.x86_64-linux.default
+          megasync
           mpd-discord-rpc
           yams
         ];
@@ -182,6 +182,7 @@
           ## GAMING UTILITIES
             (callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix { })
             mangohud
+            protontricks
             steamtinkerlaunch
           ## LAUNCHERS
             heroic
@@ -227,6 +228,7 @@
 
         social = [
           discord
+          vesktop
           hexchat
         ];
 
@@ -270,6 +272,11 @@
 
         tui = [
           inputs.isd.packages.${pkgs.system}.isd
+          ## PROGRAMMING
+            fx #json viewer
+            harlequin # sql ide
+            lazygit
+            posting # api client
           ## SYSTEM MONITORS
             btop
             iotop
@@ -278,6 +285,7 @@
             highlight
             page
             pulsemixer
+            ncdu
             ranger
             tdf
         ];

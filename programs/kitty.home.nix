@@ -214,12 +214,8 @@
           PROMPT_PREFIX="Based upon the data provided under Screen Content identify any possible copy targets for the user. URLS, COMMANDS, THE RESULT OF COMMANDS (COMMAND OUTPUT), ETC.\n1. If you choose a command as a possible copy target suggest possible arguments, JUST THE COMMAND ITSELF IS NOT USEFUL.\n2. Use the most recent commands to try and identify relevance of copy targets.\n3. RETURN ONLY COPY TARGETS OR YOU WILL BREAK THE STRING, DO NOT NUMBER THE LIST.\n5. DO NOT RETURN THE SAME TARGET MULTIPLE TIMES. IF YOU CANNOT FIND THE NUMBER OF COPY TARGETS REQUESTED RETURN AS MANY AS YOU CAN.\n6. Invert the list so the most promising candidate is the last you return.\n7. Return 20 possible copy targets.\n\nScreen Content:\n\n "
 
           if [ -z "$SCREEN_CONTENT" ]; then
-            echo "Error: No screen content received." >>smartyank.log
+            echo "Error: No screen content received." >&2
             exit 1
-          else
-            echo "--- SCREEN_CONTENT ---" >>smartyank.log
-            echo "$SCREEN_CONTENT" >>smartyank.log
-            echo "--- END SCREEN_CONTENT ---" >>smartyank.log
           fi
 
           ### 2. Construct Prompt and JSON Payload ###
@@ -228,10 +224,6 @@
           if [ -z "$API_KEY" ]; then
             echo "Error: GROQ_SECRET_KEY environment variable not set." >&2
             exit 1
-          else
-            echo "--- API KEY ---" >>smartyank.log
-            echo "$API_KEY" >>smartyank.log
-            echo "--- END API KEY ---\n" >>smartyank.log
           fi
 
           JSON_PAYLOAD=$(
@@ -240,11 +232,7 @@
             "model": "''${MODEL}",
             "messages": [{"role": "user", "content": $(jq -sRc '.' <<<"''${PROMPT}")}]
           }
-          EOF
-          )
-          echo "--- JSON_PAYLOAD ---" >>smartyank.log
-          echo "$JSON_PAYLOAD" >>smartyank.log
-          echo "--- END JSON_PAYLOAD ---\n" >>smartyank.log
+          EOF)
 
           ### 3. Call Groq API using curl ###
           LLM_RESPONSE=$(curl -s -X POST \
@@ -256,10 +244,6 @@
           if [ -z "$LLM_RESPONSE" ]; then
             echo "Error: Empty response from LLM API." >&2
             exit 1
-          else
-            echo "--- RAW LLM RESPONSE ---" >>smartyank.log
-            echo "$LLM_RESPONSE" >>smartyank.log
-            echo "--- END RAW LLM RESPONSE ---\n" >>smartyank.log
           fi
 
           ### 4. Extract copy targets from LLM response using jq ###
@@ -267,10 +251,6 @@
           if [ -z "$COPY_TARGETS" ]; then
             echo "No copy targets found in LLM response." >&2
             exit 1
-          else
-            echo "--- COPY TARGETS ---" >>smartyank.log
-            echo "$COPY_TARGETS" >>smartyank.log
-            echo "--- END COPY TARGETS ---\n" >>smartyank.log
           fi
 
           ### 5. Select copy target using fzf ###
@@ -279,12 +259,6 @@
           if [ -z "$SELECTED_TARGET" ]; then
             echo "No item selected in fzf." >&2
             exit 0 # User cancelled, not an error
-          else
-            ## DEBUG ##
-            echo "--- SELECTED_TARGET ---" >>smartyank.log
-            echo "$SELECTED_TARGET" >>smartyank.log
-            echo "--- END SELECTED_TARGET ---\n" >>smartyank.log
-            ## END DEBUG ##
           fi
 
           ### 6. Copy to clipboard (wl-copy, xclip, clip) ###

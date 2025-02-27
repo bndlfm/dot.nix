@@ -6,104 +6,80 @@
   ...
 }:
 let
-  monitors = {
-    left = {
-      output = "HDMI-A-1";
-      pos = {
-        x = "0";
-        y = "0";
-      };
-      resolution = {
-        width = 1920;
-        height = 1200;
-      };
-      rate = 60;
-    };
-
-    center = {
-      output = "DP-1";
-      pos = {
-        x = "1200";
-        y = "0";
-      };
-      resolution = {
-        width = 2560;
-        height = 1440;
-      };
-      rate = 144;
-    };
-
-    right = {
-      output = "HDMI-A-3";
-      pos = {
-        x = "3760";
-        y = "0";
-      };
-      resolution = {
-        width = 1920;
-        height = 1200;
-      };
-      rate = 60;
-    };
-  };
+  globals = import ./lib/globals.nix;
 in
 {
-  imports = [
-    ./cachix.nix
+  imports =
+    [
+      ./cachix.nix
 
-    ## SECRETS
-      inputs.sops-nix.nixosModules.sops
-      #./sops/sops.nix
-    ### PROGRAMS
-      ./programs/steam.sys.nix
-    ### MODULES
-      ./modules/tailscale.sys.nix
-    ### SERVICES
-      ./services/sunshine.sys.nix
-    ### WINDOW MANAGERS
-      ./modules/nixos/hyprland.mod.sys.nix
-  ];
+      ## SECRETS
+        inputs.sops-nix.nixosModules.sops
+      ### PROGRAMS
+        ./programs/steam.sys.nix
+      ### MODULES
+        ./modules/tailscale.sys.nix
+      ### SERVICES
+        ./services/sunshine.sys.nix
+      ### WINDOW MANAGERS
+        ./modules/nixos/hyprland.mod.sys.nix
+    ];
 
   #-------- PACKAGES --------#
-  nix = {
-    settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" "@wheel" ];
-      trusted-substituters = [ ];
-      trusted-public-keys = [ ];
-      };
+  nix =
+    {
+      settings =
+        {
+          experimental-features = [ "nix-command" "flakes" ];
+          trusted-users = [ "root" "@wheel" ];
+          trusted-substituters = [ ];
+          trusted-public-keys = [ ];
+        };
     };
 
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      cudaSupport = true;
-      packageOverrides = pkgs: {
-        nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz")
-          { inherit pkgs; };
-      };
-      permittedInsecurePackages = [
-        "aspnetcore-runtime-wrapped-6.0.36"
-        "aspnetcore-runtime-6.0.36"
-        "dotnet-runtime-7.0.20"
-        "dotnet-core-combined"
-        "dotnet-sdk-wrapped-6.0.428"
-        "dotnet-sdk-6.0.428"
+  nixpkgs =
+    {
+      config =
+        {
+          allowUnfree = true;
+          cudaSupport = true;
+          packageOverrides =
+            pkgs:
+              {
+              nur =
+                import
+                  (
+                    builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz"
+                  )
+                  { inherit pkgs; };
+              };
+          permittedInsecurePackages =
+            [
+              "aspnetcore-runtime-wrapped-6.0.36"
+              "aspnetcore-runtime-6.0.36"
+              "dotnet-runtime-7.0.20"
+              "dotnet-core-combined"
+              "dotnet-sdk-wrapped-6.0.428"
+              "dotnet-sdk-6.0.428"
+            ];
+        };
+      overlays = [];
+    };
+
+
+  environment.systemPackages = 
+    with pkgs;
+      [
+        btrfs-progs
+        git
+        home-manager
+        ifuse
+        libimobiledevice
+        pinentry-curses
+        polkit_gnome
+        runc
+        tailscale
       ];
-    };
-    overlays = [ ];
-  };
-
-
-  environment.systemPackages = with pkgs; [
-    git
-    btrfs-progs
-    home-manager
-    pinentry-curses
-    polkit_gnome
-    runc
-    tailscale
-  ];
 
 
   #------- MODULES -------#
@@ -127,6 +103,7 @@ in
 
   #-------- PACKAGE MODULES --------#
   programs = {
+    adb.enable = true;
     darling.enable = false;
     dconf = {
       enable = true;
@@ -167,7 +144,6 @@ in
         };
       };
     docker.rootless = {
-      package = pkgs.docker_27;
       enable = true;
       };
     docker = {
@@ -203,7 +179,7 @@ in
     users.users.neko = {
       isNormalUser = true;
       description = "neko";
-      extraGroups = [ "networkmanager" "wheel" "input" "docker" "media" "libvirtd" "tss" ];
+      extraGroups = [ "networkmanager" "wheel" "input" "docker" "media" "libvirtd" "tss" "adbusers" ];
       linger = true;
       };
 
@@ -222,11 +198,12 @@ in
   #-------- SERVICES --------#
   services = {
     avahi = { # CUPS (printing)
-      enable = false;
-      nssmdns4 = false;
-      openFirewall = false;
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
       };
     blueman.enable = true;
+    gnome.sushi.enable = true;
     desktopManager = {
       plasma6.enable = false;
       };
@@ -244,6 +221,10 @@ in
     monado = {
       enable = true;
       defaultRuntime = true;
+      };
+    usbmuxd = {
+      enable = true;
+      package = pkgs.usbmuxd2;
       };
     ollama = {
       enable = false; ### SEE PODMAN + HARBOR
@@ -346,118 +327,132 @@ in
   #-------- NETWORKING --------#
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller
-  networking = {
-    hostName = "meow";
-    nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
-    search = [ "example.ts.net" ];
-    firewall.checkReversePath = "loose";
-    networkmanager.enable = true; # Enable Networking
-    interfaces."enp6s0".wakeOnLan.enable = true;
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [
-        5173 # Grimoire
-        8333 # SillyTavern
-        8096 # Jellyfin HTTP
-        8920 # Jellyfin HTTPS
-        #25565 # MC SERVER
-        #25575 # MC RCON
-      ];
-      allowedTCPPortRanges = [
+  networking =
+    {
+      hostName = "meow";
+      nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
+      search = [ "example.ts.net" ];
+      firewall.checkReversePath = "loose";
+      networkmanager.enable = true; # Enable Networking
+      interfaces."enp6s0".wakeOnLan.enable = true;
+      firewall =
         {
-          from = 1714;
-          to = 1764;
-        }
-      ];
-      allowedUDPPorts = [
-        1900 7359 # Jellyfin service autodiscovery
-        5173 # Grimoire
-        5353 # AirPlay (iOS)
-        8333 # SillyTavern
-        #25565 # MC SERVER
-        #25575 # MC RCON
-        51820 # Wireguard port
-      ];
-      allowedUDPPortRanges = [
-        {
-          from = 1714;
-          to = 1764;
-        }
-      ];
+          enable = true;
+          allowedTCPPorts =
+            [
+              5173 # Grimoire
+              8333 # SillyTavern
+              8096 # Jellyfin HTTP
+              8920 # Jellyfin HTTPS
+              37285 # Nixarr AirVPN Torrenting
+              #25565 # MC SERVER
+              #25575 # MC RCON
+            ];
+          allowedTCPPortRanges =
+            [
+              {
+                from = 1714;
+                to = 1764;
+              }
+            ];
+          allowedUDPPorts =
+            [
+              1900 7359 # Jellyfin service autodiscovery
+              5173 # Grimoire
+              5353 # AirPlay (iOS)
+              8333 # SillyTavern
+              37285 # Nixarr AirVPN Torrenting
+              #25565 # MC SERVER
+              #25575 # MC RCON
+              51820 # Wireguard port
+            ];
+          allowedUDPPortRanges =
+            [
+              {
+                from = 1714;
+                to = 1764;
+              }
+            ];
+        };
     };
-  };
 
 
   #-------- AUDIO --------#
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa = {
+  services.pipewire =
+    {
       enable = true;
-      support32Bit = true;
+      alsa =
+        {
+          enable = true;
+          support32Bit = true;
+        };
+      pulse.enable = true;
+      jack.enable = true;
     };
-    pulse.enable = true;
-    jack.enable = true;
-  };
 
 
   #-------- GPU --------#
-  hardware = {
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-      extraPackages = with pkgs; [
-        nvidia-vaapi-driver
-      ];
-    };
-    nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.latest;
-      modesetting.enable = true;
+  hardware =
+    {
+      graphics =
+        {
+          enable = true;
+          enable32Bit = true;
+          extraPackages = with pkgs; [ nvidia-vaapi-driver ];
+        };
+      nvidia =
+        {
+          package = config.boot.kernelPackages.nvidiaPackages.latest;
+          modesetting.enable = true;
 
-      ### Experimental, and can cause sleep/suspend to fail.
-      powerManagement.enable = false;
+          ### Experimental, and can cause sleep/suspend to fail.
+          powerManagement.enable = false;
 
-      ### Fine-grained power management. Turns off GPU when not in use.
-      ### Experimental Turing+
-      ### Use the NVidia open source dkms kernel module
-      ### https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-      open = false;
-      nvidiaSettings = true;
+          ### Fine-grained power management. Turns off GPU when not in use.
+          ### Experimental Turing+
+          ### Use the NVidia open source dkms kernel module
+          ### https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
+          open = false;
+          nvidiaSettings = true;
+        };
+      nvidia-container-toolkit.enable = true;
+      steam-hardware.enable = true;
     };
-    nvidia-container-toolkit.enable = true;
-    steam-hardware.enable = true;
-  };
   services.xserver.videoDrivers = [ "nvidia" ];
-  environment.variables = {
-    GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    MOZ_DISABLE_RDD_SANDBOX= "1" ;
-    LIBVA_DRIVER_NAME = "nvidia";
-  };
-  environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text = ''
-    Section "Screen"
-      Identifier "Screen0"
-      Device "Device0"
-      Monitor "Monitor0"
-      DefaultDepth 24
-      Option "Stereo" "0"
-      Option "nvidiaXineramaInfoOrder" "DFP-7"
-      Option "metamodes" "${monitors.left.output}: nvidia-auto-select +${monitors.left.pos.x}+${monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, ${monitors.center.output}: nvidia-auto-select +${monitors.center.pos.x}+${monitors.center.pos.y} {AllowGSYNCCompatible=On}, ${monitors.right.output}: nvidia-auto-select +${monitors.right.pos.x}+${monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
-      Option "SLI" "Off"
-      Option "MultiGPU" "Off"
-      Option "BaseMosaic" "off"
-      SubSection "Display"
-        Depth 24
-      EndSubSection
-    EndSection
-  '';
+  environment.variables =
+    {
+      GBM_BACKEND = "nvidia-drm";
+      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      MOZ_DISABLE_RDD_SANDBOX= "1" ;
+      LIBVA_DRIVER_NAME = "nvidia";
+    };
+  environment.etc."X11/xorg.conf.d/10-nvidia-settings.conf".text =
+    ''
+      Section "Screen"
+        Identifier "Screen0"
+        Device "Device0"
+        Monitor "Monitor0"
+        DefaultDepth 24
+        Option "Stereo" "0"
+        Option "nvidiaXineramaInfoOrder" "DFP-7"
+        Option "metamodes" "${globals.monitors.left.output}: nvidia-auto-select +${globals.monitors.left.pos.x}+${globals.monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, ${globals.monitors.center.output}: nvidia-auto-select +${globals.monitors.center.pos.x}+${globals.monitors.center.pos.y} {AllowGSYNCCompatible=On}, ${monitors.right.output}: nvidia-auto-select +${globals.monitors.right.pos.x}+${globals.monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
+        Option "SLI" "Off"
+        Option "MultiGPU" "Off"
+        Option "BaseMosaic" "off"
+        SubSection "Display"
+          Depth 24
+        EndSubSection
+      EndSection
+    '';
   # Setup displays
-  services.xserver.displayManager.setupCommands = ''
-    ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode=" \
-    ${monitors.left.output}: nvidia-auto-select +${monitors.left.pos.x}+${monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, \
-    ${monitors.center.output}: nvidia-auto-select +${monitors.center.pos.x}+${monitors.center.pos.y} {AllowGSYNCCompatible=On}, \
-    ${monitors.right.output}: nvidia-auto-select +${monitors.right.pos.x}+${monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
-  '';
+  services.xserver.displayManager.setupCommands =
+    ''
+      ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode=" \
+      ${globals.monitors.left.output}: nvidia-auto-select +${globals.monitors.left.pos.x}+${globals.monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, \
+      ${globals.monitors.center.output}: nvidia-auto-select +${globals.monitors.center.pos.x}+${globals.monitors.center.pos.y} {AllowGSYNCCompatible=On}, \
+      ${globals.monitors.right.output}: nvidia-auto-select +${globals.monitors.right.pos.x}+${globals.monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
+    '';
 
 
   #-------- BOOTLOADER --------#

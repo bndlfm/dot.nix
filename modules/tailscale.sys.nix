@@ -4,9 +4,10 @@
   pkgs,
   ...
 }:{
-  environment.systemPackages = [
-    pkgs.tailscale
-    pkgs.networkd-dispatcher
+  environment.systemPackages = with pkgs; [
+    ethtool
+    tailscale
+    networkd-dispatcher
   ];
 
   services = {
@@ -63,7 +64,7 @@
 
       # otherwise authenticate with tailscale
       ### ..../bin/tailscale up -authkey tskey-examplekeyhere # get this from admin console
-      ${tailscale}/bin/tailscale up --advertise-routes=192.168.1.0/24
+      ${tailscale}/bin/tailscale up --advertise-routes=192.168.1.0/24 --operator=neko
       ${tailscale}/bin/tailscale funnel --bg 8096
 
     '';

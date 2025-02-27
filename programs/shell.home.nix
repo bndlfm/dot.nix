@@ -133,7 +133,7 @@
           # rebuild system
             nfu = "nix flake update --flake ~/.nixcfg/";
             nxrb = "nh os switch ~/.nixcfg";
-            hmrb = "nh home switch ~/.nixcfg/ -- --impure";
+            hmrb = "nh home switch ~/.nixcfg/ -b hmbackup -- --impure";
           # garbage collection
             nxgc = "sudo nix-collect-garbage -d";
             hmgc = "nix-collect-garbage -d";

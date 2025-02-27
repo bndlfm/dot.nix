@@ -12,7 +12,7 @@ nixarr = {
       enable = true;
       # WARNING: This file must _not_ be in the config git directory
       # You can usually get this wireguard file from your VPN provider
-      wgConf = "/data/.secret/vpn/wg.conf";
+      wgConf = "/data/.secret/vpn/airvpn_sweden.conf";
     };
 
     jellyfin = {
@@ -29,7 +29,7 @@ nixarr = {
     transmission = {
       enable = true;
       vpn.enable = true;
-      peerPort = 50000; # Set this to the port forwarded by your VPN
+      peerPort = 37285; # Set this to the port forwarded by your VPN
     };
 
     # It is possible for this module to run the *Arrs through a VPN, but it
