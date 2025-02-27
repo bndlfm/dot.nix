@@ -436,7 +436,7 @@ in
         DefaultDepth 24
         Option "Stereo" "0"
         Option "nvidiaXineramaInfoOrder" "DFP-7"
-        Option "metamodes" "${globals.monitors.left.output}: nvidia-auto-select +${globals.monitors.left.pos.x}+${globals.monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, ${globals.monitors.center.output}: nvidia-auto-select +${globals.monitors.center.pos.x}+${globals.monitors.center.pos.y} {AllowGSYNCCompatible=On}, ${monitors.right.output}: nvidia-auto-select +${globals.monitors.right.pos.x}+${globals.monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
+        Option "metamodes" "${globals.monitors.left.output}: nvidia-auto-select +${globals.monitors.left.pos.x}+${globals.monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, ${globals.monitors.center.output}: nvidia-auto-select +${globals.monitors.center.pos.x}+${globals.monitors.center.pos.y} {AllowGSYNCCompatible=On}, ${globals.monitors.right.output}: nvidia-auto-select +${globals.monitors.right.pos.x}+${globals.monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
         Option "SLI" "Off"
         Option "MultiGPU" "Off"
         Option "BaseMosaic" "off"
