@@ -120,10 +120,6 @@ in {
             command = [ "niri" "msg" "action" "focus-workspace-down" ];
           }
 
-        #### FOR WAYBAR INDICATOR AND DARK AND DARKER
-          {
-            command = [ "wl-gammarelay-rs" ];
-          }
 
         #### BLUE LIGHT FILTER AT NIGHT ####
           {
@@ -140,7 +136,17 @@ in {
             command = [ "copyq" "--start-server" ];
           }
 
-        #### GDRIVE #####
+        #### GAMMA-INDICATOR ####
+          #{
+          #  command = [ "gammastep-indicator" "-l" "38.0638:-191.4035" "-t" "6500:4500"];
+          #}
+
+        #### GAMMA RELAY ####
+          {
+            command = [ "wl-gammarelay-rs" ];
+          }
+
+        ### GDRIVE ####
           {
             command = [ "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse" "/home/neko/Documents/GoogleDrive/" ];
           }
@@ -158,6 +164,7 @@ in {
             command = [ "sh" "-c" "swayidle -w timeout 1201 'niri msg action power-off-monitors' timeout 1200 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'" ];
           }
 
+
         #### SYNC CLIPBOARD + SAVE COPY HISTORY ####
           {
             command = [ "copyq" "--start-server" ];
@@ -169,10 +176,6 @@ in {
             command = [ "swaybg" "-i" "/home/neko/Pictures/Wallpapers/4K/Weather/Wallpaper forest, trees, snow, winter, 4k, Nature 8421417542.jpg" ];
           }
 
-        ####  GAMMA-INDICATOR ####
-          {
-            command = [ "gammastep-indicator" "-l" "38.0638:-191.4035" "-t" "6500:4500"];
-          }
 
         #### XWAYLAND ####
           {
@@ -402,6 +405,17 @@ in {
           ];
           open-floating = true;
         }
+
+        ## SUSHI - GNOME FILES PREVIEW
+          {
+            matches =
+              [
+                {
+                  app-id = "^org.gnome.NautiliusPreviewer";
+                }
+              ];
+            open-floating = true;
+          }
 
         ## KITTY DROPDOWN
         {
