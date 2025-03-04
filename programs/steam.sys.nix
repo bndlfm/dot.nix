@@ -16,7 +16,7 @@
     remotePlay.openFirewall = true;
 
     extraCompatPackages = with pkgs; [
-      (pkgs.callPackage ../pkgs/proton-ge-rtsp.nix {})
+      _proton-ge-rtsp
       proton-ge-bin
       gamescope
     ];

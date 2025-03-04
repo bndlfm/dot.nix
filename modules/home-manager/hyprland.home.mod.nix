@@ -2,28 +2,28 @@
 
 {
   options = {
-    neko.hyprland.enable = lib.mkEnableOption "Enable neko Hyprland setup";
+    _hyprland.enable = lib.mkEnableOption "Enable neko Hyprland setup";
 
-    neko.hyprland.packages = lib.mkOption {
+    _hyprland.packages = lib.mkOption {
       type = lib.types.listOf lib.types.package;
       default = [];
       description = "Extra packages to install for neko Hyprland setup.";
     };
 
-    neko.hyprland.settings = lib.mkOption {
+    _hyprland.settings = lib.mkOption {
       type = lib.types.attrs;
       default = {};
       description = "Custom Hyprland settings for neko setup (merged with defaults).";
     };
 
-    neko.hyprland.extraConfig = lib.mkOption {
+    _hyprland.extraConfig = lib.mkOption {
       type = lib.types.str;
       default = "";
       description = "Extra Hyprland configuration (appended to defaults).";
     };
   };
 
-  config = lib.mkIf config.neko.hyprland.enable {
+  config = lib.mkIf config._hyprland.enable {
     home.packages = with pkgs; [
       copyq
       fuzzel
@@ -284,7 +284,7 @@
           #-------- Hyprland Variables --------#
           general = {
             # https://wiki.hyprland.org/Configuring/Variables/ for more
-            allow_tearing = false;
+            allow_tearing = true;
             gaps_in = 5;
             gaps_out = 10;
             border_size = 4;
@@ -309,7 +309,7 @@
           };
 
           cursor = {
-            no_hardware_cursors = false;
+            no_hardware_cursors = true;
           };
 
           dwindle = {
@@ -336,7 +336,7 @@
           ];
 
           experimental = {
-            xx_color_management_v4 = true;
+            xx_color_management_v4 = false;
           };
 
           input = {

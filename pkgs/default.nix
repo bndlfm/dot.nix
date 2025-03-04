@@ -5,15 +5,15 @@ pkgs:
     cPkg = pkgs.callPackage;
   in
     {
-      antifennel = cPkg ./antifennel.nix {};
-      azote = cPkg ./azote.nix {};
-      beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix {};
-      fishai = cPkg ./fish-ai.nix {};
-      gamma-launcher = cPkg ./gamma-launcher.nix {};
-      gsh = cPkg ./generativeShell.nix {};
-      hideWaydroid = cPkg ./hideWaydroid.nix {};
-      ndrop = cPkg ./ndrop.nix {};
-      openmw-vr = cPkg ./openmw-vr/openmw-vr.nix {};
-      proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix {};
-      vintageStory = cPkg ./vintageStory.nix {};
+      _antifennel = cPkg ./antifennel.nix {};
+      _azote = cPkg ./azote.nix {};
+      _beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix {};
+      _fish-ai = cPkg ./fish-ai.nix {};
+      _gamma-launcher = cPkg ./gamma-launcher.nix {};
+      _gsh = cPkg ./generativeShell.nix {};
+      _ndrop = cPkg ./ndrop.nix {};
+      _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix {};
+      _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix {};
+      _vintagestory = cPkg ./vintageStory.nix {};
+      _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix {};
     }

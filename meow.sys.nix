@@ -6,9 +6,8 @@
   ...
 }:
 let
-  globals = import ./lib/globals.nix;
-in
-{
+  _g = import ./lib/globals.nix; # My global variables
+in {
   imports =
     [
       ./cachix.nix
@@ -46,12 +45,12 @@ in
           packageOverrides =
             pkgs:
               {
-              nur =
-                import
-                  (
-                    builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz"
-                  )
-                  { inherit pkgs; };
+                nur =
+                  import
+                    (
+                      builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz"
+                    )
+                    { inherit pkgs; };
               };
           permittedInsecurePackages =
             [
@@ -67,7 +66,7 @@ in
     };
 
 
-  environment.systemPackages = 
+  environment.systemPackages =
     with pkgs;
       [
         btrfs-progs
@@ -203,12 +202,12 @@ in
       openFirewall = true;
       };
     blueman.enable = true;
-    gnome.sushi.enable = true;
+    gnome.sushi.enable = false;
     desktopManager = {
-      plasma6.enable = false;
+      plasma6.enable = true;
       };
     displayManager =  {
-      sddm.enable = false;
+      sddm.enable = true;
       };
     fail2ban.enable = true;
     flatpak.enable = true;
@@ -245,10 +244,10 @@ in
     xserver = {
       enable = true;
       displayManager = {
-        gdm.enable = true;
+        gdm.enable = false;
         };
       desktopManager = {
-        gnome.enable = true;
+        gnome.enable = false;
         };
       windowManager = {
         bspwm.enable = true;
@@ -267,14 +266,14 @@ in
           STEAMVR_LH_ENABLE = "1";
           XRT_COMPOSITOR_COMPUTE = "1";
         };
-        polkit-gnome-authentication-agent-1 = {
-          description = "polkit gnome interface";
+        polkit-kde-agent-1 = {
+          description = "polkit kde interface";
           wantedBy = [ "graphical-session.target" ];
           wants = [ "graphical-session.target" ];
           after = [ "graphical-session.target" ];
           serviceConfig = {
             Type = "simple";
-            ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+            ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
             Restart = "on-failure";
             RestartSec = 1;
             TimeoutStopSec = 10;
@@ -341,6 +340,10 @@ in
           allowedTCPPorts =
             [
               5173 # Grimoire
+              # UxPlay
+                7000
+                7001
+                7100
               8333 # SillyTavern
               8096 # Jellyfin HTTP
               8920 # Jellyfin HTTPS
@@ -359,6 +362,10 @@ in
             [
               1900 7359 # Jellyfin service autodiscovery
               5173 # Grimoire
+              # UxPlay
+                6000
+                6001
+                7011
               5353 # AirPlay (iOS)
               8333 # SillyTavern
               37285 # Nixarr AirVPN Torrenting
@@ -436,7 +443,7 @@ in
         DefaultDepth 24
         Option "Stereo" "0"
         Option "nvidiaXineramaInfoOrder" "DFP-7"
-        Option "metamodes" "${globals.monitors.left.output}: nvidia-auto-select +${globals.monitors.left.pos.x}+${globals.monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, ${globals.monitors.center.output}: nvidia-auto-select +${globals.monitors.center.pos.x}+${globals.monitors.center.pos.y} {AllowGSYNCCompatible=On}, ${globals.monitors.right.output}: nvidia-auto-select +${globals.monitors.right.pos.x}+${globals.monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
+        Option "metamodes" "${_g.monitors.left.output}: nvidia-auto-select +${_g.monitors.left.pos.x}+${_g.monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, ${_g.monitors.center.output}: nvidia-auto-select +${_g.monitors.center.pos.x}+${_g.monitors.center.pos.y} {AllowGSYNCCompatible=On}, ${_g.monitors.right.output}: nvidia-auto-select +${_g.monitors.right.pos.x}+${_g.monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
         Option "SLI" "Off"
         Option "MultiGPU" "Off"
         Option "BaseMosaic" "off"
@@ -449,32 +456,49 @@ in
   services.xserver.displayManager.setupCommands =
     ''
       ${config.hardware.nvidia.package.settings}/bin/nvidia-settings --assign CurrentMetaMode=" \
-      ${globals.monitors.left.output}: nvidia-auto-select +${globals.monitors.left.pos.x}+${globals.monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, \
-      ${globals.monitors.center.output}: nvidia-auto-select +${globals.monitors.center.pos.x}+${globals.monitors.center.pos.y} {AllowGSYNCCompatible=On}, \
-      ${globals.monitors.right.output}: nvidia-auto-select +${globals.monitors.right.pos.x}+${globals.monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
+      ${_g.monitors.left.output}: nvidia-auto-select +${_g.monitors.left.pos.x}+${_g.monitors.left.pos.y} {rotation=right, ForceCompositionPipeline=On}, \
+      ${_g.monitors.center.output}: nvidia-auto-select +${_g.monitors.center.pos.x}+${_g.monitors.center.pos.y} {AllowGSYNCCompatible=On}, \
+      ${_g.monitors.right.output}: nvidia-auto-select +${_g.monitors.right.pos.x}+${_g.monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
     '';
 
 
   #-------- BOOTLOADER --------#
-  boot = {
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
+  boot =
+    {
+      loader =
+        {
+          systemd-boot.enable = true;
+          efi.canTouchEfiVariables = true;
+        };
+      extraModprobeConfig =
+        ''
+          options nvidia NVreg_EnableGpuFirmware=0
+        '';
+      kernelModules =
+        [
+          "nvidia"
+          "nvidia_modeset"
+          "nvidia_uvm"
+          "nvidia_drm"
+        ];
+      kernelParams =
+        [
+          "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+          "nvidia_drm.modeset=1"
+          "nvidia_drm.fbdev=1"
+          "nvidia.hdmi_deepcolor=1"
+          "amd_pstate=active"
+        ];
+      kernelPackages = pkgs.linuxPackages_latest;
+      kernel.sysctl =
+        {
+          "vm.overcommit_memory" = 1;
+          "vm.max_map_count" = lib.mkForce 16777216; # for S&BOX
+          #"net.ipv4.ip_forward" = 1; Overrode by Nixarr, which I think I want.
+          #"net.ipv6.conf.all.forwarding" = 1;
+        };
+      supportedFilesystems = [ "ntfs" ];
     };
-    extraModprobeConfig = ''
-      options nvidia NVreg_EnableGpuFirmware=0
-    '';
-    kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
-    kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.hdmi_deepcolor=1" "amd_pstate=active" ];
-    kernelPackages = pkgs.linuxPackages_latest;
-    kernel.sysctl = {
-      "vm.overcommit_memory" = 1;
-      "vm.max_map_count" = lib.mkForce 16777216; # for S&BOX
-      #"net.ipv4.ip_forward" = 1; Overrode by Nixarr, which I think I want.
-      #"net.ipv6.conf.all.forwarding" = 1;
-    };
-    supportedFilesystems = [ "ntfs" ];
-  };
 
 
   #-------- POWER --------#
@@ -482,50 +506,61 @@ in
 
 
   #-------- XDG PORTALS --------#
-  xdg = {
-    portal = {
-      enable = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-kde
-      ];
-      config = {
-        common = {
-          default = [
-            "kde"
-            "gtk"
-          ];
+  xdg =
+    {
+      portal =
+        {
+          enable = true;
+          extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
+          config =
+            {
+              common =
+                {
+                  default =
+                    [
+                      "kde"
+                      "gtk"
+                    ];
+                };
+              kde =
+                {
+                  default =
+                    [
+                      "kde"
+                      "gtk"
+                    ];
+                };
+              gnome =
+                {
+                  default =
+                    [
+                      "gtk"
+                      "kde"
+                    ];
+                };
+              hyprland =
+                {
+                  default =
+                    [
+                      "hyprland"
+                      "kde"
+                    ];
+                };
+            };
         };
-        kde = {
-          default = [
-            "kde"
-            "gtk"
-          ];
+      mime =
+        {
+          defaultApplications =
+            {
+              "application/pdf" = [ "zathura" ];
+              "text/html" = [ "firefox.desktop" ];
+              "x-scheme-handler/http" = [ "firefox.desktop" ];
+              "x-scheme-handler/https" = [ "firefox.desktop" ];
+              "x-scheme-handler/about" = [ "firefox.desktop" ];
+              "x-scheme-handler/unknown" = [ "firefox.desktop" ];
+            };
         };
-        gnome = {
-          default = [
-            "gtk"
-            "kde"
-          ];
-        };
-        hyprland = {
-          default = [
-            "hyprland"
-            "kde"
-          ];
-        };
-      };
     };
-    mime = {
-      defaultApplications = {
-        "application/pdf" = [ "zathura" ];
-        "text/html" = [ "firefox.desktop" ];
-        "x-scheme-handler/http" = [ "firefox.desktop" ];
-        "x-scheme-handler/https" = [ "firefox.desktop" ];
-        "x-scheme-handler/about" = [ "firefox.desktop" ];
-        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
-      };
-    };
-  };
 
 
   #-------- TZ/i18n --------#
@@ -534,17 +569,18 @@ in
 
   # Select internationalisation properties.
     i18n.defaultLocale = "en_US.UTF-8";
-    i18n.extraLocaleSettings = {
-      LC_ADDRESS = "en_US.UTF-8";
-      LC_IDENTIFICATION = "en_US.UTF-8";
-      LC_MEASUREMENT = "en_US.UTF-8";
-      LC_MONETARY = "en_US.UTF-8";
-      LC_NAME = "en_US.UTF-8";
-      LC_NUMERIC = "en_US.UTF-8";
-      LC_PAPER = "en_US.UTF-8";
-      LC_TELEPHONE = "en_US.UTF-8";
-      LC_TIME = "en_US.UTF-8";
-    };
+    i18n.extraLocaleSettings =
+      {
+        LC_ADDRESS = "en_US.UTF-8";
+        LC_IDENTIFICATION = "en_US.UTF-8";
+        LC_MEASUREMENT = "en_US.UTF-8";
+        LC_MONETARY = "en_US.UTF-8";
+        LC_NAME = "en_US.UTF-8";
+        LC_NUMERIC = "en_US.UTF-8";
+        LC_PAPER = "en_US.UTF-8";
+        LC_TELEPHONE = "en_US.UTF-8";
+        LC_TIME = "en_US.UTF-8";
+      };
 
 
   ##############################################################################

@@ -4,7 +4,7 @@ pkgs,
 }:
 {
   stylix = {
-    autoEnable = true;
+    autoEnable = false;
 
     image = ./wallpapers/nordic/wallpapers/nixos.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";

@@ -5,7 +5,7 @@
     nativeMessagingHosts = with pkgs; [
       tridactyl-native
       gopass-jsonapi
-      plasma-browser-integration
+      kdePackages.plasma-browser-integration
       firefoxpwa
     ];
     package = pkgs.firefox-devedition;

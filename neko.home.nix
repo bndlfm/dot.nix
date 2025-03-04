@@ -19,7 +19,7 @@
     /***********
     * PROGRAMS *
     ************/
-      ./programs/email.home.nix
+      #./programs/email.home.nix
       ./programs/programs.home.nix
       ./programs/twitch.home.nix
 
@@ -61,9 +61,10 @@
     /******************
     * WINDOW MANAGERS *
     ******************/
-      ./modules/home-manager/hyprland.mod.home.nix
-    #./programs/gnome-shell.home.nix
+      #./programs/gnome-shell.home.nix
+
       ./windowManagers/bspwm.home.nix
+      ./modules/home-manager/hyprland.home.mod.nix
       ./windowManagers/niri.home.nix
   ];
 
@@ -92,286 +93,288 @@
   neko.hyprland.enable = false;
   nix.package = pkgs.nix; # Required for Chaotic Nyx
 
-  home = {
-    packages =
-      with pkgs;
-      let
-        ai = [
-          aichat
-          aider-chat
-          gsh
-          upscayl
-          warp-terminal
-        ];
-
-        apple = [
-          uxplay
-        ];
-
-        browsers = [
-          #firefox-devedition: programs/hm/firefox.nix
-          inputs.zen-browser.packages.x86_64-linux.twilight
-          qutebrowser
-          tor-browser
-        ];
-
-        cli = [
-          age
-          bat
-          cachix
-          chafa
-          distrobox
-          duf
-          delta
-          eza
-          fd
-          ffmpeg-full
-          file
-          fzf
-          grex
-          gnugrep
-          gopass
-          jq
-          libnotify
-          libqalculate
-          nix-index
-          (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
-          ripgrep
-          sd
-          silver-searcher
-          sops
-          tesseract
-          trashy
-          unrar
-          unzip
-          usbutils
-          wireguard-tools
-          xdragon
-          yt-dlp
-          zip
-          zoxide
-        ];
-
-        daemons = [
-          inputs.deejavu.packages.x86_64-linux.default
-          megasync
-          mpd-discord-rpc
-          yams
-        ];
-
-        editing = [
-          gimp
-          libreoffice-qt
-        ];
-
-        gaming = [
-          airshipper
-          crawlTiles
-          gamma-launcher
-          glfw-wayland-minecraft
-          inputs.openmw-vr.packages.x86_64-linux.default
-          vintagestory
-          ## RHYTHM GAMES
-            clonehero
-          ## DECOMP
-            sm64coopdx
-            #shipwright # Ocarina of Time
-            _2ship2harkinian # Majora's Mask
-          ## EMULATION
-            shadps4
-          ## GAMING UTILITIES
-            (callPackage ./pkgs/BeatSaberModManager/BeatSaberModManager.nix { })
-            mangohud
-            protontricks
-            steamtinkerlaunch
-          ## LAUNCHERS
-            heroic
-            itch
-            lutris
-            prismlauncher
-        ];
-
-        media = [
-          freetube
-          mpv
-          ncmpcpp
-        ];
-
-        notes = [
-          obsidian
-        ];
-
-        programming = [
-          ## GIT TOOLS
-            git
-            git-filter-repo
-            git-lfs
-            git-credential-manager
-            git-credential-gopass
-          ## PYTHON
-            (python3.withPackages (
-              pkgs: with pkgs; [
-                llama-cpp
-                pynvim
-                ueberzug
-              ]
-            ))
-          # FENNEL
-            (pkgs.callPackage ./pkgs/antifennel.nix { })
-          # OTHER DEV TOOLS
-            godot_4
-            godot_4-export-templates
-            direnv
-            nix-prefetch
-            meld
-        ];
-
-        social = [
-          discord
-          vesktop
-          hexchat
-        ];
-
-        system = [
-          # Plasma/QT
-            qt6Packages.qt6ct
-            qt6Packages.qtstyleplugin-kvantum
-            ksshaskpass
-          # Wine/Proton
-            winetricks
-            wineWowPackages.stable
-            protonup
-        ];
-
-        theming = {
-          fonts = [
-            rictydiminished-with-firacode
-            font-awesome
-            gyre-fonts
-            noto-fonts-emoji-blob-bin
+  home =
+    {
+      packages =
+        with pkgs;
+        let
+          ai = [
+            aichat
+            aider-chat
+            _gsh
+            upscayl
+            warp-terminal
           ];
 
-          nerdFonts = with pkgs.nerd-fonts; [
-            caskaydia-cove
-            caskaydia-mono
-            d2coding
-            inconsolata
-            inconsolata-lgc
-            inconsolata-go
-            iosevka-term
-            sauce-code-pro
-            terminess-ttf
+          apple = [
+            uxplay
+            rpiplay
           ];
 
-          other = [
-            base16-schemes
-            ocs-url
-            volantes-cursors
-          ];
-        };
-
-        tui = [
-          inputs.isd.packages.${pkgs.system}.isd
-          ## PROGRAMMING
-            fx #json viewer
-            harlequin # sql ide
-            lazygit
-            posting # api client
-          ## SYSTEM MONITORS
-            btop
-            iotop
-            nvtopPackages.nvidia
-          ## FILE MANAGERS AND UTILITIES
-            highlight
-            page
-            pulsemixer
-            ncdu
-            ranger
-            tdf
-        ];
-
-        utilities = {
-          wayland = [
-            (pkgs.callPackage ./pkgs/azote.nix {})
-            gammastep
-            nwg-look
-            waybar
-            wttrbar
-            wlr-randr
-            wl-clipboard
-            wl-clipboard-x11
-            wl-clip-persist
-            wl-gammactl
+          browsers = [
+            #firefox-devedition: programs/hm/firefox.nix
+            inputs.zen-browser.packages.x86_64-linux.twilight
+            ladybird
+            tor-browser
+            qutebrowser
           ];
 
-          xorg = [
-            dunst
-            eww
-            jgmenu
-            polybar
-            weather-icons
-            nitrogen
-            scrot
-            sxhkd
-            tdrop
-            xbindkeys
-            xorg.xkill
-            xorg.xhost
+          cli = [
+            age
+            bat
+            cachix
+            chafa
+            distrobox
+            duf
+            delta
+            eza
+            fd
+            ffmpeg-full
+            file
+            fzf
+            grex
+            gnugrep
+            gopass
+            jq
+            libnotify
+            libqalculate
+            nix-index
+            (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
+            ripgrep
+            sd
+            silver-searcher
+            sops
+            tesseract
+            trashy
+            unrar
+            unzip
+            usbutils
+            wireguard-tools
+            xdragon
+            yt-dlp
+            zip
+            zoxide
           ];
 
-          other = [
-            appimage-run
-            clipboard-jh
-            copyq
-            gnome-tweaks
-            google-drive-ocamlfuse
-            gparted
-            grc
-            keymapp
-            nicotine-plus
-            nix-prefetch
-            pavucontrol
-            qbittorrent
-            qdirstat
-            rofi
-            zathura
-            zsa-udev-rules
+          daemons = [
+            inputs.deejavu.packages.x86_64-linux.default
+            megasync
+            mpd-discord-rpc
+            yams
           ];
-        };
 
-        virtualization = [
-          nur.repos.ataraxiasjel.waydroid-script
-          ### CONTAINER
-            boxbuddy
-            podman
-            podman-compose
-            podman-desktop
-            virt-manager
-        ];
+          editing = [
+            gimp
+            libreoffice-qt
+          ];
 
-        misc = [
-          speechd
-        ];
+          gaming = [
+            airshipper
+            crawlTiles
+            _gamma-launcher
+            glfw-wayland-minecraft
+            inputs.openmw-vr.packages.x86_64-linux.default
+            ## RHYTHM GAMES
+              clonehero
+            ## DECOMP
+              sm64coopdx
+              #shipwright # Ocarina of Time
+              _2ship2harkinian # Majora's Mask
+            ## EMULATION
+              shadps4
+            ## GAMING UTILITIES
+              _beatSaberModManager
+              mangohud
+              protontricks
+              steamtinkerlaunch
+            ## LAUNCHERS
+              heroic
+              itch
+              lutris
+              prismlauncher
+          ];
 
-      in
-      [ ]
-      ++ ai
-      ++ apple
-      ++ browsers
-      ++ cli
-      ++ daemons
-      ++ editing
-      ++ gaming
-      ++ media
-      ++ notes
-      ++ programming
-      ++ social
-      ++ system
-      ++ (theming.fonts ++ theming.nerdFonts ++ theming.other)
-      ++ tui
-      ++ (utilities.wayland ++ utilities.xorg ++ utilities.other)
-      ++ virtualization
-      ++ misc;
+          media = [
+            freetube
+            mpv
+            ncmpcpp
+          ];
+
+          notes = [
+            obsidian
+          ];
+
+          programming = [
+            ## GIT TOOLS
+              git
+              git-filter-repo
+              git-lfs
+              git-credential-manager
+              git-credential-gopass
+            ## PYTHON
+              (python3.withPackages (
+                pkgs: with pkgs; [
+                  llama-cpp
+                  pynvim
+                  ueberzug
+                ]
+              ))
+            # FENNEL
+              (pkgs.callPackage ./pkgs/antifennel.nix { })
+            # OTHER DEV TOOLS
+              godot_4
+              godot_4-export-templates
+              direnv
+              nix-prefetch
+              meld
+          ];
+
+          social = [
+            discord
+            vesktop
+            hexchat
+          ];
+
+          system = [
+            # Plasma/QT
+              qt6Packages.qt6ct
+              qt6Packages.qtstyleplugin-kvantum
+              kdePackages.ksshaskpass
+            # Wine/Proton
+              winetricks
+              wineWowPackages.stable
+              protonup
+          ];
+
+          theming = {
+            fonts = [
+              rictydiminished-with-firacode
+              font-awesome
+              gyre-fonts
+              noto-fonts-emoji-blob-bin
+            ];
+
+            nerdFonts = with pkgs.nerd-fonts; [
+              caskaydia-cove
+              caskaydia-mono
+              d2coding
+              inconsolata
+              inconsolata-lgc
+              inconsolata-go
+              iosevka-term
+              sauce-code-pro
+              terminess-ttf
+            ];
+
+            other = [
+              base16-schemes
+              ocs-url
+              volantes-cursors
+            ];
+          };
+
+          tui = [
+            inputs.isd.packages.${pkgs.system}.isd
+            ## PROGRAMMING
+              fx #json viewer
+              harlequin # sql ide
+              lazygit
+              posting # api client
+            ## SYSTEM MONITORS
+              btop
+              iotop
+              nvtopPackages.nvidia
+            ## FILE MANAGERS AND UTILITIES
+              highlight
+              page
+              pulsemixer
+              ncdu
+              ranger
+              tdf
+          ];
+
+          utilities = {
+            wayland = [
+              _azote
+              gammastep
+              nwg-look
+              waybar
+              wttrbar
+              wlr-randr
+              wl-clipboard
+              wl-clipboard-x11
+              wl-clip-persist
+              wl-gammactl
+            ];
+
+            xorg = [
+              dunst
+              eww
+              jgmenu
+              polybar
+              weather-icons
+              nitrogen
+              scrot
+              sxhkd
+              tdrop
+              xbindkeys
+              xorg.xkill
+              xorg.xhost
+            ];
+
+            other = [
+              appimage-run
+              clipboard-jh
+              copyq
+              gnome-tweaks
+              google-drive-ocamlfuse
+              gparted
+              grc
+              keymapp
+              nicotine-plus
+              nix-prefetch
+              pavucontrol
+              qbittorrent
+              qdirstat
+              rofi
+              zathura
+              zsa-udev-rules
+            ];
+          };
+
+          virtualization = [
+            nur.repos.ataraxiasjel.waydroid-script
+            _waydroid-hide-desktop-entries
+            ### CONTAINER
+              boxbuddy
+              podman
+              podman-compose
+              virt-manager
+          ];
+
+          misc = [
+            speechd
+          ];
+
+        in
+        [ ]
+        ++ ai
+        ++ apple
+        ++ browsers
+        ++ cli
+        ++ daemons
+        ++ editing
+        ++ gaming
+        ++ media
+        ++ notes
+        ++ programming
+        ++ social
+        ++ system
+        ++ (theming.fonts ++ theming.nerdFonts ++ theming.other)
+        ++ tui
+        ++ (utilities.wayland ++ utilities.xorg ++ utilities.other)
+        ++ virtualization
+        ++ misc;
 
     ### (HM) ENVIRONMENT VARIABLES ###
     sessionVariables = {
@@ -425,65 +428,80 @@
     };
   };
 
-  xdg = {
-    configFile = {
-      "hypr" = {
-        source = ./.config/hypr;
-        recursive = true;
-      };
-      "joshuto" = {
-        source = ./.config/joshuto;
-        recursive = true;
-      };
-      "mutt" = {
-        source = ./.config/mutt;
-        recursive = true;
-      };
-      #"nvim" = {
-      #  source = ./.config/nvim;
-      #  recursive = true;
-      #};
-      "polybar" = {
-        source = ./.config/polybar;
-        recursive = true;
-      };
-      "pulsemixer.cfg" = {
-        source = ./.config/pulsemixer.cfg;
-        recursive = false;
-      };
-      "ranger" = {
-        source = ./.config/ranger;
-        recursive = true;
-      };
-      "rofi" = {
-        source = ./.config/rofi;
-        recursive = true;
-      };
-      "tridactyl" = {
-        source = ./.config/tridactyl;
-        recursive = true;
-      };
-      "twt" = {
-        source = ./.config/twt;
-        recursive = true;
-      };
-      "qutebrowser/config.py" = {
-        source = ./.config/qutebrowser/config.py;
-      };
-      "waybar" = {
-        source = ./.config/waybar;
-        recursive = true;
-      };
-      "yazi" = {
-        source = ./.config/yazi;
-        recursive = true;
-      };
-      "zathura" = {
-        source = ./.config/zathura;
-        recursive = true;
-      };
+  xdg =
+    {
+      configFile =
+        {
+          "hypr" =
+            {
+              source = ./.config/hypr;
+              recursive = true;
+            };
+          "joshuto" =
+            {
+              source = ./.config/joshuto;
+              recursive = true;
+            };
+          "mutt" =
+            {
+              source = ./.config/mutt;
+              recursive = true;
+            };
+        #"nvim" = {
+        #  source = ./.config/nvim;
+        #  recursive = true;
+        #};
+          "polybar" =
+            {
+              source = ./.config/polybar;
+            recursive = true;
+            };
+          "pulsemixer.cfg" =
+            {
+              source = ./.config/pulsemixer.cfg;
+              recursive = false;
+            };
+          "ranger" =
+            {
+              source = ./.config/ranger;
+              recursive = true;
+            };
+          "rofi" =
+            {
+              source = ./.config/rofi;
+              recursive = true;
+            };
+          "tridactyl" =
+            {
+              source = ./.config/tridactyl;
+              recursive = true;
+            };
+          "twt" =
+            {
+              source = ./.config/twt;
+              recursive = true;
+            };
+          "qutebrowser/config.py" =
+            {
+              source = ./.config/qutebrowser/config.py;
+            };
+          "waybar" =
+            {
+              source = ./.config/waybar;
+              recursive = true;
+            };
+          "yazi" =
+            {
+              source = ./.config/yazi;
+              recursive = true;
+            };
+          "zathura" =
+            {
+              source = ./.config/zathura;
+              recursive = true;
+            };
+        };
     };
-  };
 
   systemd.user.targets.tray = {
       Unit = {
@@ -493,12 +511,6 @@
   };
 
   specialisation = {
-    gnome.configuration = {
-      home.packages = with pkgs; [
-        gnome-tweaks
-      ];
-    };
-
     familyTree.configuration = {
       home.packages = with pkgs; [
         ocrmypdf

@@ -11,12 +11,12 @@
               x = "0";
               y = "0";
             };
-          resolution =
+          res =
             {
-              width = 1920;
-              height = 1200;
+              width = "1920";
+              height = "1200";
             };
-          rate = 60;
+          rate = "60";
         };
 
       center =
@@ -27,12 +27,12 @@
               x = "1200";
               y = "0";
             };
-          resolution =
+          res =
             {
-              width = 2560;
-              height = 1440;
+              width = "2560";
+              height = "1440";
             };
-          rate = 144;
+          rate = "144";
         };
 
       right =
@@ -43,12 +43,12 @@
               x = "3760";
               y = "0";
             };
-          resolution =
+          res =
             {
-              width = 1920;
-              height = 1200;
+              width = "1920";
+              height = "1200";
             };
-          rate = 60;
+          rate = "60";
         };
     };
 }
