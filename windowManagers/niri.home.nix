@@ -293,7 +293,7 @@ in {
                   };
                 clip-to-geometry = true;
               }
-            ## DRAW UNFOCUSED WITH OPACITY
+            ## DRAW UNFOCUSED WITH OPACITY (BROKEN ON NVIDIA 570, flickers)
               #{
               #  matches = [
               #    {

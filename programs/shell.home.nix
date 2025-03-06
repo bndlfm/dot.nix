@@ -1,5 +1,6 @@
 { config, pkgs, ...}:{
   home.packages = with pkgs; [
+    _fish-ai
   ];
 
   programs = {

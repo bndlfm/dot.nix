@@ -82,7 +82,7 @@ in {
 
 
   #------- MODULES -------#
-  neko.hyprland.enable = false;
+  _hyprland.enable = true;
 
 
   #--------- ENV ---------#
