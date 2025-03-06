@@ -100,14 +100,16 @@
               #niri.homeModules.stylix
               stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
             ## IMPORTS
-              ./neko.home.nix
+              ./home/neko.home.nix
             ];
           };
         "neko@nyaa" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [
-            inputs.sops-nix.homeManagerModules.sops
-            ./users/server/home.nix
+            ## SECRETS
+              inputs.sops-nix.homeManagerModules.sops
+            ## IMPORTS
+              ./home/server.home.nix
           ];
         };
       };
@@ -138,14 +140,15 @@
                 niri-flake.cache.enable = true;
               }
             ## IMPORTS
-              ./meow.sys.nix
-              ./meow.hardware.nix
+              ./sys/meow.sys.nix
+              ./sys/meow.hardware.nix
           ];
         };
         "nyaa" = nixpkgs.lib.nixosSystem {
           modules = [
-            ./systems/nyaa/configuration.nix
-            ./systems/nyaa/hardware-configuration.nix
+            ## IMPORTS
+              ./sys/server.sys.nix
+              ./sys/server.hardware.nix
           ];
         };
       };

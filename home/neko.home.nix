@@ -154,6 +154,7 @@
               unrar
               unzip
               usbutils
+              wget
               wireguard-tools
               xdragon
               yt-dlp
