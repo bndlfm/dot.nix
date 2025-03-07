@@ -283,9 +283,10 @@
                 _g = import ../../lib/globals.nix;
               in
                 [
-                  "10, monitor:${_g.monitors.left.output}, default:true"
+                  "8, monitor:${_g.monitors.left.output}, default:true"
                   "1, monitor:${_g.monitors.center.output}, default:true"
                   "7, monitor:${_g.monitors.center.output}"
+                  "10, monitor:${_g.monitors.right.output}, default:true"
                 ];
 
             #-------- Hyprland Variables --------#
