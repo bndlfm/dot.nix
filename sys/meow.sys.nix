@@ -15,13 +15,13 @@ in {
       ## SECRETS
         inputs.sops-nix.nixosModules.sops
       ### PROGRAMS
-        ./programs/steam.sys.nix
+        ../programs/steam.sys.nix
       ### MODULES
-        ./modules/tailscale.sys.nix
+        ../modules/tailscale.sys.nix
       ### SERVICES
-        ./services/sunshine.sys.nix
+        ../services/sunshine.sys.nix
       ### WINDOW MANAGERS
-        ./modules/nixos/hyprland.mod.sys.nix
+        ../modules/nixos/hyprland.mod.sys.nix
     ];
 
   #-------- PACKAGES --------#
