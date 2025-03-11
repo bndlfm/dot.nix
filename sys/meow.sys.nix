@@ -6,11 +6,11 @@
   ...
 }:
 let
-  _g = import ./lib/globals.nix; # My global variables
+  _g = import ../lib/globals.nix; # My global variables
 in {
   imports =
     [
-      ./cachix.nix
+      ../cachix.nix
 
       ## SECRETS
         inputs.sops-nix.nixosModules.sops
@@ -22,6 +22,7 @@ in {
         ../services/sunshine.sys.nix
       ### WINDOW MANAGERS
         ../modules/nixos/hyprland.mod.sys.nix
+        ../windowManagers/plasma6.sys.nix
     ];
 
   #-------- PACKAGES --------#
@@ -218,8 +219,8 @@ in {
       extraFlags = [ "" ];
       };
     monado = {
-      enable = true;
-      defaultRuntime = true;
+      enable = false;
+      defaultRuntime = false;
       };
     usbmuxd = {
       enable = true;
@@ -285,7 +286,7 @@ in {
       DefaultTimeoutStopSec = 10s
     '';
     tmpfiles.rules = [
-      "L+ /run/gdm/.config/monitors.xml - - - - ${builtins.readFile ./.config/monitors.xml}"
+      "L+ /run/gdm/.config/monitors.xml - - - - ${builtins.readFile ../.config/monitors.xml}"
     ];
   };
 
@@ -344,6 +345,7 @@ in {
                 7000
                 7001
                 7100
+              8222 # Vault Warden
               8333 # SillyTavern
               8096 # Jellyfin HTTP
               8920 # Jellyfin HTTPS
@@ -367,6 +369,7 @@ in {
                 6001
                 7011
               5353 # AirPlay (iOS)
+              8222 # Vault Warden
               8333 # SillyTavern
               37285 # Nixarr AirVPN Torrenting
               #25565 # MC SERVER

@@ -11,6 +11,8 @@
   home.homeDirectory = "/home/neko";
 
   imports = [
+    ../cachix.nix
+
     /**************
     * MONADO (VR) *
     **************/
@@ -19,7 +21,7 @@
     /***********
     * PROGRAMS *
     ************/
-      #./programs/email.home.nix
+      ../programs/email.home.nix
       ../programs/programs.home.nix
       ../programs/twitch.home.nix
 
@@ -117,6 +119,7 @@
           browsers =
             [
               #firefox-devedition: programs/hm/firefox.nix
+              chromium
               inputs.zen-browser.packages.x86_64-linux.twilight
               ladybird
               tor-browser
@@ -206,6 +209,7 @@
 
           media =
             [
+              cider
               freetube
               mpv
               ncmpcpp

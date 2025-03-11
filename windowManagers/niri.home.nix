@@ -53,42 +53,50 @@ in {
               "${_g.monitors.left.output}" =
                 {
                   enable = true;
-                  mode = {
-                    width = toInt "${_g.monitors.left.res.width}";
-                    height = toInt "${_g.monitors.left.res.height}";
-                  };
-                  position = {
-                    x = toInt "${_g.monitors.left.pos.x}";
-                    y = toInt "${_g.monitors.left.pos.y}";
-                  };
+                  mode =
+                    {
+                      width = toInt "${_g.monitors.left.res.width}";
+                      height = toInt "${_g.monitors.left.res.height}";
+                    };
+                  position =
+                    {
+                      x = toInt "${_g.monitors.left.pos.x}";
+                      y = toInt "${_g.monitors.left.pos.y}";
+                    };
                   transform.rotation = 270;
                 };
+
             ## CENTER MONITOR
               "${_g.monitors.center.output}" =
                 {
                   enable = true;
-                  mode = {
-                    width = toInt "${_g.monitors.center.res.width}";
-                    height = toInt "${_g.monitors.center.res.height}";
-                  };
-                  position = {
-                    x = toInt "${_g.monitors.center.pos.x}";
-                    y = toInt "${_g.monitors.center.pos.y}";
-                  };
-                  variable-refresh-rate = true;
+                  mode =
+                    {
+                      width = toInt "${_g.monitors.center.res.width}";
+                      height = toInt "${_g.monitors.center.res.height}";
+                    };
+                  position =
+                    {
+                      x = toInt "${_g.monitors.center.pos.x}";
+                      y = toInt "${_g.monitors.center.pos.y}";
+                    };
+                  #variable-refresh-rate = true;
                 };
+
             ## RIGHT MONITOR
               "${_g.monitors.right.output}" =
                 {
                   enable = true;
-                  mode = {
-                    width = toInt "${_g.monitors.right.res.width}";
-                    height = toInt "${_g.monitors.right.res.height}";
-                  };
-                  position = {
-                    x = toInt "${_g.monitors.right.pos.x}";
-                    y = toInt "${_g.monitors.right.pos.y}";
-                  };
+                  mode =
+                    {
+                      width = toInt "${_g.monitors.right.res.width}";
+                      height = toInt "${_g.monitors.right.res.height}";
+                    };
+                  position =
+                    {
+                      x = toInt "${_g.monitors.right.pos.x}";
+                      y = toInt "${_g.monitors.right.pos.y}";
+                    };
                   transform.rotation = 270;
                 };
           };
@@ -98,11 +106,12 @@ in {
           {
             preset-column-widths =
               [
-                { proportion = 2. / 5.; }
+                { proportion = 2. / 5.;   }
                 { proportion = 2.45 / 5.; }
-                { proportion = 3.5 / 5.; }
-                { proportion = 5. / 5.; }
+                { proportion = 3.5 / 5.;  }
+                { proportion = 5. / 5.;   }
               ];
+
             preset-window-heights =
               [
                 { proportion = 1. / 4.; }
@@ -123,6 +132,8 @@ in {
           [
             ## FOR NDROP
               { command = [ "niri" "msg" "action" "focus-workspace-down" ]; }
+            ## BAR
+              { command = [ "waybar" ];}
             ## BLUETOOOTH
               { command = [ "blueman-applet" ]; }
             ## CLIPBOARD
