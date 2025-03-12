@@ -209,6 +209,7 @@
 
           media =
             [
+              calibre
               cider
               freetube
               mpv
