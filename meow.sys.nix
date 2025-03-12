@@ -6,23 +6,23 @@
   ...
 }:
 let
-  _g = import ../lib/globals.nix; # My global variables
+  _g = import ./lib/globals.nix; # My global variables
 in {
   imports =
     [
-      ../cachix.nix
+      ./cachix.nix
 
       ## SECRETS
         inputs.sops-nix.nixosModules.sops
       ### PROGRAMS
-        ../programs/steam.sys.nix
+        ./programs/steam.sys.nix
       ### MODULES
-        ../modules/tailscale.sys.nix
+        ./modules/tailscale.sys.nix
       ### SERVICES
-        ../services/sunshine.sys.nix
+        ./services/sunshine.sys.nix
       ### WINDOW MANAGERS
-        ../modules/nixos/hyprland.mod.sys.nix
-        ../windowManagers/plasma6.sys.nix
+        ./modules/nixos/hyprland.mod.sys.nix
+        ./windowManagers/plasma6.sys.nix
     ];
 
   #-------- PACKAGES --------#
@@ -286,7 +286,7 @@ in {
       DefaultTimeoutStopSec = 10s
     '';
     tmpfiles.rules = [
-      "L+ /run/gdm/.config/monitors.xml - - - - ${builtins.readFile ../.config/monitors.xml}"
+      "L+ /run/gdm/.config/monitors.xml - - - - ${builtins.readFile ./.config/monitors.xml}"
     ];
   };
 

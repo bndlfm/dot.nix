@@ -11,7 +11,7 @@
   home.homeDirectory = "/home/neko";
 
   imports = [
-    ../cachix.nix
+    ./cachix.nix
 
     /**************
     * MONADO (VR) *
@@ -21,53 +21,53 @@
     /***********
     * PROGRAMS *
     ************/
-      ../programs/email.home.nix
-      ../programs/programs.home.nix
-      ../programs/twitch.home.nix
+      ./programs/email.home.nix
+      ./programs/programs.home.nix
+      ./programs/twitch.home.nix
 
-      ../programs/shell.home.nix
+      ./programs/shell.home.nix
 
-      ../programs/firefox.home.nix
-      ../programs/git.home.nix
-      ../programs/kitty.home.nix
-      ../programs/ncmpcpp.home.nix
-      ../programs/neovim.home.nix
-      ../programs/password-store.home.nix
-      ../programs/ranger.home.nix
-      ../programs/rofi.home.nix
-      ../programs/yazi.home.nix
-      ../programs/zellij.home.nix
+      ./programs/firefox.home.nix
+      ./programs/git.home.nix
+      ./programs/kitty.home.nix
+      ./programs/ncmpcpp.home.nix
+      ./programs/neovim.home.nix
+      ./programs/password-store.home.nix
+      ./programs/ranger.home.nix
+      ./programs/rofi.home.nix
+      ./programs/yazi.home.nix
+      ./programs/zellij.home.nix
 
 
     /**********
     * SECRETS *
     **********/
       inputs.sops-nix.homeManagerModules.sops
-      ../sops/sops.nix
+      ./sops/sops.nix
 
 
     /***********
     * SERVICES *
     ***********/
-      ../services/espanso.home.nix
-      ../services/services.home.nix
+      ./services/espanso.home.nix
+      ./services/services.home.nix
 
 
     /**********
     * SPOTIFY *
     **********/
       inputs.spicetify-nix.homeManagerModules.default
-      ../theme/spicetify.nix
+      ./theme/spicetify.nix
 
 
     /******************
     * WINDOW MANAGERS *
     ******************/
-      #../programs/gnome-shell.home.nix
+      #./programs/gnome-shell.home.nix
 
-      ../windowManagers/bspwm.home.nix
-      ../modules/home-manager/hyprland.home.mod.nix
-      ../windowManagers/niri.home.nix
+      ./windowManagers/bspwm.home.nix
+      ./modules/home-manager/hyprland.home.mod.nix
+      ./windowManagers/niri.home.nix
   ];
 
   nixpkgs = {
@@ -451,7 +451,7 @@
     ######### (HM) DOTFILES ########
     file = {
       ".aider.model.metadata.json" = {
-        source = ../.config/.aider.model.metadata.json;
+        source = ./.config/.aider.model.metadata.json;
       };
     };
   };
@@ -462,70 +462,70 @@
         {
           "hypr" =
             {
-              source = ../.config/hypr;
+              source = ./.config/hypr;
               recursive = true;
             };
           "joshuto" =
             {
-              source = ../.config/joshuto;
+              source = ./.config/joshuto;
               recursive = true;
             };
           "mutt" =
             {
-              source = ../.config/mutt;
+              source = ./.config/mutt;
               recursive = true;
             };
-        #"nvim" = {
-        #  source = ../.config/nvim;
-        #  recursive = true;
-        #};
+          #"nvim" = {
+          #  source = ./.config/nvim;
+          #  recursive = true;
+          #};
           "polybar" =
             {
-              source = ../.config/polybar;
+              source = ./.config/polybar;
             recursive = true;
             };
           "pulsemixer.cfg" =
             {
-              source = ../.config/pulsemixer.cfg;
+              source = ./.config/pulsemixer.cfg;
               recursive = false;
             };
           "ranger" =
             {
-              source = ../.config/ranger;
+              source = ./.config/ranger;
               recursive = true;
             };
           "rofi" =
             {
-              source = ../.config/rofi;
+              source = ./.config/rofi;
               recursive = true;
             };
           "tridactyl" =
             {
-              source = ../.config/tridactyl;
+              source = ./.config/tridactyl;
               recursive = true;
             };
           "twt" =
             {
-              source = ../.config/twt;
+              source = ./.config/twt;
               recursive = true;
             };
           "qutebrowser/config.py" =
             {
-              source = ../.config/qutebrowser/config.py;
+              source = ./.config/qutebrowser/config.py;
             };
           "waybar" =
             {
-              source = ../.config/waybar;
+              source = ./.config/waybar;
               recursive = true;
             };
           "yazi" =
             {
-              source = ../.config/yazi;
+              source = ./.config/yazi;
               recursive = true;
             };
           "zathura" =
             {
-              source = ../.config/zathura;
+              source = ./.config/zathura;
               recursive = true;
             };
         };

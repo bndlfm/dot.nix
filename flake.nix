@@ -49,9 +49,13 @@
     home-manager,
     nur,
     chaotic,
+
     deejavu,
     nixarr,
+
+    cosmic,
     niri,
+
     spicetify-nix,
     sops-nix,
     stylix,
@@ -86,33 +90,38 @@
      /***********************
       * HOME CONFIGURATIONS *
       ***********************/
-      homeConfigurations = {
-        "neko@meow" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays overlays;
-          extraSpecialArgs = {
-            inherit inputs outputs;
+      homeConfigurations =
+        {
+          "neko@meow" = home-manager.lib.homeManagerConfiguration
+            {
+              pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays overlays;
+              extraSpecialArgs =
+                {
+                  inherit inputs outputs;
+                };
+              modules =
+                [
+                  chaotic.homeManagerModules.default
+                  ## NIRI
+                    niri.homeModules.niri
+                  ## THEMING
+                    stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
+                  ## IMPORTS
+                    ./neko.home.nix
+                ];
             };
-          modules = [
-            chaotic.homeManagerModules.default
-            ## NIRI
-              niri.homeModules.niri
-            ## THEMING
-              #niri.homeModules.stylix
-              stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
-            ## IMPORTS
-              ./home/neko.home.nix
-            ];
-          };
-        "neko@nyaa" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [
-            ## SECRETS
-              inputs.sops-nix.homeManagerModules.sops
-            ## IMPORTS
-              ./home/server.home.nix
-          ];
+          "neko@nyaa" = home-manager.lib.homeManagerConfiguration
+            {
+              pkgs = nixpkgs.legacyPackages.x86_64-linux;
+              modules =
+                [
+                  ## SECRETS
+                    inputs.sops-nix.homeManagerModules.sops
+                  ## IMPORTS
+                    ./server.home.nix
+                ];
+            };
         };
-      };
 
 
      /************************
@@ -131,6 +140,10 @@
             ## THEMING
               stylix.nixosModules.stylix (import ./theme/nxStylix.nix)
             ## WINDOW MANAGERS
+              cosmic.nixosModules.default
+              {
+                services.desktopManager.cosmic.enable = true;
+              }
               niri.nixosModules.niri
               {
                 programs.niri = {
@@ -140,15 +153,15 @@
                 niri-flake.cache.enable = true;
               }
             ## IMPORTS
-              ./sys/meow.sys.nix
-              ./sys/meow.hardware.nix
+              ./meow.sys.nix
+              ./meow.hardware.nix
           ];
         };
         "nyaa" = nixpkgs.lib.nixosSystem {
           modules = [
             ## IMPORTS
-              ./sys/server.sys.nix
-              ./sys/server.hardware.nix
+              ./server.sys.nix
+              ./server.hardware.nix
           ];
         };
       };

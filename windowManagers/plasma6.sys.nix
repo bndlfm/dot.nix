@@ -1,5 +1,3 @@
 { pkgs, ... }:{
-  environment.packages = with pkgs; [
-    kdePackages.plasma-workspace
-  ];
+  environment.etc."/xdg/menus/plasma-applications.menu".text = builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
 }
