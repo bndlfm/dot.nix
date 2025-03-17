@@ -339,9 +339,9 @@
       enableNushellIntegration = true;
     };
     carapace = {
-      enable = true;
-      enableFishIntegration = true;
-      enableNushellIntegration = true;
+      enable = false;
+      enableFishIntegration = false;
+      enableNushellIntegration = false;
     };
     dircolors = {
       enable = true;

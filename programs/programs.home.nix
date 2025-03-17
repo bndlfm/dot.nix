@@ -8,9 +8,6 @@
     broot = {
       enable = true;
     };
-    carapace = {
-      enable = true;
-    };
     dircolors = {
       enable = true;
     };

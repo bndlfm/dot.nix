@@ -13,7 +13,6 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     home-manager.url = "github:nix-community/home-manager";
     nur.url = "github:nix-community/NUR";
-    chaotic.url = "github:chaotic-cx/nyx";
 
   ## CUSTOMIZATION
     stylix.url = "github:Mikilio/stylix";
@@ -38,8 +37,6 @@
     sops-nix.url = "github:Mic92/sops-nix";
 
   ## WINDOW MANAGER
-    cosmic.url = "github:lilyinstarlight/nixos-cosmic";
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     niri.url = "github:sodiboo/niri-flake";
   };
 
@@ -53,7 +50,6 @@
     deejavu,
     nixarr,
 
-    cosmic,
     niri,
 
     spicetify-nix,
@@ -101,7 +97,6 @@
                 };
               modules =
                 [
-                  chaotic.homeManagerModules.default
                   ## NIRI
                     niri.homeModules.niri
                   ## THEMING
@@ -132,7 +127,6 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             ({ nixpkgs.overlays = overlays; })
-            chaotic.nixosModules.default
             ## MEDIA
               nixarr.nixosModules.default (import ./modules/nixarr.sys.nix)
             ## SECRETS
@@ -140,14 +134,6 @@
             ## THEMING
               stylix.nixosModules.stylix (import ./theme/nxStylix.nix)
             ## WINDOW MANAGERS
-              cosmic.nixosModules.default
-              {
-                nix.settings = {
-                  substituters = [ "https://cosmic.cachix.org/" ];
-                  trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
-                };
-                services.desktopManager.cosmic.enable = true;
-              }
               niri.nixosModules.niri
               {
                 programs.niri = {
