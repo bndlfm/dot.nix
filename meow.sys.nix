@@ -21,7 +21,7 @@ in {
       ### SERVICES
         ./services/sunshine.sys.nix
       ### WINDOW MANAGERS
-        ./modules/nixos/hyprland.mod.sys.nix
+      #./modules/nixos/hyprland.mod.sys.nix
     ];
 
   #-------- PACKAGES --------#

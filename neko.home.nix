@@ -64,9 +64,8 @@
     * WINDOW MANAGERS *
     ******************/
       #./programs/gnome-shell.home.nix
-
+      #./modules/home-manager/hyprland.home.mod.nix
       ./windowManagers/bspwm.home.nix
-      ./modules/home-manager/hyprland.home.mod.nix
       ./windowManagers/niri.home.nix
   ];
 
