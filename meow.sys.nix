@@ -22,7 +22,6 @@ in {
         ./services/sunshine.sys.nix
       ### WINDOW MANAGERS
         ./modules/nixos/hyprland.mod.sys.nix
-        ./windowManagers/plasma6.sys.nix
     ];
 
   #-------- PACKAGES --------#
