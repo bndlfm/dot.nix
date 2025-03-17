@@ -1,16 +1,10 @@
 {
   inputs = {
-  /***************
-  * TEMP INPUTS *
-  ***************/
-  ## NOTE: Check if fixed upstream!
-
   /********************
   * PERMANENT INPUTS *
   ********************/
   ## NIX
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     home-manager.url = "github:nix-community/home-manager";
     nur.url = "github:nix-community/NUR";
 
@@ -38,14 +32,42 @@
 
   ## WINDOW MANAGER
     niri.url = "github:sodiboo/niri-flake";
+
+  /***************
+  * TEMP INPUTS *
+  ***************/
+  ## NOTE: Check if fixed upstream!
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
   };
+
+
+
+  nixConfig = {
+    extra-substituters =
+      [
+        "https://nix-community.cachix.org"
+        "https://cosmic.cachix.org/"
+        "https://cuda-maintainers.cachix.org"
+        "https://ezkea.cachix.org" # GENSHIN
+        "https://hyprland.cachix.org"
+      ];
+    extra-trusted-public-keys =
+      [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
+        "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+        "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" # GENSHIN
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      ];
+  };
+
+
 
   outputs = {
     self,
     nixpkgs,
     home-manager,
     nur,
-    chaotic,
 
     deejavu,
     nixarr,

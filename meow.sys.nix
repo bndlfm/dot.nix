@@ -205,7 +205,7 @@ in {
     blueman.enable = true;
     gnome.sushi.enable = false;
     desktopManager = {
-      plasma6.enable = true;
+      plasma6.enable = false;
       };
     displayManager =  {
       sddm.enable = true;
