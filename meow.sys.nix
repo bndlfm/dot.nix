@@ -82,7 +82,6 @@ in {
 
 
   #------- MODULES -------#
-  _hyprland.enable = true;
 
 
   #--------- ENV ---------#

@@ -91,8 +91,6 @@
     ];
   };
 
-  _hyprland.enable = true;
-
   nix.package = pkgs.nix; # Required for Chaotic Nyx
 
   home =
