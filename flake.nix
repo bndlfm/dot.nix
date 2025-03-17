@@ -41,44 +41,23 @@
   };
 
 
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      nur,
 
-  nixConfig = {
-    extra-substituters =
-      [
-        "https://nix-community.cachix.org"
-        "https://cosmic.cachix.org/"
-        "https://cuda-maintainers.cachix.org"
-        "https://ezkea.cachix.org" # GENSHIN
-        "https://hyprland.cachix.org"
-      ];
-    extra-trusted-public-keys =
-      [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
-        "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-        "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" # GENSHIN
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      ];
-  };
+      deejavu,
+      nixarr,
 
+      niri,
 
-
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    nur,
-
-    deejavu,
-    nixarr,
-
-    niri,
-
-    spicetify-nix,
-    sops-nix,
-    stylix,
-    ...
-  }@inputs:
+      spicetify-nix,
+      sops-nix,
+      stylix,
+      ...
+    }@inputs:
 
     let
       inherit (self) outputs;

@@ -31,8 +31,6 @@ in {
         {
           experimental-features = [ "nix-command" "flakes" ];
           trusted-users = [ "root" "@wheel" ];
-          trusted-substituters = [ ];
-          trusted-public-keys = [ ];
         };
     };
 
@@ -202,33 +200,39 @@ in {
       };
     blueman.enable = true;
     gnome.sushi.enable = false;
-    desktopManager = {
-      plasma6.enable = false;
+    desktopManager =
+      {
+        plasma6.enable = true;
       };
-    displayManager =  {
-      sddm.enable = true;
+    displayManager =
+      {
+        sddm.enable = true;
       };
     fail2ban.enable = true;
     flatpak.enable = true;
     guix.enable = false;
-    llama-cpp = {
-      enable = false;
-      openFirewall = false;
-      extraFlags = [ "" ];
+    llama-cpp =
+      {
+        enable = false;
+        openFirewall = false;
+        extraFlags = [ "" ];
       };
-    monado = {
-      enable = false;
-      defaultRuntime = false;
+    monado =
+      {
+        enable = false;
+        defaultRuntime = false;
       };
-    usbmuxd = {
-      enable = true;
-      package = pkgs.usbmuxd2;
+    usbmuxd =
+      {
+        enable = true;
+        package = pkgs.usbmuxd2;
       };
-    ollama = {
-      enable = false; ### SEE PODMAN + HARBOR
-      acceleration = "cuda";
-      host = "0.0.0.0";
-      openFirewall = false;
+    ollama =
+      {
+        enable = false; ### SEE PODMAN + HARBOR
+        acceleration = "cuda";
+        host = "0.0.0.0";
+        openFirewall = false;
       };
     openssh.enable = true;
     printing.enable = true;
@@ -240,19 +244,20 @@ in {
       enable = true;
       backupDir = "/mnt/data/.vaultwarden";
     };
-    xserver = {
-      enable = true;
-      displayManager = {
-        gdm.enable = false;
-        };
-      desktopManager = {
-        gnome.enable = false;
-        };
-      windowManager = {
-        bspwm.enable = true;
-        };
-      xkb.layout = "us";
-      xkb.variant = "";
+    xserver =
+      {
+        enable = true;
+        displayManager = {
+          gdm.enable = false;
+          };
+        desktopManager = {
+          gnome.enable = false;
+          };
+        windowManager = {
+          bspwm.enable = true;
+          };
+        xkb.layout = "us";
+        xkb.variant = "";
       };
     };
 

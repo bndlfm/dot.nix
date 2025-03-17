@@ -65,7 +65,7 @@
     ******************/
       #./programs/gnome-shell.home.nix
       #./modules/home-manager/hyprland.home.mod.nix
-      ./windowManagers/bspwm.home.nix
+      #./windowManagers/bspwm.home.nix
       ./windowManagers/niri.home.nix
   ];
 
@@ -90,8 +90,6 @@
       inputs.nur.overlays.default
     ];
   };
-
-  nix.package = pkgs.nix; # Required for Chaotic Nyx
 
   home =
     {
