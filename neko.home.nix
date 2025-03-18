@@ -114,8 +114,6 @@
           browsers =
             [
               #firefox-devedition: programs/hm/firefox.nix
-              chromium
-              inputs.zen-browser.packages.x86_64-linux.twilight
               ladybird
               tor-browser
               qutebrowser
