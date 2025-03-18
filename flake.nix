@@ -7,6 +7,11 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     nur.url = "github:nix-community/NUR";
+    lix-module =
+      {
+        url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-1.tar.gz";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
 
   ## CUSTOMIZATION
     stylix.url = "github:Mikilio/stylix";
@@ -47,6 +52,7 @@
       nixpkgs,
       home-manager,
       nur,
+      lix-module,
 
       deejavu,
       nixarr,
@@ -128,6 +134,7 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             ({ nixpkgs.overlays = overlays; })
+            #lix-module.nixosModules.default
             ## MEDIA
               nixarr.nixosModules.default (import ./modules/nixarr.sys.nix)
             ## SECRETS

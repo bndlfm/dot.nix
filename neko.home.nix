@@ -68,7 +68,7 @@
       #./windowManagers/bspwm.home.nix
       ./windowManagers/niri.home.nix
   ];
-
+  nix.package = pkgs.nix;
   nixpkgs = {
     config = {
       allowUnfree = true;
