@@ -300,7 +300,7 @@ in {
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller
   networking =
     {
-      hostName = "nixos";
+      hostName = "meow";
       nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
       search = [ "example.ts.net" ];
       firewall.checkReversePath = "loose";
