@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
@@ -14,18 +15,50 @@
   boot.extraModulePackages = [ ];
 
   #/dev/nvme0n1p2: LABEL="Nixxy" UUID="8a82f24c-5b0d-4f5e-900d-a6e615f0dc77
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/8a82f24c-5b0d-4f5e-900d-a6e615f0dc77";
-      fsType = "ext4";
+  fileSystems =
+    {
+      "/boot" =
+        {
+          device = "/dev/disk/by-uuid/48D9-100F";
+          fsType = "vfat";
+          options = [ "fmask=0022" "dmask=0022" ];
+        };
+      "/" =
+        {
+          device = "/dev/disk/by-uuid/8a82f24c-5b0d-4f5e-900d-a6e615f0dc77";
+          fsType = "ext4";
+        };
+      "/mnt/data" =
+        {
+          device = "/dev/disk/by-uuid/ad281e3a-7c33-48e2-be75-2b6433acee04";
+          fsType = "ext4";
+          options =
+            [
+              "noatime"
+              "nodiratime"
+              "defaults"
+            ];
+        };
+      "/media" =
+        {
+          device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
+          fsType = "btrfs";
+            options =
+              [
+                "subvol=@media"
+                "noatime"
+                "nodiratime"
+                "discard"
+              ];
+        };
     };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/6BFC-BE4E";
-      fsType = "vfat";
-      options = ["umask=0077"];
-    };
-
-  swapDevices = [ ];
+  swapDevices =
+    [
+      {
+        device = "/dev/nvme0n1p3";
+      }
+    ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

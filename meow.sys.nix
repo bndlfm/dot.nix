@@ -294,46 +294,13 @@ in {
     ];
   };
 
-  #-------- FILESYSTEM --------#
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/8a82f24c-5b0d-4f5e-900d-a6e615f0dc77";
-      fsType = "ext4";
-      };
-    "/boot" = {
-      device = "/dev/disk/by-uuid/6BFC-BE4E";
-      fsType = "vfat";
-      };
-
-    "/mnt/data" = {
-      device = "/dev/disk/by-uuid/ad281e3a-7c33-48e2-be75-2b6433acee04";
-      fsType = "ext4";
-      options = [
-        "noatime"
-        "nodiratime"
-        "defaults"
-        ];
-      };
-
-    "/data" = {
-      device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
-      fsType = "btrfs";
-      options = [
-        "subvol=@media"
-        "noatime"
-        "nodiratime"
-        "discard"
-        ];
-      };
-    };
-
 
   #-------- NETWORKING --------#
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller
   networking =
     {
-      hostName = "meow";
+      hostName = "nixos";
       nameservers = [ "100.100.100.100" "8.8.8.8" "1.1.1.1" ];
       search = [ "example.ts.net" ];
       firewall.checkReversePath = "loose";

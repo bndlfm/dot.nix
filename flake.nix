@@ -88,7 +88,7 @@
       ***********************/
       homeConfigurations =
         {
-          "neko@meow" = home-manager.lib.homeManagerConfiguration
+          "neko@nixos" = home-manager.lib.homeManagerConfiguration
             {
               pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays overlays;
               extraSpecialArgs =
@@ -122,39 +122,44 @@
      /************************
       * NIXOS CONFIGURATIONS *
       ************************/
-      nixosConfigurations = {
-        "meow" = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            ({ nixpkgs.overlays = overlays; })
-            #lix-module.nixosModules.default
-            ## MEDIA
-              nixarr.nixosModules.default (import ./modules/nixarr.sys.nix)
-            ## SECRETS
-              sops-nix.nixosModules.sops
-            ## THEMING
-              stylix.nixosModules.stylix (import ./theme/nxStylix.nix)
-            ## WINDOW MANAGERS
-              niri.nixosModules.niri
-              {
-                programs.niri = {
-                  enable = true;
-                  package = inputs.niri.packages.x86_64-linux.niri-unstable;
-                };
-                niri-flake.cache.enable = true;
-              }
-            ## IMPORTS
-              ./meow.sys.nix
-              ./meow.hardware.nix
-          ];
+      nixosConfigurations =
+        {
+          "nixos" = nixpkgs.lib.nixosSystem
+            {
+              specialArgs = { inherit inputs outputs; };
+              modules =
+                [
+                  ({ nixpkgs.overlays = overlays; })
+                  ## MEDIA
+                    nixarr.nixosModules.default (import ./modules/nixarr.sys.nix)
+                  ## SECRETS
+                    sops-nix.nixosModules.sops
+                  ## THEMING
+                    stylix.nixosModules.stylix (import ./theme/nxStylix.nix)
+                  ## WINDOW MANAGERS
+                    niri.nixosModules.niri
+                    {
+                      programs.niri =
+                        {
+                          enable = true;
+                          package = inputs.niri.packages.x86_64-linux.niri-unstable;
+                        };
+                      niri-flake.cache.enable = true;
+                    }
+                  ## IMPORTS
+                    ./meow.sys.nix
+                    ./meow.hardware.nix
+                ];
+            };
+          "nyaa" = nixpkgs.lib.nixosSystem
+            {
+              modules =
+                [
+                  ## IMPORTS
+                    ./server.sys.nix
+                    ./server.hardware.nix
+                ];
+            };
         };
-        "nyaa" = nixpkgs.lib.nixosSystem {
-          modules = [
-            ## IMPORTS
-              ./server.sys.nix
-              ./server.hardware.nix
-          ];
-        };
-      };
-  };
-}
+    };
+  }
