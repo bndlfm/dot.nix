@@ -88,7 +88,7 @@
       ***********************/
       homeConfigurations =
         {
-          "neko@nixos" = home-manager.lib.homeManagerConfiguration
+          "neko@meow" = home-manager.lib.homeManagerConfiguration
             {
               pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays overlays;
               extraSpecialArgs =
@@ -97,10 +97,15 @@
                 };
               modules =
                 [
+                  ## PLEASE WORK
+                    ./cachix.nix
                   ## NIRI
                     niri.homeModules.niri
                   ## THEMING
-                    stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
+                  stylix.homeManagerModules.stylix
+                    (
+                      import ./theme/hmStylix.nix
+                    )
                   ## IMPORTS
                     ./neko.home.nix
                 ];
@@ -124,12 +129,14 @@
       ************************/
       nixosConfigurations =
         {
-          "nixos" = nixpkgs.lib.nixosSystem
+          "meow" = nixpkgs.lib.nixosSystem
             {
               specialArgs = { inherit inputs outputs; };
               modules =
                 [
                   ({ nixpkgs.overlays = overlays; })
+                  ## PLEASE WORK
+                    ./cachix.nix
                   ## MEDIA
                     nixarr.nixosModules.default (import ./modules/nixarr.sys.nix)
                   ## SECRETS

@@ -10,8 +10,6 @@ let
 in {
   imports =
     [
-      ./cachix.nix
-
       ## SECRETS
         inputs.sops-nix.nixosModules.sops
       ### PROGRAMS
