@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:{
@@ -15,6 +16,10 @@
           reverse_proxy localhost:8096
         '';
     };
+  };
+
+  systemd.services.caddy.serviceConfig = {
+    EnvironmentFile = config.sops.secrets.TS_AUTHKEY.path;
   };
 }
 

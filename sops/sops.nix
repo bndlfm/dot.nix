@@ -1,12 +1,10 @@
-{ ... }:
 {
-
+...
+}:{
   sops = {
     defaultSopsFile = ../sops/secrets.yaml;
     defaultSopsFormat = "yaml";
     age.keyFile = "/home/neko/.config/sops/age/keys.txt";
-    defaultSymlinkPath = "/run/user/1000/secrets";
-    defaultSecretsMountPoint = "/run/user/1000/secrets.d";
 
     secrets = {
       ANTHROPIC_API_KEY = {
@@ -47,11 +45,6 @@
       OBSIDIAN_REST_API_KEY = {
         format = "yaml";
         sopsFile = ./OBSIDIAN_REST_API_KEY.yaml;
-      };
-
-      TS_AUTHKEY = {
-        format = "yaml";
-        sopsFile = ./TS_AUTHKEY.yaml;
       };
 
       TWITCH_IRC_OAUTH = {
