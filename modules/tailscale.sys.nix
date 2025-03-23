@@ -34,7 +34,12 @@
       enable = true;
       trustedInterfaces = [ "tailscale0" ];
       allowedUDPPorts = [ config.services.tailscale.port ];
-      allowedTCPPorts = [ config.services.tailscale.port ];
+      allowedTCPPorts =
+        [
+          config.services.tailscale.port
+          80
+          443
+        ];
     };
     interfaces."tailscale0" = {
       useDHCP = false;
@@ -65,7 +70,7 @@
       # otherwise authenticate with tailscale
       ### ..../bin/tailscale up -authkey tskey-examplekeyhere # get this from admin console
       ${tailscale}/bin/tailscale up --advertise-routes=192.168.1.0/24 --operator=neko
-      ${tailscale}/bin/tailscale funnel --bg 8096
+      ${tailscale}/bin/tailscale serve https:443 http:80
 
     '';
   };

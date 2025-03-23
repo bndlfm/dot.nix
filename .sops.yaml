@@ -41,6 +41,11 @@ creation_rules:
       - age:
         - *primary
 
+  - path_regex: sops/TS_AUTHKEY.yaml$
+    key_groups:
+      - age:
+        - *primary
+
   - path_regex: sops/TWITCH_IRC_OAUTH.yaml$
     key_groups:
       - age:

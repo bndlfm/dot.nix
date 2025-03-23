@@ -80,7 +80,7 @@ in {
                       x = toInt "${_g.monitors.center.pos.x}";
                       y = toInt "${_g.monitors.center.pos.y}";
                     };
-                  variable-refresh-rate = true;
+                  variable-refresh-rate = false;
                 };
 
             ## RIGHT MONITOR

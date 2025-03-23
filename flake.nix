@@ -1,52 +1,64 @@
 {
-  inputs = {
-  /********************
-  * PERMANENT INPUTS *
-  ********************/
-  ## NIX
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-    nur.url = "github:nix-community/NUR";
+  inputs =
+    {
+      /********************
+      * PERMANENT INPUTS *
+      ********************/
+      ## NIX
+        nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+        home-manager.url = "github:nix-community/home-manager";
+        nur.url = "github:nix-community/NUR";
 
-  ## CUSTOMIZATION
-    stylix.url = "github:Mikilio/stylix";
-    tt-schemes = {
-      url = "github:tinted-theming/schemes";
-      flake = false;
+      ## CUSTOMIZATION
+        stylix.url = "github:Mikilio/stylix";
+        tt-schemes = {
+          url = "github:tinted-theming/schemes";
+          flake = false;
+        };
+        base16.url = "github:SenchoPens/base16.nix";
+
+      ## MEDIA
+        nixarr.url = "github:rasmus-kirk/nixarr";
+        spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+
+      ## PROGRAMS
+        aagl.url = "github:ezKEa/aagl-gtk-on-nix";
+        deejavu.url = "github:bndlfm/deejavu";
+        isd.url = "github:isd-project/isd";
+        openmw-vr.url = "github:bndlfm/openmw-vr.nix";
+
+      ## SECRETS
+        sops-nix.url = "github:Mic92/sops-nix";
+
+      ## SERVICES
+        caddy-nix.url = "github:vincentbernat/caddy-nix";
+
+      ## WINDOW MANAGER
+        niri.url = "github:sodiboo/niri-flake";
+
+
+      /***************
+      * TEMP INPUTS *
+      ***************/
+      ## NOTE: Check if fixed upstream!
+        nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     };
-    base16.url = "github:SenchoPens/base16.nix";
 
-  ## MEDIA
-    nixarr.url = "github:rasmus-kirk/nixarr";
-    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
-  ## PROGRAMS
-    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
-    deejavu.url = "github:bndlfm/deejavu";
-    isd.url = "github:isd-project/isd";
-    openmw-vr.url = "github:bndlfm/openmw-vr.nix";
 
-  ## SECRETS
-    sops-nix.url = "github:Mic92/sops-nix";
+  nixConfig =
+    {
+      extra-subsituters =
+        [
+          "https://cache.nixos.org"
+        ];
+      extra-trusted-public-keys =
+        [
+          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        ];
+    };
 
-  ## WINDOW MANAGER
-    niri.url = "github:sodiboo/niri-flake";
 
-  /***************
-  * TEMP INPUTS *
-  ***************/
-  ## NOTE: Check if fixed upstream!
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
-  };
-
-  nixConfig = {
-    extra-subsituters = [
-      "https://cache.nixos.org"
-    ];
-    extra-trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-    ];
-  };
 
   outputs =
     {
@@ -99,21 +111,13 @@
           "neko@meow" = home-manager.lib.homeManagerConfiguration
             {
               pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays overlays;
-              extraSpecialArgs =
-                {
-                  inherit inputs outputs;
-                };
+              extraSpecialArgs = { inherit inputs outputs; };
               modules =
                 [
-                  ## PLEASE WORK
-                    ./cachix.nix
                   ## NIRI
                     niri.homeModules.niri
                   ## THEMING
-                  stylix.homeManagerModules.stylix
-                    (
-                      import ./theme/hmStylix.nix
-                    )
+                    stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
                   ## IMPORTS
                     ./neko.home.nix
                 ];
@@ -143,8 +147,6 @@
               modules =
                 [
                   ({ nixpkgs.overlays = overlays; })
-                  ## PLEASE WORK
-                    ./cachix.nix
                   ## MEDIA
                     nixarr.nixosModules.default (import ./modules/nixarr.sys.nix)
                   ## SECRETS

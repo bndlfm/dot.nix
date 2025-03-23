@@ -49,6 +49,11 @@
         sopsFile = ./OBSIDIAN_REST_API_KEY.yaml;
       };
 
+      TS_AUTHKEY = {
+        format = "yaml";
+        sopsFile = ./TS_AUTHKEY.yaml;
+      };
+
       TWITCH_IRC_OAUTH = {
         format = "yaml";
         sopsFile = ./TWITCH_IRC_OAUTH.yaml;

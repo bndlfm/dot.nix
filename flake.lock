@@ -104,6 +104,21 @@
         "type": "github"
       }
     },
+    "caddy-nix": {
+      "locked": {
+        "lastModified": 1742276417,
+        "narHash": "sha256-iEGJYhUsjJdxFviduw7zUGdYewf/W7QodEuF1w8MqF0=",
+        "owner": "vincentbernat",
+        "repo": "caddy-nix",
+        "rev": "f0f28d2b4bd1fd433726e334a462d029f0440baa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vincentbernat",
+        "repo": "caddy-nix",
+        "type": "github"
+      }
+    },
     "deejavu": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -929,6 +944,7 @@
       "inputs": {
         "aagl": "aagl",
         "base16": "base16",
+        "caddy-nix": "caddy-nix",
         "deejavu": "deejavu",
         "home-manager": "home-manager",
         "isd": "isd",

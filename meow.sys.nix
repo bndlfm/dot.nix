@@ -10,15 +10,17 @@ let
 in {
   imports =
     [
+      ./cachix.nix
       ## SECRETS
         inputs.sops-nix.nixosModules.sops
-      ### PROGRAMS
+      ## PROGRAMS
         ./programs/steam.sys.nix
-      ### MODULES
+      ## MODULES
+        ./modules/caddy.nix
         ./modules/tailscale.sys.nix
-      ### SERVICES
+      ## SERVICES
         ./services/sunshine.sys.nix
-      ### WINDOW MANAGERS
+      ## WINDOW MANAGERS
       #./modules/nixos/hyprland.mod.sys.nix
     ];
 
@@ -78,11 +80,11 @@ in {
       ];
 
 
-  #------- MODULES -------#
-
+  #------- MY MODULES -------#
 
   #--------- ENV ---------#
   environment.variables= {
+    TS_AUTHKEY = builtins.readFile "${config.sops.secrets.TS_AUTHKEY.path}";
     QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
     QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
   };
