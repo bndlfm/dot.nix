@@ -8,14 +8,15 @@
         nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
         home-manager.url = "github:nix-community/home-manager";
         nur.url = "github:nix-community/NUR";
+        nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
       ## CUSTOMIZATION
+        base16.url = "github:SenchoPens/base16.nix";
         stylix.url = "github:Mikilio/stylix";
         tt-schemes = {
           url = "github:tinted-theming/schemes";
           flake = false;
         };
-        base16.url = "github:SenchoPens/base16.nix";
 
       ## MEDIA
         nixarr.url = "github:rasmus-kirk/nixarr";
@@ -74,7 +75,7 @@
 
       spicetify-nix,
       sops-nix,
-      stylix,
+      stylix, nix-flatpak,
       ...
     }@inputs:
 

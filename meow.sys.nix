@@ -85,7 +85,6 @@ in {
 
   #--------- ENV ---------#
   environment.variables= {
-    TS_AUTHKEY = builtins.readFile "${config.sops.secrets.TS_AUTHKEY.path}";
     QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
     QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
   };

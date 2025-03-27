@@ -128,6 +128,7 @@
               distrobox
               duf
               delta
+              fh
               eza
               fd
               ffmpeg-full
@@ -169,6 +170,7 @@
           editing =
             [
               gimp
+              darktable
               libreoffice-qt
             ];
 
