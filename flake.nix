@@ -67,6 +67,7 @@
       nixpkgs,
       home-manager,
       nur,
+      nix-flatpak,
 
       deejavu,
       nixarr,
@@ -75,7 +76,7 @@
 
       spicetify-nix,
       sops-nix,
-      stylix, nix-flatpak,
+      stylix,
       ...
     }@inputs:
 
@@ -115,6 +116,8 @@
               extraSpecialArgs = { inherit inputs outputs; };
               modules =
                 [
+                  ## FLATPAK
+                    nix-flatpak.homeManagerModules.nix-flatpak (import ./services/flatpak.home.nix)
                   ## NIRI
                     niri.homeModules.niri
                   ## THEMING
@@ -148,6 +151,8 @@
               modules =
                 [
                   ({ nixpkgs.overlays = overlays; })
+                  ## FLATPAK
+                    nix-flatpak.nixosModules.nix-flatpak
                   ## MEDIA
                     nixarr.nixosModules.default (import ./modules/nixarr.sys.nix)
                   ## SECRETS

@@ -1,15 +1,19 @@
 { ... }:{
   services = {
     flatpak = {
+      enable = true;
       packages = [
-        "com.discordapp.Discord"
 	"com.google.EarthPro"
         "com.github.tchx84.Flatseal"
+        "org.jdownloader.JDownloader"
       ];
       uninstallUnmanaged = true;
-      update.auto = {
-        enable = true;
-        onCalendar = "weekly";
+      update = {
+        auto = {
+          enable = true;
+          onCalendar = "weekly";
+        };
+        onActivation = true;
       };
     };
   };
