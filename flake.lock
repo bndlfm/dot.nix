@@ -940,11 +940,11 @@
     },
     "nixpkgs-bndlfm": {
       "locked": {
-        "lastModified": 1746778388,
-        "narHash": "sha256-bApbyBLfQoklxXyf8krhnkxayNkHotl2fzRChygQ6/U=",
+        "lastModified": 1746779737,
+        "narHash": "sha256-hxKa4AY889pdY77/83mPPRAZbH1V/vxeZwv+7HwOj7U=",
         "owner": "bndlfm",
         "repo": "nixpkgs",
-        "rev": "44d7f192ce402ca19eecc725696f7e8a77b69086",
+        "rev": "86d902f0eed610b4c764e61980e2d6ce695449ac",
         "type": "github"
       },
       "original": {
