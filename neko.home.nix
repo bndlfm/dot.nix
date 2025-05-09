@@ -10,86 +10,91 @@
   home.username = "neko";
   home.homeDirectory = "/home/neko";
 
-  imports = [
-    ./cachix.nix
+  imports =
+    [
+      ./cachix.nix
 
-    /**************
-    * MONADO (VR) *
-    **************/
-      #./modules/openComposite.home.nix
+      /**************
+      * MONADO (VR) *
+      **************/
+        #./modules/openComposite.home.nix
 
-    /***********
-    * PROGRAMS *
-    ************/
-      ./programs/email.home.nix
-      ./programs/programs.home.nix
-      ./programs/twitch.home.nix
+      /***********
+      * PROGRAMS *
+      ************/
+        ./programs/email.home.nix
+        ./programs/programs.home.nix
+        ./programs/twitch.home.nix
 
-      ./programs/shell.home.nix
+        ./programs/shell.home.nix
 
-      ./programs/firefox.home.nix
-      ./programs/git.home.nix
-      ./programs/kitty.home.nix
-      ./programs/ncmpcpp.home.nix
-      ./programs/neovim.home.nix
-      ./programs/password-store.home.nix
-      ./programs/ranger.home.nix
-      ./programs/rofi.home.nix
-      ./programs/yazi.home.nix
-      ./programs/zellij.home.nix
-
-
-    /**********
-    * SECRETS *
-    **********/
-      inputs.sops-nix.homeManagerModules.sops
-      ./sops/sops.nix
+        ./programs/firefox.home.nix
+        ./programs/git.home.nix
+        ./programs/kitty.home.nix
+        ./programs/ncmpcpp.home.nix
+        ./programs/neovim.home.nix
+        ./programs/password-store.home.nix
+        ./programs/ranger.home.nix
+        ./programs/rofi.home.nix
+        ./programs/yazi.home.nix
+        ./programs/zellij.home.nix
 
 
-    /***********
-    * SERVICES *
-    ***********/
-      ./services/espanso.home.nix
-      ./services/services.home.nix
+      /**********
+      * SECRETS *
+      **********/
+        inputs.sops-nix.homeManagerModules.sops
+        ./sops/sops.nix
 
 
-    /**********
-    * SPOTIFY *
-    **********/
-      inputs.spicetify-nix.homeManagerModules.default
-      ./theme/spicetify.nix
+      /***********
+      * SERVICES *
+      ***********/
+        ./services/espanso.home.nix
+        ./services/services.home.nix
 
 
-    /******************
-    * WINDOW MANAGERS *
-    ******************/
-      #./programs/gnome-shell.home.nix
-      #./modules/home-manager/hyprland.home.mod.nix
-      #./windowManagers/bspwm.home.nix
-      ./windowManagers/niri.home.nix
-  ];
-  nix.package = pkgs.nix;
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = (_: true);
-      permittedInsecurePackages = [
-        ## NIXARR
-        "dotnet-combined"
-        "dotnet-core-combined"
-        "dotnet-runtime-7.0.20"
-        "dotnet-runtime-wrapped-7.0.20"
-        "dotnet-wrapped-combined"
-        "dotnet-sdk-6.0.428"
-        "dotnet-sdk-wrapped-6.0.428"
-        "dotnet-sdk-7.0.410"
-        "dotnet-sdk-wrapped-7.0.410"
-      ];
-    };
-    overlays = [
-      inputs.nur.overlays.default
+      /**********
+      * SPOTIFY *
+      **********/
+        inputs.spicetify-nix.homeManagerModules.default
+        ./theme/spicetify.nix
+
+
+      /******************
+      * WINDOW MANAGERS *
+      ******************/
+        #./programs/gnome-shell.home.nix
+        ./modules/home-manager/hyprland.home.mod.nix
+        #./windowManagers/bspwm.home.nix
+        ./windowManagers/niri.home.nix
     ];
-  };
+  # modules
+  _hyprland.enable = false;
+
+  nix.package = pkgs.nix;
+  nixpkgs =
+    {
+      config =
+        {
+          allowUnfree = true;
+          allowUnfreePredicate = (_: true);
+          permittedInsecurePackages =
+            [
+              ## NIXARR
+                "dotnet-combined"
+                "dotnet-core-combined"
+                "dotnet-runtime-7.0.20"
+                "dotnet-runtime-wrapped-7.0.20"
+                "dotnet-wrapped-combined"
+                "dotnet-sdk-6.0.428"
+                "dotnet-sdk-wrapped-6.0.428"
+                "dotnet-sdk-7.0.410"
+                "dotnet-sdk-wrapped-7.0.410"
+            ];
+        };
+      overlays = [ inputs.nur.overlays.default ];
+    };
 
   home =
     {
@@ -142,6 +147,7 @@
               libqalculate
               nix-index
               (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
+              p7zip
               ripgrep
               sd
               silver-searcher
@@ -169,8 +175,10 @@
 
           editing =
             [
-              gimp
               darktable
+              gimp
+              inkscape
+              krita
               libreoffice-qt
             ];
 
@@ -180,26 +188,28 @@
               crawlTiles
               _gamma-launcher
               glfw-wayland-minecraft
-              nexusmods-app
               inputs.openmw-vr.packages.x86_64-linux.default
-              ## RHYTHM GAMES
-                clonehero
               ## DECOMP
                 sm64coopdx
                 #shipwright # Ocarina of Time
                 _2ship2harkinian # Majora's Mask
               ## EMULATION
                 shadps4
+              ## RHYTHM GAMES
+                clonehero
               ## GAMING UTILITIES
-                _beatSaberModManager
+                ## LAUNCHERS
+                  heroic
+                  itch
+                  lutris
+                  prismlauncher
+                ## MODDING
+                  _beatSaberModManager
+                  limo
+                  nexusmods-app
                 mangohud
                 protontricks
                 steamtinkerlaunch
-              ## LAUNCHERS
-                heroic
-                itch
-                lutris
-                prismlauncher
             ];
 
           media =
@@ -232,21 +242,24 @@
                     ueberzug
                   ]
                 ))
-              # FENNEL
+              ## FENNEL
                 #(pkgs.callPackage ./pkgs/antifennel.nix { })
-              # OTHER DEV TOOLS
-                godot_4
-                godot_4-export-templates
+              ## NIX DEV TOOLS
                 direnv
                 nix-prefetch
+              ## OTHER DEV TOOLS
                 meld
+              godot_4
+              godot_4-export-templates
+              zenity
             ];
 
           social =
             [
               discord
-              vesktop
+                vesktop
               hexchat
+              tdesktop
             ];
 
           system =
@@ -256,7 +269,7 @@
                 qt6Packages.qtstyleplugin-kvantum
                 kdePackages.ksshaskpass
               # Wine/Proton
-                winetricks
+                nixpkgs-bndlfm.winetricks
                 wineWowPackages.stable
                 protonup
             ];
@@ -296,6 +309,7 @@
           tui =
             [
               inputs.isd.packages.${pkgs.system}.isd
+              nix-search-tv
               ## PROGRAMMING
                 fx #json viewer
                 harlequin # sql ide
@@ -400,48 +414,49 @@
         ++ virtualization
         ++ misc;
 
-    ### (HM) ENVIRONMENT VARIABLES ###
+
+      #pointerCursor = {
+      #  package = pkgs.volantes-cursors;
+      #  name = "volantes-cursors";
+      #};
+
+
+    ## (HM) ENVIRONMENT VARIABLES ##
     sessionVariables = {
-      ### API KEYS
-      ANTHROPIC_API_KEY = builtins.readFile "${config.sops.secrets.ANTHROPIC_API_KEY.path}";
-      HUGGINGFACE_API_KEY = builtins.readFile "${config.sops.secrets.HUGGINGFACE_API_KEY.path}";
-      GROQ_SECRET_KEY = builtins.readFile "${config.sops.secrets.GROQ_SECRET_KEY.path}";
-      OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
-
-      OBSIDIAN_REST_API_KEY = builtins.readFile "${config.sops.secrets.OBSIDIAN_REST_API_KEY.path}";
-
-      ### DEFAULTS
-      EDITOR = "nvim";
-      GPG_TTY = "$(tty)";
-      _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd";
-      PAGER = "nvim +Man!";
-      MANPAGER = "nvim +Man!";
-      SUDOEDITOR = "vim";
-      VISUAL = "vim";
-
-      ### GPU STUFF
-      PROTON_ENABLE_NVAPI = "1";
-      PROTON_HIDE_NVIDIA_GPU = "0";
-      VKD3D_CONFIG = "dxr";
-      VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
-
-      ### MAKE FIREFOX SEE DBUS
-      MOZ_DBUS_REMOTE = "1";
-
-      ### NETWORK LOCATIONS
-      DOCKER_HOST = "unix:///run/user/1000/docker.sock";
-        #OLLAMA_HOST = "192.168.1.5";
-
-      ### NIX: FIXES ELECTRON APPS
-      NIXOS_OZONE_WL = "1";
-
-      ### QT STYLING
-      QT_QPA_PLATFORMTHEME = "qt6ct";
-      QT_STYLE_OVERRIDE = "kvantum";
-
-      ### THEMING
-      XCURSOR = "volantes-cursors";
-      XCURSOR_SIZE = "24";
+      ## API KEYS
+        ANTHROPIC_API_KEY = builtins.readFile "${config.sops.secrets.ANTHROPIC_API_KEY.path}";
+        HUGGINGFACE_API_KEY = builtins.readFile "${config.sops.secrets.HUGGINGFACE_API_KEY.path}";
+        GROQ_SECRET_KEY = builtins.readFile "${config.sops.secrets.GROQ_SECRET_KEY.path}";
+        OBSIDIAN_REST_API_KEY = builtins.readFile "${config.sops.secrets.OBSIDIAN_REST_API_KEY.path}"; # local only
+        OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
+      ## EDITOR
+        EDITOR = "nvim";
+        SUDOEDITOR = "vim";
+        VISUAL = "vim";
+      ## GPU
+        PROTON_ENABLE_NVAPI = "1";
+        PROTON_HIDE_NVIDIA_GPU = "0";
+        VKD3D_CONFIG = "dxr";
+        VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
+      ## NIX
+        NIXOS_OZONE_WL = "1"; # fixes electron wayland support
+        NH_FLAKE = "${builtins.getEnv "HOME"}/.nixcfg/"; # nix helper env var for flake location
+      ## PAGER
+        PAGER = "nvim +Man!";
+        MANPAGER = "nvim +Man!";
+      ## THEMING
+        #XCURSOR = "volantes-cursors";
+        #XCURSOR_THEME="volantes-cursors";
+        #XCURSOR_SIZE = "24";
+        #XCURSOR_PATH = ''${pkgs.volantes-cursors}:$XCURSOR_PATH'';
+      ## QT STYLING
+        QT_QPA_PLATFORMTHEME = "qt6ct";
+        QT_STYLE_OVERRIDE = "kvantum";
+      ## ...
+        _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd";
+        DOCKER_HOST = "unix:///run/user/1000/docker.sock";
+        GPG_TTY = "$(tty)";
+        MOZ_DBUS_REMOTE = "1"; # make firefox see dbus
     };
 
     ######### (HM) DOTFILES ########

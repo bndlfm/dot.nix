@@ -11,7 +11,6 @@ in {
   home.packages = with pkgs;
     [
       clipse
-      copyq
       fuzzel
       _ndrop
       swaybg
@@ -22,94 +21,95 @@ in {
       xwayland-satellite
     ];
 
+  gtk = {
+    cursorTheme = {
+      package = pkgs.volantes-cursors;
+      name = "volantes_light_cursors";
+    };
+  };
+
   programs =
     {
       niri = {
         package = pkgs.niri-unstable;
         settings = {
-        cursor = {
-          size = 32;
-          theme = "${pkgs.volantes-cursors}";
-        };
-
-
-        environment = {
-          DISPLAY = ":0";
-        };
-
-
-        input = {
-          keyboard = {
-            repeat-delay = 250;
-            repeat-rate = 70;
+          cursor = {
+            size = 32;
+            theme = "volantes_light_cursors";
           };
-        };
 
 
-        outputs = let
-          toInt = pkgs.lib.strings.toInt;
-        in  {
-            ## LEFT MONITOR
-              "${_g.monitors.left.output}" =
-                {
-                  enable = true;
-                  mode =
-                    {
-                      width = toInt "${_g.monitors.left.res.width}";
-                      height = toInt "${_g.monitors.left.res.height}";
-                    };
-                  position =
-                    {
-                      x = toInt "${_g.monitors.left.pos.x}";
-                      y = toInt "${_g.monitors.left.pos.y}";
-                    };
-                  transform.rotation = 270;
-                };
+          environment = {
+            DISPLAY = ":0";
+          };
 
-            ## CENTER MONITOR
-              "${_g.monitors.center.output}" =
-                {
-                  enable = true;
-                  mode =
-                    {
+
+          input = {
+            keyboard = {
+              repeat-delay = 250;
+              repeat-rate = 70;
+            };
+          };
+
+
+          outputs = let
+            toInt = pkgs.lib.strings.toInt;
+          in  {
+              ## LEFT MONITOR
+                #"${_g.monitors.left.output}" =
+                #  {
+                #    enable = false;
+                #    mode =
+                #      {
+                #        width = toInt "${_g.monitors.left.res.width}";
+                #        height = toInt "${_g.monitors.left.res.height}";
+                #      };
+                #    position =
+                #      {
+                #        x = toInt "${_g.monitors.left.pos.x}";
+                #        y = toInt "${_g.monitors.left.pos.y}";
+                #      };
+                #    transform.rotation = 270;
+                #  };
+              ## CENTER MONITOR
+                "${_g.monitors.center.output}" =
+                  {
+                    enable = true;
+                    mode = {
                       width = toInt "${_g.monitors.center.res.width}";
                       height = toInt "${_g.monitors.center.res.height}";
                     };
-                  position =
-                    {
-                      x = toInt "${_g.monitors.center.pos.x}";
-                      y = toInt "${_g.monitors.center.pos.y}";
-                    };
-                  variable-refresh-rate = false;
-                };
-
-            ## RIGHT MONITOR
-              "${_g.monitors.right.output}" =
-                {
-                  enable = true;
-                  mode =
-                    {
-                      width = toInt "${_g.monitors.right.res.width}";
-                      height = toInt "${_g.monitors.right.res.height}";
-                    };
-                  position =
-                    {
-                      x = toInt "${_g.monitors.right.pos.x}";
-                      y = toInt "${_g.monitors.right.pos.y}";
-                    };
-                  transform.rotation = 270;
-                };
+                    #position = {
+                    #      x = toInt "${_g.monitors.center.pos.x}";
+                    #      y = toInt "${_g.monitors.center.pos.y}";
+                    #};
+                    variable-refresh-rate = false;
+                  };
+              ## RIGHT MONITOR
+                #"${_g.monitors.right.output}" = {
+                #  enable = false;
+                #  mode =
+                #    {
+                #      width = toInt "${_g.monitors.right.res.width}";
+                #      height = toInt "${_g.monitors.right.res.height}";
+                #    };
+                #  position =
+                #    {
+                #      x = toInt "${_g.monitors.right.pos.x}";
+                #      y = toInt "${_g.monitors.right.pos.y}";
+                #    };
+                #  transform.rotation = 270;
+                #};
           };
 
 
-        layout =
-          {
+          layout = {
             preset-column-widths =
               [
-                { proportion = 2. / 5.;   }
+                { proportion = 2.   / 5.; }
                 { proportion = 2.45 / 5.; }
-                { proportion = 3.5 / 5.;  }
-                { proportion = 5. / 5.;   }
+                { proportion = 3.5  / 5.; }
+                { proportion = 5.   / 5.; }
               ];
 
             preset-window-heights =
@@ -122,61 +122,59 @@ in {
           };
 
 
-        workspaces =
-          {
+          workspaces = {
             "ndrop" = {};
           };
 
 
-        spawn-at-startup =
-          [
-            ## FOR NDROP
-              { command = [ "niri" "msg" "action" "focus-workspace-down" ]; }
-            ## BAR
-              { command = [ "waybar" ];}
-            ## BLUETOOOTH
-              { command = [ "blueman-applet" ]; }
-            ## CLIPBOARD
-              { command = [ "copyq" "--start-server" ]; }
-            ## GAMMA-INDICATOR
-              #{ command = [ "gammastep-indicator" "-l" "38.0628:-91.4035" "-t" "6500:4800" ]; }
-            ## GAMMA RELAY
-              { command = [ "wl-gammarelay-rs" ]; }
-            ## GDRIVE
-              { command = [ "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse" "/home/neko/Documents/GoogleDrive/" ]; }
-            ## KDE-CONNECT
-              { command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect"]; }
-              { command = ["kdeconnect-indicator"]; }
-            ## POWER SAVINGS
-              { command = [ "sh" "-c" "swayidle -w timeout 1201 'niri msg action power-off-monitors' timeout 1200 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'" ]; }
-            ## CLIPBOARD
-              { command = [ "copyq" "--start-server" ]; }
-            ## WALLPAPER
-              { command = [ "swaybg" "-i" "/home/neko/Pictures/Wallpapers/4K/Weather/Wallpaper forest, trees, snow, winter, 4k, Nature 8421417542.jpg" ]; }
-            ## XWAYLAND
-              { command = [ "xwayland-satellite" ":0" ]; }
-              { command = [ "xrandr" "--output" "DP-1" "--primary" ]; }
-          ];
+          spawn-at-startup =
+            [
+              ## FOR NDROP
+                { command = [ "niri" "msg" "action" "focus-workspace-down" ]; }
+              ## BAR
+                { command = [ "waybar" ];}
+              ## BLUETOOOTH
+                { command = [ "blueman-applet" ]; }
+              ## CLIPBOARD
+                #{ command = [ "copyq" "--start-server" ]; }
+                { command = [ "clipse" "-listen"]; }
+              ## GAMMA
+                #{ command = [ "gammastep-indicator" "-l" "38.0628:-91.4035" "-t" "6500:4800" ]; }
+                { command = [ "wl-gammarelay-rs" ]; }
+              ## GDRIVE
+                { command = [ "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse" "/home/neko/Documents/GoogleDrive/" ]; }
+              ## KDE-CONNECT
+                { command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect"]; }
+                { command = ["kdeconnect-indicator"]; }
+              ## POWER SAVINGS
+                { command = [ "sh" "-c" "swayidle -w timeout 1201 'niri msg action power-off-monitors' timeout 1200 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'" ]; }
+              ## WALLPAPER
+                { command = [ "swaybg" "-i" "/home/neko/Pictures/Wallpapers/4K/Weather/Wallpaper forest, trees, snow, winter, 4k, Nature 8421417542.jpg" ]; }
+              ## XWAYLAND
+                { command = [ "xwayland-satellite" ":0" ]; }
+                { command = [ "xrandr" "--output" "DP-1" "--primary" ]; }
+            ];
 
 
-        binds = with config.lib.niri.actions; let
-          sh = spawn "sh" "-c";
-          Mod = "Mod";
-            #if options.virtualization ? qemu
-            #then "Alt"
-            #else "Mod";
-          suffixes = builtins.listToAttrs (map (n: {
-            name = toString n;
-            value = ["workspace" n];
-          }) (range 1 9));
-        in
-          {
+          binds = with config.lib.niri.actions; let
+            sh = spawn "sh" "-c";
+            Mod = "Mod";
+              #if options.virtualization ? qemu
+              #then "Alt"
+              #else "Mod";
+            suffixes = builtins.listToAttrs (map (n: {
+              name = toString n;
+              value = ["workspace" n];
+            }) (range 1 9));
+          in {
+
             /********
             * BASIC *
             ********/
             ## QUIT NIRI/TURN OFF MONITORS
               "${Mod}+Shift+Escape".action = quit;
               "${Mod}+Shift+P".action = power-off-monitors;
+              "${Mod}+Shift+Backslash".action = show-hotkey-overlay;
               # Replace this with swaylock-effects "${Mod}+L".action.spawn = "blurred-locker";
             ## CLOSE WINDOW
               "${Mod}+Q".action.close-window = [];
@@ -193,13 +191,12 @@ in {
             /************
             * CLIPBOARD *
             *************/
-            "${Mod}+Control+V".action.spawn = [ "copyq" "show"];
+            "${Mod}+Control+V".action.spawn = ["sh" "-c" "clipse" ];
 
             /*************
             * SCREENSHOT *
             *************/
             "${Mod}+Shift+S".action = screenshot;
-            #"Print".action = screenshot-screen;
             "${Mod}+Print".action = screenshot-window;
 
             /**********************
@@ -208,15 +205,22 @@ in {
             "XF86AudioRaiseVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+";
             "XF86AudioLowerVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
             "XF86AudioMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-            "XF86AudioNext".action = focus-column-right;
-            "XF86AudioPrev".action = focus-column-left;
-
+            "XF86AudioNext" = {
+              action = focus-column-right;
+              hotkey-overlay.hidden = true;
+            };
+            "XF86AudioPrev" = {
+              action = focus-column-left;
+              hotkey-overlay.hidden = true;
+            };
             /********************
             * WINDOW MANAGEMENT *
             ********************/
             ## CONSUME/EXPEL
               "${Mod}+C".action.consume-window-into-column = [];
               "${Mod}+X".action.expel-window-from-column = [];
+            ## TABBED COLUMN DISPLAY?
+              "${Mod}+G".action.toggle-column-tabbed-display = [];
             ## TOGGLE FLOATING/SWITCH FOCUS BETWEEN TILED AND FLOATING
               "${Mod}+S".action = toggle-window-floating;
               "${Mod}+Tab".action = switch-focus-between-floating-and-tiling;
@@ -237,7 +241,8 @@ in {
                 "${Mod}+Shift+F".action = fullscreen-window;
 
               ## COLUMN SCREEN ALIGNMENT
-                "${Mod}+Alt+C".action = center-column;
+                "${Mod}+Ctrl+Shift+C".action = center-column;
+                "${Mod}+Ctrl+Shift+Z".action = center-column;
 
             /********
             * FOCUS *
@@ -275,289 +280,285 @@ in {
               "${Mod}+Control+Up".action = move-window-to-monitor-up;
               "${Mod}+Control+Right".action = move-window-to-monitor-right;
             ## MOVE WINDOW TO WORKSPACE
-              "${Mod}+Shift+1".action = move-window-to-workspace 1;
-              "${Mod}+Shift+2".action = move-window-to-workspace 2;
-              "${Mod}+Shift+3".action = move-window-to-workspace 3;
-              "${Mod}+Shift+4".action = move-window-to-workspace 4;
-            ## MOVE COLUMN TO WORKSPACE
-              "${Mod}+Shift+Control+1".action = move-column-to-workspace 1;
-              "${Mod}+Shift+Control+2".action = move-column-to-workspace 2;
-              "${Mod}+Shift+Control+3".action = move-column-to-workspace 3;
-              "${Mod}+Shift+Control+4".action = move-column-to-workspace 4;
+            #  "${Mod}+Shift+1".action = move-column-to-workspace 1;
+            #  "${Mod}+Shift+2".action = move-column-to-workspace 2;
+            #  "${Mod}+Shift+3".action = move-column-to-workspace 3;
+            #  "${Mod}+Shift+4".action = move-column-to-workspace 4;
+            #  "${Mod}+Shift+5".action = move-column-to-workspace 5;
           };
 
 
-          window-rules = let
-            colors = config.lib.stylix.colors.withHashtag;
-          in [
-            ## ROUNDED CORNERS
-              {
-                draw-border-with-background = false;
-                geometry-corner-radius =
-                  let
-                    r = 8.0;
-                  in {
-                    top-left = r;
-                    top-right = r;
-                    bottom-left = r;
-                    bottom-right = r;
-                  };
-                clip-to-geometry = true;
-              }
-            ## DRAW UNFOCUSED WITH OPACITY (BROKEN ON NVIDIA 570, flickers)
-              #{
-              #  matches = [
-              #    {
-              #      is-focused = false;
-              #    }
-              #  ];
-              #  opacity = 0.95;
-              #}
-            ## MAKE MPV OPAQUE
-              {
-                matches = [
-                  {
-                    is-focused = false;
-                    app-id = "mpv";
-                  }
-                ];
-                opacity = 1.0;
-              }
-            ## FLOAT FF PIP
-              {
-                matches = [
-                  {
-                    app-id = "^firefox-devedition$";
-                    title = "^Picture-in-Picture$";
-                  }
-                ];
-                opacity = 0.9;
-                open-floating = true;
-                open-focused = false;
-                default-column-width.fixed = 425;
-                default-window-height.fixed = 250;
-                default-floating-position = {
-                  relative-to = "top-right";
-                  x = 75;
-                  y = 50;
-                };
-              }
-            ## COPYQ CLIPBOARD MANAGER
-              {
-                matches = [
-                  {
-                    app-id = "^com.github.hluk.copyq$";
-                  }
-                ];
-                open-floating = true;
-              }
-            ## CLIPSE CLIPBOARD MANAGER
-              {
-                matches = [
-                  {
-                    title = "^clipse.*";
-                    app-id = "^kitty$";
-                  }
-                ];
-                open-floating = true;
-              }
-            ## SUSHI - GNOME FILES PREVIEW
-              {
-                matches =
-                  [
+            window-rules = let
+              colors = config.lib.stylix.colors.withHashtag;
+            in [
+              ## ROUNDED CORNERS
+                {
+                  draw-border-with-background = false;
+                  geometry-corner-radius =
+                    let
+                      r = 8.0;
+                    in {
+                      top-left = r;
+                      top-right = r;
+                      bottom-left = r;
+                      bottom-right = r;
+                    };
+                  clip-to-geometry = true;
+                }
+              ## DRAW UNFOCUSED WITH OPACITY (BROKEN ON NVIDIA 570, flickers)
+                {
+                  matches = [
                     {
-                      app-id = "^org.gnome.NautiliusPreviewer";
+                      is-focused = false;
                     }
                   ];
-                open-floating = true;
-              }
-            ## KITTY DROPDOWN
-              {
-                matches = [
-                  { app-id = "^kitty_dropdown$"; }
-                ];
-                open-floating = true;
-              }
-            ## HIGHLIGHT PRIVATE BROWSING
-              {
-                matches = [
-                  {
-                    app-id = "^firefox$";
-                    title = "Private Browsing";
-                  }
-                ];
-                border.active.color = colors.base0E;
-              }
-            ## PREVENT SCREEN CAPTURE OF SENSITIVE APPS
-              {
-                matches = [
-                  {
-                    app-id = "^signal$";
-                  }
-                ];
-                block-out-from = "screencast";
-              }
-            ## THIS PREVENTS NIRI WM HELP MENU FROM BEING TRANSPARENT I THINK
-              #{
-              #  matches = [{app-id = "^niri$";}];
-              #  opacity = 1.0;
-              #}
-        ];
+                  opacity = 0.95;
+                }
+              ## MAKE MPV OPAQUE
+                {
+                  matches = [
+                    {
+                      is-focused = false;
+                      app-id = "mpv";
+                    }
+                  ];
+                  opacity = 1.0;
+                }
+              ## FLOAT FF PIP
+                {
+                  matches = [
+                    {
+                      app-id = "^firefox-aurora$";
+                      title = "^Picture-in-Picture$";
+                    }
+                  ];
+                  opacity = 0.9;
+                  open-floating = true;
+                  open-focused = false;
+                  default-column-width.fixed = 425;
+                  default-window-height.fixed = 250;
+                  default-floating-position = {
+                    relative-to = "top-right";
+                    x = 75;
+                    y = 50;
+                  };
+                }
+              ## COPYQ CLIPBOARD MANAGER
+                {
+                  matches = [
+                    {
+                      app-id = "^com.github.hluk.copyq$";
+                    }
+                  ];
+                  open-floating = true;
+                }
+              ## CLIPSE CLIPBOARD MANAGER
+                {
+                  matches = [
+                    {
+                      title = "^clipse.*";
+                      app-id = "^kitty$";
+                    }
+                  ];
+                  open-floating = true;
+                }
+              ## SUSHI - GNOME FILES PREVIEW
+                {
+                  matches =
+                    [
+                      {
+                        app-id = "^org.gnome.NautiliusPreviewer";
+                      }
+                    ];
+                  open-floating = true;
+                }
+              ## KITTY DROPDOWN
+                {
+                  matches = [
+                    { app-id = "^kitty_dropdown$"; }
+                  ];
+                  open-floating = true;
+                }
+              ## HIGHLIGHT PRIVATE BROWSING
+                {
+                  matches = [
+                    {
+                      app-id = "^firefox$";
+                      title = "Private Browsing";
+                    }
+                  ];
+                  border.active.color = colors.base0E;
+                }
+              ## PREVENT SCREEN CAPTURE OF SENSITIVE APPS
+                {
+                  matches = [
+                    {
+                      app-id = "^signal$";
+                    }
+                  ];
+                  block-out-from = "screencast";
+                }
+              ## THIS PREVENTS NIRI WM HELP MENU FROM BEING TRANSPARENT I THINK
+                #{
+                #  matches = [{app-id = "^niri$";}];
+                #  opacity = 1.0;
+                #}
+          ];
+        };
       };
-    };
 
 
-    waybar = {
-      enable = true;
-      settings =
-        [
-          {
-            layer="top";
-            position="top";
-            output = [ "${_g.monitors.center.output}" ];
-            include = [ "~/.config/waybar/default_modules.json" ];
-            height = 28;
-            spacing = 3;
-            modules-left =
-              [
-                "niri/workspaces"
-                "hyprland/workspaces"
-                "custom/wl-gammarelay-temperature"
-                "custom/wl-gammarelay-brightness"
-                "custom/wl-gammarelay-gamma"
-              ];
-            modules-center =
-              [
-                "tray"
-              ];
-            modules-right =
-              [
-                "mpd"
-                "idle_inhibitor"
-                "pulseaudio"
-                "cpu"
-                "memory"
-                "temperature"
-                "clock"
-              ];
-          }
-          {
-            layer = "bottom";
-            position = "top";
-            output =
-              [
-                "${_g.monitors.left.output}"
-                "${_g.monitors.right.output}"
-              ];
-            include =
-              [
-                "~/.config/waybar/default_modules.json"
-              ];
-            height = 30;
-            spacing = 4;
-            modules-left =
-              [
-                "niri/workspaces"
-                "hyprland/workspaces"
-              ];
-            modules-center = [];
-            modules-right =
-              [
-                "clock"
-              ];
-          }
-        ];
-      style = /* css */
-        ''
-          window#waybar {
-                  font-size: 16px;
-                  font-family: Terminess Nerd Font;
-                  background: #2e3440;
-                  color: #fdf6e3;
-          }
+      waybar = {
+        enable = true;
+        settings =
+          [
+            {
+              layer="top";
+              position="top";
+              output = [ "${_g.monitors.center.output}" ];
+              include = [ "~/.config/waybar/default_modules.json" ];
+              height = 28;
+              spacing = 3;
+              modules-left =
+                [
+                  "niri/workspaces"
+                  "hyprland/workspaces"
+                  "custom/wl-gammarelay-temperature"
+                  "custom/wl-gammarelay-brightness"
+                  "custom/wl-gammarelay-gamma"
+                ];
+              modules-center =
+                [
+                  "tray"
+                ];
+              modules-right =
+                [
+                  "mpd"
+                  "idle_inhibitor"
+                  "pulseaudio"
+                  "cpu"
+                  "memory"
+                  "temperature"
+                  "clock"
+                ];
+            }
+            {
+              layer = "bottom";
+              position = "top";
+              output =
+                [
+                  "${_g.monitors.left.output}"
+                  "${_g.monitors.right.output}"
+                ];
+              include =
+                [
+                  "~/.config/waybar/default_modules.json"
+                ];
+              height = 30;
+              spacing = 4;
+              modules-left =
+                [
+                  "niri/workspaces"
+                  "hyprland/workspaces"
+                ];
+              modules-center = [];
+              modules-right =
+                [
+                  "clock"
+                ];
+            }
+          ];
+        style = /* css */
+          ''
+            window#waybar {
+                    font-size: 16px;
+                    font-family: Terminess Nerd Font;
+                    background: #2e3440;
+                    color: #fdf6e3;
+            }
 
-          #custom-right-arrow-dark,
-          #custom-left-arrow-dark {
-                  color: #1a1a1a;
-          }
-          #custom-right-arrow-light,
-          #custom-left-arrow-light {
-                  color: #292b2e;
-                  background: #1a1a1a;
-          }
+            #custom-right-arrow-dark,
+            #custom-left-arrow-dark {
+                    color: #1a1a1a;
+            }
+            #custom-right-arrow-light,
+            #custom-left-arrow-light {
+                    color: #292b2e;
+                    background: #1a1a1a;
+            }
 
-          #workspaces,
-          #clock.1,
-          #clock.2,
-          #clock.3,
-          #pulseaudio,
-          #memory,
-          #cpu,
-          #battery,
-          #disk,
-          #tray {
-                  background-color: #2e3440;
-          }
-          #tray > .passive {
-                  -gtk-icon-effect: dim;
-          }
-          #tray > .needs-attention {
-                  -gtk-icon-effect: highlight;
-          }
+            #workspaces,
+            #clock.1,
+            #clock.2,
+            #clock.3,
+            #pulseaudio,
+            #memory,
+            #cpu,
+            #battery,
+            #disk,
+            #tray {
+                    background-color: #2e3440;
+            }
+            #tray > .passive {
+                    -gtk-icon-effect: dim;
+            }
+            #tray > .needs-attention {
+                    -gtk-icon-effect: highlight;
+            }
 
-          #workspaces button {
-                  padding: 0 2px;
-                  background-color: #434c5e;
-                  color: #fdf6e3;
-          }
-          #workspaces button.active {
-                  color: #ffffff;
-                  background: #5e81ac;
-          }
-          #workspaces button.visible:not(.active) {
-                  color: #ffffff;
-                  background: gray;
-          }
-          #workspaces button:hover {
-                  box-shadow: inherit;
-                  text-shadow: inherit;
-          }
-          #workspaces button:hover {
-                  background: #1a1a1a;
-                  border: #1a1a1a;
-                  padding: 0 3px;
-          }
-          #workspaces button.visible {
-                  background: gray;
-                  color: #ffffff;
-          }
+            #workspaces button {
+                    padding: 0 2px;
+                    background-color: #434c5e;
+                    color: #fdf6e3;
+            }
+            #workspaces button.active {
+                    color: #ffffff;
+                    background: #5e81ac;
+            }
+            #workspaces button.visible:not(.active) {
+                    color: #ffffff;
+                    background: gray;
+            }
+            #workspaces button:hover {
+                    box-shadow: inherit;
+                    text-shadow: inherit;
+            }
+            #workspaces button:hover {
+                    background: #1a1a1a;
+                    border: #1a1a1a;
+                    padding: 0 3px;
+            }
+            #workspaces button.visible {
+                    background: gray;
+                    color: #ffffff;
+            }
 
-          #pulseaudio {
-                  color: #268bd2;
-          }
-          #memory {
-                  color: #2aa198;
-          }
-          #cpu {
-                  color: #6c71c4;
-          }
-          #battery {
-                  color: #859900;
-          }
-          #disk {
-                  color: #b58900;
-          }
+            #pulseaudio {
+                    color: #268bd2;
+            }
+            #memory {
+                    color: #2aa198;
+            }
+            #cpu {
+                    color: #6c71c4;
+            }
+            #battery {
+                    color: #859900;
+            }
+            #disk {
+                    color: #b58900;
+            }
 
-          #clock,
-          #pulseaudio,
-          #memory,
-          #cpu,
-          #battery,
-          #disk {
-                  padding: 0 10px;
-          }
-        '';
-      systemd.enable = false;
-    };
+            #clock,
+            #pulseaudio,
+            #memory,
+            #cpu,
+            #battery,
+            #disk {
+                    padding: 0 10px;
+            }
+          '';
+        systemd.enable = false;
+      };
   };
 }

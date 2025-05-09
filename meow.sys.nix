@@ -16,14 +16,18 @@ in {
         ./sops/sops.sys.nix
       ## PROGRAMS
         ./programs/steam.sys.nix
+        ./programs/agl.sys.nix
       ## MODULES
         ./modules/caddy.nix
         ./modules/tailscale.sys.nix
       ## SERVICES
         ./services/sunshine.sys.nix
       ## WINDOW MANAGERS
-        #./modules/nixos/hyprland.mod.sys.nix
+        ./modules/nixos/hyprland.mod.sys.nix
     ];
+
+  ## MODULES
+  _hyprland.enable = true;
 
   #-------- PACKAGES --------#
   nix =
@@ -78,6 +82,8 @@ in {
         polkit_gnome
         runc
         tailscale
+        xsettingsd
+        xorg.xrdb
       ];
 
 
@@ -102,27 +108,29 @@ in {
   programs = {
     adb.enable = true;
     darling.enable = false;
-    dconf = {
-      enable = true;
+    dconf =
+      {
+        enable = true;
       };
-    gamescope = {
-      enable = true;
-      capSysNice = true;
-      };
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-      pinentryPackage = pkgs.pinentry-curses;
+    gnupg.agent =
+      {
+        enable = true;
+        enableSSHSupport = true;
+        pinentryPackage = pkgs.pinentry-curses;
       };
     nbd.enable = false;
-    nh = {
-      enable = true;
-      flake = "/home/neko/.nixcfg";
+    nh =
+      {
+        enable = true;
+        flake = "/home/neko/.nixcfg";
       };
-    nix-ld = {
-      enable = true;
-      libraries = with pkgs; [
-      ];
+    nix-ld =
+      {
+        enable = true;
+        libraries =
+          with pkgs;
+            [
+            ];
     };
   };
 
@@ -207,6 +215,7 @@ in {
       };
     displayManager =
       {
+        defaultSession = "niri";
         sddm.enable = true;
       };
     fail2ban.enable = true;

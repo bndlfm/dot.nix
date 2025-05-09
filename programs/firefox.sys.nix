@@ -22,6 +22,10 @@ in {
       DontCheckDefaultBrowser = true;
       DisablePocket = true;
       SearchBar = "unified";
+
+      Preferences = {
+        "browser.ml.chat.enabled" = lock-false;
+      };
     };
   };
 }

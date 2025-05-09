@@ -36,13 +36,14 @@
 
       ## WINDOW MANAGER
         niri.url = "github:sodiboo/niri-flake";
-
+        hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
       /***************
       * TEMP INPUTS *
       ***************/
       ## NOTE: Check if fixed upstream!
         nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+        nixpkgs-bndlfm.url = "github:bndlfm/nixpkgs"
     };
 
 
@@ -69,9 +70,11 @@
       nur,
       nix-flatpak,
 
+      aagl,
       deejavu,
       nixarr,
 
+      hyprland,
       niri,
 
       spicetify-nix,
@@ -97,6 +100,7 @@
         additions
         modifications
         nixpkgs-stable
+        nixpkgs-bndlfm
       ];
     in {
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
@@ -151,6 +155,8 @@
               modules =
                 [
                   ({ nixpkgs.overlays = overlays; })
+                  ## GACHA TRASH
+                    aagl.nixosModules.default (import ./programs/agl.sys.nix)
                   ## FLATPAK
                     nix-flatpak.nixosModules.nix-flatpak
                   ## MEDIA

@@ -22,8 +22,8 @@
         settings = {};
         search = {
           force = true;
-          default = "Google";
-          order = [ "Google" ];
+          default = "google";
+          order = [ "google" ];
           engines = {
             "Nix Packages" = {
               urls = [{
@@ -50,18 +50,18 @@
             };
             "NixOS Wiki" = {
               urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
-              iconUpdateURL = "https://nixos.wiki/favicon.png";
+              icon = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000; # every day
               definedAliases = [ "@nw" ];
             };
             "Home-manager Options" = {
               urls = [{ template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master"; }];
-              iconUpdateURL = "https://home-manager-options.extranix.com/favicon.png";
+              icon = "https://home-manager-options.extranix.com/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000;
               definedAliases = [ "@ho" ];
             };
-            "Google".metaData.alias = "@g"; # builtin engines only support specifying one additional alias
-            "Bing".metaData.hidden = true;
+            "google".metaData.alias = "@g"; # builtin engines only support specifying one additional alias
+            "bing".metaData.hidden = true;
           };
         };
 

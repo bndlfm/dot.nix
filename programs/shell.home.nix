@@ -75,7 +75,7 @@
             sha256 = "sha256-pR5RKU+zIb7CS0Y6vjx2QIZ8Iu/3ojRfAcAdjCOxl1U=";
           };
         }
-        { name = "pisces"; src = pkgs.fishPlugins.pisces.src; }
+        # { name = "pisces"; src = pkgs.fishPlugins.pisces.src; }
         { name = "colored-man-pages"; src = pkgs.fishPlugins.colored-man-pages.src; }
         { name = "done"; src = pkgs.fishPlugins.done.src; }
         { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
@@ -126,18 +126,21 @@
             dbx = "distrobox";
             rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
             rwb = "nvim ~/.nixcfg/.config/waybar/config";
-          # nix specific configs
-            rhmc = "nvim ~/.nixcfg/users/meow/home.nix";
-            rhmp = "cd ~/.nixcfg/programs/hm/";
-            rnxf = "nvim ~/.nixcfg/flake.nix";
-            rnxc = "nvim ~/.nixcfg/systems/meow/configuration.nix";
-          # rebuild system
-            nfu = "nix flake update --flake ~/.nixcfg/";
-            nxrb = "nh os switch ~/.nixcfg";
-            hmrb = "nh home switch ~/.nixcfg/ -b hmbackup -- --impure";
-          # garbage collection
-            nxgc = "sudo nix-collect-garbage -d";
-            hmgc = "nix-collect-garbage -d";
+          ## NIX SPECIFIC CONFIGS
+            nxs = "nix-search-tv print | fzf --preview 'nix-search-tv preview {}' --scheme history";
+            ## CD TO CONFIG DIRS
+              rcnp = "cd ~/.nixcfg/programs/";
+            ## EDIT CONFIG
+              rhmc = "nvim ~/.nixcfg/neko.home.nix";
+              rnxf = "nvim ~/.nixcfg/flake.nix";
+              rnxc = "nvim ~/.nixcfg/meow.sys.nix";
+            ## REBUILD SYSTEM
+              nfu = "nix flake update --flake ~/.nixcfg/";
+              nxrb = "nh os switch ~/.nixcfg";
+              hmrb = "nh home switch ~/.nixcfg/ -b hmbackup -- --impure";
+            ## GARBAGE COLLECTION
+              nxgc = "sudo nix-collect-garbage -d";
+              hmgc = "nix-collect-garbage -d";
 
         ### (G)O TO DIR ###
           #fish
