@@ -938,6 +938,21 @@
         "type": "github"
       }
     },
+    "nixpkgs-bndlfm": {
+      "locked": {
+        "lastModified": 1746778388,
+        "narHash": "sha256-bApbyBLfQoklxXyf8krhnkxayNkHotl2fzRChygQ6/U=",
+        "owner": "bndlfm",
+        "repo": "nixpkgs",
+        "rev": "44d7f192ce402ca19eecc725696f7e8a77b69086",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bndlfm",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1743296961,
@@ -1340,6 +1355,7 @@
         "nix-flatpak": "nix-flatpak",
         "nixarr": "nixarr",
         "nixpkgs": "nixpkgs_9",
+        "nixpkgs-bndlfm": "nixpkgs-bndlfm",
         "nixpkgs-stable": "nixpkgs-stable_2",
         "nur": "nur",
         "openmw-vr": "openmw-vr",

@@ -100,7 +100,7 @@
         additions
         modifications
         nixpkgs-stable
-        nixpkgs-bndlfm
+        #nixpkgs-bndlfm
       ];
     in {
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});

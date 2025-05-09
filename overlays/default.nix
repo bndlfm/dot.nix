@@ -18,4 +18,11 @@
       config.allowUnfree = true;
     };
   };
+
+  nixpkgs-bndlfm = final: _prev: {
+    bndlfm = import inputs.nixpkgs-bndlfm {
+      system = final.system;
+      config.allowUnfree = true;
+    };
+  };
 }
