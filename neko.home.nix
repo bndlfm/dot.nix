@@ -269,7 +269,7 @@
                 qt6Packages.qtstyleplugin-kvantum
                 kdePackages.ksshaskpass
               # Wine/Proton
-                nixpkgs-stable.winetricks
+                pkgs.bndlfm.winetricks
                 wineWowPackages.stable
                 protonup
             ];
