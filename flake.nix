@@ -43,7 +43,7 @@
       ***************/
       ## NOTE: Check if fixed upstream!
         nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
-        nixpkgs-bndlfm.url = "github:bndlfm/nixpkgs"
+        nixpkgs-bndlfm.url = "github:bndlfm/nixpkgs";
     };
 
 
