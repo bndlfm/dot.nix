@@ -421,7 +421,12 @@
       "fish-ai.ini" = {
         source = pkgs.writeText "fish-ai.ini" ''
           [fish-ai]
-          configuration = openai
+          configuration = google
+          history = 10
+
+          [google]
+          provider = google
+          api_key = ${builtins.readFile config.sops.secrets.GEMINI_SECRET_KEY.path}
 
           [openai]
           provider = openai

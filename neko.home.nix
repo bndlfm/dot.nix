@@ -65,12 +65,10 @@
       * WINDOW MANAGERS *
       ******************/
         #./programs/gnome-shell.home.nix
-        ./modules/home-manager/hyprland.home.mod.nix
         #./windowManagers/bspwm.home.nix
+        ./windowManagers/hyprland.home.nix
         ./windowManagers/niri.home.nix
     ];
-  # modules
-  _hyprland.enable = false;
 
   nix.package = pkgs.nix;
   nixpkgs =
@@ -105,7 +103,6 @@
             [
               aichat
               aider-chat
-              _gsh
               upscayl
               warp-terminal
             ];
@@ -146,6 +143,7 @@
               libnotify
               libqalculate
               nix-index
+              pandoc
               (pkgs.pass.withExtensions (exts: [exts.pass-otp]))
               p7zip
               ripgrep

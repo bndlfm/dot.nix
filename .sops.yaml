@@ -1,5 +1,6 @@
 keys:
   - &primary age177snhrqfd422qgm8425pzhrzzc9tt3asymt96mmrlmfg784casrs27frau
+
 creation_rules:
   - path_regex: sops/secrets.yaml$
     key_groups:
@@ -12,6 +13,11 @@ creation_rules:
         - *primary
 
   - path_regex: sops/DUCKDNS_TOKEN.yaml$
+    key_groups:
+      - age:
+        - *primary
+
+  - path_regex: sops/GEMINI_SECRET_KEY.yaml$
     key_groups:
       - age:
         - *primary

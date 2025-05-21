@@ -19,15 +19,11 @@ in {
         ./programs/agl.sys.nix
       ## MODULES
         ./modules/caddy.nix
-        ./modules/tailscale.sys.nix
       ## SERVICES
         ./services/sunshine.sys.nix
       ## WINDOW MANAGERS
-        ./modules/nixos/hyprland.mod.sys.nix
+        ./windowManagers/hyprland.sys.nix
     ];
-
-  ## MODULES
-  _hyprland.enable = true;
 
   #-------- PACKAGES --------#
   nix =
@@ -107,7 +103,6 @@ in {
   #-------- PACKAGE MODULES --------#
   programs = {
     adb.enable = true;
-    darling.enable = false;
     dconf =
       {
         enable = true;

@@ -118,7 +118,7 @@
         map kitty_mod+b launch --location=hsplit
         map kitty_mod+o launch --location=vsplit
         map kitty_mod+j layout_action rotate
-  
+
         # Move Panes
         map shift+up move_window up
         map shift+left move_window left
@@ -189,95 +189,249 @@
         inactive_border_color #4C566A
     '';
   };
+
   xdg.configFile = {
-      "kitty/smartYank.sh" = {
-        source = pkgs.writeShellScript "smartYank.sh" ''
-          #!/usr/bin/env bash
-          #############################
-          #   SMART YANK: Smart copy  #
-          # targets from kitty screen #
-          #  using Groq / fzf in bash #
-          #############################
+    "kitty/smartYank.sh" = {
+      # Ensure tools like curl, jq, fzf, sed, tail are in PATH.
+      # pkgs.writeShellScriptBin could also be used to wrap with specific package dependencies if needed.
+      source = pkgs.writeShellScript "smartYank.sh" ''
+        #!/usr/bin/env bash
+        set -euo pipefail # Exit on error, undefined variable, or pipe failure
 
-          #########################
-          # --- Configuration --- #
-          #########################
-          API_ENDPOINT="https://api.groq.com/openai/v1/chat/completions"
-          MODEL="llama-3.3-70b-versatile"
-          API_KEY="${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path}"
+        #############################
+        #   SMART YANK: Smart copy  #
+        # targets from kitty screen #
+        #  using LLM / fzf in bash  #
+        #############################
 
-          ########################
-          # --- Script Start --- #
-          ########################
-          ### 1. Read screen content from stdin and remove ansi codes with sed ###
-          SCREEN_CONTENT=$(cat - | tail -n 100 | sed -r 's/\x1B\[([0-9]{1,3}(;[0-9]{1,3})*)?[mGKH]//g')
-          PROMPT_PREFIX="Based upon the data provided under Screen Content identify any possible copy targets for the user. URLS, COMMANDS, THE RESULT OF COMMANDS (COMMAND OUTPUT), ETC.\n1. If you choose a command as a possible copy target suggest possible arguments, JUST THE COMMAND ITSELF IS NOT USEFUL.\n2. Use the most recent commands to try and identify relevance of copy targets.\n3. RETURN ONLY COPY TARGETS OR YOU WILL BREAK THE STRING, DO NOT NUMBER THE LIST.\n5. DO NOT RETURN THE SAME TARGET MULTIPLE TIMES. IF YOU CANNOT FIND THE NUMBER OF COPY TARGETS REQUESTED RETURN AS MANY AS YOU CAN.\n6. Invert the list so the most promising candidate is the last you return.\n7. Return 20 possible copy targets.\n\nScreen Content:\n\n "
+        #########################
+        # --- Configuration --- #
+        #########################
 
-          if [ -z "$SCREEN_CONTENT" ]; then
-            echo "Error: No screen content received." >&2
+        # Select API Provider: "groq" or "google".
+        # Override with SMARTYANK_API_PROVIDER environment variable.
+        # Example: export SMARTYANK_API_PROVIDER="google"
+        # Defaulting to "groq" if SMARTYANK_API_PROVIDER is not set or empty.
+        API_PROVIDER="''${SMARTYANK_API_PROVIDER:-google}"
+
+        # Groq Configuration (used if API_PROVIDER is "groq")
+        GROQ_API_ENDPOINT="https://api.groq.com/openai/v1/chat/completions"
+        GROQ_MODEL="''${SMARTYANK_GROQ_MODEL:-llama3-70b-8192}" # Or your preferred Groq model
+        # The following line will embed the content of the secret file directly into the script.
+        # Ensure this Sops path is correct in your Nix configuration.
+        GROQ_API_KEY="${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path}"
+
+        # Google Gemini Configuration (used if API_PROVIDER is "google")
+        # The actual API endpoint for Google is constructed later as it includes the API key and model.
+        GOOGLE_MODEL="''${SMARTYANK_GOOGLE_MODEL:-gemini-2.5-flash-preview-05-20}" # Or your preferred Gemini model (e.g., gemini-pro)
+        # Ensure this Sops path is correct in your Nix configuration if using Google.
+        GOOGLE_API_KEY="${builtins.readFile config.sops.secrets.GEMINI_SECRET_KEY.path}"
+
+        # Active configuration variables (will be set based on API_PROVIDER)
+        CURRENT_API_ENDPOINT=""
+        CURRENT_MODEL=""
+        CURRENT_API_KEY=""
+        CURRENT_API_PROVIDER_NAME=""
+
+
+        #####################################
+        # --- Script Initialization --- #
+        #####################################
+
+        # Determine API Provider and Set Configuration
+        if [[ "$API_PROVIDER" == "google" ]]; then
+          echo "SmartYank: Using Google Gemini API" >&2
+          CURRENT_API_PROVIDER_NAME="Google Gemini"
+          if [ -z "$GOOGLE_API_KEY" ]; then
+            echo "Error: GOOGLE_API_KEY is empty or not configured." >&2
+            echo "Please ensure config.sops.secrets.GEMINI_SECRET_KEY.path points to a valid, non-empty API key file." >&2
             exit 1
           fi
+          CURRENT_MODEL="$GOOGLE_MODEL"
+          CURRENT_API_KEY="$GOOGLE_API_KEY"
+          CURRENT_API_ENDPOINT="https://generativelanguage.googleapis.com/v1beta/models/''${CURRENT_MODEL}:generateContent?key=''${CURRENT_API_KEY}"
 
-          ### 2. Construct Prompt and JSON Payload ###
-          PROMPT="''${PROMPT_PREFIX}''${SCREEN_CONTENT}"
-
-          if [ -z "$API_KEY" ]; then
-            echo "Error: GROQ_SECRET_KEY environment variable not set." >&2
+        elif [[ "$API_PROVIDER" == "groq" ]]; then
+          echo "SmartYank: Using Groq API" >&2
+          CURRENT_API_PROVIDER_NAME="Groq"
+          if [ -z "$GROQ_API_KEY" ]; then
+            echo "Error: GROQ_API_KEY is empty or not configured." >&2
+            echo "Please ensure config.sops.secrets.GROQ_SECRET_KEY.path points to a valid, non-empty API key file." >&2
             exit 1
           fi
+          CURRENT_API_ENDPOINT="$GROQ_API_ENDPOINT"
+          CURRENT_MODEL="$GROQ_MODEL"
+          CURRENT_API_KEY="$GROQ_API_KEY"
+        else
+          echo "Error: Invalid API_PROVIDER specified: '$API_PROVIDER'." >&2
+          echo "Set SMARTYANK_API_PROVIDER environment variable to 'groq' or 'google'." >&2
+          exit 1
+        fi
 
-          JSON_PAYLOAD=$(
-            cat <<EOF
-          {
-            "model": "''${MODEL}",
-            "messages": [{"role": "user", "content": $(jq -sRc '.' <<<"''${PROMPT}")}]
-          }
-          EOF)
+        echo "SmartYank: Using Model: $CURRENT_MODEL for $CURRENT_API_PROVIDER_NAME" >&2
 
-          ### 3. Call Groq API using curl ###
-          LLM_RESPONSE=$(curl -s -X POST \
-            -H "Authorization: Bearer ''${API_KEY}" \
-            -H 'Content-Type: application/json' \
-            --data "$JSON_PAYLOAD" \
-            "''${API_ENDPOINT}")
+        ########################
+        # --- Script Start --- #
+        ########################
 
-          if [ -z "$LLM_RESPONSE" ]; then
-            echo "Error: Empty response from LLM API." >&2
+        ### 1. Read screen content from stdin and remove ansi codes with sed ###
+        # Takes last 100 lines. Adjust as needed.
+        SCREEN_CONTENT=$(cat - | tail -n 100 | sed -r 's/\x1B\[([0-9]{1,3}(;[0-9]{1,3})*)?[mGKH]//g')
+
+        # Define the core prompt. This might need adjustment depending on the model's behavior.
+        # Note: The numbering in the prompt had a typo (5 instead of 4). Corrected it.
+        PROMPT_PREFIX="${
+          ''Based upon the data provided under Screen Content identify any possible copy targets for the user. URLS, COMMANDS, THE RESULT OF COMMANDS (COMMAND OUTPUT), ETC.
+              1. If you choose a command as a possible copy target suggest possible arguments, JUST THE COMMAND ITSELF IS NOT USEFUL.
+              2. Use the most recent commands to try and identify relevance of copy targets.
+              3. RETURN ONLY COPY TARGETS OR YOU WILL BREAK THE STRING, DO NOT NUMBER THE LIST.
+              4. DO NOT RETURN THE SAME TARGET MULTIPLE TIMES. IF YOU CANNOT FIND THE NUMBER OF COPY TARGETS REQUESTED RETURN AS MANY AS YOU CAN.
+              5. Invert the list so the most promising candidate is the last you return.
+              6. Return 20 possible copy targets.
+
+          Screen Content:
+
+          ''}"
+
+        if [ -z "$SCREEN_CONTENT" ]; then
+          echo "Error: No screen content received from stdin." >&2
+          exit 1
+        fi
+
+        ### 2. Construct Prompt and JSON Payload ###
+        PROMPT="''${PROMPT_PREFIX}''${SCREEN_CONTENT}"
+        JSON_PAYLOAD=""
+        CURL_COMMAND_ARGS=() # Array to build curl command arguments
+
+        if [[ "$API_PROVIDER" == "google" ]]; then
+          JSON_PAYLOAD="${
+            ''
+              {
+                "contents": [
+                  {
+                    "parts": [
+                      {
+                        "text": ''$(jq -sRc '.' <<< "''$PROMPT") # Note the escaping for shell
+                      }
+                    ]
+                  }
+                ],
+                "generationConfig": {
+                  "maxOutputTokens": 1500
+                }
+              }
+            ''
+          }"
+          CURL_COMMAND_ARGS=(
+            -s -X POST
+            -H 'Content-Type: application/json'
+            --data "$JSON_PAYLOAD"
+            "$CURRENT_API_ENDPOINT"
+          )
+        elif [[ "$API_PROVIDER" == "groq" ]]; then
+          JSON_PAYLOAD="${
+            ''
+              {
+                "model": "''${CURRENT_MODEL}",
+                "messages": [{
+                  "role": "user",
+                  "content": ''$(jq -sRc '.' <<< "''$PROMPT")
+                }],
+                "max_tokens": 1500
+              }
+            ''
+          }"
+          CURL_COMMAND_ARGS=(
+            -s -X POST
+            -H "Authorization: Bearer ''${CURRENT_API_KEY}"
+            -H 'Content-Type: application/json'
+            --data "$JSON_PAYLOAD"
+            "$CURRENT_API_ENDPOINT"
+          )
+        fi
+
+        # For debugging the payload:
+        # echo "JSON Payload:" >&2
+        # echo "$JSON_PAYLOAD" >&2
+        # echo "Curl command: curl ''${CURL_COMMAND_ARGS[@]}" >&2
+
+        ### 3. Call LLM API using curl ###
+        LLM_RESPONSE=$(curl "''${CURL_COMMAND_ARGS[@]}")
+
+        if [ -z "$LLM_RESPONSE" ]; then
+          echo "Error: Empty response from $CURRENT_API_PROVIDER_NAME API." >&2
+          exit 1
+        fi
+
+        ### 4. Extract copy targets from LLM response using jq ###
+        COPY_TARGETS=""
+        if [[ "$API_PROVIDER" == "google" ]]; then
+          # Check for errors in Google response first
+          if echo "$LLM_RESPONSE" | jq -e '.error' > /dev/null; then
+            ERROR_MESSAGE=$(echo "$LLM_RESPONSE" | jq -r '.error.message')
+            echo "Error from Google API: $ERROR_MESSAGE" >&2
+            echo "Full Google API response: $LLM_RESPONSE" >&2
             exit 1
           fi
-
-          ### 4. Extract copy targets from LLM response using jq ###
+          # Check if candidates array exists and has content
+          if ! echo "$LLM_RESPONSE" | jq -e '.candidates[0].content.parts[0].text' > /dev/null 2>&1; then
+              echo "Error: Unexpected response structure from Google API or no content." >&2
+              echo "Google API Response: $LLM_RESPONSE" >&2
+              exit 1
+          fi
+          COPY_TARGETS=$(echo "$LLM_RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
+        elif [[ "$API_PROVIDER" == "groq" ]]; then
+          # Check for errors in Groq response
+          if echo "$LLM_RESPONSE" | jq -e '.error' > /dev/null; then
+            ERROR_MESSAGE=$(echo "$LLM_RESPONSE" | jq -r '.error.message')
+            echo "Error from Groq API: $ERROR_MESSAGE" >&2
+            echo "Full Groq API response: $LLM_RESPONSE" >&2
+            exit 1
+          fi
+          # Check if choices array exists and has content
+          if ! echo "$LLM_RESPONSE" | jq -e '.choices[0].message.content' > /dev/null 2>&1; then
+              echo "Error: Unexpected response structure from Groq API or no content." >&2
+              echo "Groq API Response: $LLM_RESPONSE" >&2
+              exit 1
+          fi
           COPY_TARGETS=$(echo "$LLM_RESPONSE" | jq -r '.choices[0].message.content')
-          if [ -z "$COPY_TARGETS" ]; then
-            echo "No copy targets found in LLM response." >&2
-            exit 1
-          fi
+        fi
 
-          ### 5. Select copy target using fzf ###
-          SELECTED_TARGET=$(echo "$COPY_TARGETS" | fzf --no-sort --reverse)
+        if [ -z "$COPY_TARGETS" ] || [ "$COPY_TARGETS" == "null" ]; then
+          echo "No copy targets found in LLM response or response was null." >&2
+          echo "LLM Raw Response for $CURRENT_API_PROVIDER_NAME: $LLM_RESPONSE" >&2
+          exit 1
+        fi
 
-          if [ -z "$SELECTED_TARGET" ]; then
-            echo "No item selected in fzf." >&2
-            exit 0 # User cancelled, not an error
-          fi
+        ### 5. Select copy target using fzf ###
+        # --no-sort because the LLM is asked to invert the list (most promising last)
+        # --reverse makes fzf display items bottom-up, so last item (most promising) is at the top
+        SELECTED_TARGET=$(echo -e "$COPY_TARGETS" | fzf --no-sort --reverse)
 
-          ### 6. Copy to clipboard (wl-copy, xclip, clip) ###
-          if command -v wl-copy >/dev/null 2>&1; then
-            echo "$SELECTED_TARGET" | wl-copy
-          elif command -v xclip >/dev/null 2>&1; then
-            echo "$SELECTED_TARGET" | xclip -i -selection clipboard
-          elif command -v clip >/dev/null 2>&1; then
-            echo "$SELECTED_TARGET" | clip
-          else
-            echo "Warning: No clipboard tool (wl-copy, xclip, clip) found. Printing to stdout:" >&2
-            echo "$SELECTED_TARGET"
-            sleep 1
-            exit 0
-          fi
+        if [ -z "$SELECTED_TARGET" ]; then
+          echo "No item selected in fzf. Aborting." >&2
+          exit 0 # User cancelled fzf, not an error
+        fi
 
-          echo "Copied to clipboard." >&2
+        ### 6. Copy to clipboard (wl-copy, xclip, clip.exe for WSL) ###
+        if command -v wl-copy >/dev/null 2>&1; then
+          echo -n "$SELECTED_TARGET" | wl-copy
+          echo "Copied to Wayland clipboard." >&2
+        elif command -v xclip >/dev/null 2>&1; then
+          echo -n "$SELECTED_TARGET" | xclip -i -selection clipboard
+          echo "Copied to X11 clipboard." >&2
+        elif command -v clip.exe >/dev/null 2>&1; then # For WSL
+          echo -n "$SELECTED_TARGET" | clip.exe
+          echo "Copied to Windows clipboard via clip.exe." >&2
+        else
+          echo "Warning: No clipboard tool (wl-copy, xclip, clip.exe) found. Printing to stdout:" >&2
+          echo "$SELECTED_TARGET"
+          # sleep 1 # Optional: allow user to see the message
           exit 0
-        '';
-      };
+        fi
+
+        exit 0
+      ''; # End of writeShellScript
     };
+  };
 }

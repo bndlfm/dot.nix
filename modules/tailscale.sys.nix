@@ -4,43 +4,43 @@
   pkgs,
   ...
 }:{
-  environment.systemPackages = with pkgs; [
-    ethtool
-    tailscale
-    networkd-dispatcher
-  ];
+  #environment.systemPackages = with pkgs; [
+  #  ethtool
+  #  tailscale
+  #  networkd-dispatcher
+  #];
 
-  services = {
-    networkd-dispatcher = {
-      enable = true;
-      rules = {
-        "50-tailscale" = {
-          onState = ["routable"];
-          script = ''
-            ${lib.getExe pkgs.ethtool} -K enp6s0 rx-udp-gro-forwarding on rx-gro-list off
-          '';
-        };
-      };
-    };
-  };
+  #services = {
+  #  networkd-dispatcher = {
+  #    enable = true;
+  #    rules = {
+  #      "50-tailscale" = {
+  #        onState = ["routable"];
+  #        script = ''
+  #          ${lib.getExe pkgs.ethtool} -K enp6s0 rx-udp-gro-forwarding on rx-gro-list off
+  #        '';
+  #      };
+  #    };
+  #  };
+  #};
 
-  services.tailscale = {
-    enable = true;
-    openFirewall = true;
-    # authKeyFile = config.sops.secrets.TS_AUTHKEY.path;
-  };
+  #services.tailscale = {
+  #  enable = true;
+  #  openFirewall = true;
+  #  # authKeyFile = config.sops.secrets.TS_AUTHKEY.path;
+  #};
 
-  networking = {
-    firewall = {
-      enable = true;
-      trustedInterfaces = [ "tailscale0" ];
-    };
-    interfaces."tailscale0" = {
-      useDHCP = false;
-      wakeOnLan.enable = true;
-    };
+  #networking = {
+  #  firewall = {
+  #    enable = true;
+  #    trustedInterfaces = [ "tailscale0" ];
+  #  };
+  #  interfaces."tailscale0" = {
+  #    useDHCP = false;
+  #    wakeOnLan.enable = true;
+  #  };
 
-  };
+  #};
 
   #  systemd.services.tailscale-funnel = {
   #    description = "Automatic connection to Tailscale";

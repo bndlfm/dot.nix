@@ -19,6 +19,11 @@
         sopsFile = ./DUCKDNS_TOKEN.yaml;
       };
 
+      GEMINI_SECRET_KEY = {
+        format = "yaml";
+        sopsFile = ./GEMINI_SECRET_KEY.yaml;
+      };
+
       GMAIL_APP_PASS = {
         format = "yaml";
         sopsFile = ./GMAIL_APP_PASS.yaml;
