@@ -1,4 +1,10 @@
-{ lib, buildGoModule, fetchFromGitHub }:
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
+  nodejs,
+  yarn
+}:
 
 buildGoModule rec {
   pname = "phoneinfoga";
@@ -8,20 +14,16 @@ buildGoModule rec {
     owner = "sundowndev";
     repo = pname;
     rev = "v${version}";
-    # This hash is for the source tarball itself
     hash = "sha256-jjgRgpwT1n5TUQYnqsGkyfaJ6q7NJzhIm5/VToz5Luc=";
   };
 
+# === GO MODULE VENDORING ===
   # Tell buildGoModule to fetch dependencies based on go.mod and go.sum,
   # ignoring any vendor directory in src.
   proxyVendor = true;
 
   # This is the hash of the vendored dependencies that Nix will download.
-  # You need to calculate this.
-  # STEP 1: Use a placeholder like lib.fakeSha256 or a clearly bogus hash.
-  vendorSha256 = lib.fakeSha256; # Or "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-  # STEP 2: After building, Nix will tell you the correct hash. Update this line.
-  # For example: vendorSha256 = "sha256-yourCalculatedHashWillGoHere";
+  vendorHash = "sha256-OUS2UeLwUDx0zH8+GcIb1XqYJ9rEqHmWVzruyNG2Tjw=";
 
   # It's good practice to remove the potentially problematic vendor directory
   # from the source when using proxyVendor = true.
@@ -31,6 +33,35 @@ buildGoModule rec {
     # go mod tidy # This would require 'go' in nativeBuildInputs for postPatch
   '';
 
+
+# === WEB CLIENT ASSETS BUILD ===
+  # Add Node.js and Yarn to build inputs for the web client
+  nativeBuildInputs = [ nodejs yarn ];
+
+  # The Go embed directive in web/client.go is: //go:embed all:client/dist
+  # This means it expects 'client/dist' relative to the 'web' directory.
+  # So, we need to build the client assets into 'web/client/dist/'
+  preBuild = ''
+    echo "Current directory before client build: $(pwd)"
+    ls -la web # Check contents of web directory
+
+    echo "Building web UI in web/client..."
+    pushd web/client
+      # Install dependencies using yarn
+      # --frozen-lockfile: Ensures yarn.lock is authoritative and not modified.
+      # --ignore-platform: Skips platform-specific checks for optional dependencies.
+      # --ignore-scripts: Skips running postinstall scripts (can help in sandboxed builds).
+      yarn install --frozen-lockfile --ignore-platform --ignore-scripts
+      # Build the static assets
+      yarn build # This should create the 'dist' directory (i.e., web/client/dist)
+    popd
+
+    echo "Web UI built. Checking for web/client/dist:"
+    ls -R web/client # Verify that web/client/dist exists and has files
+  '';
+
+
+# === GO BUILD CONFIGURATION ===
   # The main package seems to be at the root.
   subPackages = [ "." ];
 
@@ -39,6 +70,8 @@ buildGoModule rec {
     "-X github.com/sundowndev/phoneinfoga/v2/build.Version=v${version}"
   ];
 
+
+# === PACKAGE METADATA ===
   meta = with lib; {
     description = "Advanced information gathering & OSINT framework for phone numbers";
     homepage = "https://github.com/sundowndev/phoneinfoga";
