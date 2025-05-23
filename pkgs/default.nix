@@ -13,6 +13,7 @@ pkgs:
       _gsh = cPkg ./generativeShell.nix {};
       _ndrop = cPkg ./ndrop.nix {};
       _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix {};
+      _phoneinfoga = cPkg ./phoneinfoga.nix {};
       _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix {};
       _vintagestory = cPkg ./vintageStory.nix {};
       _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix {};

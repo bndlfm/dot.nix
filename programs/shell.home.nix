@@ -41,21 +41,34 @@
                 bind -s --preset -M insert \cy "commandline -f accept-autosuggestion execute"
 
             # CODEX.FISH OPENAI CODEX PLUGIN
-              bind \cX _fish_ai_codify_or_explain
-              bind -k nul _fish_ai_autocomplete_or_fix
+              set -g FISH_AI_KEYMAP_1 'ctrl-x'
+              bind -M insert ctrl-x _fish_ai_codify_or_explain
+              set -g FISH_AI_KEYMAP_2 'ctrl-/'
+              bind -M insert ctrl-/ _fish_ai_autocomplete_or_fix
+              bind -M insert ctrl-p up-or-search # fixes fish-ai keybind
         end
 
         ## more fish vi key fixes
-            set fish_default_key_bindings fish_user_key_bindings
-            set fish_cursor_insert line
-            set fish_suggest_key_bindings yes
+          set fish_default_key_bindings fish_user_key_bindings
+          set fish_cursor_insert line
+          set fish_suggest_key_bindings yes
 
         ## shell indicators (nix-shell, python-venv, etc)
-            set -l nix_shell_info (
-              if test -n "$IN_NIX_SHELL"
-                echo -n "<nix-shell> "
-              end
-            )
+          set -l nix_shell_info (
+            if test -n "$IN_NIX_SHELL"
+              echo -n "<nix-shell> "
+            end
+          )
+
+        ## install fish-ai
+          if not fisher list | string match -q "Realiserad/fish-ai"
+            echo "Fisher: Realiserad/fish-ai not found. Installing..."
+            fisher install Realiserad/fish-ai
+            echo "Fisher: Realiserad/fish-ai installed. You may need to restart your shell or source config.fish for changes to apply immediately."
+          else
+            # Optional: uncomment if you want to see a message when it's already installed
+            echo "Fisher: Realiserad/fish-ai is already installed."
+          end
       '';
       functions = {
         mkcd = ''
@@ -89,6 +102,15 @@
             sha256 = "05b5qp7yly7mwsqykjlb79gl24bs6mbqzaj5b3xfn3v2b7apqnqp";
           };
         }
+        #{ INSTALL WITH FISHER
+        #  name = "fish-ai";
+        #  src = pkgs.fetchFromGitHub {
+        #    owner = "Realiserad";
+        #    repo = "fish-ai";
+        #    rev = "2ca8e1d59648bf981b8cc084d48df1f8c56495b0";
+        #    sha256 = "sha256-PkYrh3HXskHmzo81MTfV4iFGSkelEvAnIx35mbpEGMc=";
+        #  };
+        #}
         {
           name = "fish-fastdir";
           src = pkgs.fetchFromGitHub {
@@ -361,7 +383,7 @@
       #enableNushellIntegration = true;
     };
     mcfly = {
-      enable = true;
+      enable = false;
       enableFishIntegration = true;
       #enableNushellIntegration = true;
     };
