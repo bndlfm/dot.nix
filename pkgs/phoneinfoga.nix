@@ -2,35 +2,36 @@
 
 buildGoModule rec {
   pname = "phoneinfoga";
-  version = "2.11.0"; # You can change this to the desired version/tag
+  version = "2.11.0";
 
   src = fetchFromGitHub {
     owner = "sundowndev";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-YOUR_SHA256_HASH_HERE"; # Replace with the actual SRI hash
+    # This hash is for the source tarball itself
+    hash = "sha256-jjgRgpwT1n5TUQYnqsGkyfaJ6q7NJzhIm5/VToz5Luc=";
   };
 
-  # The go.mod file indicates the Go version used.
-  # From .github/workflows/build.yml, it's 1.20.6, let's use a recent stable one.
-  # You might need to adjust this based on the specific version's go.mod.
-  # Nixpkgs will often handle this automatically if a go.mod exists.
+  # Tell buildGoModule to fetch dependencies based on go.mod and go.sum,
+  # ignoring any vendor directory in src.
+  proxyVendor = true;
 
-  vendorSha256 = null; # or run nix-prefetch-git --print-sha256 <url_to_tarball>
-                       # and then use lib.fakeSha256 to get the vendorSha256
-                       # or use a fixed-output derivation for go mod vendor
+  # This is the hash of the vendored dependencies that Nix will download.
+  # You need to calculate this.
+  # STEP 1: Use a placeholder like lib.fakeSha256 or a clearly bogus hash.
+  vendorSha256 = lib.fakeSha256; # Or "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+  # STEP 2: After building, Nix will tell you the correct hash. Update this line.
+  # For example: vendorSha256 = "sha256-yourCalculatedHashWillGoHere";
 
-  # From the Makefile and .github/workflows/build.yml,
-  # it seems there's a step to build static assets for the web client.
-  # This example focuses on the main Go binary.
-  # For the web client, you'd typically need Node.js and yarn.
-  # preBuild = ''
-  #   (cd web/client && yarn install --immutable && yarn build)
-  #   make build # This might try to do too much, often just `go build` is needed here.
-  # '';
+  # It's good practice to remove the potentially problematic vendor directory
+  # from the source when using proxyVendor = true.
+  postPatch = ''
+    rm -rf vendor
+    # Optionally, if go.sum is also inconsistent (though less likely to be the primary issue here):
+    # go mod tidy # This would require 'go' in nativeBuildInputs for postPatch
+  '';
 
   # The main package seems to be at the root.
-  # If main.go is in a subdirectory like cmd/phoneinfoga, adjust this.
   subPackages = [ "." ];
 
   ldflags = [
@@ -41,8 +42,8 @@ buildGoModule rec {
   meta = with lib; {
     description = "Advanced information gathering & OSINT framework for phone numbers";
     homepage = "https://github.com/sundowndev/phoneinfoga";
-    license = licenses.gpl3Only; # Based on the LICENSE file
-    maintainers = with maintainers; [ ]; # Add your name here
+    license = licenses.gpl3Only;
+    maintainers = with maintainers; [ ]; # Add your Nixpkgs/GitHub username
     platforms = platforms.linux ++ platforms.darwin;
   };
 }
