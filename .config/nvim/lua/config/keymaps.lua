@@ -44,8 +44,11 @@ local cursor_movement = {
   ["<C-e>"] = { "5<C-y>", "[ 🖼️⬆️ ] Move viewport up" },
   ["<C-n>"] = { "5<C-e>", "[ 🖼️⬇️ ] Move viewport down" },
 }
-wk.register(cursor_movement, { mode = { "n", "v" } })
+wk.add(cursor_movement, { mode = { "n", "v" } })
 wk.register(cursor_movement, { mode = { "", "s", "x" } })
+wk.add({
+  ["i"] = { "<Right>", "Move cursor right" },
+}, { mode = "v" })
 
 -- Insert mode cursor movement
 wk.register({

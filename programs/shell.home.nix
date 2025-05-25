@@ -60,15 +60,15 @@
             end
           )
 
-        ## install fish-ai
-          if not fisher list | string match -q "Realiserad/fish-ai"
-            echo "Fisher: Realiserad/fish-ai not found. Installing..."
-            fisher install Realiserad/fish-ai
-            echo "Fisher: Realiserad/fish-ai installed. You may need to restart your shell or source config.fish for changes to apply immediately."
-          else
-            # Optional: uncomment if you want to see a message when it's already installed
-            echo "Fisher: Realiserad/fish-ai is already installed."
-          end
+        ### install fish-ai
+        #  if not fisher list | string match -q "Realiserad/fish-ai"
+        #    echo "Fisher: Realiserad/fish-ai not found. Installing..."
+        #    fisher install Realiserad/fish-ai
+        #    echo "Fisher: Realiserad/fish-ai installed. You may need to restart your shell or source config.fish for changes to apply immediately."
+        #  else
+        #    # Optional: uncomment if you want to see a message when it's already installed
+        #    echo "Fisher: Realiserad/fish-ai is already installed."
+        #  end
       '';
       functions = {
         mkcd = ''

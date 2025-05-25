@@ -51,7 +51,8 @@ buildGoModule rec {
       # --frozen-lockfile: Ensures yarn.lock is authoritative and not modified.
       # --ignore-platform: Skips platform-specific checks for optional dependencies.
       # --ignore-scripts: Skips running postinstall scripts (can help in sandboxed builds).
-      yarn install --frozen-lockfile --ignore-platform --ignore-scripts
+      echo "Running: yarn install --frozen-lockfile --ignore-scripts"
+      yarn install --frozen-lockfile --ignore-scripts
       # Build the static assets
       yarn build # This should create the 'dist' directory (i.e., web/client/dist)
     popd

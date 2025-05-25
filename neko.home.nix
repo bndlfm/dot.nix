@@ -99,6 +99,13 @@
       packages =
         with pkgs;
         let
+
+          patched =
+            [
+              pkgs.bndlfm.winetricks
+              pkgs.bndlfm.heroic
+            ];
+
           ai =
             [
               aichat
@@ -197,7 +204,7 @@
                 clonehero
               ## GAMING UTILITIES
                 ## LAUNCHERS
-                  heroic
+                  #heroic #(patched)
                   itch
                   lutris
                   prismlauncher
@@ -267,7 +274,6 @@
                 qt6Packages.qtstyleplugin-kvantum
                 kdePackages.ksshaskpass
               # Wine/Proton
-                pkgs.bndlfm.winetricks
                 wineWowPackages.stable
                 protonup
             ];
@@ -394,6 +400,7 @@
 
         in
         [ ]
+        ++ patched
         ++ ai
         ++ apple
         ++ browsers
@@ -413,12 +420,6 @@
         ++ misc;
 
 
-      #pointerCursor = {
-      #  package = pkgs.volantes-cursors;
-      #  name = "volantes-cursors";
-      #};
-
-
     ## (HM) ENVIRONMENT VARIABLES ##
     sessionVariables = {
       ## API KEYS
@@ -435,7 +436,6 @@
         PROTON_ENABLE_NVAPI = "1";
         PROTON_HIDE_NVIDIA_GPU = "0";
         VKD3D_CONFIG = "dxr";
-        VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
       ## NIX
         NIXOS_OZONE_WL = "1"; # fixes electron wayland support
         NH_FLAKE = "${builtins.getEnv "HOME"}/.nixcfg/"; # nix helper env var for flake location
