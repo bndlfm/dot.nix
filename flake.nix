@@ -105,6 +105,7 @@
         modifications
         nixpkgs-stable
         nixpkgs-bndlfm
+        spotify
       ];
     in {
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
