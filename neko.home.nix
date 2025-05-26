@@ -102,8 +102,6 @@
 
           patched =
             [
-              pkgs.bndlfm.winetricks
-              pkgs.bndlfm.heroic
             ];
 
           ai =
@@ -204,7 +202,7 @@
                 clonehero
               ## GAMING UTILITIES
                 ## LAUNCHERS
-                  #heroic #(patched)
+                  #heroic (broken)
                   itch
                   lutris
                   prismlauncher
@@ -224,6 +222,7 @@
               freetube
               mpv
               ncmpcpp
+              pkgs.oscars-dotfiles.spotify
             ];
 
           notes =
@@ -275,6 +274,7 @@
                 kdePackages.ksshaskpass
               # Wine/Proton
                 wineWowPackages.stable
+                winetricks
                 protonup
             ];
 

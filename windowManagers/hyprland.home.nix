@@ -129,6 +129,8 @@ in {
             "$mainMod, F, fullscreen"
             "$mainMod CONTROL, F, exec, nautilus"
             "$mainMod, P, pseudo" # dwindle
+
+            # ROTATE ROTATE
             "$mainMod, J, togglesplit" # dwindle
 
             "$mainMod, GRAVE, exec, hdrop -f -b -g 30 kitty --class kittydrop"
@@ -151,6 +153,7 @@ in {
             "$mainMod, N, movefocus, d"
             "$mainMod, E, movefocus, u"
             "$mainMod, I, movefocus, r"
+
             # Cycle focus between floating windows
             "$mainMod, Tab, cyclenext"
             "$mainMod, Tab, bringactivetotop"

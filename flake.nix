@@ -20,6 +20,10 @@
 
       ## MEDIA
         nixarr.url = "github:rasmus-kirk/nixarr";
+        oscars-dotfiles = {
+          url = "github:oskardotglobal/.dotfiles/nix";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
         spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
       ## PROGRAMS

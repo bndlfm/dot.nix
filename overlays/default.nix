@@ -25,4 +25,11 @@
       config.allowUnfree = true;
     };
   };
+
+  oscars-dotfiles = final: _prev: {
+    oscars-dotfiles = import inputs.oscars-dotfiles {
+      system = final.system;
+      config.allowUnfree = true;
+    };
+  };
 }
