@@ -105,7 +105,6 @@
         modifications
         nixpkgs-stable
         nixpkgs-bndlfm
-        oscars-dotfiles
       ];
     in {
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});

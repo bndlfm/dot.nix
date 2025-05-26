@@ -8,6 +8,7 @@
   modifications = final: prev: {
     #sunshine = inputs.sunshineFix.legacyPackages.${final.system}.sunshine;
     #aider-chat = inputs.aiderFix.legacyPackages.${final.system}.aider-chat;
+    spotify = inputs.oscars-dotfiles.legacyPackages.${final.system}.spotify;
   };
 
   # When applied, the stable nixpkgs set (declared in the flake inputs) will
@@ -21,13 +22,6 @@
 
   nixpkgs-bndlfm = final: _prev: {
     bndlfm = import inputs.nixpkgs-bndlfm {
-      system = final.system;
-      config.allowUnfree = true;
-    };
-  };
-
-  oscars-dotfiles = final: _prev: {
-    oscars-dotfiles = import inputs.oscars-dotfiles {
       system = final.system;
       config.allowUnfree = true;
     };
