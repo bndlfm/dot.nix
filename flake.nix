@@ -10,6 +10,10 @@
         nur.url = "github:nix-community/NUR";
         nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
+      ## OVERLAY NIXPKGS
+        nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+        nixpkgs-bndlfm.url = "github:bndlfm/nixpkgs";
+
       ## CUSTOMIZATION
         base16.url = "github:SenchoPens/base16.nix";
         stylix.url = "github:Mikilio/stylix";
@@ -20,11 +24,7 @@
 
       ## MEDIA
         nixarr.url = "github:rasmus-kirk/nixarr";
-        oscars-dotfiles = {
-          url = "github:oskardotglobal/.dotfiles/nix";
-          inputs.nixpkgs.follows = "nixpkgs";
-        };
-        spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+        spicetify-nix.url = "github:Gerg-L/spicetify-nix?rev=f0595e3b59260457042450749eaec00a5a47db35";
 
       ## PROGRAMS
         aagl.url = "github:ezKEa/aagl-gtk-on-nix";
@@ -43,11 +43,9 @@
         hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
       /***************
-      * TEMP INPUTS *
+      * ALTERNATIVE INPUTS *
       ***************/
       ## NOTE: Check if fixed upstream!
-        nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
-        nixpkgs-bndlfm.url = "github:bndlfm/nixpkgs";
     };
 
 
@@ -105,7 +103,6 @@
         modifications
         nixpkgs-stable
         nixpkgs-bndlfm
-        spotify
       ];
     in {
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});

@@ -222,7 +222,6 @@
               freetube
               mpv
               ncmpcpp
-              pkgs.oscars-dotfiles.spotify
             ];
 
           notes =
@@ -254,7 +253,7 @@
               ## OTHER DEV TOOLS
                 meld
               godot_4
-              godot_4-export-templates
+              godot_4-export-templates-bin
               zenity
             ];
 
