@@ -384,7 +384,7 @@
 
           virtualization =
             [
-              nur.repos.ataraxiasjel.waydroid-script
+              _waydroid-script
               _waydroid-hide-desktop-entries
               ### CONTAINER
                 boxbuddy
