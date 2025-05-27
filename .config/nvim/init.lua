@@ -38,8 +38,4 @@ function ensure(repo, package, dir)
   end
 end
 
-ensure("Olical/aniseed", "aniseed")
 vim.opt.runtimepath:prepend(lazy_path)
-
-vim.g["aniseed#env"] = { module = "init", compile = "true" }
-require("aniseed.env").init()

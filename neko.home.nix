@@ -29,6 +29,7 @@
         ./programs/shell.home.nix
 
         ./programs/firefox.home.nix
+        ./programs/floorp.nix
         ./programs/git.home.nix
         ./programs/kitty.home.nix
         ./programs/ncmpcpp.home.nix
