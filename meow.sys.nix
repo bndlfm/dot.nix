@@ -388,8 +388,8 @@ in {
         };
       nvidia =
         {
-          package = config.boot.kernelPackages.nvidiaPackages.latest;
           modesetting.enable = true;
+          open = true;
 
           ### Experimental, and can cause sleep/suspend to fail.
           powerManagement.enable = false;
@@ -398,7 +398,6 @@ in {
           ### Experimental Turing+
           ### Use the NVidia open source dkms kernel module
           ### https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-          open = false;
           nvidiaSettings = true;
         };
       nvidia-container-toolkit.enable = true;

@@ -17,5 +17,4 @@ pkgs:
       _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix {};
       _vintagestory = cPkg ./vintageStory.nix {};
       _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix {};
-      _waydroid-script = cPkg ./waydroid-script/waydroid-script.nix {};
     }

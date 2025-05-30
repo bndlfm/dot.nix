@@ -203,7 +203,7 @@
                 clonehero
               ## GAMING UTILITIES
                 ## LAUNCHERS
-                  #heroic (broken)
+                  #heroic
                   itch
                   lutris
                   prismlauncher
@@ -384,7 +384,9 @@
 
           virtualization =
             [
+              #NOTE: CHECK LATER FOR FIX (substituteAll)
               #nur.repos.ataraxiasjel.waydroid-script
+
               _waydroid-hide-desktop-entries
               ### CONTAINER
                 boxbuddy
@@ -437,7 +439,7 @@
         PROTON_HIDE_NVIDIA_GPU = "0";
         VKD3D_CONFIG = "dxr";
       ## NIX
-        NIXOS_OZONE_WL = "1"; # fixes electron wayland support
+        NIXOS_OZONE_WL = "1"; # fixes electron wayland
         NH_FLAKE = "${builtins.getEnv "HOME"}/.nixcfg/"; # nix helper env var for flake location
       ## PAGER
         PAGER = "nvim +Man!";
@@ -451,9 +453,10 @@
         QT_QPA_PLATFORMTHEME = "qt6ct";
         QT_STYLE_OVERRIDE = "kvantum";
       ## ...
-        _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd";
+        ELECTRON_OZONE_PLATFORM_HINT = "wayland"; # fixes electron wayland
         DOCKER_HOST = "unix:///run/user/1000/docker.sock";
         GPG_TTY = "$(tty)";
+        _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd";
         MOZ_DBUS_REMOTE = "1"; # make firefox see dbus
     };
 

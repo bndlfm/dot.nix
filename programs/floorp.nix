@@ -8,7 +8,6 @@
       kdePackages.plasma-browser-integration
       firefoxpwa
     ];
-    package = pkgs.firefox-devedition-bin;
     profiles = {
       "oli3t15x.default-release" = {
         id = 0;
