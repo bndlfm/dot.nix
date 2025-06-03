@@ -95,6 +95,35 @@
       overlays = [ inputs.nur.overlays.default ];
     };
 
+
+  ############
+  # PACKAGES #
+  ############
+  services =
+    {
+      flatpak =
+        {
+          enable = true;
+          packages =
+            [
+              "com.google.EarthPro"
+              "com.github.tchx84.Flatseal"
+              "org.jdownloader.JDownloader"
+              #"com.heroicgameslauncher.hgl"
+            ];
+      uninstallUnmanaged = true;
+        update =
+            {
+              auto =
+                {
+                  enable = true;
+                  onCalendar = "weekly";
+                };
+              onActivation = true;
+            };
+        };
+    };
+
   home =
     {
       packages =
@@ -144,7 +173,6 @@
               fzf
               grex
               gnugrep
-              gopass
               jq
               libnotify
               libqalculate
@@ -193,6 +221,10 @@
               _gamma-launcher
               glfw-wayland-minecraft
               inputs.openmw-vr.packages.x86_64-linux.default
+              mangohud
+              protontricks
+              protonup-ng
+              steamtinkerlaunch
               ## DECOMP
                 sm64coopdx
                 #shipwright # Ocarina of Time
@@ -203,7 +235,7 @@
                 clonehero
               ## GAMING UTILITIES
                 ## LAUNCHERS
-                  #heroic
+                  heroic
                   itch
                   lutris
                   prismlauncher
@@ -211,9 +243,6 @@
                   _beatSaberModManager
                   limo
                   nexusmods-app
-                mangohud
-                protontricks
-                steamtinkerlaunch
             ];
 
           media =
@@ -232,6 +261,10 @@
 
           programming =
             [
+              code-cursor
+              godot_4
+              godot_4-export-templates-bin
+              zenity
               ## GIT TOOLS
                 git
                 git-filter-repo
@@ -253,9 +286,6 @@
                 nix-prefetch
               ## OTHER DEV TOOLS
                 meld
-              godot_4
-              godot_4-export-templates-bin
-              zenity
             ];
 
           social =

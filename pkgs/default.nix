@@ -8,7 +8,7 @@ pkgs:
       _antifennel = cPkg ./antifennel.nix {};
       _azote = cPkg ./azote.nix {};
       _beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix {};
-      _fish-ai = cPkg ./fish-ai.nix {};
+      _fish-ai = cPkg ./fishPlugins/fish-ai.nix {};
       _gamma-launcher = cPkg ./gamma-launcher.nix {};
       _gsh = cPkg ./generativeShell.nix {};
       _ndrop = cPkg ./ndrop.nix {};

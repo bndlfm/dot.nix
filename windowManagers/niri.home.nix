@@ -41,6 +41,8 @@ in {
 
           environment = {
             DISPLAY = ":0";
+            NIXOS_OZONE_WL = "1"; # fixes electron wayland
+            ELECTRON_OZONE_PLATFORM_HINT = "wayland"; # fixes electron wayland
           };
 
 
@@ -399,10 +401,10 @@ in {
                   block-out-from = "screencast";
                 }
               ## THIS PREVENTS NIRI WM HELP MENU FROM BEING TRANSPARENT I THINK
-                #{
-                #  matches = [{app-id = "^niri$";}];
-                #  opacity = 1.0;
-                #}
+                {
+                  matches = [{app-id = "^niri$";}];
+                  opacity = 1.0;
+                }
           ];
         };
       };

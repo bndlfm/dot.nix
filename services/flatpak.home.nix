@@ -6,7 +6,7 @@
 	"com.google.EarthPro"
         "com.github.tchx84.Flatseal"
         "org.jdownloader.JDownloader"
-        #"com.heroicgameslauncher.hgl"
+        "com.heroicgameslauncher.hgl"
       ];
       uninstallUnmanaged = true;
       update = {

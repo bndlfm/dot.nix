@@ -466,13 +466,10 @@ in {
           "nvidia.hdmi_deepcolor=1"
           "amd_pstate=active"
         ];
-      kernelPackages = pkgs.linuxPackages_latest;
       kernel.sysctl =
         {
           "vm.overcommit_memory" = 1;
           "vm.max_map_count" = lib.mkForce 16777216; # for S&BOX
-          #"net.ipv4.ip_forward" = 1; Overrode by Nixarr, which I think I want.
-          #"net.ipv6.conf.all.forwarding" = 1;
         };
       supportedFilesystems = [ "ntfs" ];
     };
