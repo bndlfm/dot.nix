@@ -5,9 +5,9 @@
   stdenv
 }:
 let
-  buildFishPlugin = import ./build-fish-plugin.nix {inherit lib stdenv; };
+  local-buildFishPlugin = import ./build-fish-plugin.nix {inherit lib stdenv; };
 in
-  buildFishPlugin rec {
+  local-buildFishPlugin rec {
     pname = "fish-ai";
     version = "1.8.0";
 
