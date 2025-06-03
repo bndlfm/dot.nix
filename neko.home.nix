@@ -71,7 +71,11 @@
         ./windowManagers/niri.home.nix
     ];
 
+  ##########################
+  # NIX / NIXPKGS SETTINGS #
+  ##########################
   nix.package = pkgs.nix;
+
   nixpkgs =
     {
       config =
@@ -96,9 +100,9 @@
     };
 
 
-  ############
-  # PACKAGES #
-  ############
+  ######################
+  # FLATPAK / PACKAGES #
+  ######################
   services =
     {
       flatpak =
@@ -129,7 +133,6 @@
       packages =
         with pkgs;
         let
-
           patched =
             [
             ];
@@ -159,6 +162,7 @@
           cli =
             [
               age
+              atop
               bat
               cachix
               chafa
@@ -236,12 +240,12 @@
               ## GAMING UTILITIES
                 ## LAUNCHERS
                   heroic
+                  pkgs.bndlfm.hydralauncher
                   itch
                   lutris
                   prismlauncher
                 ## MODDING
                   _beatSaberModManager
-                  limo
                   nexusmods-app
             ];
 
@@ -259,34 +263,39 @@
               obsidian
             ];
 
-          programming =
+          osint =
             [
-              code-cursor
-              godot_4
-              godot_4-export-templates-bin
-              zenity
-              ## GIT TOOLS
-                git
-                git-filter-repo
-                git-lfs
-                git-credential-manager
-                git-credential-gopass
-              ## PYTHON
-                (python3.withPackages (
-                  pkgs: with pkgs; [
-                    llama-cpp
-                    pynvim
-                    ueberzug
-                  ]
-                ))
-              ## FENNEL
-                #(pkgs.callPackage ./pkgs/antifennel.nix { })
-              ## NIX DEV TOOLS
-                direnv
-                nix-prefetch
-              ## OTHER DEV TOOLS
-                meld
+              maigret
             ];
+
+          programming =
+              [
+                code-cursor
+                godot_4
+                godot_4-export-templates-bin
+                zenity
+                ## GIT TOOLS
+                  git
+                  git-filter-repo
+                  git-lfs
+                  git-credential-manager
+                  git-credential-gopass
+                ## PYTHON
+                  (python3.withPackages (
+                    pkgs: with pkgs; [
+                      llama-cpp
+                      pynvim
+                      ueberzug
+                    ]
+                  ))
+                ## FENNEL
+                  #(pkgs.callPackage ./pkgs/antifennel.nix { })
+                ## NIX DEV TOOLS
+                  direnv
+                  nix-prefetch
+                ## OTHER DEV TOOLS
+                  meld
+              ];
 
           social =
             [
@@ -442,6 +451,7 @@
         ++ gaming
         ++ media
         ++ notes
+        ++ osint
         ++ programming
         ++ social
         ++ system

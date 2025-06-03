@@ -59,16 +59,6 @@
               echo -n "<nix-shell> "
             end
           )
-
-        ### install fish-ai
-        #  if not fisher list | string match -q "Realiserad/fish-ai"
-        #    echo "Fisher: Realiserad/fish-ai not found. Installing..."
-        #    fisher install Realiserad/fish-ai
-        #    echo "Fisher: Realiserad/fish-ai installed. You may need to restart your shell or source config.fish for changes to apply immediately."
-        #  else
-        #    # Optional: uncomment if you want to see a message when it's already installed
-        #    echo "Fisher: Realiserad/fish-ai is already installed."
-        #  end
       '';
       functions = {
         mkcd = ''
@@ -88,7 +78,7 @@
             sha256 = "sha256-pR5RKU+zIb7CS0Y6vjx2QIZ8Iu/3ojRfAcAdjCOxl1U=";
           };
         }
-        # { name = "pisces"; src = pkgs.fishPlugins.pisces.src; }
+        { name = "pisces"; src = pkgs.fishPlugins.pisces.src; }
         { name = "colored-man-pages"; src = pkgs.fishPlugins.colored-man-pages.src; }
         { name = "done"; src = pkgs.fishPlugins.done.src; }
         { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
@@ -102,15 +92,7 @@
             sha256 = "05b5qp7yly7mwsqykjlb79gl24bs6mbqzaj5b3xfn3v2b7apqnqp";
           };
         }
-        #{ INSTALL WITH FISHER
-        #  name = "fish-ai";
-        #  src = pkgs.fetchFromGitHub {
-        #    owner = "Realiserad";
-        #    repo = "fish-ai";
-        #    rev = "2ca8e1d59648bf981b8cc084d48df1f8c56495b0";
-        #    sha256 = "sha256-PkYrh3HXskHmzo81MTfV4iFGSkelEvAnIx35mbpEGMc=";
-        #  };
-        #}
+        { name = "fish-ai"; src = pkgs._fish-ai; }
         {
           name = "fish-fastdir";
           src = pkgs.fetchFromGitHub {

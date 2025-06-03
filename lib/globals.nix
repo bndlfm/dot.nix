@@ -1,6 +1,16 @@
 # lib/globals.nix
 {
   # monitor info for tiling wm and etc
+  environmentVars = {
+    system = {
+    };
+    user = {
+      wayland = {
+        ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+        NIXOS_OZONE_WL = 1;
+      };
+    };
+  };
   monitors =
     {
       left =

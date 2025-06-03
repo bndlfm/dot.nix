@@ -206,12 +206,14 @@ in {
     gnome.sushi.enable = false;
     desktopManager =
       {
+        gnome.enable = false;
         plasma6.enable = true;
       };
     displayManager =
       {
         defaultSession = "niri";
         sddm.enable = true;
+        gdm.enable = false;
       };
     fail2ban.enable = true;
     flatpak.enable = true;
@@ -252,14 +254,9 @@ in {
     xserver =
       {
         enable = true;
-        displayManager = {
-          gdm.enable = false;
-          };
-        desktopManager = {
-          gnome.enable = false;
-          };
-        windowManager = {
-          bspwm.enable = true;
+        windowManager =
+          {
+            bspwm.enable = true;
           };
         xkb.layout = "us";
         xkb.variant = "";
@@ -388,17 +385,12 @@ in {
         };
       nvidia =
         {
+          open = false;
           modesetting.enable = true;
-          open = true;
-
-          ### Experimental, and can cause sleep/suspend to fail.
+          nvidiaSettings = true;
           powerManagement.enable = false;
 
-          ### Fine-grained power management. Turns off GPU when not in use.
-          ### Experimental Turing+
-          ### Use the NVidia open source dkms kernel module
-          ### https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-          nvidiaSettings = true;
+          ### Experimental, and can cause sleep/suspend to fail.
         };
       nvidia-container-toolkit.enable = true;
       steam-hardware.enable = true;
@@ -466,6 +458,7 @@ in {
           "nvidia.hdmi_deepcolor=1"
           "amd_pstate=active"
         ];
+      kernelPackages = pkgs.linuxPackages_latest;
       kernel.sysctl =
         {
           "vm.overcommit_memory" = 1;

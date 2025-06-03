@@ -111,7 +111,7 @@ in {
                 { proportion = 2.   / 5.; }
                 { proportion = 2.45 / 5.; }
                 { proportion = 3.5  / 5.; }
-                { proportion = 5.   / 5.; }
+                { proportion = 4.   / 5.; }
               ];
 
             preset-window-heights =
