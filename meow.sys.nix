@@ -206,12 +206,14 @@ in {
     gnome.sushi.enable = false;
     desktopManager =
       {
+        gnome.enable = false;
         plasma6.enable = true;
       };
     displayManager =
       {
         defaultSession = "niri";
         sddm.enable = true;
+        gdm.enable = false;
       };
     fail2ban.enable = true;
     flatpak.enable = true;
@@ -252,14 +254,9 @@ in {
     xserver =
       {
         enable = true;
-        displayManager = {
-          gdm.enable = false;
-          };
-        desktopManager = {
-          gnome.enable = false;
-          };
-        windowManager = {
-          bspwm.enable = true;
+        windowManager =
+          {
+            bspwm.enable = true;
           };
         xkb.layout = "us";
         xkb.variant = "";
@@ -466,6 +463,7 @@ in {
           "nvidia.hdmi_deepcolor=1"
           "amd_pstate=active"
         ];
+      kernelPackages = pkgs.linuxPackages_latest;
       kernel.sysctl =
         {
           "vm.overcommit_memory" = 1;

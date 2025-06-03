@@ -30,6 +30,10 @@
         aagl.url = "github:ezKEa/aagl-gtk-on-nix";
         deejavu.url = "github:bndlfm/deejavu";
         isd.url = "github:isd-project/isd";
+        nvf = {
+          url = "github:NotAShelf/nvf";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
         openmw-vr.url = "github:bndlfm/openmw-vr.nix";
 
       ## SECRETS
@@ -87,13 +91,11 @@
 
     let
       inherit (self) outputs;
-
       systems = [
         "aarch64-linux"
         "x86_64-linux"
       ];
-
-      # Fctunction that generates an attribute by calling a function you
+      # Function that generates an attribute by calling a function you
       # pass to it, with each system as an argument
       forAllSystems = nixpkgs.lib.genAttrs systems;
 
@@ -126,6 +128,8 @@
                     nix-flatpak.homeManagerModules.nix-flatpak (import ./services/flatpak.home.nix)
                   ## NIRI
                     niri.homeModules.niri
+                  ## NVF
+                    inputs.nvf.homeManagerModules.default
                   ## THEMING
                     stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
                   ## IMPORTS
@@ -194,3 +198,5 @@
         };
     };
   }
+
+/* vim: set fdm=manual */
