@@ -113,7 +113,6 @@
               "com.google.EarthPro"
               "com.github.tchx84.Flatseal"
               "org.jdownloader.JDownloader"
-              #"com.heroicgameslauncher.hgl"
             ];
       uninstallUnmanaged = true;
         update =
@@ -203,7 +202,7 @@
 
           daemons =
             [
-              inputs.deejavu.packages.x86_64-linux.default
+              #inputs.deejavu.packages.x86_64-linux.default
               megasync
               mpd-discord-rpc
               yams
@@ -311,6 +310,8 @@
                 qt6Packages.qt6ct
                 qt6Packages.qtstyleplugin-kvantum
                 kdePackages.ksshaskpass
+              # Bottles
+                bottles
               # Wine/Proton
                 wineWowPackages.stable
                 winetricks

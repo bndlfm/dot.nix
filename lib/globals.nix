@@ -47,7 +47,7 @@
 
       right =
         {
-          output = "HDMI-A-3";
+          output = "DP-2";
           pos =
             {
               x = "3760";
@@ -56,7 +56,7 @@
           res =
             {
               width = "1920";
-              height = "1200";
+              height = "1080";
             };
           rate = "60";
         };

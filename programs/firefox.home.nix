@@ -69,16 +69,16 @@
         extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           augmented-steam
           blocktube
-          #(pkgs.fetchFromGitea {
-          #  url = "https://gitflic.ru/project/magnolia1234/bpc_uploads.git";
-          #  ref = "main";
-          #  rev = "997898dccabb11f3c357a25c7696d4391e230a0e";
-          #})
+          ##(pkgs.fetchFromGitea {
+          ##  url = "https://gitflic.ru/project/magnolia1234/bpc_uploads.git";
+          ##  ref = "main";
+          ##  rev = "997898dccabb11f3c357a25c7696d4391e230a0e";
+          ##})
           chatgptbox
           copy-selection-as-markdown
           darkreader
           dearrow
-        duckduckgo-privacy-essentials
+          duckduckgo-privacy-essentials
           furiganaize
           image-search-options
           pwas-for-firefox

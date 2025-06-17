@@ -4,7 +4,7 @@ pkgs,
 }:
 {
   stylix = {
-    autoEnable = false;
+    autoEnable = true;
 
     image = ./wallpapers/nordic/wallpapers/nixos.png;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
@@ -45,6 +45,10 @@ pkgs,
     };
 
     targets = {
+    ### WINDOW MANAGER / COMPOSITOR
+      hyprland.enable = true;
+      niri.enable = true;
+
       bat.enable = true;
       bspwm.enable = true;
       btop.enable = true;
@@ -63,7 +67,6 @@ pkgs,
       zathura.enable = true;
       zellij.enable = true;
 
-      hyprland.enable = true;
       swaylock = {
         enable = true;
         useImage = false;

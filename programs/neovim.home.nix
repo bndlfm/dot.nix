@@ -111,9 +111,4 @@ in {
           ];
       };
     };
-  programs.nvf =
-    {
-      enable = false;
-      enableManpages = true;
-    };
 }

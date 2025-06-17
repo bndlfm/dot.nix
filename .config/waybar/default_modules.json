@@ -113,22 +113,23 @@
     }
   },
   "tray": {
-    "spacing": 10
+    "spacing": 2
   },
   "clock": {
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format": "<b>{:%H\n%M}</b>",
+    "tooltip-format": "\n<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "format-alt": "{:%Y-%m-%d}"
   },
   "cpu": {
-    "format": "{usage}% ",
-    "tooltip": false
+    "format": "{usage}",
+    "tooltip": true
   },
   "memory": {
-    "format": "{}% "
+    "format": "{}"
   },
   "temperature": {
     "critical-threshold": 80,
-    "format": "{temperatureC}°C {icon}",
+    "format": "{temperatureC}{icon}",
     "format-icons": [
       "",
       "",
@@ -144,10 +145,10 @@
     "format-alt": "{ifname}: {ipaddr}/{cidr}"
   },
   "pulseaudio": {
-    "scroll-step": 5,
-    "format": "{volume}% {icon} {format_source}",
-    "format-bluetooth": "{volume}% {icon} {format_source}",
-    "format-bluetooth-muted": " {icon} {format_source}",
+    "scroll-step": 3,
+    "format": "{volume}{icon} \n{format_source}",
+    "format-bluetooth": "{volume}{icon} \n{format_source}",
+    "format-bluetooth-muted": "{icon} \n{format_source}",
     "format-muted": "󰋎 {format_source}",
     "format-source": "",
     "format-source-muted": "",

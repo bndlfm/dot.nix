@@ -3,9 +3,11 @@
   config,
   inputs,
   ...
-}: let
+}:
+let
   _g = import ../lib/globals.nix;
-in {
+in
+  {
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
   home.packages = with pkgs;
@@ -17,7 +19,6 @@ in {
       swayidle
       swaylock-effects
       wlprop
-      wl-gammarelay-rs
       xwayland-satellite
     ];
 
@@ -58,21 +59,21 @@ in {
             toInt = pkgs.lib.strings.toInt;
           in  {
               ## LEFT MONITOR
-                #"${_g.monitors.left.output}" =
-                #  {
-                #    enable = false;
-                #    mode =
-                #      {
-                #        width = toInt "${_g.monitors.left.res.width}";
-                #        height = toInt "${_g.monitors.left.res.height}";
-                #      };
-                #    position =
-                #      {
-                #        x = toInt "${_g.monitors.left.pos.x}";
-                #        y = toInt "${_g.monitors.left.pos.y}";
-                #      };
-                #    transform.rotation = 270;
-                #  };
+                "${_g.monitors.left.output}" =
+                  {
+                    enable = true;
+                    mode =
+                      {
+                        width = toInt "${_g.monitors.left.res.width}";
+                        height = toInt "${_g.monitors.left.res.height}";
+                      };
+                    position =
+                      {
+                        x = toInt "${_g.monitors.left.pos.x}";
+                        y = toInt "${_g.monitors.left.pos.y}";
+                      };
+                    transform.rotation = 270;
+                  };
               ## CENTER MONITOR
                 "${_g.monitors.center.output}" =
                   {
@@ -81,27 +82,27 @@ in {
                       width = toInt "${_g.monitors.center.res.width}";
                       height = toInt "${_g.monitors.center.res.height}";
                     };
-                    #position = {
-                    #      x = toInt "${_g.monitors.center.pos.x}";
-                    #      y = toInt "${_g.monitors.center.pos.y}";
-                    #};
+                    position = {
+                          x = toInt "${_g.monitors.center.pos.x}";
+                          y = toInt "${_g.monitors.center.pos.y}";
+                    };
                     variable-refresh-rate = false;
                   };
               ## RIGHT MONITOR
-                #"${_g.monitors.right.output}" = {
-                #  enable = false;
-                #  mode =
-                #    {
-                #      width = toInt "${_g.monitors.right.res.width}";
-                #      height = toInt "${_g.monitors.right.res.height}";
-                #    };
-                #  position =
-                #    {
-                #      x = toInt "${_g.monitors.right.pos.x}";
-                #      y = toInt "${_g.monitors.right.pos.y}";
-                #    };
-                #  transform.rotation = 270;
-                #};
+                "${_g.monitors.right.output}" = {
+                  enable = true;
+                  mode =
+                    {
+                      width = toInt "${_g.monitors.right.res.width}";
+                      height = toInt "${_g.monitors.right.res.height}";
+                    };
+                  position =
+                    {
+                      x = toInt "${_g.monitors.right.pos.x}";
+                      y = toInt "${_g.monitors.right.pos.y}";
+                    };
+                  transform.rotation = 90;
+                };
           };
 
 
@@ -124,9 +125,10 @@ in {
           };
 
 
-          workspaces = {
-            "ndrop" = {};
-          };
+          workspaces =
+            {
+              "n" = {};
+            };
 
 
           spawn-at-startup =
@@ -153,7 +155,7 @@ in {
               ## WALLPAPER
                 { command = [ "swaybg" "-i" "/home/neko/Pictures/Wallpapers/4K/Weather/Wallpaper forest, trees, snow, winter, 4k, Nature 8421417542.jpg" ]; }
               ## XWAYLAND
-                { command = [ "xwayland-satellite" ":0" ]; }
+                #{ command = [ "xwayland-satellite" ":0" ]; }
                 { command = [ "xrandr" "--output" "DP-1" "--primary" ]; }
             ];
 
@@ -291,7 +293,7 @@ in {
 
 
             window-rules = let
-              colors = config.lib.stylix.colors.withHashtag;
+            #colors = config.lib.stylix.colors.withHashtag;
             in [
               ## ROUNDED CORNERS
                 {
@@ -389,7 +391,7 @@ in {
                       title = "Private Browsing";
                     }
                   ];
-                  border.active.color = colors.base0E;
+              #border.active.color = colors.base0E;
                 }
               ## PREVENT SCREEN CAPTURE OF SENSITIVE APPS
                 {
@@ -416,27 +418,25 @@ in {
           [
             {
               layer="top";
-              position="top";
+              position="left";
               output = [ "${_g.monitors.center.output}" ];
               include = [ "~/.config/waybar/default_modules.json" ];
-              height = 28;
-              spacing = 3;
+              height = 1000;
+              width = 10;
+              spacing = 0;
+              align = 0;
               modules-left =
                 [
                   "niri/workspaces"
                   "hyprland/workspaces"
-                  "custom/wl-gammarelay-temperature"
-                  "custom/wl-gammarelay-brightness"
-                  "custom/wl-gammarelay-gamma"
                 ];
               modules-center =
                 [
-                  "tray"
                 ];
               modules-right =
                 [
-                  "mpd"
                   "idle_inhibitor"
+                  "tray"
                   "pulseaudio"
                   "cpu"
                   "memory"
@@ -444,49 +444,49 @@ in {
                   "clock"
                 ];
             }
-            {
-              layer = "bottom";
-              position = "top";
-              output =
-                [
-                  "${_g.monitors.left.output}"
-                  "${_g.monitors.right.output}"
-                ];
-              include =
-                [
-                  "~/.config/waybar/default_modules.json"
-                ];
-              height = 30;
-              spacing = 4;
-              modules-left =
-                [
-                  "niri/workspaces"
-                  "hyprland/workspaces"
-                ];
-              modules-center = [];
-              modules-right =
-                [
-                  "clock"
-                ];
-            }
+            #{
+            #  layer = "bottom";
+            #  position = "top";
+            #  output =
+            #    [
+            #      "${_g.monitors.left.output}"
+            #      "${_g.monitors.right.output}"
+            #    ];
+            #  include =
+            #    [
+            #      "~/.config/waybar/default_modules.json"
+            #    ];
+            #  height = 30;
+            #  spacing = 4;
+            #  modules-left =
+            #    [
+            #      "niri/workspaces"
+            #      "hyprland/workspaces"
+            #    ];
+            #  modules-center = [];
+            #  modules-right =
+            #    [
+            #      "clock"
+            #    ];
+            #}
           ];
         style = /* css */
           ''
             window#waybar {
-                    font-size: 16px;
-                    font-family: Terminess Nerd Font;
-                    background: #2e3440;
-                    color: #fdf6e3;
+              font-size: 16px;
+              font-family: Terminess Nerd Font;
+              background: #2e3440;
+              color: #fdf6e3;
             }
 
             #custom-right-arrow-dark,
             #custom-left-arrow-dark {
-                    color: #1a1a1a;
+              color: #1a1a1a;
             }
             #custom-right-arrow-light,
             #custom-left-arrow-light {
-                    color: #292b2e;
-                    background: #1a1a1a;
+              color: #292b2e;
+              background: #1a1a1a;
             }
 
             #workspaces,
@@ -499,65 +499,71 @@ in {
             #battery,
             #disk,
             #tray {
-                    background-color: #2e3440;
+              background-color: #2e3440;
             }
             #tray > .passive {
-                    -gtk-icon-effect: dim;
+              -gtk-icon-effect: dim;
             }
             #tray > .needs-attention {
-                    -gtk-icon-effect: highlight;
+              -gtk-icon-effect: highlight;
             }
 
             #workspaces button {
-                    padding: 0 2px;
-                    background-color: #434c5e;
-                    color: #fdf6e3;
+              padding: 0 0px;
+              background-color: #434c5e;
+              color: #fdf6e3;
             }
             #workspaces button.active {
-                    color: #ffffff;
-                    background: #5e81ac;
+              color: #ffffff;
+              background: #5e81ac;
             }
             #workspaces button.visible:not(.active) {
-                    color: #ffffff;
-                    background: gray;
+              color: #ffffff;
+              background: gray;
             }
             #workspaces button:hover {
-                    box-shadow: inherit;
-                    text-shadow: inherit;
+              box-shadow: inherit;
+              text-shadow: inherit;
             }
             #workspaces button:hover {
-                    background: #1a1a1a;
-                    border: #1a1a1a;
-                    padding: 0 3px;
+              background: #1a1a1a;
+              border: #1a1a1a;
+              padding: 0 0px;
             }
             #workspaces button.visible {
-                    background: gray;
-                    color: #ffffff;
+              background: gray;
+              color: #ffffff;
             }
 
             #pulseaudio {
-                    color: #268bd2;
+              color: #268bd2;
             }
             #memory {
-                    color: #2aa198;
+              color: #2aa198;
             }
             #cpu {
-                    color: #6c71c4;
+              color: #6c71c4;
             }
             #battery {
-                    color: #859900;
+              color: #859900;
             }
             #disk {
-                    color: #b58900;
+              color: #b58900;
             }
 
             #clock,
-            #pulseaudio,
-            #memory,
-            #cpu,
+            #pulseaudio {
+              margin-left: 4px;
+            }
+            #memory {
+              margin-right: 3px;
+            }
+            #cpu {
+              margin-right: 3px;
+            }
             #battery,
             #disk {
-                    padding: 0 10px;
+              padding: 0 10px;
             }
           '';
         systemd.enable = false;

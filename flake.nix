@@ -28,12 +28,8 @@
 
       ## PROGRAMS
         aagl.url = "github:ezKEa/aagl-gtk-on-nix";
-        deejavu.url = "github:bndlfm/deejavu";
+        #deejavu.url = "github:bndlfm/deejavu";
         isd.url = "github:isd-project/isd";
-        nvf = {
-          url = "github:NotAShelf/nvf";
-          inputs.nixpkgs.follows = "nixpkgs";
-        };
         openmw-vr.url = "github:bndlfm/openmw-vr.nix";
 
       ## SECRETS
@@ -77,7 +73,6 @@
       nix-flatpak,
 
       aagl,
-      deejavu,
       nixarr,
 
       hyprland,
@@ -128,8 +123,6 @@
                     nix-flatpak.homeManagerModules.nix-flatpak (import ./services/flatpak.home.nix)
                   ## NIRI
                     niri.homeModules.niri
-                  ## NVF
-                    inputs.nvf.homeManagerModules.default
                   ## THEMING
                     stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
                   ## IMPORTS
