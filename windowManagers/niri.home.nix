@@ -19,7 +19,6 @@ in
       swayidle
       swaylock-effects
       wlprop
-      xwayland-satellite
     ];
 
   gtk = {
@@ -31,28 +30,39 @@ in
 
   programs =
     {
-      niri = {
-        package = pkgs.niri-unstable;
-        settings = {
-          cursor = {
-            size = 32;
-            theme = "volantes_light_cursors";
-          };
+      niri =
+        {
+          package = pkgs.niri-unstable;
+          settings =
+            {
+              cursor =
+                {
+                  size = 32;
+                  theme = "volantes_light_cursors";
+                };
+
+              xwayland-satellite =
+                {
+                  enable = true;
+                  path = pkgs.lib.getExe pkgs.xwayland-satellite-unstable;
+                };
+
+              environment =
+                {
+                  #DISPLAY = ":0"; #NOTE: HANDLED BY xwayland-satellite-unstable
+                  NIXOS_OZONE_WL = "1"; # fixes electron wayland
+                  ELECTRON_OZONE_PLATFORM_HINT = "wayland"; # fixes electron wayland
+                };
 
 
-          environment = {
-            DISPLAY = ":0";
-            NIXOS_OZONE_WL = "1"; # fixes electron wayland
-            ELECTRON_OZONE_PLATFORM_HINT = "wayland"; # fixes electron wayland
-          };
-
-
-          input = {
-            keyboard = {
-              repeat-delay = 250;
-              repeat-rate = 70;
-            };
-          };
+              input =
+                {
+                  keyboard =
+                    {
+                      repeat-delay = 250;
+                      repeat-rate = 70;
+                    };
+                };
 
 
           outputs = let
@@ -293,7 +303,7 @@ in
 
 
             window-rules = let
-            #colors = config.lib.stylix.colors.withHashtag;
+              colors = config.lib.stylix.colors.withHashtag;
             in [
               ## ROUNDED CORNERS
                 {
@@ -391,7 +401,7 @@ in
                       title = "Private Browsing";
                     }
                   ];
-              #border.active.color = colors.base0E;
+                  border.active.color = colors.base0E;
                 }
               ## PREVENT SCREEN CAPTURE OF SENSITIVE APPS
                 {

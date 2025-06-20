@@ -1,5 +1,6 @@
 {
 pkgs,
+inputs,
 ...
 }:
 {
@@ -7,7 +8,7 @@ pkgs,
     autoEnable = true;
 
     image = ./wallpapers/nordic/wallpapers/nixos.png;
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
+    base16Scheme = "${inputs.tt-schemes}/base16/nord.yaml";
     polarity = "dark";
 
     opacity = {
@@ -47,7 +48,6 @@ pkgs,
     targets = {
     ### WINDOW MANAGER / COMPOSITOR
       hyprland.enable = true;
-      niri.enable = true;
 
       bat.enable = true;
       bspwm.enable = true;

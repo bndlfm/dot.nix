@@ -124,7 +124,7 @@
                   ## NIRI
                     niri.homeModules.niri
                   ## THEMING
-                    stylix.homeManagerModules.stylix (import ./theme/hmStylix.nix)
+                    stylix.homeModules.stylix (import ./theme/hmStylix.nix)
                   ## IMPORTS
                     ./neko.home.nix
                 ];

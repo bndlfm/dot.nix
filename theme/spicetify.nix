@@ -55,7 +55,7 @@
         fullAppDisplay
         hidePodcasts
       ];
-      theme = spicePkgs.themes.dribbblishDynamic;
+      theme = spicePkgs.themes.starryNight;
       colorScheme = "Base";
       enabledCustomApps = with spicePkgs.apps; [
         marketplace

@@ -52,6 +52,8 @@
       * SERVICES *
       ***********/
         ./services/espanso.home.nix
+        ./services/wob.home.nix
+
         ./services/services.home.nix
 
 
@@ -245,7 +247,7 @@
                   prismlauncher
                 ## MODDING
                   _beatSaberModManager
-                  nexusmods-app
+                  #nexusmods-app
             ];
 
           media =
