@@ -25,7 +25,7 @@ in
               rm -f ${path} && mkfifo ${path} && tail -f ${path} | ${lib.getExe pkgs.wob}
             '';
         in [ (toString script) ];
-        hm.services.wob =
+        services.wob =
           {
             enable = true;
             settings =

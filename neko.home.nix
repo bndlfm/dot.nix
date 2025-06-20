@@ -19,6 +19,12 @@
       **************/
         #./modules/openComposite.home.nix
 
+      /**********
+      * MODULES *
+      **********/
+        ./modules/default.nix
+        ./modules/wob.home.nix
+
       /***********
       * PROGRAMS *
       ************/
@@ -52,7 +58,6 @@
       * SERVICES *
       ***********/
         ./services/espanso.home.nix
-        ./services/wob.home.nix
 
         ./services/services.home.nix
 
@@ -87,15 +92,15 @@
           permittedInsecurePackages =
             [
               ## NIXARR
-                "dotnet-combined"
-                "dotnet-core-combined"
-                "dotnet-runtime-7.0.20"
-                "dotnet-runtime-wrapped-7.0.20"
-                "dotnet-wrapped-combined"
-                "dotnet-sdk-6.0.428"
-                "dotnet-sdk-wrapped-6.0.428"
-                "dotnet-sdk-7.0.410"
-                "dotnet-sdk-wrapped-7.0.410"
+              #  "dotnet-combined"
+              #  "dotnet-core-combined"
+              #  "dotnet-runtime-7.0.20"
+              #  "dotnet-runtime-wrapped-7.0.20"
+              #  "dotnet-wrapped-combined"
+              #  "dotnet-sdk-6.0.428"
+              #  "dotnet-sdk-wrapped-6.0.428"
+              #  "dotnet-sdk-7.0.410"
+              #  "dotnet-sdk-wrapped-7.0.410"
             ];
         };
       overlays = [ inputs.nur.overlays.default ];
