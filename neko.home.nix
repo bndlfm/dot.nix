@@ -137,8 +137,7 @@
   home =
     {
       packages =
-        with pkgs;
-        let
+        with pkgs; let
           patched =
             [
             ];

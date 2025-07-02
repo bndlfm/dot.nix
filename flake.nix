@@ -131,6 +131,8 @@
                     niri.homeModules.niri
                   ## THEMING
                     stylix.homeModules.stylix (import ./theme/hmStylix.nix)
+                  ## ZEN BROWSER
+                    inputs.zen-browser.homeModules.twilight (import ./programs/zen-browser.home.nix)
                   ## IMPORTS
                     ./neko.home.nix
                 ];

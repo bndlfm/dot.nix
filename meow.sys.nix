@@ -151,18 +151,18 @@ in {
     };
     podman = {
       enable = true;
-      dockerCompat = false;
+      dockerCompat = true;
       dockerSocket.enable = false;
       defaultNetwork.settings.dns_enabled = true;
       };
     libvirtd = {
       enable = true;
-      qemu = {
-        swtpm.enable = true;
+        qemu = {
+          swtpm.enable = true;
         };
       };
-    spiceUSBRedirection.enable = true;
-    waydroid.enable = true;
+      spiceUSBRedirection.enable = true;
+      waydroid.enable = true;
     };
 
 
@@ -372,6 +372,16 @@ in {
       pulse.enable = true;
       jack.enable = true;
     };
+  environment.etc = {
+    "alsa/conf.d/60-a52-encoder.conf".source = 
+      pkgs.alsa-plugins + "/etc/alsa/conf.d/60-a52-encoder.conf";
+
+    "alsa/conf.d/59.a52-lib.conf".text = ''
+      pcm_type.a52 {
+        lib "${pkgs.alsa-plugins}/lib/alsa-lib/libasound_module_pcm_a52.so"
+      }
+    '';
+  };
 
 
   #-------- GPU --------#
