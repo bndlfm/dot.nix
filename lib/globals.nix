@@ -1,6 +1,9 @@
-# lib/globals.nix
+{ config, ...}:
 {
-  # monitor info for tiling wm and etc
+  defaultNetInterface =
+    if config.networking.hostName == "meow"
+    then "enp6s0"
+    else "wlan0";
   environmentVars = {
     system = {
     };
@@ -11,7 +14,7 @@
       };
     };
   };
-  monitors =
+  monitors = # monitor info for tiling wm and etc
     {
       left =
         {
