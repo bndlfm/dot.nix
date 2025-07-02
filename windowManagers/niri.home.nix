@@ -5,7 +5,7 @@
   ...
 }:
 let
-  _g = import ../lib/globals.nix;
+  _g = import ../lib/globals.nix { inherit config; };
 in
   {
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
