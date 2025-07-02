@@ -33,6 +33,7 @@ return {
   {
     "chrisgrieser/nvim-origami",
     enabled = true,
+    version = "v1.9",
     event = "BufReadPost", -- later will not save folds
     opts = true,
   },

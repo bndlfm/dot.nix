@@ -1,6 +1,6 @@
 {config, ...}:
 let
-  _g = import ../lib/globals.nix {inherit config};
+  _g = import ../lib/globals.nix { inherit config; };
 in {
   networking.nat = {
     enable = true;

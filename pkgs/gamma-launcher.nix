@@ -17,6 +17,7 @@ let
     doCheck = false;
   };
 
+
   multivolumefile = pkgs.python3Packages.buildPythonPackage rec {
     pname = "multivolumefile";
     version = "0.2.3";
@@ -53,16 +54,16 @@ let
     doCheck = false;
   };
 
-  pyzstd = pkgs.python3Packages.buildPythonPackage rec {
-    pname = "pyzstd";
-    version = "0.15.6";
-    src = pkgs.fetchPypi {
-      inherit version pname; # Corrected: inherit 'name' as well
-      sha256 = "sha256-MqG2fVNA2N84HnGKeIQXRV7ddr7X6KTL0lms3DC14X4=";
-    };
-    propagatedBuildInputs = with pkgs.python3Packages; [ ]; # No Python deps
-    doCheck = false;
-  };
+  #pyzstd = pkgs.python3Packages.buildPythonPackage rec {
+  #  pname = "pyzstd";
+  #  version = "0.15.6";
+  #  src = pkgs.fetchPypi {
+  #    inherit version pname; # Corrected: inherit 'name' as well
+  #    sha256 = "sha256-MqG2fVNA2N84HnGKeIQXRV7ddr7X6KTL0lms3DC14X4=";
+  #  };
+  #  propagatedBuildInputs = with pkgs.python3Packages; [ ]; # No Python deps
+  #  doCheck = false;
+  #};
 
   py7zr = pkgs.python3Packages.buildPythonPackage rec { # Renamed to avoid shadowing
     pname = "py7zr";
@@ -94,6 +95,8 @@ let
       inherit pname version;
       sha256 = "sha256-skRHpbkwJL5gDvglVmi6I6MPRRF2V3tpFVnqE1n30WQ=";
     };
+
+    UNRAR_LIB_PATH = "${unrarLib}";
 
     propagatedBuildInputs = with pkgs.python3Packages; [ setuptools-scm ]; # No Python deps
 
@@ -151,13 +154,13 @@ in
       setuptools
     ];
 
-    postInstall = ''
-      wrapProgram $out/bin/gamma-launcher \
-        --set UNRAR_LIB_PATH "${unrarLib}/lib/libunrar.so"
-    '';
+    #postInstall = ''
+    #  wrapProgram $out/bin/gamma-launcher \
+    #    --prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath [ unrarLib ]}
+    #'';
 
     meta = with pkgs.lib; {
-      description = "Python cli to download S.T.A.L.K.E.R. GAMMA";
+      description = "G.A.M.M.A. Launcher module";
       homepage = "https://github.com/Mord3rca/gamma-launcher";
       license = licenses.gpl3;
       maintainers = with maintainers; [ bndlfm ];

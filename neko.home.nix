@@ -270,37 +270,37 @@
 
           osint =
             [
-              maigret
+              #maigret
             ];
 
           programming =
-              [
-                code-cursor
-                godot_4
-                godot_4-export-templates-bin
-                zenity
-                ## GIT TOOLS
-                  git
-                  git-filter-repo
-                  git-lfs
-                  git-credential-manager
-                  git-credential-gopass
-                ## PYTHON
-                  (python3.withPackages (
-                    pkgs: with pkgs; [
-                      llama-cpp
-                      pynvim
-                      ueberzug
-                    ]
-                  ))
-                ## FENNEL
-                  #(pkgs.callPackage ./pkgs/antifennel.nix { })
-                ## NIX DEV TOOLS
-                  direnv
-                  nix-prefetch
-                ## OTHER DEV TOOLS
-                  meld
-              ];
+            [
+              code-cursor
+              godot_4
+              godot_4-export-templates-bin
+              zenity
+              ## GIT TOOLS
+                git
+                git-filter-repo
+                git-lfs
+                git-credential-manager
+                git-credential-gopass
+              ## PYTHON
+                (python3.withPackages (
+                  pkgs: with pkgs; [
+                    llama-cpp
+                    pynvim
+                    ueberzug
+                  ]
+                ))
+              ## FENNEL
+                #(pkgs.callPackage ./pkgs/antifennel.nix { })
+              ## NIX DEV TOOLS
+                direnv
+                nix-prefetch
+              ## OTHER DEV TOOLS
+                meld
+            ];
 
           social =
             [

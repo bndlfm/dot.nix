@@ -1,9 +1,9 @@
 {
+  config,
   pkgs,
-  lib,
   ...
 }:let
-  _g = import ../lib/globals.nix;
+  _g = import ../lib/globals.nix {inherit config; };
 in {
     home.packages = with pkgs; [
       copyq

@@ -11,6 +11,9 @@ in {
   imports =
     [
       ./cachix.nix
+
+      ## CONTAINERS
+        ./containers/vaultwarden.nix
       ## SECRETS
         inputs.sops-nix.nixosModules.sops
         ./sops/sops.sys.nix
@@ -140,21 +143,21 @@ in {
           graphroot = "/var/lib/containers/storage";
           rootless_storage_path = "/tmp/containers-$USER";
           options.overlay.mountopt = "nodev,metacopy=on";
-          };
         };
       };
+    };
     docker.rootless = {
       enable = true;
-      };
+    };
     docker = {
       enable = true;
     };
     podman = {
       enable = true;
-      dockerCompat = true;
+      dockerCompat = false;
       dockerSocket.enable = false;
       defaultNetwork.settings.dns_enabled = true;
-      };
+    };
     libvirtd = {
       enable = true;
         qemu = {
@@ -246,11 +249,11 @@ in {
     resolved.enable = true;
     udev.extraRules = ''
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="*",GROUP="users", MODE="0660"
-      '';
-    vaultwarden = {
-      enable = true;
-      backupDir = "/mnt/data/.vaultwarden";
-    };
+    '';
+    #vaultwarden = {
+    #  enable = true;
+    #  backupDir = "/mnt/data/.vaultwarden";
+    #};
     xserver =
       {
         enable = true;
