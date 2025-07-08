@@ -77,6 +77,7 @@
           darkreader
           dearrow
           duckduckgo-privacy-essentials
+          firenvim
           furiganaize
           image-search-options
           pwas-for-firefox

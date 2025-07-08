@@ -132,6 +132,7 @@
             rwb = "nvim ~/.nixcfg/.config/waybar/config";
           ## NIX SPECIFIC CONFIGS
             nxs = "nix-search-tv print | fzf --preview 'nix-search-tv preview {}' --scheme history";
+            nxc = "nixos-container";
             ## CD TO CONFIG DIRS
               rcnp = "cd ~/.nixcfg/programs/";
             ## EDIT CONFIG
@@ -277,7 +278,6 @@
           let _omp_executable: string = (echo "/nix/store/gh3piimq1ablp550qb00wc98smsym6p8-oh-my-posh-24.11.4/bin/oh-my-posh")
 
           # PROMPTS
-
           def --wrapped _omp_get_prompt [
               type: string,
               ...args: string

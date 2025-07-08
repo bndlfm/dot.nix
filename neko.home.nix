@@ -216,6 +216,7 @@
 
           editing =
             [
+              ascii-draw
               darktable
               gimp
               inkscape
@@ -227,7 +228,7 @@
             [
               airshipper
               crawlTiles
-              _gamma-launcher
+              #_gamma-launcher
               glfw-wayland-minecraft
               inputs.openmw-vr.packages.x86_64-linux.default
               mangohud
@@ -381,7 +382,7 @@
           utilities =
             {
               wayland = [
-                _azote
+                #_azote
                 gammastep
                 nwg-look
                 waybar

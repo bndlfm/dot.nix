@@ -167,7 +167,6 @@
                   ## FLATPAK
                     nix-flatpak.nixosModules.nix-flatpak
                   ## MEDIA
-                    nixarr.nixosModules.default (import ./modules/nixarr.sys.nix)
                   ## SECRETS
                     sops-nix.nixosModules.sops
                   ## THEMING

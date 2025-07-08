@@ -1,5 +1,5 @@
 { ... }:{
-nixarr = {
+  nixarr = {
     enable = true;
     # These two values are also the default, but you can set them to whatever
     # else you want
@@ -40,5 +40,33 @@ nixarr = {
     radarr.enable = true;
     readarr.enable = true;
     sonarr.enable = true;
+  };
+
+  services.caddy.virtualHosts = {
+    "http://jellyfin.munchkin-sun.ts.net".extraConfig =
+      ''
+        bind tailscale/jellyfin:80
+        reverse_proxy localhost:8096
+      '';
+    "https://jellyfin.munchkin-sun.ts.net".extraConfig =
+      ''
+        bind tailscale/jellyfin:443
+        reverse_proxy localhost:8920
+        tls {
+          get_certificate tailscale
+        }
+      '';
+  };
+
+  networking.firewall = {
+    allowedTCPPorts = [
+      8096 # Jellyfin HTTP
+      8920 # Jellyfin HTTPS
+      37285 # Nixarr AirVPN Torrenting
+    ];
+    allowedUDPPorts = [
+      1900 7359 # Jellyfin service autodiscovery
+      37285 # Nixarr AirVPN Torrenting
+    ];
   };
 }

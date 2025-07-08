@@ -6,14 +6,14 @@
   ...
 }:
 let
-  _g = import ./lib/globals.nix; # My global variables
+  _g = import ./lib/globals.nix {inherit config; }; # My global variables
 in {
   imports =
     [
       ./cachix.nix
 
       ## CONTAINERS
-        ./containers/vaultwarden.nix
+        #./containers/vaultwarden.nix
       ## SECRETS
         inputs.sops-nix.nixosModules.sops
         ./sops/sops.sys.nix
@@ -24,6 +24,10 @@ in {
         ./modules/caddy.nix
       ## SERVICES
         ./services/sunshine.sys.nix
+        ./services/vaultwarden.sys.nix
+
+        inputs.nixarr.nixosModules.default #(import ./modules/nixarr.sys.nix)
+        ./modules/nixarr.sys.nix
       ## WINDOW MANAGERS
         ./windowManagers/hyprland.sys.nix
     ];
@@ -250,10 +254,14 @@ in {
     udev.extraRules = ''
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="*",GROUP="users", MODE="0660"
     '';
-    #vaultwarden = {
-    #  enable = true;
-    #  backupDir = "/mnt/data/.vaultwarden";
-    #};
+      #vaultwarden = {
+      #  enable = true;
+      #  backupDir = "/mnt/data/.vaultwarden";
+      #  config = {
+      #    ROCKET_ADDRESS = "0.0.0.0";
+      #    ROCKET_PORT = "8222";
+      #  };
+      #};
     xserver =
       {
         enable = true;
@@ -320,11 +328,7 @@ in {
                 7000
                 7001
                 7100
-              8222 # Vault Warden
               8333 # SillyTavern
-              8096 # Jellyfin HTTP
-              8920 # Jellyfin HTTPS
-              37285 # Nixarr AirVPN Torrenting
               #25565 # MC SERVER
               #25575 # MC RCON
             ];
@@ -337,7 +341,6 @@ in {
             ];
           allowedUDPPorts =
             [
-              1900 7359 # Jellyfin service autodiscovery
               5173 # Grimoire
               # UxPlay
                 6000
@@ -346,7 +349,6 @@ in {
               5353 # AirPlay (iOS)
               8222 # Vault Warden
               8333 # SillyTavern
-              37285 # Nixarr AirVPN Torrenting
               #25565 # MC SERVER
               #25575 # MC RCON
               51820 # Wireguard port
