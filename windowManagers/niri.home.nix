@@ -50,8 +50,8 @@ in
               environment =
                 {
                   #DISPLAY = ":0"; #NOTE: HANDLED BY xwayland-satellite-unstable
-                  NIXOS_OZONE_WL = "1"; # fixes electron wayland
-                  ELECTRON_OZONE_PLATFORM_HINT = "wayland"; # fixes electron wayland
+                  #NIXOS_OZONE_WL = "1"; # fixes electron wayland
+                  #ELECTRON_OZONE_PLATFORM_HINT = "wayland"; # fixes electron wayland
                 };
 
 
@@ -88,14 +88,16 @@ in
                 "${_g.monitors.center.output}" =
                   {
                     enable = true;
-                    mode = {
-                      width = toInt "${_g.monitors.center.res.width}";
-                      height = toInt "${_g.monitors.center.res.height}";
-                    };
-                    position = {
-                          x = toInt "${_g.monitors.center.pos.x}";
-                          y = toInt "${_g.monitors.center.pos.y}";
-                    };
+                    mode =
+                      {
+                        width = toInt "${_g.monitors.center.res.width}";
+                        height = toInt "${_g.monitors.center.res.height}";
+                      };
+                    position =
+                      {
+                        x = toInt "${_g.monitors.center.pos.x}";
+                        y = toInt "${_g.monitors.center.pos.y}";
+                      };
                     variable-refresh-rate = false;
                   };
               ## RIGHT MONITOR
@@ -114,6 +116,7 @@ in
                   transform.rotation = 90;
                 };
           };
+
 
 
           layout = {
@@ -533,6 +536,7 @@ in
             }
             #workspaces button:hover {
               box-shadow: inherit;
+              text-shadow: inherit;
               text-shadow: inherit;
             }
             #workspaces button:hover {

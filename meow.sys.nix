@@ -254,14 +254,6 @@ in {
     udev.extraRules = ''
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="*",GROUP="users", MODE="0660"
     '';
-      #vaultwarden = {
-      #  enable = true;
-      #  backupDir = "/mnt/data/.vaultwarden";
-      #  config = {
-      #    ROCKET_ADDRESS = "0.0.0.0";
-      #    ROCKET_PORT = "8222";
-      #  };
-      #};
     xserver =
       {
         enable = true;

@@ -18,7 +18,7 @@
     {
       left =
         {
-          output = "HDMI-A-1";
+          output = "HDMI-A-2";
           pos =
             {
               x = "0";
@@ -31,14 +31,13 @@
             };
           rate = "60";
         };
-
       center =
         {
           output = "DP-1";
           pos =
             {
               x = "1200";
-              y = "0";
+              y = "100";
             };
           res =
             {
@@ -47,7 +46,6 @@
             };
           rate = "144";
         };
-
       right =
         {
           output = "DP-2";
