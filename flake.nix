@@ -13,7 +13,7 @@
         nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
       ## OVERLAY NIXPKGS
-        nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+        nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
         nixpkgs-bndlfm.url = "github:bndlfm/nixpkgs";
 
       ## CUSTOMIZATION
@@ -31,7 +31,10 @@
       ## PROGRAMS
         aagl.url = "github:ezKEa/aagl-gtk-on-nix";
         #deejavu.url = "github:bndlfm/deejavu";
-        isd.url = "github:isd-project/isd";
+        lsfg-vk = {
+          url = "github:pabloaul/lsfg-vk-flake/main";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
         openmw-vr.url = "github:bndlfm/openmw-vr.nix";
         zen-browser = {
           url = "github:0xc000022070/zen-browser-flake";
@@ -79,6 +82,7 @@
       nix-flatpak,
 
       aagl,
+      lsfg-vk,
       nixarr,
 
       hyprland,
@@ -162,7 +166,8 @@
               modules =
                 [
                   ({ nixpkgs.overlays = overlays; })
-                  ## GACHA TRASH
+                  ## PROGRAMS
+                    lsfg-vk.nixosModules.default
                     aagl.nixosModules.default (import ./programs/agl.sys.nix)
                   ## FLATPAK
                     nix-flatpak.nixosModules.nix-flatpak

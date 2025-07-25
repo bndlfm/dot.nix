@@ -81,6 +81,7 @@ in {
         home-manager
         ifuse
         libimobiledevice
+	nix-tree
         pinentry-curses
         polkit_gnome
         runc
@@ -231,6 +232,7 @@ in {
         openFirewall = false;
         extraFlags = [ "" ];
       };
+    lsfg-vk.enable = true;
     monado =
       {
         enable = false;

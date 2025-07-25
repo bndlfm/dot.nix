@@ -6,6 +6,7 @@
   environment.systemPackages = with pkgs; [
     ethtool
     tailscale
+    trayscale
     networkd-dispatcher
   ];
 

@@ -5,12 +5,11 @@ pkgs:
     cPkg = pkgs.callPackage;
   in
     {
-      _antifennel = cPkg ./antifennel.nix {};
+      fennelPackages._antifennel = cPkg ./antifennel.nix {};
       _azote = cPkg ./azote.nix {};
       _beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix {};
       _fish-ai = cPkg ./fishPlugins/fish-ai.nix {};
       _gamma-launcher = cPkg ./gamma-launcher.nix {};
-      _gsh = cPkg ./generativeShell.nix {};
       _ndrop = cPkg ./ndrop.nix {};
       _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix {};
       _phoneinfoga = cPkg ./phoneinfoga.nix {};

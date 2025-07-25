@@ -140,6 +140,10 @@
         with pkgs; let
           patched =
             [
+              #inputs.deejavu.packages.x86_64-linux.default
+              #darktable
+              #nexusmods-app
+              #maigret #OSINT Username Checker
             ];
 
           ai =
@@ -159,7 +163,6 @@
           browsers =
             [
               #firefox-devedition: programs/hm/firefox.nix
-              ladybird
               tor-browser
               qutebrowser
             ];
@@ -167,14 +170,12 @@
           cli =
             [
               age
-              atop
               bat
               cachix
               chafa
               distrobox
               duf
               delta
-              fh
               eza
               fd
               ffmpeg-full
@@ -208,7 +209,6 @@
 
           daemons =
             [
-              #inputs.deejavu.packages.x86_64-linux.default
               megasync
               mpd-discord-rpc
               yams
@@ -217,7 +217,6 @@
           editing =
             [
               ascii-draw
-              darktable
               gimp
               inkscape
               krita
@@ -228,31 +227,30 @@
             [
               airshipper
               crawlTiles
-              #_gamma-launcher
               glfw-wayland-minecraft
               inputs.openmw-vr.packages.x86_64-linux.default
               mangohud
               protontricks
               protonup-ng
               steamtinkerlaunch
-              ## DECOMP
-                sm64coopdx
-                #shipwright # Ocarina of Time
-                _2ship2harkinian # Majora's Mask
-              ## EMULATION
-                shadps4
-              ## RHYTHM GAMES
-                clonehero
-              ## GAMING UTILITIES
-                ## LAUNCHERS
-                  heroic
-                  pkgs.bndlfm.hydralauncher
-                  itch
-                  lutris
-                  prismlauncher
-                ## MODDING
-                  _beatSaberModManager
-                  #nexusmods-app
+            /** DECOMP **/
+              sm64coopdx
+              #shipwright # Ocarina of Time
+              _2ship2harkinian # Majora's Mask
+            /** EMULATION **/
+              shadps4
+            /** RHYTHM GAMES **/
+              clonehero
+            /** GAMING UTILITIES **/
+              /** LAUNCHERS **/
+                _gamma-launcher
+                heroic
+                pkgs.bndlfm.hydralauncher
+                itch
+                lutris
+                prismlauncher
+              /** MODDING **/
+                _beatSaberModManager
             ];
 
           media =
@@ -271,7 +269,6 @@
 
           osint =
             [
-              #maigret
             ];
 
           programming =
@@ -294,8 +291,6 @@
                     ueberzug
                   ]
                 ))
-              ## FENNEL
-                #(pkgs.callPackage ./pkgs/antifennel.nix { })
               ## NIX DEV TOOLS
                 direnv
                 nix-prefetch
@@ -359,13 +354,11 @@
 
           tui =
             [
-              inputs.isd.packages.${pkgs.system}.isd
-              nix-search-tv
               ## PROGRAMMING
                 fx #json viewer
-                harlequin # sql ide
+                #harlequin # sql ide
                 lazygit
-                posting # api client
+                #posting # api client
               ## SYSTEM MONITORS
                 btop
                 iotop
@@ -374,9 +367,9 @@
                 highlight
                 page
                 pulsemixer
-                ncdu
+                ncdu # like dir stat but terminal
                 ranger
-                tdf
+                tdf # pretty pdf reader (zathura alternative)
             ];
 
           utilities =

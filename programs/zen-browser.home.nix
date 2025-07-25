@@ -2,6 +2,12 @@
 {
   programs.zen-browser = {
     enable = true;
+    #package = pkgs.zen-browser.override {
+    #  extraPrefsFiles = [(builtins.fetchurl {
+    #    url = "https://raw.githubusercontent.com/MrOtherGuy/fx-autoconfig/master/program/config.js";
+    #    sha256 = "1mx679fbc4d9x4bnqajqx5a95y1lfasvf90pbqkh9sm3ch945p40";
+    #  })];
+    #};
     nativeMessagingHosts = with pkgs; [
       tridactyl-native
       kdePackages.plasma-browser-integration
@@ -23,6 +29,17 @@
           default = "google";
           order = [ "google" ];
           engines = {
+            ## SEARCH ENGINES
+            "google".metaData.alias = "@g"; # builtin engines only support specifying one additional alias
+            "bing".metaData.hidden = true;
+
+            ## NIX DOC SEARCH
+            "Home-manager Options" = {
+              urls = [{ template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master"; }];
+              icon = "https://home-manager-options.extranix.com/favicon.png";
+              updateInterval = 24 * 60 * 60 * 1000;
+              definedAliases = [ "@ho" ];
+            };
             "Nix Packages" = {
               urls = [{
                 template = "https://search.nixos.org/packages";
@@ -52,14 +69,14 @@
               updateInterval = 24 * 60 * 60 * 1000; # every day
               definedAliases = [ "@nw" ];
             };
-            "Home-manager Options" = {
-              urls = [{ template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master"; }];
-              icon = "https://home-manager-options.extranix.com/favicon.png";
-              updateInterval = 24 * 60 * 60 * 1000;
-              definedAliases = [ "@ho" ];
+
+            ## MEDIA
+            "YouTube" = {
+              urls = [{ template = "https://www.youtube.com/results?search_query={searchTerms}"; }];
+              icon = "https://www.youtube.com/favicon.ico";
+              updateInterval = 24 * 60 * 60 * 1000; # every day
+              definedAliases = [ "@yt" ];
             };
-            "google".metaData.alias = "@g"; # builtin engines only support specifying one additional alias
-            "bing".metaData.hidden = true;
           };
         };
 
