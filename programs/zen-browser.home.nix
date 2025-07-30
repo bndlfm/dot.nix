@@ -34,13 +34,13 @@
             "bing".metaData.hidden = true;
 
             ## NIX DOC SEARCH
-            "Home-manager Options" = {
+            "home-manager-Options" = {
               urls = [{ template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master"; }];
               icon = "https://home-manager-options.extranix.com/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000;
               definedAliases = [ "@ho" ];
             };
-            "Nix Packages" = {
+            "nix-packages" = {
               urls = [{
                 template = "https://search.nixos.org/packages";
                 params = [
@@ -51,7 +51,7 @@
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@np" ];
             };
-            "NixOS Options" = {
+            "nixos-options" = {
               urls = [{
                 template = "https://search.nixos.org/options";
                 params = [
@@ -63,7 +63,7 @@
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@no" ];
             };
-            "NixOS Wiki" = {
+            "nixos-wiki" = {
               urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
               icon = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000; # every day
@@ -71,7 +71,7 @@
             };
 
             ## MEDIA
-            "YouTube" = {
+            "youtube" = {
               urls = [{ template = "https://www.youtube.com/results?search_query={searchTerms}"; }];
               icon = "https://www.youtube.com/favicon.ico";
               updateInterval = 24 * 60 * 60 * 1000; # every day

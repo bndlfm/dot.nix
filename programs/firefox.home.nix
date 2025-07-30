@@ -25,7 +25,7 @@
           default = "google";
           order = [ "google" ];
           engines = {
-            "Nix Packages" = {
+            "nix-packages" = {
               urls = [{
                 template = "https://search.nixos.org/packages";
                 params = [
@@ -36,7 +36,7 @@
               icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@np" ];
             };
-            "NixOS Options" = {
+            "nixos-options" = {
               urls = [{
                 template = "https://search.nixos.org/options";
                 params = [
@@ -48,13 +48,13 @@
               icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@no" ];
             };
-            "NixOS Wiki" = {
+            "nixos-wiki" = {
               urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
               icon = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000; # every day
               definedAliases = [ "@nw" ];
             };
-            "Home-manager Options" = {
+            "home-manager-options" = {
               urls = [{ template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master"; }];
               icon = "https://home-manager-options.extranix.com/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000;

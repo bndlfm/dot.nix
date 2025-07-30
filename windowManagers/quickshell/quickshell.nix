@@ -1,21 +1,36 @@
 { config, lib, pkgs, ... }:
 {
-  home.programs.quickshell = {
+  home.packages = with pkgs; [
+    kdePackages.qt5compat
+  ];
+
+  programs.quickshell = {
     enable = true;
   };
+
   home.activation.symlinkQuickshellAndFaceIcon =
     let
       homeDir = builtins.getEnv "HOME";
 
-      faceIconSource = "${homeDir}/.nixcfg/windowManager/profile.gif";
-      faceIconTarget = "${homeDir}/Pictures/mamimi.png";
+      faceIconSource = "${homeDir}/.nixcfg/windowManagers/Profile.png";
+      faceIconTarget = "${homeDir}/.config/quickshell/mamimi.png";
 
-      quickshellDir = "${homeDir}/.nixcfg/windowManager/quickshell";
-      quickshellTarget = "${homeDir}/.nixcfg/windowManager/quickshell";
+      quickshellDir = "${homeDir}/.nixcfg/windowManagers/quickshell/qml";
+      quickshellTarget = "${homeDir}/.config/quickshell";
 
     in
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ln -sfn "${quickshellDir}" "${quickshellTarget}"
         ln -sfn "${faceIconSource}" "${faceIconTarget}"
       '';
+
+  #xdg = {
+  #    configFile = {
+  #        "hypr" = {
+  #            source = ./.config/hypr;
+  #            recursive = true;
+  #        };
+  #    };
+  #};
+
 }

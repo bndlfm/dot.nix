@@ -31,6 +31,7 @@
       ## PROGRAMS
         aagl.url = "github:ezKEa/aagl-gtk-on-nix";
         #deejavu.url = "github:bndlfm/deejavu";
+        decky-loader.url = "github:Jovian-Experiments/Jovian-NixOS";
         lsfg-vk = {
           url = "github:pabloaul/lsfg-vk-flake/main";
           inputs.nixpkgs.follows = "nixpkgs";

@@ -1,6 +1,7 @@
-{...}:{
+{ pkgs, ...}:{
   programs.ncmpcpp = {
     enable = true;
+    package = pkgs.stable.ncmpcpp;
     bindings = [
       { key = "h"; command = "previous_column"; }
       { key = "n"; command = "scroll_down"; }

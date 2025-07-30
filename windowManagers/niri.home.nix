@@ -10,6 +10,11 @@ in
   {
     nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
+    imports = [
+      #./quickshell/quickshell.nix
+    ];
+
+
     home.packages = with pkgs;
       [
         clipse
@@ -49,7 +54,6 @@ in
 
                 environment =
                   {
-                    #DISPLAY = ":0"; #NOTE: HANDLED BY xwayland-satellite-unstable
                     #NIXOS_OZONE_WL = "1"; # fixes electron wayland
                     #ELECTRON_OZONE_PLATFORM_HINT = "wayland"; # fixes electron wayland
                   };
@@ -66,53 +70,53 @@ in
 
                 outputs =
                   {
-                      "HDMI-A-2" =
-                        {
-                          enable = true;
-                          mode =
-                            {
-                              width = 1920;
-                              height = 1200;
-                            };
-                          position =
-                            {
-                              x = 0;
-                              y = 0;
-                            };
-                          transform.rotation = 270;
-                        };
-                    ## CENTER MONITOR
-                      "DP-1" =
-                        {
-                          enable = true;
-                          mode =
-                            {
-                              width = 2560;
-                              height = 1440;
-                            };
-                          position =
-                            {
-                              x = 1200;
-                              y = 95;
-                            };
-                          variable-refresh-rate = false;
-                        };
-                    ## RIGHT MONITOR
-                      "DP-2" = {
+                    "HDMI-A-2" =
+                      {
                         enable = true;
                         mode =
                           {
                             width = 1920;
-                            height = 1080;
+                            height = 1200;
                           };
                         position =
                           {
-                            x = 3760;
+                            x = 0;
                             y = 0;
                           };
-                        transform.rotation = 90;
+                        transform.rotation = 270;
                       };
-                  };
+                  ## CENTER MONITOR
+                    "DP-1" =
+                      {
+                        enable = true;
+                        mode =
+                          {
+                            width = 2560;
+                            height = 1440;
+                          };
+                        position =
+                          {
+                            x = 1200;
+                            y = 95;
+                          };
+                        variable-refresh-rate = false;
+                      };
+                  ## RIGHT MONITOR
+                    "DP-2" = {
+                      enable = true;
+                      mode =
+                        {
+                          width = 1920;
+                          height = 1080;
+                        };
+                      position =
+                        {
+                          x = 3760;
+                          y = 0;
+                        };
+                      transform.rotation = 90;
+                    };
+                };
                 #outputs = let
                 #  toInt = pkgs.lib.strings.toInt;
                 #in  {
@@ -203,11 +207,11 @@ in
                 ## TAILSCALE TRAY
                   { command = [ "trayscale" "--hide-window" ]; }
                 ## CLIPBOARD
-                  #{ command = [ "copyq" "--start-server" ]; }
-                  { command = [ "clipse" "-listen"]; }
+                  { command = [ "copyq" "--start-server" ]; }
+                  #{ command = [ "clipse" "-listen"]; }
                 ## GAMMA
-                  #{ command = [ "gammastep-indicator" "-l" "38.0628:-91.4035" "-t" "6500:4800" ]; }
-                  { command = [ "wl-gammarelay-rs" ]; }
+                  { command = [ "gammastep-indicator" "-l" "38.0628:-91.4035" "-t" "6500:4800" ]; }
+                  #{ command = [ "wl-gammarelay-rs" ]; }
                 ## GDRIVE
                   { command = [ "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse" "/home/neko/Documents/GoogleDrive/" ]; }
                 ## KDE-CONNECT
@@ -218,7 +222,6 @@ in
                 ## WALLPAPER
                   { command = [ "swaybg" "-i" "/home/neko/Pictures/Wallpapers/4K/Weather/Wallpaper forest, trees, snow, winter, 4k, Nature 8421417542.jpg" ]; }
                 ## XWAYLAND
-                  #{ command = [ "xwayland-satellite" ":0" ]; }
                   { command = [ "xrandr" "--output" "DP-1" "--primary" ]; }
               ];
 

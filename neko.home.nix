@@ -259,7 +259,6 @@
               cider
               freetube
               mpv
-              ncmpcpp
             ];
 
           notes =

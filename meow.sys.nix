@@ -18,7 +18,7 @@ in {
         inputs.sops-nix.nixosModules.sops
         ./sops/sops.sys.nix
       ## PROGRAMS
-        ./programs/steam.sys.nix
+        ./modules/gaming.nix
         ./programs/agl.sys.nix
       ## MODULES
         ./modules/caddy.nix
@@ -232,7 +232,10 @@ in {
         openFirewall = false;
         extraFlags = [ "" ];
       };
-    lsfg-vk.enable = true;
+    lsfg-vk = {
+      enable = true;
+      ui.enable = true;
+    };
     monado =
       {
         enable = false;
