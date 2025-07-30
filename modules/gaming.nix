@@ -28,7 +28,6 @@ in {
       enable = true;
     };
     hardware.has.amd.gpu = false;
-    steamdeck.enable = false;
   };
 
   #
