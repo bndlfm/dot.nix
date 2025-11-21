@@ -6,6 +6,16 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
+    #wivrn = prev.wivrn.overrideAttrs (oldAttrs: rec {
+    #  version = "25.11.1";
+    #  src = final.fetchFromGitHub {
+    #    owner = "WiVRn";
+    #    repo = "WiVRn";
+    #    rev = "v${version}";
+    #    hash = "sha256-pEKMeRdI9UhdZ+NksRBcF7yPC7Ys2haE+B4PPGQ4beE=";  # Replace with actual hash
+    #    fetchSubmodules = true;
+    #  };
+    #});
   };
 
   # When applied, the stable nixpkgs set (declared in the flake inputs) will

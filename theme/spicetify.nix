@@ -55,8 +55,8 @@
         fullAppDisplay
         hidePodcasts
       ];
-      theme = spicePkgs.themes.starryNight;
-      colorScheme = "Base";
+      theme = spicePkgs.themes.text;
+      colorScheme = "Nord";
       enabledCustomApps = with spicePkgs.apps; [
         marketplace
       ];

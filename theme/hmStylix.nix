@@ -48,7 +48,6 @@ inputs,
     targets = {
     ### WINDOW MANAGER / COMPOSITOR
       hyprland.enable = true;
-
       bat.enable = true;
       bspwm.enable = true;
       btop.enable = true;
@@ -69,7 +68,7 @@ inputs,
 
       swaylock = {
         enable = true;
-        useImage = false;
+        useWallpaper = false;
       };
 
       waybar = {

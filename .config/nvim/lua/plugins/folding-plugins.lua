@@ -32,14 +32,13 @@ end
 return {
   {
     "chrisgrieser/nvim-origami",
-    enabled = true,
-    version = "v1.9",
+    enabled = false,
     event = "BufReadPost", -- later will not save folds
     opts = true,
   },
   { -- UFO
     "kevinhwang91/nvim-ufo",
-    enabled = true,
+    enabled = false,
     dependencies = "kevinhwang91/promise-async",
     event = "BufReadPost", -- needed for folds to load in time
     keys = {

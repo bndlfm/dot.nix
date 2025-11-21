@@ -27,6 +27,6 @@
           multimediaKeys = true;
           notifications = true;
         };
-      mpd-discord-rpc.enable = true;
+      mpd-discord-rpc.enable = false;
     };
 }

@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 {
   home.packages = with pkgs; [
-    kdePackages.qt5compat
+    qt6.qt5compat
   ];
 
   programs.quickshell = {

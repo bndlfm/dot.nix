@@ -60,9 +60,6 @@ in {
             [
               bash-language-server
               cargo
-              fennel
-              fennel-ls
-              fnlfmt
               fzf
               gcc
               git
@@ -74,13 +71,15 @@ in {
               lazygit
               lua51Packages.lua
               lua51Packages.luarocks
-              #nixd
+              nil
               nodejs
               pyright
               shellcheck
               shfmt
               stylua
+              ueberzugpp
               unzip
+              viu
               yarn
             ];
         plugins =
@@ -95,7 +94,6 @@ in {
                     bash
                     c
                     cpp
-                    fennel
                     kdl
                     lua
                     ocaml

@@ -31,7 +31,7 @@
       ## PROGRAMS
         aagl.url = "github:ezKEa/aagl-gtk-on-nix";
         #deejavu.url = "github:bndlfm/deejavu";
-        jovian-nixos.url = "github:Jovian-Experiments/Jovian-NixOS";
+        #jovian-nixos.url = "github:Jovian-Experiments/Jovian-NixOS";
         lsfg-vk = {
           url = "github:pabloaul/lsfg-vk-flake/main";
           inputs.nixpkgs.follows = "nixpkgs";
@@ -201,6 +201,64 @@
                     ./server.hardware.nix
                 ];
             };
+          "paperless-container" = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
+              ({ config, pkgs, ... }: {
+                boot.isContainer = true;
+
+                # Network configuration
+                networking = {
+                  hostName = "paperless";
+                  useHostResolvConf = false;
+                  firewall.allowedTCPPorts = [ 28981 ];
+                };
+
+                # System packages
+                environment.systemPackages = with pkgs; [
+                  vim
+                  curl
+                  htop
+                ];
+
+                # Paperless-ngx service
+                services.paperless = {
+                  enable = true;
+                  address = "0.0.0.0";
+                  port = 28981;
+                  
+                  # Data directory
+                  dataDir = "/var/lib/paperless";
+                  mediaDir = "/var/lib/paperless/media";
+                  
+                  # OCR language
+                  settings = {
+                    PAPERLESS_OCR_LANGUAGE = "eng";
+                    PAPERLESS_ADMIN_USER = "admin";
+                    PAPERLESS_ADMIN_PASSWORD = "changeme";
+                    PAPERLESS_TIME_ZONE = "UTC";
+                  };
+
+                  # Optional: Enable Redis for better performance
+                  consumptionDirIsPublic = false;
+                };
+
+                # Enable PostgreSQL (paperless uses it automatically)
+                services.postgresql = {
+                  enable = true;
+                  package = pkgs.postgresql_15;
+                };
+
+                # Enable Redis for task queue
+                services.redis.servers.paperless = {
+                  enable = true;
+                  port = 6379;
+                };
+
+                system.stateVersion = "24.05";
+              })
+            ];
+          };
         };
     };
   }

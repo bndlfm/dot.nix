@@ -6,9 +6,10 @@ return {
     local palette = require("nordic.colors")
     require("nordic").setup({
       -- This callback can be used to override the colors used in the palette.
-      on_palette = function(palette)
-        return palette
-      end,
+      on_palette = function(palette) end,
+
+      on_highlight = function(highlights, palette) end,
+
       bold_keywords = true,
       italic_comments = true,
       transparent_bg = false,

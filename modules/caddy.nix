@@ -29,17 +29,8 @@
       package = pkgs.caddy.withPlugins
         {
           plugins = [ "github.com/tailscale/caddy-tailscale@v0.0.0-20250207163903-69a970c84556" ];
-          hash = "sha256-eBsZy0n/NEZez8dC/zvFO4LENgsNXkqMovLcYwMnZwo=";
+          hash = "sha256-cZWBui1q+DuzuerrM2CD6RAdtmp56cIwCPyfS1LchzI=";
         };
-      virtualHosts = {
-        /*
-          "https://jellyfin.munchkin-sun.ts.net".extraConfig =
-            ''
-              bind tailscale/jellyfin:80
-              reverse_proxy localhost:8096
-            '';
-        */
-      };
     };
     networkd-dispatcher = {
       enable = true;

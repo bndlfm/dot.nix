@@ -38,7 +38,7 @@ in {
             ## Clipboard Shenanigans
               "copyq --start-server"
             ## KDE Connect
-              "${pkgs.plasma5Packages.kdeconnect-kde}/libexec/kdeconnect"
+              "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect"
               "kdeconnect-indicator"
             "blueman-applet" # Bluetooth
             "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/GoogleDrive" # Google Drive

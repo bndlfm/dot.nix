@@ -19,11 +19,11 @@
       enable = true;
       # These options set up a nginx HTTPS reverse proxy, so you can access
       # Jellyfin on your domain with HTTPS
-      expose.https = {
-        enable = false;
-        domainName = "your.domain.com";
-        acmeMail = "your@email.com"; # Required for ACME-bot
-      };
+      #expose.https = {
+      #  enable = true;
+      #  domainName = "jellyfin.munchkin-sun.ts.net";
+      #  acmeMail = "firefliesandlightningbugs@gmail.com"; # Required for ACME-bot
+      #};
     };
 
     transmission = {
@@ -42,34 +42,48 @@
     sonarr.enable = true;
   };
 
-  services = {
-    caddy.virtualHosts = {
-      "http://jellyfin.munchkin-sun.ts.net".extraConfig =
-        ''
-          bind tailscale/jellyfin:80
-          reverse_proxy localhost:8096
-        '';
-      "https://jellyfin.munchkin-sun.ts.net".extraConfig =
-        ''
-          bind tailscale/jellyfin:443
-          reverse_proxy localhost:8920
-          tls {
-            get_certificate tailscale
-          }
-        '';
+    services = {
+        caddy.virtualHosts = {
+            "http://jellyfin.munchkin-sun.ts.net".extraConfig =
+                ''
+                    bind tailscale/jellyfin:80
+                    reverse_proxy localhost:8096
+                '';
+            "https://jellyfin.munchkin-sun.ts.net".extraConfig =
+                ''
+                    bind tailscale/jellyfin:443
+                    reverse_proxy localhost:8920
+                    tls {
+                        get_certificate tailscale
+                    }
+                '';
+            "https://jellyseerr.munchkin-sun.ts.net".extraConfig =
+                ''
+                    bind tailscale/jellyseerr:443
+                    reverse_proxy localhost:5055
+                    tls {
+                        get_certificate tailscale
+                    }
+                '';
+
     };
     flaresolverr.enable = true;
+    jellyseerr = {
+      enable = true;
+      openFirewall = true;
+    };
   };
 
   networking.firewall = {
     allowedTCPPorts = [
-      8096 # Jellyfin HTTP
-      8920 # Jellyfin HTTPS
-      37285 # Nixarr AirVPN Torrenting
+        8096 # Jellyfin HTTP
+        8920 # Jellyfin HTTPS
+        37285 # Nixarr AirVPN Torrenting
     ];
     allowedUDPPorts = [
-      1900 7359 # Jellyfin service autodiscovery
-      37285 # Nixarr AirVPN Torrenting
+        1900
+        7359 # Jellyfin service autodiscovery
+        37285 # Nixarr AirVPN Torrenting
     ];
   };
 }

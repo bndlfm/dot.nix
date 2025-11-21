@@ -2,12 +2,6 @@
 {
   programs.zen-browser = {
     enable = true;
-    #package = pkgs.zen-browser.override {
-    #  extraPrefsFiles = [(builtins.fetchurl {
-    #    url = "https://raw.githubusercontent.com/MrOtherGuy/fx-autoconfig/master/program/config.js";
-    #    sha256 = "1mx679fbc4d9x4bnqajqx5a95y1lfasvf90pbqkh9sm3ch945p40";
-    #  })];
-    #};
     nativeMessagingHosts = with pkgs; [
       tridactyl-native
       kdePackages.plasma-browser-integration
@@ -101,7 +95,6 @@
           reddit-enhancement-suite
           return-youtube-dislikes
           sidebery
-          simple-translate
           sponsorblock
           tampermonkey
           tridactyl

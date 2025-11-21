@@ -12,24 +12,30 @@ containers/grimoire
 
 #DONT LEAK API KEY:
 .config/litellm
-
+#NIX HANDLES THIS
 .config/environment.d
-.config/nvim/*
-.config/nvimFnl
-.config/nvimWithoutLazy
-.config/page
-.config/systemd
+#NVIM SETUP IS SEPERATE REPO
+.config/nvim/
+#DONT EVEN USE THIS ANYMORE
+.config/nvimFnl/
+.config/nvimWithoutLazy/
+#IF I EVER CUSTOMIZE THIS ILL STAGE/PUSH
+.config/page/
+.config/systemd/
 
+#HAS MY FIREFOX PROFILES
 .mozilla/
 .fonts/
 publickey
 virtMachines/
-theme/wallpapers/*
-templates/*
+theme/wallpapers/
+templates/
+windowManagers/quickshell/
+#*.qml
+
+# ignore nix build
+result
 
 # tailscale
 meow.munchkin-sun.ts.net.crt
 meow.munchkin-sun.ts.net.key
-
-# ignore nix build
-result

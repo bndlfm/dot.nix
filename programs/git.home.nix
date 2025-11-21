@@ -1,22 +1,22 @@
 { ... }:{
   programs =
     {
+      delta.enableGitIntegration = true;
       git =
         {
-          userName = "bndlfm";
-          userEmail = "firefliesandlightningbugs@gmail.com";
-          delta.enable = true;
+          settings =
+            {
+              userEmail = "firefliesandlightningbugs@gmail.com";
+              userName = "bndlfm";
+              gpg.format = "ssh";
+              credentialHelper = "oauth";
+            };
           signing =
             {
               key = "/home/neko/.ssh/github";
               signByDefault = true;
             };
           lfs.enable = true;
-          extraConfig =
-            {
-              gpg.format = "ssh";
-              credentialHelper = "oauth";
-            };
         };
       gh =
         {
