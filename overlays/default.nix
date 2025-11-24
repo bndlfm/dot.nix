@@ -16,6 +16,11 @@
     #    fetchSubmodules = true;
     #  };
     #});
+    code-cursor = prev.code-cursor.overrideAttrs (oldAttrs: rec {
+      postBuild = ''
+        wrapProgram $out/bin/cursor --set ELECTRON_OZONE_PLATFORM_HINT X11
+      '';
+    });
   };
 
   # When applied, the stable nixpkgs set (declared in the flake inputs) will

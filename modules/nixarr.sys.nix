@@ -17,13 +17,6 @@
 
     jellyfin = {
       enable = true;
-      # These options set up a nginx HTTPS reverse proxy, so you can access
-      # Jellyfin on your domain with HTTPS
-      #expose.https = {
-      #  enable = true;
-      #  domainName = "jellyfin.munchkin-sun.ts.net";
-      #  acmeMail = "firefliesandlightningbugs@gmail.com"; # Required for ACME-bot
-      #};
     };
 
     transmission = {
@@ -32,8 +25,6 @@
       peerPort = 37285; # Set this to the port forwarded by your VPN
     };
 
-    # It is possible for this module to run the *Arrs through a VPN, but it
-    # is generally not recommended, as it can cause rate-limiting issues.
     bazarr.enable = true;
     lidarr.enable = true;
     prowlarr.enable = true;
@@ -56,6 +47,11 @@
                     tls {
                         get_certificate tailscale
                     }
+                '';
+            "http://jellyseerr.munchkin-sun.ts.net".extraConfig =
+                ''
+                    bind tailscale/jellyseerr:80
+                    reverse_proxy localhost:5055
                 '';
             "https://jellyseerr.munchkin-sun.ts.net".extraConfig =
                 ''

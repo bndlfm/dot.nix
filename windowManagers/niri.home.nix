@@ -279,21 +279,17 @@ in
               ]
             );
 
-            /**
-              **********
-              * CLIPBOARD *
-              ************
-            */
+            #-----------#
+            # CLIPBOARD #
+            #-----------#
             "${Mod}+Control+V".action.spawn = [
               "copyq"
               "toggle"
             ];
 
-            /**
-              ***********
-              * SCREENSHOT *
-              ************
-            */
+            #------------#
+            # SCREENSHOT #
+            #------------#
             "${Mod}+Shift+S".action.spawn = [
               "niri"
               "msg"
@@ -307,11 +303,9 @@ in
               "screenshot-window"
             ];
 
-            /**
-              ********************
-              * MULTIMEDIA CONTROLS *
-              *********************
-            */
+            #-----------------#
+            # VOLUME CONTROLS #
+            #-----------------#
             "XF86AudioRaiseVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+";
             "XF86AudioLowerVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
             "XF86AudioMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
@@ -323,11 +317,10 @@ in
               action = focus-column-left;
               hotkey-overlay.hidden = true;
             };
-            /**
-              ******************
-              * WINDOW MANAGEMENT *
-              *******************
-            */
+
+            #-------------------#
+            # WINDOW MANAGEMENT #
+            #-------------------#
             ## CONSUME/EXPEL
             "${Mod}+C".action.consume-window-into-column = [ ];
             "${Mod}+X".action.expel-window-from-column = [ ];
@@ -364,19 +357,18 @@ in
             #"${Mod}+Ctrl+Shift+C".action = center-column;
             #"${Mod}+Ctrl+Shift+Z".action = center-column;
 
-            /**
-              ******
-              * FOCUS *
-              *******
-            */
+            #-------#
+            # FOCUS #
+            #-------#
+
             ## FOCUS WITH VI KEYS (COLEMAK)
-            "${Mod}+H".action = focus-monitor-left;
+            "${Mod}+H".action = focus-column-left;
             "${Mod}+N".action = focus-window-or-workspace-down;
             "${Mod}+E".action = focus-window-or-workspace-up;
-            "${Mod}+I".action = focus-monitor-right;
+            "${Mod}+I".action = focus-column-right;
             ## FOCUS COLUMN
-            "${Mod}+Comma".action = focus-column-left;
-            "${Mod}+Period".action = focus-column-right;
+            "${Mod}+Comma".action = focus-monitor-left;
+            "${Mod}+Period".action = focus-monitor-right;
             ## FOCUS MONITOR
             "${Mod}+Left".action = focus-monitor-left;
             "${Mod}+Down".action = focus-monitor-down;

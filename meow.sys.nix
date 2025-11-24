@@ -18,10 +18,10 @@ in
     inputs.sops-nix.nixosModules.sops
     ./sops/sops.sys.nix
     ## PROGRAMS
-    ./modules/gaming.nix
     ./programs/agl.sys.nix
     ## MODULES
-    ./modules/caddy.nix
+    ./modules/gaming.nix
+    ./modules/networking.sys.nix
     ## SERVICES
     ./services/sunshine.sys.nix
     ./services/vaultwarden.sys.nix

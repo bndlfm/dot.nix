@@ -268,17 +268,25 @@
         ];
 
         programming = [
-          code-cursor
-          godot_4
-          godot_4-export-templates-bin
-          zenity
-          ## GIT TOOLS
+
+          #
+          # DOTNET
+          #-------
+          dotnetCorePackages.dotnet_10.sdk
+          dotnetCorePackages.dotnet_10.runtime
+
+          #
+          # GIT TOOLS
+          #----------
           git
           git-filter-repo
           git-lfs
           git-credential-manager
           git-credential-gopass
-          ## PYTHON
+
+          #
+          # PYTHON
+          #-------
           (python3.withPackages (
             pkgs: with pkgs; [
               llama-cpp
@@ -286,11 +294,22 @@
               ueberzug
             ]
           ))
-          ## NIX DEV TOOLS
+
+          #
+          # NIX DEV TOOLS
+          #---------------
           direnv
           nix-prefetch
-          ## OTHER DEV TOOLS
+          nix-inspect
+
+          #
+          # OTHER DEV TOOLS
+          #----------------
+          code-cursor-fhs
+          godot_4
+          godot_4-export-templates-bin
           meld
+          zenity
         ];
 
         social = [
@@ -342,7 +361,7 @@
         tui = [
           # PROGRAMMING
             lazygit
-          ## SYSTEM MONITORS
+          # SYSTEM MONITORS
           btop
           iotop
           nvtopPackages.nvidia

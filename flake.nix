@@ -226,11 +226,11 @@
                   enable = true;
                   address = "0.0.0.0";
                   port = 28981;
-                  
+
                   # Data directory
                   dataDir = "/var/lib/paperless";
                   mediaDir = "/var/lib/paperless/media";
-                  
+
                   # OCR language
                   settings = {
                     PAPERLESS_OCR_LANGUAGE = "eng";
