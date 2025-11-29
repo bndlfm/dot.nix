@@ -13,7 +13,7 @@
         nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
       ## OVERLAY NIXPKGS
-        nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
+        nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
         nixpkgs-bndlfm.url = "github:bndlfm/nixpkgs";
 
       ## CUSTOMIZATION

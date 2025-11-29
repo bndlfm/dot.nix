@@ -386,12 +386,12 @@ in
               ********************
             */
             ## MOVE COLUMN/WINDOW WITH VI KEYS
-            "${Mod}+Shift+H".action = move-column-to-monitor-left;
+            "${Mod}+Shift+H".action = move-column-left;
             "${Mod}+Shift+N".action = move-window-down-or-to-workspace-down;
             "${Mod}+Shift+E".action = move-window-up-or-to-workspace-up;
-            "${Mod}+Shift+I".action = move-column-to-monitor-right;
-            "${Mod}+Shift+Comma".action = move-column-left;
-            "${Mod}+Shift+Period".action = move-column-right;
+            "${Mod}+Shift+I".action = move-column-right;
+            "${Mod}+Shift+Comma".action = move-column-to-monitor-left;
+            "${Mod}+Shift+Period".action = move-column-to-monitor-right;
             ## MOVE WINDOW TO MONITOR WITH ARROW KEYS
             "${Mod}+Control+Left".action = move-window-to-monitor-left;
             "${Mod}+Control+Down".action = move-window-to-monitor-down;
@@ -549,8 +549,8 @@ in
       enable = true;
       settings = [
         {
-          layer = "bottom";
-          position = "left";
+          layer = "top";
+          position = "top";
           output = [
             "${_g.monitors.center.output}"
             "${_g.monitors.right.output}"
@@ -577,11 +577,10 @@ in
           ];
         }
         {
-          layer = "bottom";
+          layer = "top";
           position = "top";
           output = [
             "${_g.monitors.left.output}"
-            #"${_g.monitors.right.output}"
           ];
           include = [
             "~/.config/waybar/default_modules.json"

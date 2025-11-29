@@ -1,7 +1,7 @@
 return {
   {
     "Olical/conjure",
-    enabled = true,
+    enabled = false,
     ft = { "clojure", "fennel", "python" }, -- etc
     lazy = true,
 

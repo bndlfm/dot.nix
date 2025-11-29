@@ -33,35 +33,18 @@
     sonarr.enable = true;
   };
 
-    services = {
-        caddy.virtualHosts = {
-            "http://jellyfin.munchkin-sun.ts.net".extraConfig =
-                ''
-                    bind tailscale/jellyfin:80
-                    reverse_proxy localhost:8096
-                '';
-            "https://jellyfin.munchkin-sun.ts.net".extraConfig =
-                ''
-                    bind tailscale/jellyfin:443
-                    reverse_proxy localhost:8920
-                    tls {
-                        get_certificate tailscale
-                    }
-                '';
-            "http://jellyseerr.munchkin-sun.ts.net".extraConfig =
-                ''
-                    bind tailscale/jellyseerr:80
-                    reverse_proxy localhost:5055
-                '';
-            "https://jellyseerr.munchkin-sun.ts.net".extraConfig =
-                ''
-                    bind tailscale/jellyseerr:443
-                    reverse_proxy localhost:5055
-                    tls {
-                        get_certificate tailscale
-                    }
-                '';
-
+  services = {
+    caddy.virtualHosts = {
+      "http://jellyfin.munchkin-sun.ts.net".extraConfig =
+          ''
+              bind tailscale/jellyfin
+              reverse_proxy localhost:8096
+          '';
+      "http://jellyseerr.munchkin-sun.ts.net".extraConfig =
+          ''
+              bind tailscale/jellyseerr
+              reverse_proxy localhost:5055
+          '';
     };
     flaresolverr.enable = true;
     jellyseerr = {

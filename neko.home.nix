@@ -40,7 +40,6 @@
     ./programs/shell.home.nix
 
     ./programs/firefox.home.nix
-    ./programs/floorp.nix
     ./programs/git.home.nix
     ./programs/kitty.home.nix
     ./programs/music.home.nix
@@ -469,6 +468,7 @@
       GROQ_SECRET_KEY = builtins.readFile "${config.sops.secrets.GROQ_SECRET_KEY.path}";
       OBSIDIAN_REST_API_KEY = builtins.readFile "${config.sops.secrets.OBSIDIAN_REST_API_KEY.path}"; # local only
       OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
+
       ## EDITOR
       EDITOR = "nvim";
       SUDOEDITOR = "vim";
@@ -512,14 +512,11 @@
         source = ./.config/joshuto;
         recursive = true;
       };
+      "mimeapps.list".force = true;
       "mutt" = {
         source = ./.config/mutt;
         recursive = true;
       };
-      #"nvim" = {
-      #  source = ./.config/nvim;
-      #  recursive = true;
-      #};
       "polybar" = {
         source = ./.config/polybar;
         recursive = true;

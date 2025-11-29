@@ -26,10 +26,15 @@
       enable = true;
       package = pkgs.caddy.withPlugins
         {
-          plugins = [ "github.com/tailscale/caddy-tailscale@v0.0.0-20250207163903-69a970c84556" ];
-          hash = "sha256-cZWBui1q+DuzuerrM2CD6RAdtmp56cIwCPyfS1LchzI=";
+          plugins =
+            [
+              "github.com/tailscale/caddy-tailscale@v0.0.0-20250207163903-69a970c84556"
+              "github.com/jasonlovesdoggo/caddy-defender@v0.8.5"
+            ];
+          hash = "sha256-yjbU1YrbTe31PVgAYS525ZtSHHDnIPsz21p/6UVt9Vk=";
         };
     };
+
     networkd-dispatcher = {
       enable = true;
       rules = {
@@ -42,6 +47,7 @@
         };
       };
     };
+
     tailscale = {
       enable = true;
       openFirewall = true;
@@ -51,5 +57,6 @@
 
   systemd.services.caddy.serviceConfig = {
     EnvironmentFile = config.sops.secrets.TS_AUTHKEY.path;
+    StateDirectory = "caddy";
   };
 }
