@@ -462,13 +462,6 @@
 
     ## (HM) ENVIRONMENT VARIABLES ##
     sessionVariables = {
-      ## API KEYS
-      ANTHROPIC_API_KEY = builtins.readFile "${config.sops.secrets.ANTHROPIC_API_KEY.path}";
-      HUGGINGFACE_API_KEY = builtins.readFile "${config.sops.secrets.HUGGINGFACE_API_KEY.path}";
-      GROQ_SECRET_KEY = builtins.readFile "${config.sops.secrets.GROQ_SECRET_KEY.path}";
-      OBSIDIAN_REST_API_KEY = builtins.readFile "${config.sops.secrets.OBSIDIAN_REST_API_KEY.path}"; # local only
-      OPENAI_API_KEY = builtins.readFile "${config.sops.secrets.OPENAI_API_KEY.path}";
-
       ## EDITOR
       EDITOR = "nvim";
       SUDOEDITOR = "vim";
@@ -512,7 +505,9 @@
         source = ./.config/joshuto;
         recursive = true;
       };
-      "mimeapps.list".force = true;
+      ##"mimeapps.list" = {
+      ##  force = true;
+      ##};
       "mutt" = {
         source = ./.config/mutt;
         recursive = true;

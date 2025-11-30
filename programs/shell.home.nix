@@ -419,37 +419,35 @@
     };
   };
 
+  sops.templates."fish-ai.ini" = {
+    content = ''
+      [fish-ai]
+      configuration = google
+      history = 10
 
-  xdg = {
-    configFile = {
-      "fish-ai.ini" = {
-        source = pkgs.writeText "fish-ai.ini" ''
-          [fish-ai]
-          configuration = google
-          history = 10
+      [google]
+      provider = google
+      api_key = ${config.sops.placeholder."ai_keys/GEMINI_SECRET_KEY"}
 
-          [google]
-          provider = google
-          api_key = ${builtins.readFile config.sops.secrets.GEMINI_SECRET_KEY.path}
 
-          [openai]
-          provider = openai
-          model = gpt-4o
-          api_key = ${builtins.readFile config.sops.secrets.OPENAI_API_KEY.path}
+      [huggingface]
+      provider = huggingface
+      email = firefliesandlightningbugs@gmail.com
+      password = ${config.sops.placeholder."ai_keys/HUGGINGFACE_PASSWD"}
+      model = meta-llama/Llama-3.3-70B-Instruct
 
-          [huggingface]
-          provider = huggingface
-          email = firefliesandlightningbugs@gmail.com
-          password = ${builtins.readFile config.sops.secrets.HUGGINGFACE_PASSWD.path}
-          model = meta-llama/Llama-3.3-70B-Instruct
-
-          [self-hosted]
-          provider = self-hosted
-          server = http://localhost:33841/v1/
-          model = qwencoder
-          api_key = sk-litellm
-        '';
-      };
-    };
+      [self-hosted]
+      provider = self-hosted
+      server = http://localhost:33841/v1/
+      model = qwencoder
+      api_key = sk-litellm
+    '';
   };
+  #    [openai]
+  #    provider = openai
+  #    model = gpt-4o
+  #    api_key = ${config.sops.placeholder."ai_keys/OPENAI_API_KEY"}
+
+  xdg.configFile."fish-ai.ini".source =
+    config.lib.file.mkOutOfStoreSymlink config.sops.templates."fish-ai.ini".path;
 }

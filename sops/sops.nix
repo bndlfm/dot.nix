@@ -1,63 +1,38 @@
-{ ... }:
+{ config, ... }:
 {
-
   sops = {
-    defaultSopsFile = ../sops/secrets.yaml;
-    defaultSopsFormat = "yaml";
-    age.keyFile = "/home/neko/.config/sops/age/keys.txt";
-    defaultSymlinkPath = "/run/user/1000/secrets";
-    defaultSecretsMountPoint = "/run/user/1000/secrets.d";
+      defaultSopsFile = ../sops/secrets.yaml;
+      defaultSopsFormat = "yaml";
 
-    secrets = {
-      ANTHROPIC_API_KEY = {
-        format = "yaml";
-        sopsFile = ./ANTHROPIC_API_KEY.yaml;
+      age.keyFile = "/home/neko/.config/sops/age/keys.txt";
+
+      secrets = {
+          "ai_keys/ANTHROPIC_API_KEY" = {};
+          "ai_keys/GEMINI_SECRET_KEY" = {};
+          "ai_keys/GROQ_SECRET_KEY" = {};
+          "ai_keys/HUGGINGFACE_API_KEY" = {};
+          "ai_keys/HUGGINGFACE_PASSWD" = {};
+
+          "services/CADDY_TS_AUTHKEY" = {};
+          "services/DUCKDNS_TOKEN" = {};
+          "services/GMAIL_APP_PASS" = {};
+          "services/OBSIDIAN_REST_API_KEY" = {};
+          "services/TWITCH_IRC_OAUTH" = {};
       };
 
-      DUCKDNS_TOKEN = {
-        format = "yaml";
-        sopsFile = ./DUCKDNS_TOKEN.yaml;
-      };
+      templates."session-secrets" = {
+          content = ''
+              ANTHROPIC_API_KEY = ${config.sops.placeholder."ai_keys/ANTHROPIC_API_KEY"}
+              GEMINI_SECRET_KEY = ${config.sops.placeholder."ai_keys/GEMINI_SECRET_KEY"}
+              GROQ_SECRET_KEY = ${config.sops.placeholder."ai_keys/GROQ_SECRET_KEY"}
+              HUGGINGFACE_API_KEY = ${config.sops.placeholder."ai_keys/HUGGINGFACE_API_KEY"}
+              HUGGINGFACE_PASSWD = ${config.sops.placeholder."ai_keys/HUGGINGFACE_PASSWD"}
 
-      GEMINI_SECRET_KEY = {
-        format = "yaml";
-        sopsFile = ./GEMINI_SECRET_KEY.yaml;
+              DUCKDNS_TOKEN = ${config.sops.placeholder."services/DUCKDNS_TOKEN"}
+              GMAIL_APP_PASS = ${config.sops.placeholder."services/GMAIL_APP_PASS"}
+              OBSIDIAN_REST_API_KEY = ${config.sops.placeholder."services/OBSIDIAN_REST_API_KEY"}
+              TWITCH_IRC_OAUTH = ${config.sops.placeholder."services/TWITCH_IRC_OAUTH"}
+          '';
       };
-
-      GMAIL_APP_PASS = {
-        format = "yaml";
-        sopsFile = ./GMAIL_APP_PASS.yaml;
-      };
-
-      GROQ_SECRET_KEY = {
-        format = "yaml";
-        sopsFile = ./GROQ_SECRET_KEY.yaml;
-      };
-
-      HUGGINGFACE_API_KEY = {
-        format = "yaml";
-        sopsFile = ./HUGGINGFACE_API_KEY.yaml;
-      };
-
-      HUGGINGFACE_PASSWD = {
-        format = "yaml";
-        sopsFile = ./HUGGINGFACE_PASSWD.yaml;
-      };
-
-      OPENAI_API_KEY = {
-        format = "yaml";
-        sopsFile = ./secrets.yaml;
-      };
-
-      OBSIDIAN_REST_API_KEY = {
-        format = "yaml";
-        sopsFile = ./OBSIDIAN_REST_API_KEY.yaml;
-      };
-
-      TWITCH_IRC_OAUTH = {
-        format = "yaml";
-        sopsFile = ./TWITCH_IRC_OAUTH.yaml;
-      };
-    };
   };
 }

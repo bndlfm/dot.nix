@@ -233,6 +233,7 @@
       # pkgs.writeShellScriptBin could also be used to wrap with specific package dependencies if needed.
       source = pkgs.writeShellScript "smartYank.sh" ''
         #!/usr/bin/env bash
+        export PATH = "${pkgs.lib.makeBinPath [ pkgs.coreutils pkgs.jq pkgs.curl pkgs.fzf pkgs.gnused pkgs.wl-clipboard ]}:$PATH"
         set -euo pipefail # Exit on error, undefined variable, or pipe failure
 
         #############################
@@ -256,13 +257,13 @@
         GROQ_MODEL="''${SMARTYANK_GROQ_MODEL:-llama3-70b-8192}" # Or your preferred Groq model
         # The following line will embed the content of the secret file directly into the script.
         # Ensure this Sops path is correct in your Nix configuration.
-        GROQ_API_KEY="${builtins.readFile config.sops.secrets.GROQ_SECRET_KEY.path}"
+        GROQ_API_KEY="$(cat ${config.sops.secrets."ai_keys/GROQ_SECRET_KEY".path})"
 
         # Google Gemini Configuration (used if API_PROVIDER is "google")
         # The actual API endpoint for Google is constructed later as it includes the API key and model.
         GOOGLE_MODEL="''${SMARTYANK_GOOGLE_MODEL:-gemini-2.5-flash-preview-05-20}" # Or your preferred Gemini model (e.g., gemini-pro)
         # Ensure this Sops path is correct in your Nix configuration if using Google.
-        GOOGLE_API_KEY="${builtins.readFile config.sops.secrets.GEMINI_SECRET_KEY.path}"
+        GOOGLE_API_KEY="$(cat ${config.sops.secrets."ai_keys/GEMINI_SECRET_KEY".path})"
 
         # Active configuration variables (will be set based on API_PROVIDER)
         CURRENT_API_ENDPOINT=""

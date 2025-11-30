@@ -36,7 +36,7 @@
         neomutt = {
           enable = true;
         };
-        passwordCommand = "cat ${config.sops.secrets.GMAIL_APP_PASS.path}";
+        passwordCommand = "cat ${config.sops.secrets."services/GMAIL_APP_PASS".path}";
       };
     };
 
@@ -47,35 +47,35 @@
     enable = true;
     # Colemak bindings
     binds = [
-      { action = "next-entry"; key = "n"; map = [ "index" ]; } # Was "index"
-      { action = "half-down"; key = "\\Cn"; map = [ "index" ]; }  # Was "index"
-      { action = "previous-entry"; key = "e"; map = [ "index" ]; } # Was "index"
-      { action = "half-up"; key = "\\Ce"; map = [ "index" ]; }   # Was "index"
-      { action = "search-next"; key = "k"; map = [ "index" ]; }  # Was "index"
-      { action = "edit"; key = "E"; map = [ "index" ]; }       # Was "index"
+      { action = "next-entry"; key = "n"; map = [ "index" ]; }
+      { action = "half-down"; key = "\\Cn"; map = [ "index" ]; }
+      { action = "previous-entry"; key = "e"; map = [ "index" ]; }
+      { action = "half-up"; key = "\\Ce"; map = [ "index" ]; }
+      { action = "search-next"; key = "k"; map = [ "index" ]; }
+      { action = "edit"; key = "E"; map = [ "index" ]; }
 
-      { action = "next-line"; key = "n"; map = [ "pager" ]; }      # Was "pager"
-      { action = "next-entry"; key = "N"; map = [ "pager" ]; }     # Was "pager"
-      { action = "half-down"; key = "\\Ce"; map = [ "pager" ]; }   # Was "pager"
-      { action = "previous-line"; key = "e"; map = [ "pager" ]; }   # Was "pager"
-      { action = "previous-entry"; key = "E"; map = [ "pager" ]; }  # Was "pager"
-      { action = "half-up"; key = "\\Ce"; map = [ "pager" ]; }     # Was "pager"
-      { action = "search-next"; key = "k"; map = [ "pager" ]; }    # Was "pager"
+      { action = "next-line"; key = "n"; map = [ "pager" ]; }
+      { action = "next-entry"; key = "N"; map = [ "pager" ]; }
+      { action = "half-down"; key = "\\Ce"; map = [ "pager" ]; }
+      { action = "previous-line"; key = "e"; map = [ "pager" ]; }
+      { action = "previous-entry"; key = "E"; map = [ "pager" ]; }
+      { action = "half-up"; key = "\\Ce"; map = [ "pager" ]; }
+      { action = "search-next"; key = "k"; map = [ "pager" ]; }
     ];
     macros = [
-      { action = "<shell-escape>mbsync fflb<enter>"; key = "%"; map = [ "index" ]; } # Was "index"
+      { action = "<shell-escape>mbsync fflb<enter>"; key = "%"; map = [ "index" ]; }
 
-      { action = "<pipe-message>urlscan<enter>"; key = "\\Cu"; map = [ "index" ]; } # Was "index"
-      { action = "<pipe-message>urlscan<enter>"; key = "\\Cu"; map = [ "pager" ]; } # Was "pager"
+      { action = "<pipe-message>urlscan<enter>"; key = "\\Cu"; map = [ "index" ]; }
+      { action = "<pipe-message>urlscan<enter>"; key = "\\Cu"; map = [ "pager" ]; }
 
-      { action = "<save-message>=Archive<enter>"; key = "y"; map = [ "index" ]; } # Was "index"
-      { action = "<save-message>=Archive<enter>"; key = "y"; map = [ "pager" ]; } # Was "pager"
+      { action = "<save-message>=Archive<enter>"; key = "y"; map = [ "index" ]; }
+      { action = "<save-message>=Archive<enter>"; key = "y"; map = [ "pager" ]; }
 
-      { action = "<change-folder>=Archive<enter>"; key = "ta"; map = [ "index" ]; } # Was "index"
-      { action = "<change-folder>=INBOX<enter>"; key = "ti"; map = [ "index" ]; } # Was "index"
-      { action = "<change-folder>=Trash<enter>"; key = "tt"; map = [ "index" ]; } # Was "index"
-      { action = "<change-folder>=Sent<enter>"; key = "ts"; map = [ "index" ]; } # Was "index"
-      { action = "<change-folder>=Drafts<enter>"; key = "td"; map = [ "index" ]; } # Was "index"
+      { action = "<change-folder>=Archive<enter>"; key = "ta"; map = [ "index" ]; }
+      { action = "<change-folder>=INBOX<enter>"; key = "ti"; map = [ "index" ]; }
+      { action = "<change-folder>=Trash<enter>"; key = "tt"; map = [ "index" ]; }
+      { action = "<change-folder>=Sent<enter>"; key = "ts"; map = [ "index" ]; }
+      { action = "<change-folder>=Drafts<enter>"; key = "td"; map = [ "index" ]; }
     ];
     extraConfig = ''
       set attribution="%n wrote:"

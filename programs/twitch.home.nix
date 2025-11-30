@@ -21,7 +21,7 @@ pkgs,
           username = "mamimi___"
           channel = "mamimi___"
           server = "irc.chat.twitch.tv"
-          token = "${builtins.readFile config.sops.secrets.TWITCH_IRC_OAUTH.path}"
+          token = "${config.sops.placeholder."services/TWITCH_IRC_OAUTH"}"
 
           [terminal]
           delay = 30

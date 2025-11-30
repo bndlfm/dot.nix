@@ -38,12 +38,12 @@
       "http://jellyfin.munchkin-sun.ts.net".extraConfig =
           ''
               bind tailscale/jellyfin
-              reverse_proxy localhost:8096
+              reverse_proxy 127.0.0.1:8096
           '';
       "http://jellyseerr.munchkin-sun.ts.net".extraConfig =
           ''
               bind tailscale/jellyseerr
-              reverse_proxy localhost:5055
+              reverse_proxy 127.0.0.1:5055
           '';
     };
     flaresolverr.enable = true;

@@ -550,7 +550,7 @@ in
       settings = [
         {
           layer = "top";
-          position = "top";
+          position = "left";
           output = [
             "${_g.monitors.center.output}"
             "${_g.monitors.right.output}"
