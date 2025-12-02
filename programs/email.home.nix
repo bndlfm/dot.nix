@@ -36,7 +36,7 @@
         neomutt = {
           enable = true;
         };
-        passwordCommand = "cat ${config.sops.secrets."services/GMAIL_APP_PASS".path}";
+        passwordCommand = "cat ${config.sops.secrets."internet/GMAIL_APP_PASS".path}";
       };
     };
 

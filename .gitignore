@@ -9,7 +9,6 @@ containers/funkwhale
 containers/grimoire
 
 ### CONFIG
-
 #DONT LEAK API KEY:
 .config/litellm
 #NIX HANDLES THIS
@@ -25,16 +24,20 @@ containers/grimoire
 
 #HAS MY FIREFOX PROFILES
 .mozilla/
-.fonts/
+
 publickey
-virtMachines/
+
+#RICE
+.fonts/
 theme/wallpapers/
-templates/
 windowManagers/quickshell/
-#*.qml
 
 # ignore nix build
 result
+
+## secrets
+# SOPS
+secrets/
 
 # tailscale
 meow.munchkin-sun.ts.net.crt

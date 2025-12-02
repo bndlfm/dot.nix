@@ -1,58 +1,15 @@
 keys:
-  - &primary age177snhrqfd422qgm8425pzhrzzc9tt3asymt96mmrlmfg784casrs27frau
+  - &user_age_key age177snhrqfd422qgm8425pzhrzzc9tt3asymt96mmrlmfg784casrs27frau
+  - &host_ssh_key age1sc0kpgelt969f8vcrnft060cccxwpp25pmz58vzts85ukepnkezszg0a2q
 
 creation_rules:
   - path_regex: sops/secrets.yaml$
     key_groups:
       - age:
-        - *primary
+        - *user_age_key
 
-  - path_regex: sops/ANTHROPIC_API_KEY.yaml$
+  - path_regex: sops/secrets.os.yaml$
     key_groups:
       - age:
-        - *primary
-
-  - path_regex: sops/DUCKDNS_TOKEN.yaml$
-    key_groups:
-      - age:
-        - *primary
-
-  - path_regex: sops/GEMINI_SECRET_KEY.yaml$
-    key_groups:
-      - age:
-        - *primary
-
-  - path_regex: sops/GROQ_SECRET_KEY.yaml$
-    key_groups:
-      - age:
-        - *primary
-
-  - path_regex: sops/GMAIL_APP_PASS.yaml$
-    key_groups:
-      - age:
-        - *primary
-
-  - path_regex: sops/OBSIDIAN_REST_API_KEY.yaml$
-    key_groups:
-      - age:
-        - *primary
-
-  - path_regex: sops/HUGGINGFACE_API_KEY.yaml$
-    key_groups:
-      - age:
-        - *primary
-
-  - path_regex: sops/HUGGINGFACE_PASSWD.yaml$
-    key_groups:
-      - age:
-        - *primary
-
-  - path_regex: sops/TS_AUTHKEY.yaml$
-    key_groups:
-      - age:
-        - *primary
-
-  - path_regex: sops/TWITCH_IRC_OAUTH.yaml$
-    key_groups:
-      - age:
-        - *primary
+        - *host_ssh_key
+        - *user_age_key

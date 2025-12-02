@@ -1,7 +1,5 @@
 {
-  config,
   pkgs,
-  lib,
   inputs,
   ...
 }:
@@ -13,26 +11,20 @@
   imports = [
     ./cachix.nix
 
-    /*
-      *********
-      * WIVRN *
-      *********
-    */
-    ./modules/openComposite.home.nix
+    ##############
+    # CONTAINERS #
+    ##############
 
-    /*
-      ********
-      * MODULES *
-      *********
-    */
+    ###########
+    # MODULES #
+    ###########
     ./modules/default.nix
+    ./modules/openComposite.home.nix # WiVRn
     ./modules/wob.home.nix
 
-    /**
-      *********
-      * PROGRAMS *
-      ***********
-    */
+    ############
+    # PROGRAMS #
+    ############
     ./programs/email.home.nix
     ./programs/programs.home.nix
     ./programs/twitch.home.nix
@@ -50,36 +42,27 @@
     ./programs/yazi.home.nix
     ./programs/zellij.home.nix
 
-    /**
-      ********
-      * SECRETS *
-      *********
-    */
+    ###########
+    # SECRETS #
+    ###########
     inputs.sops-nix.homeManagerModules.sops
-    ./sops/sops.nix
+    ./sops/sops.home.nix
 
-    /**
-      *********
-      * SERVICES *
-      **********
-    */
+    ############
+    # SERVICES #
+    ############
     ./services/espanso.home.nix
-
     ./services/services.home.nix
 
-    /**
-      ********
-      * SPOTIFY *
-      *********
-    */
+    ###########
+    # SPOTIFY #
+    ###########
     inputs.spicetify-nix.homeManagerModules.default
     ./theme/spicetify.nix
 
-    /**
-      ****************
-      * WINDOW MANAGERS *
-      *****************
-    */
+    ###################
+    # WINDOW MANAGERS #
+    ###################
     #./programs/gnome-shell.home.nix
     #./windowManagers/bspwm.home.nix
     ./windowManagers/hyprland.home.nix
@@ -139,9 +122,9 @@
       let
         patched = [
           #inputs.deejavu.packages.x86_64-linux.default
-          #darktable
-          #nexusmods-app
-          #maigret #OSINT Username Checker
+          darktable
+          nexusmods-app
+          maigret #OSINT Username Checker
         ];
 
         ai = [
@@ -406,6 +389,7 @@
             appimage-run
             clipboard-jh
             copyq
+            eddie
             gnome-tweaks
             google-drive-ocamlfuse
             gparted

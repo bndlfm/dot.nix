@@ -239,5 +239,15 @@
         '';
       };
     };
+    policies = {
+      Proxy = {
+        Mode = "manual";
+        Locked = false;
+        SOCKSProxy = "127.0.0.1:8388";
+        SOCKSVersion = 5;
+        Passthrough = "localhost, 127.0.0.1, 192.168.0.0/16, 10.0.0.0/8, 100.0.0.0/8";
+        UseProxyForDNS = true;
+      };
+    };
   };
 }

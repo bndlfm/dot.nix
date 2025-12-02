@@ -13,21 +13,25 @@ in
     ./cachix.nix
 
     ## CONTAINERS
-    #./containers/vaultwarden.nix
-    ## SECRETS
-    inputs.sops-nix.nixosModules.sops
-    ./sops/sops.sys.nix
+    ./containers/gluetun.home.nix
+
     ## PROGRAMS
     ./programs/agl.sys.nix
+
     ## MODULES
     ./modules/gaming.nix
     ./modules/networking.sys.nix
+
+    ## SECRETS
+    inputs.sops-nix.nixosModules.sops
+
     ## SERVICES
     ./services/sunshine.sys.nix
     ./services/vaultwarden.sys.nix
 
-    inputs.nixarr.nixosModules.default # (import ./modules/nixarr.sys.nix)
+    inputs.nixarr.nixosModules.default
     ./modules/nixarr.sys.nix
+
     ## WINDOW MANAGERS
     #./windowManagers/hyprland.sys.nix
   ];
