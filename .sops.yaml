@@ -8,7 +8,7 @@ creation_rules:
       - age:
         - *user_age_key
 
-  - path_regex: sops/secrets.os.yaml$
+  - path_regex: sops/secrets.sys.yaml$
     key_groups:
       - age:
         - *host_ssh_key

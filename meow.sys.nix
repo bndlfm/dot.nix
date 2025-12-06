@@ -20,7 +20,7 @@ in
 
     ## MODULES
     ./modules/gaming.nix
-    ./modules/networking.sys.nix
+    ./modules/caddy-tailscale.sys.nix
 
     ## SECRETS
     inputs.sops-nix.nixosModules.sops

@@ -3,7 +3,7 @@
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
-  sops.defaultSopsFile = ../sops/secrets.os.yaml;
+  sops.defaultSopsFile = ../sops/secrets.sys.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
   sops.secrets."local/gluetun_private_key" = {};

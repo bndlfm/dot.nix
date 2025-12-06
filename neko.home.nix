@@ -18,9 +18,9 @@
     ###########
     # MODULES #
     ###########
-    ./modules/default.nix
     ./modules/openComposite.home.nix # WiVRn
-    ./modules/wob.home.nix
+    ./modules/wm/hyprland.home.nix
+    ./modules/wm/niri.home.nix
 
     ############
     # PROGRAMS #
@@ -65,8 +65,6 @@
     ###################
     #./programs/gnome-shell.home.nix
     #./windowManagers/bspwm.home.nix
-    ./windowManagers/hyprland.home.nix
-    ./windowManagers/niri.home.nix
   ];
 
   ##########################
@@ -389,7 +387,7 @@
             appimage-run
             clipboard-jh
             copyq
-            eddie
+            deskflow
             gnome-tweaks
             google-drive-ocamlfuse
             gparted
@@ -401,6 +399,7 @@
             qbittorrent
             qdirstat
             rofi
+            synergy
             zathura
             zsa-udev-rules
           ];

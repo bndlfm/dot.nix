@@ -1,16 +1,8 @@
-{ ... }:
+{ inputs, ... }:
 {
-
+  imports = [ inputs.sops-nix.nixosModules.sops ];
   sops = {
-    defaultSopsFile = ../sops/secrets.yaml;
-    defaultSopsFormat = "yaml";
-    age.keyFile = "/home/neko/.config/sops/age/keys.txt";
-
-    secrets = {
-      TS_AUTHKEY = {
-        format = "yaml";
-        sopsFile = ./TS_AUTHKEY.yaml;
-      };
-    };
+    defaultSopsFile = ../sops/secrets.sys.yaml;
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   };
 }
