@@ -19,8 +19,6 @@
     # MODULES #
     ###########
     ./modules/openComposite.home.nix # WiVRn
-    ./modules/wm/hyprland.home.nix
-    ./modules/wm/niri.home.nix
 
     ############
     # PROGRAMS #
@@ -64,7 +62,8 @@
     # WINDOW MANAGERS #
     ###################
     #./programs/gnome-shell.home.nix
-    #./windowManagers/bspwm.home.nix
+    ./modules/wm/hyprland.home.nix
+    ./modules/wm/niri.home.nix
   ];
 
   ##########################
@@ -447,8 +446,8 @@
     sessionVariables = {
       ## EDITOR
       EDITOR = "nvim";
-      SUDOEDITOR = "vim";
-      VISUAL = "vim";
+      SUDOEDITOR = "nvim";
+      VISUAL = "nvim";
       ## GPU
       PROTON_ENABLE_NVAPI = "1";
       PROTON_HIDE_NVIDIA_GPU = "0";

@@ -179,6 +179,7 @@ in
       "adbusers"
       "audio"
       "docker"
+      "kvm"
       "input"
       "media"
       "networkmanager"
@@ -253,7 +254,6 @@ in
     };
     ollama = {
       enable = false; # ## SEE PODMAN + HARBOR
-      acceleration = "cuda";
       host = "0.0.0.0";
       openFirewall = false;
     };
@@ -415,6 +415,7 @@ in
     };
     nvidia = {
       open = true;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
       modesetting.enable = true;
       nvidiaSettings = true;
       powerManagement.enable = false;

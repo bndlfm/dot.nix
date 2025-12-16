@@ -7,33 +7,36 @@
       enable = true;
       interactiveShellInit = /*sh*/ ''
         set PATH $PATH /home/neko/.local/bin
-        set fish_greeting
+
+        function fish_greeting --description "Prints To-do.md as Shell Greeting"
+          bat ~/Notes/To-do/To-do.md --style=plain
+        end
 
         function fish_user_key_bindings --description 'Colemak vi-keys'
-            fish_default_key_bindings -M insert
-            fish_vi_key_bindings --no-erase insert # Without --no-erase fish_vi_key_bindings will reset all bindings.
+          fish_default_key_bindings -M insert
+          fish_vi_key_bindings --no-erase insert # Without --no-erase fish_vi_key_bindings will reset all bindings.
 
-            if contains -- -h $argv
-                or contains -- --help $argv
-                echo "Sorry but this function doesn't support -h or --help" >&2
-                return 1
-            end
+          if contains -- -h $argv
+            or contains -- --help $argv
+            echo "Sorry but this function doesn't support -h or --help" >&2
+            return 1
+          end
 
             ## ADJUST HJKL TO HNEI FOR NAVIGATION
-                bind -s --preset -M default h backward-char
-                bind -s --preset -M default n down-or-search
-                bind -s --preset -M default e up-or-search
-                bind -s --preset -M default i forward-char
+              bind -s --preset -M default h backward-char
+              bind -s --preset -M default n down-or-search
+              bind -s --preset -M default e up-or-search
+              bind -s --preset -M default i forward-char
 
             ## REMAP (SHIFT) H TO GO TO THE bEGINNING OF lINE AND (SHIFT) I TO GO TO THE END OF LINE
-                bind -s --preset -M default H beginning-of-line
-                bind -s --preset -M default I end-of-line
+              bind -s --preset -M default H beginning-of-line
+              bind -s --preset -M default I end-of-line
 
             # CHANGE K TO ACT AS I FOR INSERT MODE
-                bind -s --preset -m insert k repaint-mode
+              bind -s --preset -m insert k repaint-mode
 
             # USE CTRL-Y TO ACCEPT SUGGESTED TEXT AND SUBMIT
-                bind -s --preset -M insert \cy "commandline -f accept-autosuggestion execute"
+              bind -s --preset -M insert \cy "commandline -f accept-autosuggestion execute"
 
             # CODEX.FISH OPENAI CODEX PLUGIN
               bind \cX _fish_ai_codify_or_explain
@@ -41,16 +44,16 @@
         end
 
         ## more fish vi key fixes
-            set fish_default_key_bindings fish_user_key_bindings
-            set fish_cursor_insert line
-            set fish_suggest_key_bindings yes
+          set fish_default_key_bindings fish_user_key_bindings
+          set fish_cursor_insert line
+          set fish_suggest_key_bindings yes
 
         ## shell indicators (nix-shell, python-venv, etc)
-            set -l nix_shell_info (
-              if test -n "$IN_NIX_SHELL"
-                echo -n "<nix-shell> "
-              end
-            )
+          set -l nix_shell_info (
+            if test -n "$IN_NIX_SHELL"
+              echo -n "<nix-shell> "
+            end
+          )
 
         zoxide init fish | source
         carapace _carapace fish | source

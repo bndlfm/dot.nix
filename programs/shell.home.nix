@@ -11,8 +11,11 @@
       enable = true;
       interactiveShellInit = /*sh*/ ''
         set PATH $PATH /home/neko/.local/bin
-        set fish_greeting
         set pisces_only_insert_at_eol 1
+
+        function fish_greeting --description "Prints To-do.md as Shell Greeting"
+          bat ~/Notes/To-do/To-do.md --style=plain --no-paging
+        end
 
         function fish_user_key_bindings --description 'Colemak vi-keys'
             fish_default_key_bindings -M insert
