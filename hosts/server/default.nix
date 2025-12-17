@@ -12,7 +12,7 @@
     #../../containers/retroarch-web.nix
 
   ### MODULES
-    ../../modules/nx/tailscale.nix
+    ../../modules/caddy-tailscale.sys.nix
   ];
 
   nix = {

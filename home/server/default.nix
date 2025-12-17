@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   imports = [
-#    ../../programs/fish.nix
-    ../../programs/neovim.nix
+    ../../programs/shell.home.nix
+    ../../programs/neovim.home.nix
   ];
 
   home.stateVersion = "23.11";

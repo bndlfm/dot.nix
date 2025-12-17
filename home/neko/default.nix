@@ -9,8 +9,7 @@
   home.homeDirectory = "/home/neko";
 
   imports = [
-    ./cachix.nix
-
+    ../../cachix.nix
     ##############
     # CONTAINERS #
     ##############
@@ -18,52 +17,52 @@
     ###########
     # MODULES #
     ###########
-    ./modules/openComposite.home.nix # WiVRn
+    ../../modules/openComposite.home.nix # WiVRn
 
     ############
     # PROGRAMS #
     ############
-    ./programs/email.home.nix
-    ./programs/programs.home.nix
-    ./programs/twitch.home.nix
+    ../../programs/email.home.nix
+    ../../programs/programs.home.nix
+    ../../programs/twitch.home.nix
 
-    ./programs/shell.home.nix
+    ../../programs/shell.home.nix
 
-    ./programs/firefox.home.nix
-    ./programs/git.home.nix
-    ./programs/kitty.home.nix
-    ./programs/music.home.nix
-    ./programs/neovim.home.nix
-    ./programs/password-store.home.nix
-    ./programs/ranger.home.nix
-    ./programs/rofi.home.nix
-    ./programs/yazi.home.nix
-    ./programs/zellij.home.nix
+    ../../programs/firefox.home.nix
+    ../../programs/git.home.nix
+    ../../programs/kitty.home.nix
+    ../../programs/music.home.nix
+    ../../programs/neovim.home.nix
+    ../../programs/password-store.home.nix
+    ../../programs/ranger.home.nix
+    ../../programs/rofi.home.nix
+    ../../programs/yazi.home.nix
+    ../../programs/zellij.home.nix
 
     ###########
     # SECRETS #
     ###########
     inputs.sops-nix.homeManagerModules.sops
-    ./sops/sops.home.nix
+    ../../sops/sops.home.nix
 
     ############
     # SERVICES #
     ############
-    ./services/espanso.home.nix
-    ./services/services.home.nix
+    ../../services/espanso.home.nix
+    ../../services/services.home.nix
 
     ###########
     # SPOTIFY #
     ###########
     inputs.spicetify-nix.homeManagerModules.default
-    ./theme/spicetify.nix
+    ../../theme/spicetify.nix
 
     ###################
     # WINDOW MANAGERS #
     ###################
     #./programs/gnome-shell.home.nix
-    ./modules/wm/hyprland.home.nix
-    ./modules/wm/niri.home.nix
+    ../../modules/wm/hyprland.home.nix
+    ../../modules/wm/niri.home.nix
   ];
 
   ##########################

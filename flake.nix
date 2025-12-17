@@ -139,7 +139,7 @@
                   ## ZEN BROWSER
                     inputs.zen-browser.homeModules.twilight (import ./programs/zen-browser.home.nix)
                   ## IMPORTS
-                    ./neko.home.nix
+                    ./home/neko/default.nix
                 ];
             };
           "neko@nyaa" = home-manager.lib.homeManagerConfiguration
@@ -150,7 +150,7 @@
                   ## SECRETS
                     inputs.sops-nix.homeManagerModules.sops
                   ## IMPORTS
-                    ./server.home.nix
+                    ./home/server/default.nix
                 ];
             };
         };
@@ -188,8 +188,8 @@
                       niri-flake.cache.enable = true;
                     }
                   ## IMPORTS
-                    ./meow.sys.nix
-                    ./meow.hardware.nix
+                    ./hosts/meow/default.nix
+                    ./hosts/meow/hardware.nix
                 ];
             };
           "nyaa" = nixpkgs.lib.nixosSystem
@@ -197,8 +197,8 @@
               modules =
                 [
                   ## IMPORTS
-                    ./server.sys.nix
-                    ./server.hardware.nix
+                    ./hosts/server/default.nix
+                    ./hosts/server/hardware.nix
                 ];
             };
           "paperless-container" = nixpkgs.lib.nixosSystem {

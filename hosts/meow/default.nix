@@ -10,27 +10,27 @@ let
 in
 {
   imports = [
-    ./cachix.nix
+    ../../cachix.nix
 
     ## CONTAINERS
-    ./containers/gluetun.home.nix
+    ../../containers/gluetun.home.nix
 
     ## PROGRAMS
-    ./programs/agl.sys.nix
+    ../../programs/agl.sys.nix
 
     ## MODULES
-    ./modules/gaming.nix
-    ./modules/caddy-tailscale.sys.nix
+    ../../modules/gaming.nix
+    ../../modules/caddy-tailscale.sys.nix
 
     ## SECRETS
     inputs.sops-nix.nixosModules.sops
 
     ## SERVICES
-    ./services/sunshine.sys.nix
-    ./services/vaultwarden.sys.nix
+    ../../services/sunshine.sys.nix
+    ../../services/vaultwarden.sys.nix
 
     inputs.nixarr.nixosModules.default
-    ./modules/nixarr.sys.nix
+    ../../modules/nixarr.sys.nix
 
     ## WINDOW MANAGERS
     #./windowManagers/hyprland.sys.nix
