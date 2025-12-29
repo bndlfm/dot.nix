@@ -22,22 +22,19 @@
     ############
     # PROGRAMS #
     ############
-    ../../programs/email.home.nix
     ../../programs/programs.home.nix
+    ../../programs/email.home.nix
+    ../../modules/music.home.nix
+    ../../programs/shell
     ../../programs/twitch.home.nix
-
-    ../../programs/shell.home.nix
 
     ../../programs/firefox.home.nix
     ../../programs/git.home.nix
-    ../../programs/kitty.home.nix
-    ../../programs/music.home.nix
     ../../programs/neovim.home.nix
     ../../programs/password-store.home.nix
     ../../programs/ranger.home.nix
     ../../programs/rofi.home.nix
     ../../programs/yazi.home.nix
-    ../../programs/zellij.home.nix
 
     ###########
     # SECRETS #
@@ -61,7 +58,7 @@
     # WINDOW MANAGERS #
     ###################
     #./programs/gnome-shell.home.nix
-    ../../modules/wm/hyprland.home.nix
+    #../../modules/wm/hyprland.home.nix
     ../../modules/wm/niri.home.nix
   ];
 
@@ -120,16 +117,13 @@
           #inputs.deejavu.packages.x86_64-linux.default
           darktable
           nexusmods-app
-          maigret #OSINT Username Checker
         ];
 
         ai = [
           aichat
           aider-chat
-          piper-tts
-          sillytavern
-          upscayl
           warp-terminal
+          n8n
         ];
 
         apple = [
@@ -148,9 +142,7 @@
           bat
           cachix
           chafa
-          distrobox
           duf
-          delta
           eza
           fd
           ffmpeg-full
@@ -162,15 +154,12 @@
           libnotify
           libqalculate
           nix-index
-          pandoc
           (pkgs.pass.withExtensions (exts: [ exts.pass-otp ]))
           p7zip
           ripgrep
           sd
           silver-searcher
           sops
-          tesseract
-          trashy
           unrar
           unzip
           usbutils
@@ -178,31 +167,22 @@
           wireguard-tools
           dragon-drop
           yt-dlp
-          zip
-          zoxide
         ];
 
         daemons = [
-          megasync
           yams
         ];
 
         editing = [
-          ascii-draw
           gimp
-          inkscape
-          krita
           libreoffice-qt
         ];
 
         gaming = [
-          airshipper
+          airshipper # Veloren (Cube World)
           crawlTiles
           glfw3-minecraft
           #inputs.openmw-vr.packages.x86_64-linux.default
-          mangohud
-          protontricks
-          steamtinkerlaunch
 
           # DECOMP
           sm64coopdx
@@ -210,32 +190,37 @@
           _2ship2harkinian # Majora's Mask
 
           # EMULATION
-          #shadps4
+          shadps4
 
           # RHYTHM GAMES
           clonehero
 
           # GAMING UTILITIES
+            # LAUNCHERS
+            _gamma-launcher
+            heroic
+            pkgs.bndlfm.hydralauncher
+            itch
+            lutris
+            prismlauncher
+            runelite
 
-          # LAUNCHERS
-          _gamma-launcher
-          heroic
-          pkgs.bndlfm.hydralauncher
-          itch
-          lutris
-          prismlauncher
-          runelite
+            # MODDING
+            _beatSaberModManager
+            sidequest
 
-          # MODDING
-          _beatSaberModManager
-          sidequest
+            # MISC
+            mangohud
+            protontricks
+            protonup-ng
+            steamtinkerlaunch
         ];
 
         media = [
           calibre
-          cider
           freetube
           mpv
+          # spotify: ~/.nixcfg/theme/spicetify.nix
         ];
 
         notes = [
@@ -306,7 +291,6 @@
           # Wine/Proton
             wineWowPackages.stable
             winetricks
-            protonup-ng
         ];
 
         theming = {
@@ -471,7 +455,7 @@
     ######### (HM) DOTFILES ########
     file = {
       ".aider.model.metadata.json" = {
-        source = ./.config/.aider.model.metadata.json;
+        source = ../../.config/.aider.model.metadata.json;
       };
     };
   };
@@ -479,57 +463,57 @@
   xdg = {
     configFile = {
       "hypr" = {
-        source = ./.config/hypr;
+        source = ../../.config/hypr;
         recursive = true;
       };
       "joshuto" = {
-        source = ./.config/joshuto;
+        source = ../../.config/joshuto;
         recursive = true;
       };
-      ##"mimeapps.list" = {
+      ##"mimeapps../..list" = {
       ##  force = true;
       ##};
       "mutt" = {
-        source = ./.config/mutt;
+        source = ../../.config/mutt;
         recursive = true;
       };
       "polybar" = {
-        source = ./.config/polybar;
+        source = ../../.config/polybar;
         recursive = true;
       };
       "pulsemixer.cfg" = {
-        source = ./.config/pulsemixer.cfg;
+        source = ../../.config/pulsemixer.cfg;
         recursive = false;
       };
       "ranger" = {
-        source = ./.config/ranger;
+        source = ../../.config/ranger;
         recursive = true;
       };
       "rofi" = {
-        source = ./.config/rofi;
+        source = ../../.config/rofi;
         recursive = true;
       };
       "tridactyl" = {
-        source = ./.config/tridactyl;
+        source = ../../.config/tridactyl;
         recursive = true;
       };
       "twt" = {
-        source = ./.config/twt;
+        source = ../../.config/twt;
         recursive = true;
       };
       "qutebrowser/config.py" = {
-        source = ./.config/qutebrowser/config.py;
+        source = ../../.config/qutebrowser/config.py;
       };
       "waybar" = {
-        source = ./.config/waybar;
+        source = ../../.config/waybar;
         recursive = true;
       };
       "yazi" = {
-        source = ./.config/yazi;
+        source = ../../.config/yazi;
         recursive = true;
       };
       "zathura" = {
-        source = ./.config/zathura;
+        source = ../../.config/zathura;
         recursive = true;
       };
     };

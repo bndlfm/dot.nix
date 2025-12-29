@@ -85,8 +85,8 @@
           };
           remotePlay.openFirewall = true;
           extraCompatPackages = with pkgs; [
-            _proton-ge-rtsp
-            proton-ge-bin
+            #_proton-ge-rtsp
+            #proton-ge-bin
             gamescope
           ];
         };
@@ -102,7 +102,7 @@
           };
         };
         wivrn = {
-          enable = true;
+          enable = false;
           openFirewall = true;
 
           # Write information to /etc/xdg/openxr/1/active_runtime.json, VR applications

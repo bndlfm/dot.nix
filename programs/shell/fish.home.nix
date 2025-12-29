@@ -1,12 +1,13 @@
-{ config, pkgs, ...}:{
+{ pkgs, config, ...}:{
   home.packages = with pkgs; [
-    #_fish-ai
+    meow
+    bat
   ];
 
   programs = {
-  /*************
-  * FISH SHELL *
-  *************/
+    /*************
+    * FISH SHELL *
+    *************/
     fish = {
       enable = true;
       interactiveShellInit = /*sh*/ ''
@@ -14,41 +15,44 @@
         set pisces_only_insert_at_eol 1
 
         function fish_greeting --description "Prints To-do.md as Shell Greeting"
-          bat ~/Notes/To-do/To-do.md --style=plain --no-paging
+          #meow
+          #bat ~/Notes/To-do/To-do.md --style=plain --no-paging
         end
 
         function fish_user_key_bindings --description 'Colemak vi-keys'
-            fish_default_key_bindings -M insert
-            fish_vi_key_bindings --no-erase insert # Without --no-erase fish_vi_key_bindings will reset all bindings.
+          fish_default_key_bindings -M insert
+          fish_vi_key_bindings --no-erase insert # Without --no-erase fish_vi_key_bindings will reset all bindings.
 
-            if contains -- -h $argv
-                or contains -- --help $argv
-                echo "Sorry but this function doesn't support -h or --help" >&2
-                return 1
-            end
+          if contains -- -h $argv
+              or contains -- --help $argv
+              echo "Sorry but this function doesn't support -h or --help" >&2
+              return 1
+          end
 
-            ## ADJUST HJKL TO HNEI FOR NAVIGATION
-                bind -s --preset -M default h backward-char
-                bind -s --preset -M default n down-or-search
-                bind -s --preset -M default e up-or-search
-                bind -s --preset -M default i forward-char
+          ## ADJUST HJKL TO HNEI FOR NAVIGATION
+              bind -s --preset -M default h backward-char
+              bind -s --preset -M default n down-or-search
+              bind -s --preset -M default e up-or-search
+              bind -s --preset -M default i forward-char
 
-            ## REMAP (SHIFT) H TO GO TO THE bEGINNING OF lINE AND (SHIFT) I TO GO TO THE END OF LINE
-                bind -s --preset -M default H beginning-of-line
-                bind -s --preset -M default I end-of-line
+          ## REMAP (SHIFT) H TO GO TO THE bEGINNING OF lINE AND (SHIFT) I TO GO TO THE END OF LINE
+              bind -s --preset -M default H beginning-of-line
+              bind -s --preset -M default I end-of-line
 
-            # CHANGE K TO ACT AS I FOR INSERT MODE
-                bind -s --preset -m insert k repaint-mode
+          # CHANGE K TO ACT AS I FOR INSERT MODE
+              bind -s --preset -m insert k repaint-mode
 
-            # USE CTRL-Y TO ACCEPT SUGGESTED TEXT AND SUBMIT
-                bind -s --preset -M insert \cy "commandline -f accept-autosuggestion execute"
+          # USE CTRL-Y TO ACCEPT SUGGESTED TEXT AND SUBMIT
+              bind -s --preset -M insert \cy "commandline -f accept-autosuggestion execute"
 
-            # CODEX.FISH OPENAI CODEX PLUGIN
-              set -g FISH_AI_KEYMAP_1 'ctrl-x'
-              bind -M insert ctrl-x _fish_ai_codify_or_explain
-              set -g FISH_AI_KEYMAP_2 'ctrl-/'
-              bind -M insert ctrl-/ _fish_ai_autocomplete_or_fix
-              bind -M insert ctrl-p up-or-search # fixes fish-ai keybind
+          # CODEX.FISH OPENAI CODEX PLUGIN
+            set -g FISH_AI_KEYMAP_1 'ctrl-x'
+            bind -M insert ctrl-x _fish_ai_codify_or_explain
+            set -g FISH_AI_KEYMAP_2 'ctrl-/'
+            bind -M insert ctrl-/ _fish_ai_autocomplete_or_fix
+
+            bind -M insert \cp up-or-search # fixes fish-ai keybind
+            bind -M insert \cn down-or-search # fixes fish-ai keybind
         end
 
         ## more fish vi key fixes
@@ -73,7 +77,8 @@
         '';
       };
       plugins = [
-        { name = "fisher";
+        {
+          name = "fisher";
           src = pkgs.fetchFromGitHub {
             owner = "jorgebucaran";
             repo = "fisher";
@@ -125,23 +130,13 @@
           vim = "nvim";
 
         ### EDIT CONFIG ###
-          # wayland
-            rchpp = "nvim ~/.nixcfg/windowManagers/hm/hyprland.nix";
-          # x Window Manger
-            rsxh = "nvim ~/.nixcfg/.config/sxhkd/sxhkdrc";
           # other config abbr
             dbx = "distrobox";
             rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
-            rwb = "nvim ~/.nixcfg/.config/waybar/config";
+            rwayb = "nvim ~/.nixcfg/.config/waybar/config";
           ## NIX SPECIFIC CONFIGS
             nxs = "nix-search-tv print | fzf --preview 'nix-search-tv preview {}' --scheme history";
             nxc = "nixos-container";
-            ## CD TO CONFIG DIRS
-              rcnp = "cd ~/.nixcfg/programs/";
-            ## EDIT CONFIG
-              rhmc = "nvim ~/.nixcfg/neko.home.nix";
-              rnxf = "nvim ~/.nixcfg/flake.nix";
-              rnxc = "nvim ~/.nixcfg/meow.sys.nix";
             ## REBUILD SYSTEM
               nfu = "nix flake update --flake ~/.nixcfg/";
               nxrb = "nh os switch ~/.nixcfg";
@@ -149,24 +144,6 @@
             ## GARBAGE COLLECTION
               nxgc = "sudo nix-collect-garbage -d";
               hmgc = "nix-collect-garbage -d";
-
-        ### (G)O TO DIR ###
-          #fish
-            gfsh = { position = "anywhere"; setCursor = true; expansion = "~/.config/fish/%"; };
-          #tridactyl
-            gtri = { position = "anywhere"; setCursor = true; expansion = "~/.config/tridactyl/%"; };
-          #hyprland
-            ghyp = { position = "anywhere"; setCursor = true; expansion = "~/.config/hypr/%"; };
-          #neovim
-            gvi = { position = "anywhere"; setCursor = true; expansion = "~/.config/nvim/%"; };
-          #~/.local
-            gloc = { position = "anywhere"; setCursor = true; expansion = "~/.local/%"; };
-          #~/.config
-            gconf = { position = "anywhere"; setCursor = true; expansion = "~/.config/%"; };
-          #~/.local/bin
-            gbin = { position = "anywhere"; setCursor = true; expansion = "~/.local/bin/%"; };
-          #~/.local/containers/
-            gcont = { position = "anywhere"; setCursor = true; expansion = "~/.local/containers/%"; };
 
         ### CURL SHENANIGANS ###
           #cheat.sh
@@ -255,108 +232,20 @@
       };
     };
 
-
-  /***********
-  * NU SHELL *
-  ***********/
-    nushell = {
-      enable = true;
-      configFile.text = /* nu */''
-        # Disable the annoying banner
-        $env.config.show_banner = false
-
-        ### OH-MY-POSH INIT ####
-          # make sure we have the right prompt render correctly
-          if ($env.config? | is-not-empty) {
-              $env.config = ($env.config | upsert render_right_prompt_on_last_line true)
-          }
-
-          $env.POWERLINE_COMMAND = 'oh-my-posh'
-          $env.POSH_THEME = (echo ''')
-          $env.PROMPT_INDICATOR = ""
-          $env.POSH_SESSION_ID = (echo "1f750297-cc8c-4e57-8cba-96439fd91b2f")
-          $env.POSH_SHELL = "nu"
-          $env.POSH_SHELL_VERSION = (version | get version)
-
-          let _omp_executable: string = (echo "/nix/store/gh3piimq1ablp550qb00wc98smsym6p8-oh-my-posh-24.11.4/bin/oh-my-posh")
-
-          # PROMPTS
-          def --wrapped _omp_get_prompt [
-              type: string,
-              ...args: string
-          ] {
-              mut execution_time = -1
-              mut no_status = true
-              # We have to do this because the initial value of `$env.CMD_DURATION_MS` is always `0823`, which is an official setting.
-              # See https://github.com/nushell/nushell/discussions/6402#discussioncomment-3466687.
-              if $env.CMD_DURATION_MS != '0823' {
-                  $execution_time = $env.CMD_DURATION_MS
-                  $no_status = false
-              }
-
-              (
-                  ^$_omp_executable print $type
-                      --save-cache
-                      --shell=nu
-                      $"--shell-version=($env.POSH_SHELL_VERSION)"
-                      $"--status=($env.LAST_EXIT_CODE)"
-                      $"--no-status=($no_status)"
-                      $"--execution-time=($execution_time)"
-                      $"--terminal-width=((term size).columns)"
-                      ...$args
-              )
-          }
-
-          $env.PROMPT_MULTILINE_INDICATOR = (
-              ^$_omp_executable print secondary
-                  --shell=nu
-                  $"--shell-version=($env.POSH_SHELL_VERSION)"
-          )
-
-          $env.PROMPT_COMMAND = {||
-              # hack to set the cursor line to 1 when the user clears the screen
-              # this obviously isn't bulletproof, but it's a start
-              mut clear = false
-              if $nu.history-enabled {
-                  $clear = (history | is-empty) or ((history | last 1 | get 0.command) == "clear")
-              }
-
-              if ($env.SET_POSHCONTEXT? | is-not-empty) {
-                  do --env $env.SET_POSHCONTEXT
-              }
-
-              _omp_get_prompt primary $"--cleared=($clear)"
-          }
-
-          $env.PROMPT_COMMAND_RIGHT = {|| _omp_get_prompt right }
-
-          $env.TRANSIENT_PROMPT_COMMAND = {|| _omp_get_prompt transient }
-        ## pay-respects
-          def --env f [] {
-                  let dir = (with-env { _PR_LAST_COMMAND: (history | last).command, _PR_SHELL: nu } { /home/neko/.nix-profile/bin/pay-respects })
-                  cd $dir
-          }
-      '';
-    };
-
-
   /*********************
   * SHELL INTEGRATIONS *
   *********************/
     broot = {
       enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
     };
     carapace = {
-      enable = false;
-      enableFishIntegration = false;
-      enableNushellIntegration = false;
+      enable = true;
+      enableFishIntegration = true;
     };
     dircolors = {
       enable = true;
       enableFishIntegration = true;
-      #enableNushellIntegration = true;
     };
     eza = {
       enable = true;
@@ -365,60 +254,47 @@
     fzf = {
       enable = true;
       enableFishIntegration = true;
-      #enableNushellIntegration = true;
     };
     mcfly = {
       enable = false;
       enableFishIntegration = true;
-      #enableNushellIntegration = true;
     };
     navi = {
       enable = true;
       enableFishIntegration = true;
-      #enableNushellIntegration = true;
     };
     nix-your-shell = {
       enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
     };
     nix-index = {
       enable = true;
       enableFishIntegration = true;
-      #enableNushellIntegration = true;
     };
     oh-my-posh = {
       enable = true;
-      useTheme = "clean-detailed";
       enableFishIntegration = false;
-      enableNushellIntegration = true;
     };
     pay-respects = {
       enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = false;
     };
     yazi = {
+      enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
     };
     zellij = {
-      enableFishIntegration = false;
-      #enableNushellIntegration = true;
-      settings = {
-        default_shell = "fish";
-      };
+      enable = false;
+      enableFishIntegration = true;
     };
     zoxide = {
       enable = true;
       enableFishIntegration = true;
-      enableNushellIntegration = true;
     };
   };
   services = {
     gpg-agent = {
       enableFishIntegration = true;
-      enableNushellIntegration = true;
     };
   };
 
@@ -427,30 +303,16 @@
       [fish-ai]
       configuration = google
       history = 10
+      preview_pipe = True
 
       [google]
       provider = google
       api_key = ${config.sops.placeholder."ai_keys/GEMINI_SECRET_KEY"}
-
-
-      [huggingface]
-      provider = huggingface
-      email = firefliesandlightningbugs@gmail.com
-      password = ${config.sops.placeholder."ai_keys/HUGGINGFACE_PASSWD"}
-      model = meta-llama/Llama-3.3-70B-Instruct
-
-      [self-hosted]
-      provider = self-hosted
-      server = http://localhost:33841/v1/
-      model = qwencoder
-      api_key = sk-litellm
+      model = gemini-3-flash-preview
     '';
   };
-  #    [openai]
-  #    provider = openai
-  #    model = gpt-4o
-  #    api_key = ${config.sops.placeholder."ai_keys/OPENAI_API_KEY"}
 
   xdg.configFile."fish-ai.ini".source =
     config.lib.file.mkOutOfStoreSymlink config.sops.templates."fish-ai.ini".path;
+
 }

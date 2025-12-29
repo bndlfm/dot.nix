@@ -30,8 +30,8 @@
         };
       "/mnt/data" =
         {
-          device = "/dev/disk/by-uuid/ad281e3a-7c33-48e2-be75-2b6433acee04";
-          fsType = "ext4";
+          device = "/dev/disk/by-uuid/c282b6e2-6fd0-4fb6-b124-606b4f88932a";
+          fsType = "btrfs";
           options =
             [
               "noatime"

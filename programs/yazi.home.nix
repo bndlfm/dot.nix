@@ -1,15 +1,11 @@
 { pkgs, ... }:{
   programs.yazi = {
     enable = true;
-    package = pkgs.yazi.override {
-      # Broken AGAIN
-      _7zz = (pkgs._7zz.override { useUasm = true; });
-    };
     enableFishIntegration = true;
     enableBashIntegration = true;
     enableZshIntegration = true;
     keymap = {
-      manager.keymap = [
+      mgr.keymap = [
         { on = [ "<Esc>" ]; exec = "escape"; desc = "Exit visual mode, clear selected, or cancel search"; }
         { on = [ "q" ]; exec = "quit"; desc = "Exit the process"; }
         { on = [ "Q" ]; exec = "quit --no-cwd-file"; desc = "Exit the process without writing cwd-file"; }
@@ -304,7 +300,7 @@
       ];
     };
     theme = {
-      manager.theme = {
+      mgr.theme = {
         cwd = { fg = "cyan"; };
 
         # Hovered

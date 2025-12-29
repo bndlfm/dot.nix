@@ -6,7 +6,7 @@
   ...
 }:
 let
-  _g = import ./lib/globals.nix { inherit config; }; # My global variables
+  _g = import ../../lib/globals.nix { inherit config; }; # My global variables
 in
 {
   imports = [
@@ -253,9 +253,9 @@ in
       package = pkgs.usbmuxd2;
     };
     ollama = {
-      enable = false; # ## SEE PODMAN + HARBOR
+      enable = true; # ## SEE PODMAN + HARBOR
       host = "0.0.0.0";
-      openFirewall = false;
+      openFirewall = true;
     };
     openssh.enable = true;
     printing.enable = true;
@@ -296,7 +296,7 @@ in
       DefaultTimeoutStopSec = "10s";
     };
     tmpfiles.rules = [
-      "L+ /run/gdm/.config/monitors.xml - - - - ${builtins.readFile ./.config/monitors.xml}"
+      "L+ /run/gdm/.config/monitors.xml - - - - ${builtins.readFile ../../.config/monitors.xml}"
     ];
   };
 

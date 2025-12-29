@@ -96,57 +96,6 @@ in
             #transform.rotation = 90;
           };
         };
-        #outputs = let
-        #  toInt = pkgs.lib.strings.toInt;
-        #in  {
-        #    ## LEFT MONITOR
-        #      "${_g.monitors.left.output}" =
-        #        {
-        #          enable = true;
-        #          mode =
-        #            {
-        #              width = toInt "${_g.monitors.left.res.width}";
-        #              height = toInt "${_g.monitors.left.res.height}";
-        #            };
-        #          position =
-        #            {
-        #              x = toInt "${_g.monitors.left.pos.x}";
-        #              y = toInt "${_g.monitors.left.pos.y}";
-        #            };
-        #          transform.rotation = 270;
-        #        };
-        #    ## CENTER MONITOR
-        #      "${_g.monitors.center.output}" =
-        #        {
-        #          enable = true;
-        #          mode =
-        #            {
-        #              width = toInt "${_g.monitors.center.res.width}";
-        #              height = toInt "${_g.monitors.center.res.height}";
-        #            };
-        #          position =
-        #            {
-        #              x = toInt "${_g.monitors.center.pos.x}";
-        #              y = toInt "${_g.monitors.center.pos.y}";
-        #            };
-        #          variable-refresh-rate = false;
-        #        };
-        #    ## RIGHT MONITOR
-        #      "${_g.monitors.right.output}" = {
-        #        enable = true;
-        #        mode =
-        #          {
-        #            width = toInt "${_g.monitors.right.res.width}";
-        #            height = toInt "${_g.monitors.right.res.height}";
-        #          };
-        #        position =
-        #          {
-        #            x = toInt "${_g.monitors.right.pos.x}";
-        #            y = toInt "${_g.monitors.right.pos.y}";
-        #          };
-        #        transform.rotation = 90;
-        #      };
-        #};
 
         layout = {
           preset-column-widths = [
