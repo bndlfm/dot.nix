@@ -175,19 +175,21 @@
         mopidy-youtube
       ];
       settings = {
-        media_dirs = [
-          "${builtins.getEnv "XDG_MUSIC_DIR"}|Music"
-        ];
-        follow_symlinks = true;
-        excluded_file_extensions = [
-          ".html"
-          ".zip"
-          ".jpg"
-          ".jpeg"
-          ".png"
-          ".tif"
-          ".tiff"
-        ];
+        file = {
+          media_dirs = [
+            "${builtins.getEnv "XDG_MUSIC_DIR"}|Music"
+          ];
+          follow_symlinks = true;
+          excluded_file_extensions = [
+            ".html"
+            ".zip"
+            ".jpg"
+            ".jpeg"
+            ".png"
+            ".tif"
+            ".tiff"
+          ];
+        };
         mpd = {
           hostname = "::";
         };
