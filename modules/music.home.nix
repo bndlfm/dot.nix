@@ -165,27 +165,65 @@
     #};
   };
   services = {
-    mpd = {
+    mopidy = let
+      mopidyPackagesOverride = pkgs.mopidyPackages.overrideScope (prev: final: {
+        extraPkgs = pkgs: [ pkgs.yt-dlp ];
+      });
+    in {
       enable = true;
+      extensionPackages = with mopidyPackagesOverride; [
+        mopidy-youtube
+      ];
+      settings = {
+        media_dirs = [
+          "${builtins.getEnv "XDG_MUSIC_DIR"}|Music"
+        ];
+        follow_symlinks = true;
+        excluded_file_extensions = [
+          ".html"
+          ".zip"
+          ".jpg"
+          ".jpeg"
+          ".png"
+          ".tif"
+          ".tiff"
+        ];
+        mpd = {
+          hostname = "::";
+        };
+        youtube = {
+          youtube_dl_package = "yt_dlp";
+        };
+      };
+      #extraConfig = ''
+      #  [mpd]
+      #  hostname = ::
+
+      #  [youtube]
+      #  youtube_dl_package = yt_dlp
+      #'';
+    };
+    mpd = {
+      enable = false;
       musicDirectory = "${builtins.getEnv "HOME"}/Music";
       network =
         {
           startWhenNeeded = true;
           port = 6600;
         };
-      #extraConfig = ''
-      #  audio_output {
-      #    type "pipewire"
-      #    name "Pipewire"
-      #  }
-      #'';
+      extraConfig = ''
+        audio_output {
+          type "pipewire"
+          name "Pipewire"
+        }
+      '';
     };
-    #mpdris2 = {
-    #  enable = false;
-    #  mpd = {};
-    #  multimediaKeys = true;
-    #  notifications = true;
-    #};
+    mpdris2 = {
+      enable = false;
+      mpd = {};
+      multimediaKeys = true;
+      notifications = true;
+    };
     mpd-discord-rpc.enable = false;
   };
 }
