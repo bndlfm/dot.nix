@@ -52,7 +52,6 @@
     # SPOTIFY #
     ###########
     inputs.spicetify-nix.homeManagerModules.default
-    ../../theme/spicetify.nix
 
     ###################
     # WINDOW MANAGERS #

@@ -15,6 +15,7 @@
 
       "internet/DUCKDNS_TOKEN" = {};
       "internet/GMAIL_APP_PASS" = {};
+      "internet/lastfm_pass" = {};
       "internet/TWITCH_IRC_OAUTH" = {};
 
       "local/OBSIDIAN_REST_API_KEY" = {};

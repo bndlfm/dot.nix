@@ -19,7 +19,7 @@ in
     ../../programs/agl.sys.nix
 
     ## MODULES
-    ../../modules/gaming.nix
+    ../../modules/gaming.sys.nix
     ../../modules/caddy-tailscale.sys.nix
 
     ## SECRETS
@@ -33,7 +33,7 @@ in
     ../../modules/nixarr.sys.nix
 
     ## WINDOW MANAGERS
-    #./windowManagers/hyprland.sys.nix
+    ../../modules/wm/hyprland.sys.nix
   ];
 
   #-------- PACKAGES --------#
@@ -260,9 +260,11 @@ in
     openssh.enable = true;
     printing.enable = true;
     resolved.enable = true;
-    udev.extraRules = ''
-      SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="*",GROUP="users", MODE="0660"
-    '';
+    udev = {
+      extraRules = ''
+        SUBSYSTEMS=="usb", ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="*",GROUP="users", MODE="0660"
+      '';
+    };
     xserver = {
       enable = true;
       windowManager = {
@@ -419,11 +421,8 @@ in
       modesetting.enable = true;
       nvidiaSettings = true;
       powerManagement.enable = false;
-
-      ### Experimental, and can cause sleep/suspend to fail.
     };
     nvidia-container-toolkit.enable = true;
-    steam-hardware.enable = true;
   };
   services.xserver.videoDrivers = [ "nvidia" ];
   environment.variables = {
@@ -479,7 +478,7 @@ in
       "nvidia.hdmi_deepcolor=1"
       "amd_pstate=active"
     ];
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = inputs.nix-cachyos-kernel.legacyPackages.x86_64-linux.linuxPackages-cachyos-latest-lto-x86_64-v3;
     kernel.sysctl = {
       "vm.overcommit_memory" = 1;
       "vm.max_map_count" = lib.mkForce 16777216; # for S&BOX
