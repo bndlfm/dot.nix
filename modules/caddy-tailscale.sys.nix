@@ -41,7 +41,7 @@
               "github.com/tailscale/caddy-tailscale@v0.0.0-20250207163903-69a970c84556"
               "github.com/jasonlovesdoggo/caddy-defender@v0.8.5"
             ];
-          hash = "sha256-yjbU1YrbTe31PVgAYS525ZtSHHDnIPsz21p/6UVt9Vk=";
+          hash = "sha256-deSMEs9pmbmc6B+IexAjywpw7cCRn1ZOCTbVJve8SjI=";
         };
     };
     networkd-dispatcher = {

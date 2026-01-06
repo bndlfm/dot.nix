@@ -76,26 +76,26 @@
     {
       color: #268bd2;
       padding-left: 2px;
-    },
+    }
   #cpu
     {
       color: #6c71c4;
       padding-right: 2px;
-    },
+    }
   #temperature
     {
       color: #ffffff;
       padding-left: 2px
-    },
+    }
   #memory
     {
       color: #2aa198;
       padding-right: 1px;
-    },
+    }
   #battery
     {
       color: #859900;
-    },
+    }
   #disk
     {
       color: #b58900;

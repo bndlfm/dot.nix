@@ -12,18 +12,20 @@ return {
 
       bold_keywords = true,
       italic_comments = true,
-      transparent_bg = false,
+      transparent = {
+        bg = false,
+      },
       -- Enable brighter float border.
       bright_border = false,
       reduced_blue = true,
       -- Swap the dark background with the normal one.
       swap_backgrounds = false,
       -- Override the styling of any highlight group.
-      override = {
-        Visual = {
-          bg = palette.gray2,
-        },
-      },
+      --override = {
+      --  Visual = {
+      --    bg = palette.gray2,
+      --  },
+      --},
       -- Cursorline options.  Also includes visual/selection.
       cursorline = {
         bold = true,

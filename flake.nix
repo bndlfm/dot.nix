@@ -16,9 +16,6 @@
         nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
         nixpkgs-bndlfm.url = "github:bndlfm/nixpkgs";
 
-      ## CACHY KERNEL
-        nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-
       ## CUSTOMIZATION
         base16.url = "github:SenchoPens/base16.nix";
         stylix.url = "github:Mikilio/stylix";
@@ -84,8 +81,6 @@
       home-manager,
       nur,
       nix-flatpak,
-
-      nix-cachyos-kernel,
 
       aagl,
       lsfg-vk,

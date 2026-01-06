@@ -106,7 +106,6 @@ in
 
   #-------- PACKAGE MODULES --------#
   programs = {
-    adb.enable = true;
     dconf = {
       enable = true;
     };
@@ -478,7 +477,7 @@ in
       "nvidia.hdmi_deepcolor=1"
       "amd_pstate=active"
     ];
-    kernelPackages = inputs.nix-cachyos-kernel.legacyPackages.x86_64-linux.linuxPackages-cachyos-latest-lto-x86_64-v3;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
       "vm.overcommit_memory" = 1;
       "vm.max_map_count" = lib.mkForce 16777216; # for S&BOX
@@ -493,7 +492,11 @@ in
   xdg = {
     portal = {
       enable = true;
-      extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
+      extraPortals = with pkgs;
+        [
+          xdg-desktop-portal-gtk
+          kdePackages.xdg-desktop-portal-kde
+        ];
       config = {
         common = {
           default = [
@@ -509,13 +512,7 @@ in
         };
         gnome = {
           default = [
-            "gtk"
-            "kde"
-          ];
-        };
-        hyprland = {
-          default = [
-            "hyprland"
+            "gnome"
             "kde"
           ];
         };

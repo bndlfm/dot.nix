@@ -8,6 +8,8 @@
   home.username = "neko";
   home.homeDirectory = "/home/neko";
 
+  news.display = "silent";
+
   imports = [
     ../../cachix.nix
     ##############
@@ -18,13 +20,14 @@
     # MODULES #
     ###########
     ../../modules/openComposite.home.nix # WiVRn
+    ../../modules/music.home.nix
+    #FIX: ../../modules/notes.home.nix
 
     ############
     # PROGRAMS #
     ############
     ../../programs/programs.home.nix
     ../../programs/email.home.nix
-    ../../modules/music.home.nix
     ../../programs/shell
     ../../programs/twitch.home.nix
 
@@ -57,7 +60,7 @@
     # WINDOW MANAGERS #
     ###################
     #./programs/gnome-shell.home.nix
-    #../../modules/wm/hyprland.home.nix
+    ../../modules/wm/hyprland.home.nix
     ../../modules/wm/niri.home.nix
   ];
 
@@ -199,7 +202,7 @@
             _gamma-launcher
             heroic
             pkgs.bndlfm.hydralauncher
-            itch
+            #itch
             lutris
             prismlauncher
             runelite
@@ -230,7 +233,8 @@
         ];
 
         programming = [
-
+          claude-code
+          crush
           #
           # DOTNET
           #-------
@@ -353,7 +357,6 @@
             dunst
             eww
             jgmenu
-            polybar
             weather-icons
             nitrogen
             scrot
@@ -380,7 +383,6 @@
             qbittorrent
             qdirstat
             rofi
-            synergy
             zathura
             zsa-udev-rules
           ];
@@ -431,12 +433,15 @@
       SUDOEDITOR = "nvim";
       VISUAL = "nvim";
       ## GPU
-      PROTON_ENABLE_NVAPI = "1";
-      PROTON_HIDE_NVIDIA_GPU = "0";
+      PROTON_ENABLE_NVAPI = 1;
+      PROTON_HIDE_NVIDIA_GPU = 0;
       VKD3D_CONFIG = "dxr";
       ## NIX
-      NIXOS_OZONE_WL = "1"; # fixes electron wayland
+      NIXPKGS_ALLOW_UNFREE = 1;
+      NIXOS_OZONE_WL = 1; # fixes electron wayland
       NH_FLAKE = "${builtins.getEnv "HOME"}/.nixcfg/"; # nix helper env var for flake location
+      ## NIX PROFILES
+      PATH = "$HOME/.local/state/nix/profiles/tools/bin:$PATH";
       ## PAGER
       PAGER = "nvim +Man!";
       MANPAGER = "nvim +Man!";

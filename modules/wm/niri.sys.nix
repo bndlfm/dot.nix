@@ -7,4 +7,5 @@
     enable = true;
     package = inputs.niri.packages.x86_64-linux.niri-unstable;
   };
+  xdg.portal.config.niri.default = [ "gtk" "kde" ];
 }

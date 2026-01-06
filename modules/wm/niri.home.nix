@@ -11,6 +11,7 @@ in
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
   imports = [
+    ../../mod/nyarch-assistant.home.nix
   ];
 
   home.packages = with pkgs; [
@@ -128,16 +129,13 @@ in
               "--hide-window"
             ];
           }
-          ## CLIPBOARD
-          {
+          { ## CLIPBOARD
             command = [
               "copyq"
               "--start-server"
             ];
           }
-          #{ command = [ "clipse" "-listen"]; }
-          ## GAMMA
-          {
+          { ## GAMMA
             command = [
               "gammastep-indicator"
               "-l"
@@ -146,7 +144,6 @@ in
               "6500:4800"
             ];
           }
-          #{ command = [ "wl-gammarelay-rs" ]; }
           ## GDRIVE
           {
             command = [
@@ -154,11 +151,13 @@ in
               "/home/neko/Documents/GoogleDrive/"
             ];
           }
-          ## KDE-CONNECT
-          { command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect" ]; }
-          { command = [ "kdeconnect-indicator" ]; }
-          ## POWER SAVINGS
+          { ## KDE-CONNECT
+            command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect" ];
+          }
           {
+            command = [ "kdeconnect-indicator" ];
+          }
+          { ## POWER SAVINGS
             command = [
               "sh"
               "-c"
@@ -219,6 +218,12 @@ in
             "${Mod}+Q".action.close-window = [ ];
             ## TERMINAL/LAUNCHER
             "${Mod}+D".action.spawn = "fuzzel";
+            ## NEWELLE
+            "Alt+BackSpace".action = sh ( builtins.concatStringsSep "; " [
+              "flatpak run --command=gsettings moe.nyarchlinux.assistant set moe.nyarchlinux.assistant startup-mode 'mini'"
+              "flatpak run moe.nyarchlinux.assistant"
+            ]);
+
             "${Mod}+BackSpace".action.spawn = "kitty";
             ## RESTART WAYBAR/SWAYBAR
             "${Mod}+W".action = sh (
