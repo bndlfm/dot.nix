@@ -19,9 +19,9 @@
     ###########
     # MODULES #
     ###########
-    ../../modules/openComposite.home.nix # WiVRn
-    ../../modules/music.home.nix
-    #FIX: ../../modules/notes.home.nix
+    ../../components/openComposite.home.nix # WiVRn
+    ../../components/music.home.nix
+    #FIX: ../../components/notes.home.nix
 
     ############
     # PROGRAMS #
@@ -60,8 +60,8 @@
     # WINDOW MANAGERS #
     ###################
     #./programs/gnome-shell.home.nix
-    ../../modules/wm/hyprland.home.nix
-    ../../modules/wm/niri.home.nix
+    ../../components/wm/hyprland.home.nix
+    ../../components/wm/niri.home.nix
   ];
 
   ##########################
@@ -124,8 +124,9 @@
         ai = [
           aichat
           aider-chat
-          warp-terminal
+          inputs.llama-cpp_ik.packages.x86_64-linux.cuda
           n8n
+          warp-terminal
         ];
 
         apple = [

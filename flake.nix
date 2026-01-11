@@ -32,6 +32,10 @@
         aagl.url = "github:ezKEa/aagl-gtk-on-nix";
         #deejavu.url = "github:bndlfm/deejavu";
         #jovian-nixos.url = "github:Jovian-Experiments/Jovian-NixOS";
+        llama-cpp_ik = {
+          url = "github:ikawrakow/ik_llama.cpp";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
         lsfg-vk = {
           url = "github:pabloaul/lsfg-vk-flake/main";
           inputs.nixpkgs.follows = "nixpkgs";
