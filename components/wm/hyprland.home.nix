@@ -5,6 +5,11 @@
 }:let
   _g = import ../../lib/globals.nix {inherit config; };
 in {
+
+    imports = [
+      ./waybar.home.nix
+    ];
+
     home.packages = with pkgs; [
       copyq
       fuzzel
@@ -48,24 +53,6 @@ in {
             ];
 
           #-------- Window Rules --------#
-          windowrule = [
-            ### Chatterino/Streamlink-Twitch-GUI
-            #  "workspace 10 silent, streamlink-twitch-gui"
-            #  "workspace 10 silent, chatterino"
-            ### Copyq Clipboard Manager
-            #  "float, com.github.hluk.copyq"
-            ### Discord
-            #  "workspace 10 silent, vencorddesktop"
-            ### MPV Picture-in-Picture
-            #  "workspace 10, mpv_pip"
-            #  "float, mpv_pip"
-            #  "size 659 369, mpv_pip"
-            #  "move 416 33, mpv_pip"
-            #  "pin, mpv_pip"
-            ### Steam
-            #  "workspace 7 silent, steam"
-            #  "float, steam"
-            ];
           windowrulev2 = [
             ## Clipboard
               "float, class:(clipse)"
@@ -236,9 +223,9 @@ in {
           ];
 
           monitor = [
-            #"${_g.monitors.left.output}, ${_g.monitors.left.res.width}x${_g.monitors.left.res.height}, ${_g.monitors.left.pos.x}x${_g.monitors.left.pos.y}, 1, transform, 3"
+            "${_g.monitors.left.output}, ${_g.monitors.left.res.width}x${_g.monitors.left.res.height}, ${_g.monitors.left.pos.x}x${_g.monitors.left.pos.y}, 1, transform, 3"
             "${_g.monitors.center.output}, ${_g.monitors.center.res.width}x${_g.monitors.center.res.height}@${_g.monitors.center.rate}, ${_g.monitors.center.pos.x}x${_g.monitors.center.pos.y}, 1"
-            #"${_g.monitors.right.output}, ${_g.monitors.right.res.width}x${_g.monitors.right.res.height}, ${_g.monitors.right.pos.x}x${_g.monitors.right.pos.y}, 1, transform, 3"
+            "${_g.monitors.right.output}, ${_g.monitors.right.res.width}x${_g.monitors.right.res.height}, ${_g.monitors.right.pos.x}x${_g.monitors.right.pos.y}, 1, transform, 3"
           ];
 
           workspace = [
@@ -311,7 +298,6 @@ in {
 
           experimental =
             {
-              xx_color_management_v4 = false;
             };
 
           input =

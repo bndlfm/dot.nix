@@ -121,11 +121,11 @@
     "format-alt": "{:%Y-%m-%d}"
   },
   "cpu": {
-    "format": "{usage}",
+    "format": "{usage} ",
     "tooltip": true
   },
   "memory": {
-    "format": "{}"
+    "format": "{} "
   },
   "temperature": {
     "critical-threshold": 80,
@@ -151,18 +151,18 @@
     "format-bluetooth-muted": "{icon} \n{format_source}",
     "format-muted": "󰋎 {format_source}",
     "format-source": "",
-    "format-source-muted": "",
+    "format-source-muted": " ",
     "format-icons": {
-      "headphone": "",
-      "hands-free": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
+      "headphone": " ",
+      "hands-free": " ",
+      "headset": " ",
+      "phone": " ",
+      "portable": " ",
+      "car": " ",
       "default": [
-        "",
-        "",
-        ""
+        " ",
+        " ",
+        " "
       ]
     },
     "on-click": "pavucontrol"

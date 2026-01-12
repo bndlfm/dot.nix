@@ -124,7 +124,8 @@
         ai = [
           aichat
           aider-chat
-          inputs.llama-cpp_ik.packages.x86_64-linux.cuda
+          antigravity-fhs
+#          inputs.llama-cpp_ik.packages.x86_64-linux.cuda
           n8n
           warp-terminal
         ];
