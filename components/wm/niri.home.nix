@@ -382,10 +382,10 @@ in
             {
               matches = [
                 {
-                  is-focused = true;
+                  is-focused = false;
                 }
               ];
-              opacity = 0.95;
+              opacity = 0.97;
             }
             ## VS CODE FLICKERS WITH TRANSPARENCY
             {

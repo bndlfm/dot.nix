@@ -17,7 +17,7 @@ let
     owner = "ComposioHQ";
     repo = "open-claude-cowork";
     rev = "master"; # or use a specific commit hash for reproducibility
-    sha256 = ""; # You'll need to fill this in after first build attempt
+    sha256 = "sha256-SyBVMaF7z6513HJ1vWV4R89g1gzJsomM3yopf7RZxzg="; # You'll need to fill this in after first build attempt
   };
 
   composio-cli = pkgs.stdenv.mkDerivation rec {
@@ -42,14 +42,14 @@ let
     version = "1.0.0";
     src = "${repo}/server";
 
-    npmDepsHash = "sha256-iEVorxF8E4Fcw+D22W7rVPwtr2RxcZSZCpadtZ3k0WI=";
+    npmDepsHash = "sha256-iRGzqvc99hM8VET4Nd6VUQyrj2az7qoPNe9DLrIqkG0=";
     dontNpmBuild = true;
     makeCacheWritable = true;
     npmFlags = [ "--legacy-peer-deps" ];
     nativeBuildInputs = [ pkgs.makeWrapper ];
 
     postInstall = ''
-      mkdir -p $out/bin $out/lib/node_modules/claude-agent-backend
+      mkdir -p $out/bin
 
       cp ${envFile} $out/lib/node_modules/claude-agent-backend/.env
 
@@ -64,7 +64,7 @@ let
     version = "1.0.0";
     src = repo;
 
-    npmDepsHash = "sha256-88k2g/j6FAE1fl823jTNt20ZEwHlSTWYvqs2SrkX+Ec=";
+    npmDepsHash = "sha256-SyBVMaF7z6513HJ1vWV4R89g1gzJsomM3yopf7RZxzg=";
     dontNpmBuild = true;
     makeCacheWritable = true;
     npmFlags = [ "--legacy-peer-deps" ];

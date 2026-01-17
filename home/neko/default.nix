@@ -5,18 +5,7 @@
   pkgs,
   ...
 }:
-  let
-    secretEnvVars = [
-      "ANTHROPIC_API_KEY"
-      "COMPOSIO_API_KEY"
-      "GEMINI_SECRET_KEY"
-      "GROQ_SECRET_KEY"
-      "HUGGINGFACE_API_KEY"
-      "HUGGINGFACE_PASSWD"
-      "OPENCODE_API_KEY"
-      "OBSIDIAN_REST_API_KEY"
-    ];
-  in {
+  {
     home.stateVersion = "23.11";
     home.username = "neko";
     home.homeDirectory = "/home/neko";
@@ -131,17 +120,20 @@
           patched = [
             #inputs.deejavu.packages.x86_64-linux.default
             darktable
-            nexusmods-app
           ];
 
           ai = [
-            _open-claude-cowork
+            #_open-claude-cowork
             aider-chat
             antigravity-fhs
             code-cursor-fhs
             vscode-fhs
             windsurf
+
+            claude-code
             codex
+            gemini-cli
+
             crush
             opencode
 #          inputs.llama-cpp_ik.packages.x86_64-linux.cuda
@@ -171,8 +163,9 @@
             ffmpeg-full
             file
             fzf
-            grex
             gnugrep
+            gopass
+            grex
             jq
             libnotify
             libqalculate
@@ -254,8 +247,6 @@
           ];
 
           programming = [
-            claude-code
-            crush
             #
             # DOTNET
             #-------
@@ -448,14 +439,20 @@
         ++ misc;
 
       ## (HM) ENVIRONMENT VARIABLES ##
-      sops.secrets = lib.genAttrs secretEnvVars (_: {});
-      sessionVariables = (
-        lib.mapAttrs' (name: _:
-        lib.nameValuePair
-          (lib.toUpper (builtins.replaceStrings ["_"] ["_"] name))
-          "$(cat ${config.sops.secrets.${name}.path})"
-        ) config.sops.secrets
-      ) // {
+      sessionVariables = {
+        ## SECRETS
+        ANTHROPIC_API_KEY = "$(cat ${config.sops.secrets."ai_keys/ANTHROPIC_API_KEY".path})";
+        COMPOSIO_API_KEY = "$(cat ${config.sops.secrets."ai_keys/COMPOSIO_API_KEY".path})";
+        GEMINI_SECRET_KEY = "$(cat ${config.sops.secrets."ai_keys/GEMINI_SECRET_KEY".path})";
+        GROQ_SECRET_KEY = "$(cat ${config.sops.secrets."ai_keys/GROQ_SECRET_KEY".path})";
+        HUGGINGFACE_API_KEY = "$(cat ${config.sops.secrets."ai_keys/HUGGINGFACE_API_KEY".path})";
+        HUGGINGFACE_PASSWD = "$(cat ${config.sops.secrets."ai_keys/HUGGINGFACE_PASSWD".path})";
+
+        DUCKDNS_TOKEN = "$(cat ${config.sops.secrets."internet/DUCKDNS_TOKEN".path})";
+        GMAIL_APP_PASS = "$(cat ${config.sops.secrets."internet/GMAIL_APP_PASS".path})";
+        TWITCH_IRC_OAUTH = "$(cat ${config.sops.secrets."internet/TWITCH_IRC_OAUTH".path})";
+        OBSIDIAN_REST_API_KEY = "$(cat ${config.sops.secrets."local/OBSIDIAN_REST_API_KEY".path})";
+
         ## EDITOR
         EDITOR = "nvim";
         SUDOEDITOR = "nvim";
@@ -468,14 +465,18 @@
         NIXPKGS_ALLOW_UNFREE = 1;
         NIXOS_OZONE_WL = 1; # fixes electron wayland
         NH_FLAKE = "${builtins.getEnv "HOME"}/.nixcfg/"; # nix helper env var for flake location
+
         ## NIX PROFILES
-        PATH = "$HOME/.local/state/nix/profiles/tools/bin:$PATH";
+        PATH = "$HOME/.local/state/nix/profiles/imperative/bin:$HOME/.local/state/nix/profiles/tools/bin:$PATH";
+
         ## PAGER
         PAGER = "nvim +Man!";
         MANPAGER = "nvim +Man!";
+
         ## QT STYLING
         QT_QPA_PLATFORMTHEME = "qt6ct";
         QT_STYLE_OVERRIDE = "kvantum";
+
         ## ...
         ELECTRON_OZONE_PLATFORM_HINT = "wayland"; # fixes electron wayland
         DOCKER_HOST = "unix:///run/user/1000/docker.sock";

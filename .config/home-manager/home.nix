@@ -67,7 +67,6 @@ in
       grimblast
       slurp
       nwg-look
-      waybar
       wine
       wl-clipboard
       wl-clipboard-x11
@@ -515,6 +514,10 @@ in
           ]))
         ];
       };
+    waybar = {
+      enable = true;
+      systemd.enable = true;
+    };
     };
 #-------- SERVICES --------#
   services = {
@@ -758,7 +761,6 @@ in
           vfr=true
           }
       #-------- Core Autostart --------#
-        exec-once = waybar
         exec-once = ibus-daemon
         exec-once = blueman-applet
         #exec-once = /usr/lib/polkit-kde-authentication-agent-1

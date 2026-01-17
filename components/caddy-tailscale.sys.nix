@@ -60,6 +60,7 @@
       enable = true;
       openFirewall = true;
       permitCertUid = "caddy";
+      useRoutingFeatures = "client";
     };
   };
 

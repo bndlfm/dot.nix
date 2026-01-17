@@ -13,7 +13,6 @@
       "ai_keys/GROQ_SECRET_KEY" = {};
       "ai_keys/HUGGINGFACE_API_KEY" = {};
       "ai_keys/HUGGINGFACE_PASSWD" = {};
-      "ai_keys/OPENCODE_API_KEY" = {};
 
       "internet/DUCKDNS_TOKEN" = {};
       "internet/GMAIL_APP_PASS" = {};
@@ -31,7 +30,6 @@
           GROQ_SECRET_KEY = ${config.sops.placeholder."ai_keys/GROQ_SECRET_KEY"}
           HUGGINGFACE_API_KEY = ${config.sops.placeholder."ai_keys/HUGGINGFACE_API_KEY"}
           HUGGINGFACE_PASSWD = ${config.sops.placeholder."ai_keys/HUGGINGFACE_PASSWD"}
-          OPENCODE_API_KEY = ${config.sops.placeholder."ai_keys/OPENCODE_API_KEY"}
 
           DUCKDNS_TOKEN = ${config.sops.placeholder."internet/DUCKDNS_TOKEN"}
           GMAIL_APP_PASS = ${config.sops.placeholder."internet/GMAIL_APP_PASS"}
