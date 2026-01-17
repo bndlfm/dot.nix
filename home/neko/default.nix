@@ -1,6 +1,7 @@
 {
-  pkgs,
+  config,
   inputs,
+  pkgs,
   ...
 }:
 {
@@ -19,7 +20,7 @@
     ###########
     # MODULES #
     ###########
-    ../../components/openComposite.home.nix # WiVRn
+    #../../components/openComposite.home.nix # WiVRn
     ../../components/music.home.nix
     #FIX: ../../components/notes.home.nix
 
@@ -122,12 +123,18 @@
         ];
 
         ai = [
-          aichat
+          _open-claude-cowork
           aider-chat
           antigravity-fhs
+          code-cursor-fhs
+          vscode-fhs
+          windsurf
+          codex
+          crush
+          opencode
 #          inputs.llama-cpp_ik.packages.x86_64-linux.cuda
-          n8n
           warp-terminal
+          n8n
         ];
 
         apple = [
@@ -429,7 +436,7 @@
       ++ misc;
 
     ## (HM) ENVIRONMENT VARIABLES ##
-    sessionVariables = {
+    sessionVariables = config.sops.templates."session-secrets".content // {
       ## EDITOR
       EDITOR = "nvim";
       SUDOEDITOR = "nvim";

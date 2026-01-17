@@ -18,7 +18,7 @@
     {
       left =
         {
-          output = "HDMI-A-2";
+          output = "HDMI-A-1";
           pos =
             {
               x = "0";

@@ -225,21 +225,21 @@ in {
           monitor = [
             "${_g.monitors.left.output}, ${_g.monitors.left.res.width}x${_g.monitors.left.res.height}, ${_g.monitors.left.pos.x}x${_g.monitors.left.pos.y}, 1, transform, 3"
             "${_g.monitors.center.output}, ${_g.monitors.center.res.width}x${_g.monitors.center.res.height}@${_g.monitors.center.rate}, ${_g.monitors.center.pos.x}x${_g.monitors.center.pos.y}, 1"
-            "${_g.monitors.right.output}, ${_g.monitors.right.res.width}x${_g.monitors.right.res.height}, ${_g.monitors.right.pos.x}x${_g.monitors.right.pos.y}, 1, transform, 3"
+            "${_g.monitors.right.output}, ${_g.monitors.right.res.width}x${_g.monitors.right.res.height}, ${_g.monitors.right.pos.x}x${_g.monitors.right.pos.y}, 1, transform, 1"
           ];
 
           workspace = [
-            #"8, monitor:${_g.monitors.left.output}, default:true"
+            "8, monitor:${_g.monitors.left.output}, default:true"
             "1, monitor:${_g.monitors.center.output}, default:true"
-            #"7, monitor:${_g.monitors.center.output}"
-            #"10, monitor:${_g.monitors.right.output}, default:true"
+            "7, monitor:${_g.monitors.center.output}"
+            "10, monitor:${_g.monitors.right.output}, default:true"
           ];
 
           #-------- Hyprland Variables --------#
           general =
             {
               # https://wiki.hyprland.org/Configuring/Variables/ for more
-              #allow_tearing = true;
+              allow_tearing = true;
               gaps_in = 5;
               gaps_out = 10;
               border_size = 4;

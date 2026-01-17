@@ -116,7 +116,7 @@
     "spacing": 2
   },
   "clock": {
-    "format": "<b>{:%H\n%M}</b>",
+    "format": " <b>{:%H:%M}</b> ",
     "tooltip-format": "\n<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "format-alt": "{:%Y-%m-%d}"
   },

@@ -11,6 +11,7 @@ in
   _fish-ai = cPkg ./fishPlugins/fish-ai.nix { };
   _gamma-launcher = cPkg ./gamma-launcher.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };
+  _open-claude-cowork = cPkg ./open-claude-cowork/default.nix { };
   _phoneinfoga = cPkg ./phoneinfoga.nix { };
   _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
   _vintagestory = cPkg ./vintageStory.nix { };

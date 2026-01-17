@@ -3,7 +3,7 @@ keys:
   - &host_ssh_key age1sc0kpgelt969f8vcrnft060cccxwpp25pmz58vzts85ukepnkezszg0a2q
 
 creation_rules:
-  - path_regex: sops/secrets.yaml$
+  - path_regex: sops/secrets.home.yaml$
     key_groups:
       - age:
         - *user_age_key

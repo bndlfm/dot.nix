@@ -95,7 +95,7 @@ in
               x = 3760;
               y = 580;
             };
-            #transform.rotation = 90;
+            transform.rotation = 90;
           };
         };
 
@@ -119,8 +119,6 @@ in
         };
 
         spawn-at-startup = [
-          ## BAR
-          { command = [ "waybar" ]; }
           ## BLUETOOOTH
           { command = [ "blueman-applet" ]; }
           ## TAILSCALE TRAY
@@ -388,6 +386,24 @@ in
                 }
               ];
               opacity = 0.95;
+            }
+            ## VS CODE FLICKERS WITH TRANSPARENCY
+            {
+              matches = [
+                { # the leftover carcass of windsurf
+                  app-id = "windsurf";
+                }
+                { # google antigravity
+                  app-id = "antigravity";
+                }
+                { # vs code
+                  app-id = "code";
+                }
+                {
+                  app-id = "kiri";
+                }
+              ];
+              opacity = null;
             }
             ## Nyarch Assistant
             {

@@ -4,170 +4,169 @@
     settings = let
       _g = import ../../lib/globals.nix { inherit config; };
       default_modules = builtins.fromJSON /*css*/ ''
-        [
-          {
-            "wlr/workspaces": {
-              "disable-scroll": false,
-              "all-outputs": false,
-              "format": "{name}: {icon}",
-              "format-icons": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": "󰎞 ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": "󰠳 ",
-                "10": " ",
-                "urgent": " ",
-                "focused": " ",
-                "default": " "
-              }
+        {
+          "wlr/workspaces": {
+            "disable-scroll": false,
+            "all-outputs": false,
+            "format": "{name}: {icon}",
+            "format-icons": {
+              "1": " ",
+              "2": " ",
+              "3": " ",
+              "4": "󰎞 ",
+              "5": " ",
+              "6": " ",
+              "7": " ",
+              "8": " ",
+              "9": "󰠳 ",
+              "10": " ",
+              "urgent": " ",
+              "focused": " ",
+              "default": " "
+            }
+          },
+          "hyprland/workspaces": {
+            "disable-scroll": false,
+            "all-outputs": false,
+            "format": "{name}: {icon}",
+            "format-icons": {
+              "1": " ",
+              "2": " ",
+              "3": " ",
+              "4": "󰎞 ",
+              "5": " ",
+              "6": " ",
+              "7": " ",
+              "8": " ",
+              "9": "󰠳 ",
+              "10": " ",
+              "urgent": " ",
+              "focused": " ",
+              "default": " "
+            }
+          },
+          "keyboard-state": {
+            "numlock": true,
+            "capslock": false,
+            "format": "{name} {icon}",
+            "format-icons": {
+              "locked": " ",
+              "unlocked": " "
+            }
+          },
+          "wlr/mode": {
+            "format": "<span style=\"italic\">{}</span>"
+          },
+          "wlr/scratchpad": {
+            "format": "{icon} {count}",
+            "show-empty": true,
+            "format-icons": [
+              "",
+              ""
+            ],
+            "tooltip": true,
+            "tooltip-format": "{app}: {title}"
+          },
+          "mpd": {
+            "format": "{stateIcon}  {consumeIcon}{singleIcon}{artist} - {title}",
+            "format-disconnected": "Disconnected ",
+            "format-stopped": "{consumeIcon}Stopped",
+            "unknown-tag": "N/A",
+            "interval": 2,
+            "consume-icons": {
+              "on": " "
             },
-            "hyprland/workspaces": {
-              "disable-scroll": false,
-              "all-outputs": false,
-              "format": "{name}: {icon}",
-              "format-icons": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": "󰎞 ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": "󰠳 ",
-                "10": " ",
-                "urgent": " ",
-                "focused": " ",
-                "default": " "
-              }
+            "random-icons": {
+              "off": "<span color=\"#f53c3c\"></span> ",
+              "on": " "
             },
-            "keyboard-state": {
-              "numlock": true,
-              "capslock": false,
-              "format": "{name} {icon}",
-              "format-icons": {
-                "locked": " ",
-                "unlocked": " "
-              }
+            "repeat-icons": {
+              "on": " "
             },
-            "wlr/mode": {
-              "format": "<span style=\"italic\">{}</span>"
+            "single-icons": {
+              "on": "1 "
             },
-            "wlr/scratchpad": {
-              "format": "{icon} {count}",
-              "show-empty": true,
-              "format-icons": [
-                "",
-                ""
-              ],
-              "tooltip": true,
-              "tooltip-format": "{app}: {title}"
+            "state-icons": {
+              "paused": "",
+              "playing": ""
             },
-            "mpd": {
-              "format": "{stateIcon}  {consumeIcon}{singleIcon}{artist} - {title}",
-              "format-disconnected": "Disconnected ",
-              "format-stopped": "{consumeIcon}Stopped",
-              "unknown-tag": "N/A",
-              "interval": 2,
-              "consume-icons": {
-                "on": " "
-              },
-              "random-icons": {
-                "off": "<span color=\"#f53c3c\"></span> ",
-                "on": " "
-              },
-              "repeat-icons": {
-                "on": " "
-              },
-              "single-icons": {
-                "on": "1 "
-              },
-              "state-icons": {
-                "paused": "",
-                "playing": ""
-              },
-              "tooltip-format": "MPD (connected)",
-              "tooltip-format-disconnected": "MPD (disconnected)"
-            },
-            "idle_inhibitor": {
-              "format": "{icon}",
-              "format-icons": {
-                "activated": " ",
-                "deactivated": " "
-              }
-            },
-            "tray": {
-              "spacing": 2
-            },
-            "clock": {
-              "format": "<b>{:%H%M}</b>",
-              "tooltip-format": "\n<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-              "format-alt": "{:%Y-%m-%d}"
-            },
-            "cpu": {
-              "format": "{usage} ",
-              "tooltip": true
-            },
-            "memory": {
-              "format": "{} "
-            },
-            "temperature": {
-              "critical-threshold": 80,
-              "format": "{temperatureC}{icon}",
-              "format-icons": [
-                "",
-                "",
-                ""
+            "tooltip-format": "MPD (connected)",
+            "tooltip-format-disconnected": "MPD (disconnected)"
+          },
+          "idle_inhibitor": {
+            "format": "{icon}",
+            "format-icons": {
+              "activated": " ",
+              "deactivated": " "
+            }
+          },
+          "tray": {
+            "spacing": 2
+          },
+          "clock": {
+            "format": "<b>{:%H%M}</b>",
+            "tooltip-format": "\n<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+            "format-alt": "{:%Y-%m-%d}"
+          },
+          "cpu": {
+            "format": "{usage} ",
+            "tooltip": true
+          },
+          "memory": {
+            "format": "{} "
+          },
+          "temperature": {
+            "critical-threshold": 80,
+            "format": "{temperatureC}{icon}",
+            "format-icons": [
+              "",
+              "",
+              ""
+            ]
+          },
+          "network": {
+            "format-wifi": "{essid} ({signalStrength}%) ",
+            "format-ethernet": "{ipaddr}/{cidr} ",
+            "tooltip-format": "{ifname} via {gwaddr} ",
+            "format-linked": "{ifname} (No IP) ",
+            "format-disconnected": "Disconnected ⚠",
+            "format-alt": "{ifname}: {ipaddr}/{cidr}"
+          },
+          "pulseaudio": {
+            "scroll-step": 3,
+            "format": "{volume}{icon} \n{format_source}",
+            "format-bluetooth": "{volume}{icon} \n{format_source}",
+            "format-bluetooth-muted": "{icon} \n{format_source}",
+            "format-muted": "󰋎 {format_source}",
+            "format-source": "",
+            "format-source-muted": " ",
+            "format-icons": {
+              "headphone": " ",
+              "hands-free": " ",
+              "headset": " ",
+              "phone": " ",
+              "portable": " ",
+              "car": " ",
+              "default": [
+                " ",
+                " ",
+                " "
               ]
             },
-            "network": {
-              "format-wifi": "{essid} ({signalStrength}%) ",
-              "format-ethernet": "{ipaddr}/{cidr} ",
-              "tooltip-format": "{ifname} via {gwaddr} ",
-              "format-linked": "{ifname} (No IP) ",
-              "format-disconnected": "Disconnected ⚠",
-              "format-alt": "{ifname}: {ipaddr}/{cidr}"
-            },
-            "pulseaudio": {
-              "scroll-step": 3,
-              "format": "{volume}{icon} \n{format_source}",
-              "format-bluetooth": "{volume}{icon} \n{format_source}",
-              "format-bluetooth-muted": "{icon} \n{format_source}",
-              "format-muted": "󰋎 {format_source}",
-              "format-source": "",
-              "format-source-muted": " ",
-              "format-icons": {
-                "headphone": " ",
-                "hands-free": " ",
-                "headset": " ",
-                "phone": " ",
-                "portable": " ",
-                "car": " ",
-                "default": [
-                  " ",
-                  " ",
-                  " "
-                ]
-              },
-              "on-click": "pavucontrol"
-            }
+            "on-click": "pavucontrol"
           }
-        ]
+        }
       '';
     in [
       {
         layer = "top";
         position = "top";
         output = [
+          "${_g.monitors.left.output}"
           "${_g.monitors.center.output}"
           "${_g.monitors.right.output}"
         ];
-        include = [ default_modules ];
+        include = [ "~/.config/waybar/default_modules.json" ];
         height = 38;
         spacing = 5;
         align = 0;
@@ -191,10 +190,9 @@
         layer = "top";
         position = "top";
         output = [
-          "${_g.monitors.left.output}"
         ];
-        include = [ default_modules ];
-        height = 30;
+        include = [ "~/.config/waybar/default_modules.json" ];
+        height = 38;
         spacing = 5;
         modules-left = [
           "niri/workspaces"
@@ -302,7 +300,7 @@
         padding: 0 10px;
       }
     '';
-    systemd.enable = false;
+    systemd.enable = true;
   };
 }
 
