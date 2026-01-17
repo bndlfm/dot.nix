@@ -1,25 +1,17 @@
-{ pkgs ? import <nixpkgs> {}, config, inputs }:
+{ pkgs ? import <nixpkgs> {}, config }:
 let
-  sopsConfig = {
-    sops.secrets."ai_keys/ANTHROPIC_API_KEY" = {};
-    sops.secrets."ai_keys/COMPOSIO_API_KEY" = {};
-    sops.secrets."ai_keys/OPENCODE_API_KEY" = {}; # optional
+  envFile = pkgs.writeText ".env" ''
+    # Claude Provider
+    ANTHROPIC_API_KEY=${builtins.getEnv "ANTHROPIC_API_KEY"}
 
-    sops.templates."open-claude-cowork.env".content = ''
-      # Claude Provider
-      ANTHROPIC_API_KEY=${config.sops.placeholder."ai_keys/ANTHROPIC_API_KEY"}
+    # Opencode Provider (optional)
+    OPENCODE_API_KEY=${builtins.getEnv "OPENCODE_API_KEY"}
+    OPENCODE_HOSTNAME=127.0.0.1
+    OPENCODE_PORT=4096
 
-      # Opencode Provider (optional)
-      OPENCODE_API_KEY=${config.sops.placeholder."ai_keys/OPENCODE_API_KEY"}
-      OPENCODE_HOSTNAME=127.0.0.1
-      OPENCODE_PORT=4096
-
-      # Composio Integration
-      COMPOSIO_API_KEY=${config.sops.placeholder."ai_keys/COMPOSIO_API_KEY"}
-    '';
-  };
-
-  envFile = pkgs.writeText ".env" sopsConfig.sops.templates."open-claude-cowork.env".content;
+    # Composio Integration
+    COMPOSIO_API_KEY=${builtins.getEnv "COMPOSIO_API_KEY"}
+  '';
 
   repo = pkgs.fetchFromGitHub {
     owner = "ComposioHQ";
@@ -87,7 +79,7 @@ let
       mkdir -p $out/share/open-claude-cowork
       cp -r . $out/share/open-claude-cowork
 
-      cp ${sopsConfig.sops.templates."open-claude-cowork.env"} $out/share/open-claude-cowork/.env
+      cp ${envFile} $out/share/open-claude-cowork/.env
 
       rm -rf $out/share/open-claude-cowork/server
 
