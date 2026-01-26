@@ -30,6 +30,10 @@
 
       ## PROGRAMS
         aagl.url = "github:ezKEa/aagl-gtk-on-nix";
+        clawdbot = {
+          url = "path:/home/neko/Projects/nix-clawdbot";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
         #deejavu.url = "github:bndlfm/deejavu";
         #jovian-nixos.url = "github:Jovian-Experiments/Jovian-NixOS";
         llama-cpp_ik = {
@@ -87,6 +91,7 @@
       nix-flatpak,
 
       aagl,
+      clawdbot,
       lsfg-vk,
       nixarr,
 
@@ -134,6 +139,8 @@
               extraSpecialArgs = { inherit inputs outputs; };
               modules =
                 [
+                  ## CLAWDBOT
+                    clawdbot.homeManagerModules.clawdbot (import ./programs/clawdbot.home.nix)
                   ## FLATPAK
                     nix-flatpak.homeManagerModules.nix-flatpak (import ./services/flatpak.home.nix)
                   ## NIRI

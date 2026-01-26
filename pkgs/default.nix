@@ -8,6 +8,7 @@ in
   fennelPackages._antifennel = cPkg ./antifennel.nix { };
   _azote = cPkg ./azote.nix { };
   _beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix { };
+  _clawdbot = cPkg ./clawdbot/default.nix {};
   _fish-ai = cPkg ./fishPlugins/fish-ai.nix { };
   _gamma-launcher = cPkg ./gamma-launcher.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };

@@ -1,0 +1,29 @@
+{
+  description = "Clawdbot";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    clawdbot.url = "github:clawdbot/clawdbot";
+    clawdbot.flake = false;
+  };
+
+  outputs = { self, nixpkgs, clawdbot }:
+    let
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
+    in
+    {
+      packages = forAllSystems (system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          default = pkgs.callPackage ./default.nix { src = clawdbot; };
+        });
+    };
+}
