@@ -6,16 +6,14 @@ let
 in
 {
   fennelPackages._antifennel = cPkg ./antifennel.nix { };
-  _azote = cPkg ./azote.nix { };
   _beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix { };
-  _clawdbot = cPkg ./clawdbot/default.nix {};
+  _moltbot = cPkg ./moltbot/default.nix {};
   _fish-ai = cPkg ./fishPlugins/fish-ai.nix { };
   _gamma-launcher = cPkg ./gamma-launcher.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };
-  _open-claude-cowork = cPkg ./open-claude-cowork/default.nix { };
-  _phoneinfoga = cPkg ./phoneinfoga.nix { };
   _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
-  _vintagestory = cPkg ./vintageStory.nix { };
+
+  # BIN
   _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix { };
   _waydroid-script = cPkg ./waydroid-script/waydroid-script.nix { };
 }
