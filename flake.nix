@@ -34,6 +34,7 @@
           url = "path:/home/neko/Projects/nix-clawdbot";
           inputs.nixpkgs.follows = "nixpkgs";
         };
+        nix-steipete-tools.url = "github:clawdbot/nix-steipete-tools";
         #deejavu.url = "github:bndlfm/deejavu";
         #jovian-nixos.url = "github:Jovian-Experiments/Jovian-NixOS";
         llama-cpp_ik = {

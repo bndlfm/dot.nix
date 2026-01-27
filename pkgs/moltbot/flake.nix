@@ -1,13 +1,11 @@
 {
-  description = "Clawdbot";
+  description = "Moltbot";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    clawdbot.url = "github:clawdbot/clawdbot";
-    clawdbot.flake = false;
   };
 
-  outputs = { self, nixpkgs, clawdbot }:
+  outputs = { self, nixpkgs }:
     let
       systems = [
         "x86_64-linux"
@@ -23,7 +21,7 @@
           pkgs = import nixpkgs { inherit system; };
         in
         {
-          default = pkgs.callPackage ./default.nix { src = clawdbot; };
+          default = pkgs.callPackage ./default.nix { };
         });
     };
 }

@@ -139,6 +139,8 @@
 #          inputs.llama-cpp_ik.packages.x86_64-linux.cuda
             warp-terminal
             n8n
+
+            _moltbot
           ];
 
           apple = [
@@ -292,6 +294,7 @@
 
           social = [
             vesktop
+            discord
             signal-desktop
             hexchat
             telegram-desktop
@@ -453,6 +456,8 @@
         TWITCH_IRC_OAUTH = "$(cat ${config.sops.secrets."internet/TWITCH_IRC_OAUTH".path})";
         OBSIDIAN_REST_API_KEY = "$(cat ${config.sops.secrets."local/OBSIDIAN_REST_API_KEY".path})";
 
+        CLAWDBOT_DISCORD_TOKEN = "$(cat ${config.sops.secrets."discord/clawdbot".path})";
+        CLAWDBOT_GATEWAY_TOKEN = "$(cat ${config.sops.secrets."local/CLAWDBOT_GATEWAY_TOKEN".path})";
         ## EDITOR
         EDITOR = "nvim";
         SUDOEDITOR = "nvim";

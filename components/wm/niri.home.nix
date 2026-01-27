@@ -21,7 +21,7 @@ in
     swaybg
     swayidle
     swaylock-effects
-    quickshell
+    swaynotificationcenter
     wlprop
   ];
 
@@ -121,6 +121,8 @@ in
         spawn-at-startup = [
           ## BLUETOOOTH
           { command = [ "blueman-applet" ]; }
+          ## NOTIFICATIONS
+          { command = [ "swaync" ]; }
           ## TAILSCALE TRAY
           {
             command = [

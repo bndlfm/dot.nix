@@ -37,6 +37,13 @@ in {
           viAlias = true;
           vimAlias = true;
           vimdiffAlias = true;
+          initLua = /*lua*/ ''
+            if vim.g.started_by_firenvim == true then
+              require("config.lazy")
+            else
+              require("config.lazy")
+            end
+          '';
           extraLuaPackages = ps:
             [
               ps.magick
@@ -55,58 +62,58 @@ in {
                 pynvim
                 ueberzug
               ];
-        extraPackages =
-          with pkgs;
+          extraPackages =
+            with pkgs;
+              [
+                bash-language-server
+                cargo
+                fzf
+                gcc
+                git
+                gnumake
+                highlight
+                imagemagick
+                lua-language-server
+                texlivePackages.latex
+                lazygit
+                lua51Packages.lua
+                lua51Packages.luarocks
+                nil
+                nodejs
+                pyright
+                shellcheck
+                shfmt
+                stylua
+                ueberzugpp
+                unzip
+                viu
+                yarn
+              ];
+          plugins =
+            with pkgs.vimPlugins;
             [
-              bash-language-server
-              cargo
-              fzf
-              gcc
-              git
-              gnumake
-              highlight
-              imagemagick
-              lua-language-server
-              texlivePackages.latex
-              lazygit
-              lua51Packages.lua
-              lua51Packages.luarocks
-              nil
-              nodejs
-              pyright
-              shellcheck
-              shfmt
-              stylua
-              ueberzugpp
-              unzip
-              viu
-              yarn
+              vim-nix
+              molten-nvim
+              (
+                nvim-treesitter.withPlugins
+                  ( ps: with ps;
+                    [
+                      bash
+                      c
+                      cpp
+                      kdl
+                      lua
+                      ocaml
+                      nix
+                      python
+                      regex
+                      rust
+                      scheme
+                      typescript
+                    ]
+                  )
+              )
             ];
-        plugins =
-          with pkgs.vimPlugins;
-          [
-            vim-nix
-            molten-nvim
-            (
-              nvim-treesitter.withPlugins
-                ( ps: with ps;
-                  [
-                    bash
-                    c
-                    cpp
-                    kdl
-                    lua
-                    ocaml
-                    nix
-                    python
-                    regex
-                    rust
-                    scheme
-                    typescript
-                  ]
-                )
-            )
-          ];
       };
     };
 }
