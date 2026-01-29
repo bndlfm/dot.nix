@@ -35,6 +35,11 @@
           inputs.nixpkgs.follows = "nixpkgs";
         };
         nix-steipete-tools.url = "github:clawdbot/nix-steipete-tools";
+        steipete-camsnap.url = "path:./pkgs/moltbot/plugins/steipete-tools/camsnap";
+        steipete-gogcli.url = "path:./pkgs/moltbot/plugins/steipete-tools/gogcli";
+        steipete-summarize.url = "path:./pkgs/moltbot/plugins/steipete-tools/summarize";
+        steipete-sag.url = "path:./pkgs/moltbot/plugins/steipete-tools/sag";
+        steipete-oracle.url = "path:./pkgs/moltbot/plugins/steipete-tools/oracle";
         #deejavu.url = "github:bndlfm/deejavu";
         #jovian-nixos.url = "github:Jovian-Experiments/Jovian-NixOS";
         llama-cpp_ik = {

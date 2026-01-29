@@ -1,4 +1,24 @@
 { config, pkgs, ... }:{
+  home.packages = with pkgs; [
+    _obsidian-cli
+    _gifgrep
+    _bird
+    _blogwatcher
+    _goplaces
+    _mcporter
+    _songsee
+    _spogo
+    _summarize
+    _sag
+    _nano-pdf
+    _camsnap
+    _gogcli
+    himalaya
+    tmux
+    curl
+    openai-whisper
+    uv
+  ];
   programs.clawdbot = {
     enable = true;
     exposePluginPackages = false;
@@ -35,11 +55,11 @@
 
     # Built-ins (tools + skills) shipped via nix-steipete-tools.
     plugins = [
-      { source = "github:clawdbot/nix-steipete-tools?dir=tools/camsnap"; }
-      { source = "github:clawdbot/nix-steipete-tools?dir=tools/gogcli"; }
-      { source = "github:clawdbot/nix-steipete-tools?dir=tools/summarize"; }
-      { source = "github:clawdbot/nix-steipete-tools?dir=tools/sag"; }
-      { source = "github:clawdbot/nix-steipete-tools?dir=tools/oracle"; }
+      #{ source = "path:./pkgs/moltbot/plugins/steipete-tools/camsnap"; }
+      #{ source = "path:./pkgs/moltbot/plugins/steipete-tools/gogcli"; }
+      #{ source = "path:./pkgs/moltbot/plugins/steipete-tools/summarize"; }
+      #{ source = "path:./pkgs/moltbot/plugins/steipete-tools/sag"; }
+      #{ source = "path:./pkgs/moltbot/plugins/steipete-tools/oracle"; }
     ];
   };
 }

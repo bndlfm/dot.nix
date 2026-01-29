@@ -10,6 +10,8 @@
 , vips
 , sqlite
 , openssl
+, curl
+, gemini-cli
 , homebrewRev ? "master"
 , homebrewHash ? "sha256-/ZPWV/RjvRM3uuFgeP/ZJQRsGQEJ84yUxKE7M9/oeek="
 , moltbotRev ? "master"
@@ -69,6 +71,12 @@ stdenv.mkDerivation rec {
     vips
     sqlite
     openssl
+    curl
+    gemini-cli
+  ];
+
+  propagatedBuildInputs = [
+    nodejs_22
   ];
 
   npmConfigPython = python3;
@@ -128,7 +136,10 @@ stdenv.mkDerivation rec {
       cp -R ${homebrew}/* "$brew_home/"
     fi
 
-    export PATH="${lib.makeBinPath [ homebrew pnpm ]}:$PATH"
+    npm_prefix="''${XDG_DATA_HOME:-$HOME/.clawdbot}/npm"
+    mkdir -p "$npm_prefix"
+    export NPM_CONFIG_PREFIX="$npm_prefix"
+    export PATH="${lib.makeBinPath [ homebrew pnpm nodejs_22 curl gemini-cli ]}:$npm_prefix/bin:$PATH"
     script_dir="$(cd "$(dirname "$0")" && pwd)"
     prefix="$(cd "$script_dir/.." && pwd)"
     exec ${nodejs_22}/bin/node \
