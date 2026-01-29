@@ -19,6 +19,7 @@ in
     ../../programs/agl.sys.nix
 
     ## MODULES
+    ../../components/music.sys.nix
     ../../components/gaming.sys.nix
     ../../components/caddy-tailscale.sys.nix
 

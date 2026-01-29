@@ -2,6 +2,29 @@
 let
   musicDir = "/data/media/library/music";
 in {
+  home.packages = with pkgs; [
+    _mpd-mcp-server
+  ];
+
+  systemd.user.services.mpd-mcp-server = {
+    Unit = {
+      Description = "MPD MCP Server";
+      After = [ "mpd.service" ];
+    };
+    Service = {
+      ExecStart = "${pkgs._mpd-mcp-server}/bin/mpd-mcp-server";
+      Restart = "on-failure";
+      RestartSec = 2;
+      Environment = [
+        "MPD_SERVER=127.0.0.1"
+        "MPD_PORT=6600"
+      ];
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+  };
+
   programs = {
     ncmpcpp = {
       enable = true;
