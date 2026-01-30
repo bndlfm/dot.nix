@@ -30,10 +30,10 @@
 
       ## PROGRAMS
         aagl.url = "github:ezKEa/aagl-gtk-on-nix";
-        moltbot = {
-          url = "path:/home/neko/Projects/nix-moltbot";
-          inputs.nixpkgs.follows = "nixpkgs";
-        };
+        #moltbot = {
+        #  url = "path:/home/neko/Projects/nix-moltbot";
+        #  inputs.nixpkgs.follows = "nixpkgs";
+        #};
         #deejavu.url = "github:bndlfm/deejavu";
         #jovian-nixos.url = "github:Jovian-Experiments/Jovian-NixOS";
         llama-cpp_ik = {
@@ -91,7 +91,7 @@
       nix-flatpak,
 
       aagl,
-      moltbot,
+      #moltbot,
       lsfg-vk,
       nixarr,
 
@@ -140,7 +140,7 @@
               modules =
                 [
                   ## CLAWDBOT
-                    moltbot.homeManagerModules.moltbot (import ./programs/moltbot.home.nix)
+                    #moltbot.homeManagerModules.moltbot (import ./programs/openclaw.home.nix)
                   ## FLATPAK
                     nix-flatpak.homeManagerModules.nix-flatpak (import ./services/flatpak.home.nix)
                   ## NIRI

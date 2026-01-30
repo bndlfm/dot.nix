@@ -7,88 +7,95 @@
 , pnpmConfigHook
 , python3
 , pkg-config
+, go
 , vips
 , sqlite
 , openssl
 , curl
 , gemini-cli
 , uv
+, nodePackages
+
 , homebrewRev ? "master"
 , homebrewHash ? "sha256-/ZPWV/RjvRM3uuFgeP/ZJQRsGQEJ84yUxKE7M9/oeek="
-, moltbotRev ? "master"
-, moltbotHash ? "sha256-pMC5/y/NiW3ko7ZLdX7Hug6uMYlUWu89hl3vmoMRf00="
+, openclawRev ? "master"
+, openclawHash ? "sha256-pMC5/y/NiW3ko7ZLdX7Hug6uMYlUWu89hl3vmoMRf00="
 }:
 
 let
   src = fetchFromGitHub {
-    owner = "moltbot";
-    repo = "moltbot";
-    rev = moltbotRev;
-    hash = moltbotHash;
+    owner = "openclaw";
+    repo = "openclaw";
+    rev = openclawRev;
+    hash = openclawHash;
   };
-  homebrewSrc = fetchFromGitHub {
-    owner = "Homebrew";
-    repo = "brew";
-    rev = homebrewRev;
-    hash = homebrewHash;
-  };
+
   homebrew = stdenv.mkDerivation {
     pname = "homebrew";
     version = homebrewRev;
-    src = homebrewSrc;
+
+    src = fetchFromGitHub {
+      owner = "Homebrew";
+      repo = "brew";
+      rev = homebrewRev;
+      hash = homebrewHash;
+    };
+
     dontConfigure = true;
     dontBuild = true;
+
     installPhase = ''
       runHook preInstall
-      mkdir -p "$out"
-      cp -R . "$out/"
+      mkdir -p $out
+      cp -R . $out/
       runHook postInstall
     '';
   };
+
+  buildRuntimeDeps = [
+    nodejs_22
+    nodePackages.npm
+    pnpm
+    uv
+    gemini-cli
+    curl
+    homebrew
+    go
+  ];
+
 in
 stdenv.mkDerivation rec {
-  pname = "moltbot";
+  pname = "openclaw";
   version = (lib.importJSON "${src}/package.json").version;
+
   inherit src;
 
-  pnpmDepsHash = "sha256-lFaK7/9i+BT47PJF37LBxK3ARgHY/+yIJjimsOG5Mn8=";
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
     lockfile = "${src}/pnpm-lock.yaml";
-    hash = pnpmDepsHash;
+    hash = "sha256-lFaK7/9i+BT47PJF37LBxK3ARgHY/+yIJjimsOG5Mn8=";
     fetcherVersion = 3;
   };
 
   nativeBuildInputs = [
-    pnpm
-    nodejs_22
+    pnpmConfigHook
     python3
     pkg-config
-    pnpmConfigHook
-    homebrew
   ];
 
   buildInputs = [
     vips
     sqlite
     openssl
-    curl
-    gemini-cli
-  ];
+  ] ++ buildRuntimeDeps;
 
   propagatedBuildInputs = [
-    nodejs_22
-    uv
   ];
 
-  npmConfigPython = python3;
-
-  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
-  PUPPETEER_SKIP_DOWNLOAD = "1";
-  configurePhase = ''
-    runHook preConfigure
-    runHook postConfigure
-  '';
+  env = {
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
+    PUPPETEER_SKIP_DOWNLOAD = "1";
+  };
 
   buildPhase = ''
     runHook preBuild
@@ -100,6 +107,7 @@ stdenv.mkDerivation rec {
     runHook preInstall
 
     install -d $out/lib/node_modules/${pname}
+
     cp -R \
       dist \
       assets \
@@ -110,6 +118,7 @@ stdenv.mkDerivation rec {
       git-hooks \
       scripts \
       ui \
+      node_modules \
       package.json \
       README.md \
       README-header.png \
@@ -117,38 +126,55 @@ stdenv.mkDerivation rec {
       LICENSE \
       $out/lib/node_modules/${pname}/
 
-    cp -R node_modules $out/lib/node_modules/${pname}/
-
     install -d $out/bin
-    cat > $out/bin/moltbot <<'EOF'
+
+    cat > $out/bin/openclaw <<'EOF'
     #!${stdenv.shell}
     set -euo pipefail
+
+    # Set up Homebrew paths
     if [ -n "''${XDG_DATA_HOME:-}" ]; then
-      brew_home="''${XDG_DATA_HOME}/.clawdbot/homebrew"
+      brew_home="$XDG_DATA_HOME/.openclaw/homebrew"
     else
-      brew_home="''${HOME}/.clawdbot/homebrew"
+      brew_home="$HOME/.openclaw/homebrew"
     fi
 
     export HOMEBREW_PREFIX="''${HOMEBREW_PREFIX:-$brew_home}"
     export HOMEBREW_REPOSITORY="''${HOMEBREW_REPOSITORY:-$brew_home}"
     export HOMEBREW_CELLAR="''${HOMEBREW_CELLAR:-$brew_home/Cellar}"
 
+    # Initialize Homebrew on first run
     if [ ! -d "$brew_home/Library" ]; then
       mkdir -p "$brew_home"
       cp -R ${homebrew}/* "$brew_home/"
     fi
 
-    npm_prefix="''${XDG_DATA_HOME:-$HOME/.clawdbot}/npm"
+    # Set up npm prefix for global packages
+    npm_prefix="''${XDG_DATA_HOME:-$HOME/.openclaw}/npm"
     mkdir -p "$npm_prefix"
     export NPM_CONFIG_PREFIX="$npm_prefix"
-    export PATH="${lib.makeBinPath [ homebrew pnpm nodejs_22 curl gemini-cli uv ]}:$npm_prefix/bin:$PATH"
+
+    # Add runtime dependencies and Homebrew to PATH
+    export PATH="${lib.makeBinPath buildRuntimeDeps}:$brew_home/bin:$npm_prefix/bin:$PATH"
+
+    # Execute openclaw
     script_dir="$(cd "$(dirname "$0")" && pwd)"
     prefix="$(cd "$script_dir/.." && pwd)"
+
     exec ${nodejs_22}/bin/node \
       "$prefix/lib/node_modules/${pname}/dist/entry.js" "$@"
     EOF
-    chmod +x $out/bin/moltbot
+
+    chmod +x $out/bin/openclaw
 
     runHook postInstall
   '';
+
+  meta = with lib; {
+    description = "Openclaw application";
+    homepage = "https://github.com/openclaw/openclaw";
+    license = licenses.free; # Adjust as needed
+    maintainers = [ ];
+    platforms = platforms.all;
+  };
 }

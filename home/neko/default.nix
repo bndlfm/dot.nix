@@ -17,6 +17,8 @@
       ##############
       # CONTAINERS #
       ##############
+      ../../containers/flaresolverr.home.nix
+      ../../containers/homeassistant.home.nix
 
       ###########
       # MODULES #
@@ -128,7 +130,6 @@
             antigravity-fhs
             code-cursor-fhs
             vscode-fhs
-            windsurf
 
             claude-code
             codex
@@ -139,8 +140,27 @@
 #          inputs.llama-cpp_ik.packages.x86_64-linux.cuda
             warp-terminal
             n8n
+            sillytavern
 
-            _moltbot
+            # open claw pkgs
+            _openclaw
+            _gifgrep
+            _bird
+            _blogwatcher
+            _goplaces
+            _mcporter
+            _songsee
+            _summarize
+            _sag
+            _nano-pdf
+            _camsnap
+            _gogcli
+            _mcp-arr
+            _clawdhub
+            himalaya
+            tmux
+            openai-whisper
+            uv
           ];
 
           apple = [

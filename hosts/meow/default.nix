@@ -13,7 +13,6 @@ in
     ../../cachix.nix
 
     ## CONTAINERS
-    ../../containers/gluetun.home.nix
 
     ## PROGRAMS
     ../../programs/agl.sys.nix

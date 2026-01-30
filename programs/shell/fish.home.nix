@@ -134,6 +134,7 @@
             dbx = "distrobox";
             rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
             rwayb = "nvim ~/.nixcfg/.config/waybar/config";
+            zni = "cd ~/.nixcfg";
           ## NIX SPECIFIC CONFIGS
             nxs = "nix-search-tv print | fzf --preview 'nix-search-tv preview {}' --scheme history";
             nxc = "nixos-container";

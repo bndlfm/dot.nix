@@ -110,9 +110,11 @@
         map kitty_mod+a>1    set_background_opacity 1
         map kitty_mod+a>d    set_background_opacity default
 
-        # Tab detach / attach
-        map kitty_mod+d detach_tab ask
-        map kitty_mod+a attach_tab ask
+        # Window / tab detach / attach (chords)
+        map kitty_mod+d>p detach_window
+        map kitty_mod+d>t detach_tab
+        map kitty_mod+a>t attach_tab
+        map kitty_mod+a>p attach_window
 
         # Pane / Split Keybinds
         map kitty_mod+b launch --location=hsplit

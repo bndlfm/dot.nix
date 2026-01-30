@@ -18,11 +18,10 @@
     tmux
     curl
     openai-whisper
-    uv
   ];
+
   programs.moltbot = {
-    enable = true;
-    manageConfig = false;
+    enable = false;
 
     exposePluginPackages = false;
 
@@ -34,10 +33,10 @@
     instances = {
       default = {
         enable = true;
-        package = pkgs._moltbot;
+        package = pkgs._openclaw;
 
-        stateDir = "${config.home.homeDirectory}/.moltbot";
-        workspaceDir = "${config.home.homeDirectory}/.moltbot/workspace";
+        stateDir = "${config.home.homeDirectory}/.openclaw";
+        workspaceDir = "${config.home.homeDirectory}/.openclaw/workspace";
 
         config.channels.discord.accounts.default = {
           enabled = true;

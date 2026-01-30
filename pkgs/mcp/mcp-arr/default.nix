@@ -8,13 +8,13 @@ buildNpmPackage rec {
   version = "1.4.1";
 
   src = fetchFromGitHub {
-    owner = "aplaceforallmystuff";
+    owner = "bndlfm";
     repo = "mcp-arr";
-    rev = "main";
-    hash = "sha256-/2tvonQzkr9KiKM7d8ZDn6E5+E8Wg7vyk7MToLurtjw=";
+    rev = "a4c23b24ed5ae8809248e1b510ed959304170bac";
+    hash = "sha256-+qcDFT1SOBS+WOynuRt0G9Z7/TzjkSg6nJJLmEeBZgM=";
   };
 
-  npmDepsHash = "sha256-szJ6acsqEop5vhb0C6Jk/xwW9ugVZboEp+MOTk/fTBs=";
+  npmDepsHash = "sha256-8uYGyMse559vTN+tD+ny5sqXu/fVecO3yH96rjw97kY=";
   npmBuildScript = "build";
   npmInstallFlags = [ "--include=dev" ];
   npmPruneFlags = [ "--include=dev" ];

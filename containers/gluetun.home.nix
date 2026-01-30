@@ -1,11 +1,6 @@
-{ config, inputs, ... }:
+{ config, pkgs, ... }:
 
 {
-  imports = [ inputs.sops-nix.nixosModules.sops ];
-
-  sops.defaultSopsFile = ../sops/secrets.sys.yaml;
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-
   sops.secrets."local/gluetun_private_key" = {};
   sops.secrets."local/gluetun_preshared_key" = {};
   sops.secrets."local/gluetun_addresses" = {};
@@ -16,12 +11,14 @@
     WIREGUARD_ADDRESSES=${config.sops.placeholder."local/gluetun_addresses"}
   '';
 
-  virtualisation.oci-containers.containers.gluetun = {
+  services.podman.containers.gluetun = {
     image = "qmcgaw/gluetun";
     autoStart = true;
-    extraOptions = [
-      "--cap-add=NET_ADMIN"
-      "--cap-add=NET_RAW"
+    addCapabilities = [
+      "NET_ADMIN"
+      "NET_RAW"
+    ];
+    extraPodmanArgs = [
       "--device=/dev/net/tun:/dev/net/tun"
     ];
 
@@ -40,15 +37,6 @@
       "8888:8888/tcp"
       "8388:8388/tcp"
       "8388:8388/udp"
-    ];
-  };
-  networking.firewall = {
-    allowedTCPPorts = [
-      8388
-      8888
-    ];
-    allowedUDPPorts = [
-      8388
     ];
   };
 }

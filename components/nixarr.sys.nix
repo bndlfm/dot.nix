@@ -30,17 +30,15 @@
 
   services = {
     caddy.virtualHosts = {
-      "http://jellyfin.munchkin-sun.ts.net".extraConfig =
+      "jellyfin.munchkin-sun.ts.net".extraConfig =
           ''
-              bind tailscale/jellyfin
               reverse_proxy localhost:8096
               tls {
                   get_certificate tailscale
               }
           '';
-      "http://jellyseerr.munchkin-sun.ts.net".extraConfig =
+      "jellyseerr.munchkin-sun.ts.net".extraConfig =
           ''
-              bind tailscale/jellyseerr
               reverse_proxy localhost:5055
               tls {
                   get_certificate tailscale
