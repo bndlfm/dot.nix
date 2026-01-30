@@ -2,8 +2,10 @@
 {
   services.mympd = {
     enable = true;
-    http_port = 8742;
     openFirewall = true;
+    settings = {
+      http_port = 8742;
+    };
   };
 
   # Open the port in the firewall

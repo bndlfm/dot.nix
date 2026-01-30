@@ -12,6 +12,7 @@
 , openssl
 , curl
 , gemini-cli
+, uv
 , homebrewRev ? "master"
 , homebrewHash ? "sha256-/ZPWV/RjvRM3uuFgeP/ZJQRsGQEJ84yUxKE7M9/oeek="
 , moltbotRev ? "master"
@@ -77,6 +78,7 @@ stdenv.mkDerivation rec {
 
   propagatedBuildInputs = [
     nodejs_22
+    uv
   ];
 
   npmConfigPython = python3;
@@ -139,7 +141,7 @@ stdenv.mkDerivation rec {
     npm_prefix="''${XDG_DATA_HOME:-$HOME/.clawdbot}/npm"
     mkdir -p "$npm_prefix"
     export NPM_CONFIG_PREFIX="$npm_prefix"
-    export PATH="${lib.makeBinPath [ homebrew pnpm nodejs_22 curl gemini-cli ]}:$npm_prefix/bin:$PATH"
+    export PATH="${lib.makeBinPath [ homebrew pnpm nodejs_22 curl gemini-cli uv ]}:$npm_prefix/bin:$PATH"
     script_dir="$(cd "$(dirname "$0")" && pwd)"
     prefix="$(cd "$script_dir/.." && pwd)"
     exec ${nodejs_22}/bin/node \

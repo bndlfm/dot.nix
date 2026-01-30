@@ -29,8 +29,9 @@ in {
       systemd = { enable = true; };
 
       plugins =
-        with pkgs;
+        with pkgs.hyprlandPlugins;
         [
+          hyprscrolling
         ];
 
       settings =

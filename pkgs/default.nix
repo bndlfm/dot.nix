@@ -25,6 +25,7 @@ in
   _camsnap = cPkg ./camsnap/default.nix { };
   _gogcli = cPkg ./gogcli/default.nix { };
   _mpd-mcp-server = cPkg ./mpd-mcp-server/default.nix { };
+  _mcp-arr = cPkg ./mcp-arr/default.nix { };
   _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
 
   # BIN

@@ -13,6 +13,7 @@
     _nano-pdf
     _camsnap
     _gogcli
+    _mcp-arr
     himalaya
     tmux
     curl

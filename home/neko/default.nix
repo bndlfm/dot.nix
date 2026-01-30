@@ -150,6 +150,7 @@
           browsers = [
             #firefox-devedition: programs/hm/firefox.nix
             chromium
+            google-chrome
             tor-browser
             qutebrowser
           ];
