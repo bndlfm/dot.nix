@@ -31,7 +31,7 @@
       ## PROGRAMS
         aagl.url = "github:ezKEa/aagl-gtk-on-nix";
         moltbot = {
-          url = "github:moltbot/nix-moltbot";
+          url = "path:/home/neko/Projects/nix-moltbot";
           inputs.nixpkgs.follows = "nixpkgs";
         };
         #deejavu.url = "github:bndlfm/deejavu";

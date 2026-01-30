@@ -786,17 +786,14 @@
         ]
       },
       "locked": {
-        "lastModified": 1769721788,
-        "narHash": "sha256-6BnjiMjRDwGKzD9kjGDLwOOFWweL4l9cjekE8vJR7qE=",
-        "owner": "moltbot",
-        "repo": "nix-moltbot",
-        "rev": "8ff02aae168fc4d36195f9d95ffd1e9814cb5bfd",
-        "type": "github"
+        "lastModified": 1769749526,
+        "narHash": "sha256-rwVmCjk9c6IFvmMywAZhb9PNKarw21Trx9jltPz3yfA=",
+        "path": "/home/neko/Projects/nix-moltbot",
+        "type": "path"
       },
       "original": {
-        "owner": "moltbot",
-        "repo": "nix-moltbot",
-        "type": "github"
+        "path": "/home/neko/Projects/nix-moltbot",
+        "type": "path"
       }
     },
     "niri": {
@@ -1182,11 +1179,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1769743864,
-        "narHash": "sha256-abAfBqQsrn5a0Z7mhHyiRVhTnaXuDmXLHuB02dJtK34=",
+        "lastModified": 1769747880,
+        "narHash": "sha256-u+FW/UqqbB9fEHATli8tnN5n/Q6qBlemfCRozg8WNMg=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "462774467e37ac68a3093bf05f1763fd360c5601",
+        "rev": "29c948f2952183bd14cc72fa0758ce459517b36f",
         "type": "github"
       },
       "original": {
@@ -1649,11 +1646,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769738723,
-        "narHash": "sha256-ioCEdVwy0nlOafPZQjbS1ogwdpujaFF7dv58ULo8auI=",
+        "lastModified": 1769748063,
+        "narHash": "sha256-H5XCtJMS3RQKHeaS+axX7CAJ0WwuTUYGy4uzLFSm0Xc=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "9673f8049ccd8b73c8a7df2806f769081849315e",
+        "rev": "efdd1e683da9412f515b9bd42c37861978c2fd3a",
         "type": "github"
       },
       "original": {

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:{
+{ config, pkgs, ... }:{
   home.packages = with pkgs; [
     _obsidian-cli
     _gifgrep
@@ -22,22 +22,22 @@
   ];
   programs.moltbot = {
     enable = true;
+    manageConfig = false;
+
     exposePluginPackages = false;
-    documents = ./documents;
+
     firstParty = {
       summarize.enable = false;
       peekaboo.enable = false;
     };
+
     instances = {
       default = {
         enable = true;
         package = pkgs._moltbot;
-        #manageConfig = false;
 
-        #gatewayAuthTokenFile = config.sops.secrets."local/CLAWDBOT_GATEWAY_TOKEN".path;
-
-        stateDir = "~/.moltbot";
-        workspaceDir = "~/.moltbot/workspace";
+        stateDir = "${config.home.homeDirectory}/.moltbot";
+        workspaceDir = "${config.home.homeDirectory}/.moltbot/workspace";
 
         config.channels.discord.accounts.default = {
           enabled = true;
@@ -52,7 +52,7 @@
     };
 
     # Built-ins (tools + skills) shipped via nix-steipete-tools.
-    plugins = [          
+    plugins = [
     ];
   };
 }
