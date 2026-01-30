@@ -30,16 +30,10 @@
 
       ## PROGRAMS
         aagl.url = "github:ezKEa/aagl-gtk-on-nix";
-        clawdbot = {
-          url = "path:/home/neko/Projects/nix-clawdbot";
+        moltbot = {
+          url = "github:moltbot/nix-moltbot";
           inputs.nixpkgs.follows = "nixpkgs";
         };
-        nix-steipete-tools.url = "github:clawdbot/nix-steipete-tools";
-        steipete-camsnap.url = "path:./pkgs/moltbot/plugins/steipete-tools/camsnap";
-        steipete-gogcli.url = "path:./pkgs/moltbot/plugins/steipete-tools/gogcli";
-        steipete-summarize.url = "path:./pkgs/moltbot/plugins/steipete-tools/summarize";
-        steipete-sag.url = "path:./pkgs/moltbot/plugins/steipete-tools/sag";
-        steipete-oracle.url = "path:./pkgs/moltbot/plugins/steipete-tools/oracle";
         #deejavu.url = "github:bndlfm/deejavu";
         #jovian-nixos.url = "github:Jovian-Experiments/Jovian-NixOS";
         llama-cpp_ik = {
@@ -97,7 +91,7 @@
       nix-flatpak,
 
       aagl,
-      clawdbot,
+      moltbot,
       lsfg-vk,
       nixarr,
 
@@ -146,7 +140,7 @@
               modules =
                 [
                   ## CLAWDBOT
-                    clawdbot.homeManagerModules.clawdbot (import ./programs/clawdbot.home.nix)
+                    moltbot.homeManagerModules.moltbot (import ./programs/moltbot.home.nix)
                   ## FLATPAK
                     nix-flatpak.homeManagerModules.nix-flatpak (import ./services/flatpak.home.nix)
                   ## NIRI
