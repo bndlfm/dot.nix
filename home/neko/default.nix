@@ -139,8 +139,6 @@
             opencode
 #          inputs.llama-cpp_ik.packages.x86_64-linux.cuda
             warp-terminal
-            n8n
-            sillytavern
 
             # open claw pkgs
             _openclaw
@@ -161,6 +159,9 @@
             tmux
             openai-whisper
             uv
+
+
+            sillytavern
           ];
 
           apple = [

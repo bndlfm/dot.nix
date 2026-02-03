@@ -7,6 +7,8 @@
 
   imports = [ inputs.sops-nix.nixosModules.sops ];
   sops = {
+    defaultSopsFile = ../sops/secrets.sys.yaml;
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
     secrets = {
       "internet/CADDY_TS_AUTHKEY" = {};
@@ -43,6 +45,13 @@
             ];
           hash = "sha256-deSMEs9pmbmc6B+IexAjywpw7cCRn1ZOCTbVJve8SjI=";
         };
+
+      virtualHosts."homeassistant.meow.munchkin-sun.ts.net".extraConfig = ''
+        reverse_proxy localhost:8123
+        tls {
+          get_certificate tailscale
+        }
+      '';
     };
     networkd-dispatcher = {
       enable = true;

@@ -2,6 +2,8 @@
 , stdenv
 , fetchPnpmDeps
 , fetchFromGitHub
+, bash
+, coreutils
 , nodejs_22
 , pnpm
 , pnpmConfigHook
@@ -12,9 +14,11 @@
 , sqlite
 , openssl
 , curl
-, gemini-cli
 , uv
 , nodePackages
+
+, gemini-cli
+, codex
 
 , homebrewRev ? "master"
 , homebrewHash ? "sha256-/ZPWV/RjvRM3uuFgeP/ZJQRsGQEJ84yUxKE7M9/oeek="
@@ -48,133 +52,136 @@ let
       runHook preInstall
       mkdir -p $out
       cp -R . $out/
+      patchShebangs $out
       runHook postInstall
     '';
   };
-
-  buildRuntimeDeps = [
-    nodejs_22
-    nodePackages.npm
-    pnpm
-    uv
-    gemini-cli
-    curl
-    homebrew
-    go
-  ];
-
 in
-stdenv.mkDerivation rec {
-  pname = "openclaw";
-  version = (lib.importJSON "${src}/package.json").version;
+  stdenv.mkDerivation rec {
+    pname = "openclaw";
+    version = (lib.importJSON "${src}/package.json").version;
 
-  inherit src;
+    inherit src;
 
-  pnpmDeps = fetchPnpmDeps {
-    inherit pname version src;
-    lockfile = "${src}/pnpm-lock.yaml";
-    hash = "sha256-lFaK7/9i+BT47PJF37LBxK3ARgHY/+yIJjimsOG5Mn8=";
-    fetcherVersion = 3;
-  };
+    pnpmDeps = fetchPnpmDeps {
+      inherit pname version src;
+      lockfile = "${src}/pnpm-lock.yaml";
+      hash = "sha256-lFaK7/9i+BT47PJF37LBxK3ARgHY/+yIJjimsOG5Mn8=";
+      fetcherVersion = 3;
+    };
 
-  nativeBuildInputs = [
-    pnpmConfigHook
-    python3
-    pkg-config
-  ];
+    nativeBuildInputs = [
+      pnpmConfigHook
+      python3
+      pkg-config
+      bash
+    ];
 
-  buildInputs = [
-    vips
-    sqlite
-    openssl
-  ] ++ buildRuntimeDeps;
+    buildInputs = [
+      vips
+      sqlite
+      openssl
+    ];
 
-  propagatedBuildInputs = [
-  ];
+    propagatedBuildInputs = [
+      bash
+      coreutils
 
-  env = {
-    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
-    PUPPETEER_SKIP_DOWNLOAD = "1";
-  };
+      nodejs_22
+      nodePackages.npm
+      pnpm
+      uv
+      curl
+      homebrew
+      go
 
-  buildPhase = ''
-    runHook preBuild
-    pnpm build
-    runHook postBuild
-  '';
+      codex
+      gemini-cli
+    ];
 
-  installPhase = ''
-    runHook preInstall
+    env = {
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
+      PUPPETEER_SKIP_DOWNLOAD = "1";
+    };
 
-    install -d $out/lib/node_modules/${pname}
+    buildPhase = ''
+      runHook preBuild
+      pnpm build
+      runHook postBuild
+    '';
 
-    cp -R \
-      dist \
-      assets \
-      docs \
-      extensions \
-      patches \
-      skills \
-      git-hooks \
-      scripts \
-      ui \
-      node_modules \
-      package.json \
-      README.md \
-      README-header.png \
-      CHANGELOG.md \
-      LICENSE \
-      $out/lib/node_modules/${pname}/
+    installPhase = /*sh*/ ''
+      runHook preInstall
 
-    install -d $out/bin
+      install -d $out/lib/node_modules/${pname}
 
-    cat > $out/bin/openclaw <<'EOF'
-    #!${stdenv.shell}
-    set -euo pipefail
+      cp -R \
+        dist \
+        assets \
+        docs \
+        extensions \
+        patches \
+        skills \
+        git-hooks \
+        scripts \
+        ui \
+        node_modules \
+        package.json \
+        README.md \
+        README-header.png \
+        CHANGELOG.md \
+        LICENSE \
+        $out/lib/node_modules/${pname}/
 
-    # Set up Homebrew paths
-    if [ -n "''${XDG_DATA_HOME:-}" ]; then
-      brew_home="$XDG_DATA_HOME/.openclaw/homebrew"
-    else
-      brew_home="$HOME/.openclaw/homebrew"
-    fi
+      install -d $out/bin
 
-    export HOMEBREW_PREFIX="''${HOMEBREW_PREFIX:-$brew_home}"
-    export HOMEBREW_REPOSITORY="''${HOMEBREW_REPOSITORY:-$brew_home}"
-    export HOMEBREW_CELLAR="''${HOMEBREW_CELLAR:-$brew_home/Cellar}"
+      cat > $out/bin/openclaw <<'EOF'
+      #!${stdenv.shell}
+      set -euo pipefail
 
-    # Initialize Homebrew on first run
-    if [ ! -d "$brew_home/Library" ]; then
-      mkdir -p "$brew_home"
-      cp -R ${homebrew}/* "$brew_home/"
-    fi
+      # Set up Homebrew paths
+      if [ -n "''${XDG_DATA_HOME:-}" ]; then
+        brew_home="$XDG_DATA_HOME/.openclaw/homebrew"
+      else
+        brew_home="$HOME/.openclaw/homebrew"
+      fi
 
-    # Set up npm prefix for global packages
-    npm_prefix="''${XDG_DATA_HOME:-$HOME/.openclaw}/npm"
-    mkdir -p "$npm_prefix"
-    export NPM_CONFIG_PREFIX="$npm_prefix"
+      export HOMEBREW_PREFIX="''${HOMEBREW_PREFIX:-$brew_home}"
+      export HOMEBREW_REPOSITORY="''${HOMEBREW_REPOSITORY:-$brew_home}"
+      export HOMEBREW_CELLAR="''${HOMEBREW_CELLAR:-$brew_home/Cellar}"
 
-    # Add runtime dependencies and Homebrew to PATH
-    export PATH="${lib.makeBinPath buildRuntimeDeps}:$brew_home/bin:$npm_prefix/bin:$PATH"
+      # Initialize Homebrew on first run
+      if [ ! -d "$brew_home/Library" ]; then
+        mkdir -p "$brew_home"
+        cp -R ${homebrew}/* "$brew_home/"
+      fi
 
-    # Execute openclaw
-    script_dir="$(cd "$(dirname "$0")" && pwd)"
-    prefix="$(cd "$script_dir/.." && pwd)"
+      # Set up npm prefix for global packages
+      npm_prefix="''${XDG_DATA_HOME:-$HOME/.openclaw}/npm"
+      mkdir -p "$npm_prefix"
+      export NPM_CONFIG_PREFIX="$npm_prefix"
 
-    exec ${nodejs_22}/bin/node \
-      "$prefix/lib/node_modules/${pname}/dist/entry.js" "$@"
-    EOF
+      # Add runtime dependencies and Homebrew to PATH
+      export PATH="$brew_home/bin:$npm_prefix/bin:$PATH"
 
-    chmod +x $out/bin/openclaw
+      # Execute openclaw
+      script_dir="$(cd "$(dirname "$0")" && pwd)"
+      prefix="$(cd "$script_dir/.." && pwd)"
 
-    runHook postInstall
-  '';
+      exec ${nodejs_22}/bin/node \
+        "$prefix/lib/node_modules/${pname}/dist/entry.js" "$@"
+      EOF
 
-  meta = with lib; {
-    description = "Openclaw application";
-    homepage = "https://github.com/openclaw/openclaw";
-    license = licenses.free; # Adjust as needed
-    maintainers = [ ];
-    platforms = platforms.all;
-  };
-}
+      chmod +x $out/bin/openclaw
+
+      runHook postInstall
+    '';
+
+    meta = with lib; {
+      description = "Openclaw application";
+      homepage = "https://github.com/openclaw/openclaw";
+      license = licenses.free; # Adjust as needed
+      maintainers = [ ];
+      platforms = platforms.all;
+    };
+  }
