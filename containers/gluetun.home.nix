@@ -1,9 +1,9 @@
 { config, pkgs, ... }:
 
 {
-  sops.secrets."local/gluetun_private_key" = {};
-  sops.secrets."local/gluetun_preshared_key" = {};
-  sops.secrets."local/gluetun_addresses" = {};
+  sops.secrets."local/gluetun_private_key" = { };
+  sops.secrets."local/gluetun_preshared_key" = { };
+  sops.secrets."local/gluetun_addresses" = { };
 
   sops.templates."gluetun.env".content = ''
     WIREGUARD_PRIVATE_KEY=${config.sops.placeholder."local/gluetun_private_key"}
@@ -22,7 +22,7 @@
       "--device=/dev/net/tun:/dev/net/tun"
     ];
 
-    environmentFiles = [ config.sops.templates."gluetun.env".path ];
+    environmentFile = config.sops.templates."gluetun.env".path;
 
     environment = {
       VPN_SERVICE_PROVIDER = "airvpn";

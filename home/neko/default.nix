@@ -18,6 +18,7 @@
       # CONTAINERS #
       ##############
       ../../containers/flaresolverr.home.nix
+      ../../containers/gluetun.home.nix
       ../../containers/homeassistant.home.nix
 
       ###########
