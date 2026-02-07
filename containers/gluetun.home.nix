@@ -22,7 +22,7 @@
       "--device=/dev/net/tun:/dev/net/tun"
     ];
 
-    environmentFile = config.sops.templates."gluetun.env".path;
+    environmentFile = [ "${config.sops.templates."gluetun.env".path}" ];
 
     environment = {
       VPN_SERVICE_PROVIDER = "airvpn";
