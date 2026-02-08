@@ -17,8 +17,7 @@
     ##############
     # CONTAINERS #
     ##############
-    ../../containers/flaresolverr.home.nix
-    #../../containers/gluetun.home.nix
+    ../../containers/gluetun.home.nix
     ../../containers/homeassistant.home.nix
 
     ###########
@@ -127,21 +126,19 @@
 
         ai = [
           #_open-claude-cowork
-          aider-chat
           antigravity-fhs
           code-cursor-fhs
           vscode-fhs
+          windsurf
 
-          claude-code
-          codex
+          #codex
           gemini-cli
 
-          crush
           opencode
-          #          inputs.llama-cpp_ik.packages.x86_64-linux.cuda
+          #inputs.llama-cpp_ik.packages.x86_64-linux.cuda
           warp-terminal
 
-          # open claw pkgs
+          ## OPEN CLAW PKGS
           _openclaw
           _gifgrep
           _bird
@@ -563,10 +560,6 @@
       };
       "qutebrowser/config.py" = {
         source = ../../.config/qutebrowser/config.py;
-      };
-      "waybar" = {
-        source = ../../.config/waybar;
-        recursive = true;
       };
       "yazi" = {
         source = ../../.config/yazi;

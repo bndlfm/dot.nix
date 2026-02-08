@@ -5,7 +5,7 @@
     ./hardware-configuration.nix
 
   ### CONTAINERS
-    ../../containers/pihole.nix
+    # Pi-hole is managed by Home Manager at ../../containers/pihole.home.nix
     #../../containers/grimoire/grimoire.nix
     #../../containers/home-assistant.nix
     #../../containers/jellyfin.nix

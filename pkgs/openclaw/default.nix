@@ -1,29 +1,30 @@
-{ lib
-, stdenv
-, fetchPnpmDeps
-, fetchFromGitHub
-, bash
-, coreutils
-, nodejs_22
-, pnpm
-, pnpmConfigHook
-, python3
-, pkg-config
-, go
-, vips
-, sqlite
-, openssl
-, curl
-, uv
-, nodePackages
+{
+  lib,
+  stdenv,
+  fetchPnpmDeps,
+  fetchFromGitHub,
+  bash,
+  coreutils,
+  nodejs_22,
+  pnpm,
+  pnpmConfigHook,
+  python3,
+  pkg-config,
+  go,
+  vips,
+  sqlite,
+  openssl,
+  curl,
+  uv,
+  nodePackages,
 
-, gemini-cli
-, codex
+  gemini-cli,
+  codex,
 
-, homebrewRev ? "master"
-, homebrewHash ? "sha256-/ZPWV/RjvRM3uuFgeP/ZJQRsGQEJ84yUxKE7M9/oeek="
-, openclawRev ? "master"
-, openclawHash ? "sha256-hWt5J9dWfQvxioyuamuxRueuaU7qyN9Mpt9Hd41LHBs="
+  homebrewRev ? "master",
+  homebrewHash ? "sha256-/ZPWV/RjvRM3uuFgeP/ZJQRsGQEJ84yUxKE7M9/oeek=",
+  openclawRev ? "master",
+  openclawHash ? "sha256-hWt5J9dWfQvxioyuamuxRueuaU7qyN9Mpt9Hd41LHBs=",
 }:
 
 let
@@ -57,131 +58,132 @@ let
     '';
   };
 in
-  stdenv.mkDerivation rec {
-    pname = "openclaw";
-    version = (lib.importJSON "${src}/package.json").version;
+stdenv.mkDerivation rec {
+  pname = "openclaw";
+  version = (lib.importJSON "${src}/package.json").version;
 
-    inherit src;
+  inherit src;
 
-    pnpmDeps = fetchPnpmDeps {
-      inherit pname version src;
-      lockfile = "${src}/pnpm-lock.yaml";
-      hash = "sha256-lFaK7/9i+BT47PJF37LBxK3ARgHY/+yIJjimsOG5Mn8=";
-      fetcherVersion = 3;
-    };
+  pnpmDeps = fetchPnpmDeps {
+    inherit pname version src;
+    lockfile = "${src}/pnpm-lock.yaml";
+    hash = "sha256-uOhFo64Y0JmgY4JFjoX6z7M/Vg9mnjBa/oOPWmXz2IU=";
+    fetcherVersion = 3;
+  };
 
-    nativeBuildInputs = [
-      pnpmConfigHook
-      python3
-      pkg-config
-      bash
-    ];
+  nativeBuildInputs = [
+    pnpmConfigHook
+    python3
+    pkg-config
+    bash
+  ];
 
-    buildInputs = [
-      vips
-      sqlite
-      openssl
-    ];
+  buildInputs = [
+    vips
+    sqlite
+    openssl
+  ];
 
-    propagatedBuildInputs = [
-      bash
-      coreutils
+  propagatedBuildInputs = [
+    bash
+    coreutils
 
-      nodejs_22
-      nodePackages.npm
-      pnpm
-      uv
-      curl
-      homebrew
-      go
+    nodejs_22
+    nodePackages.npm
+    pnpm
+    uv
+    curl
+    homebrew
+    go
 
-      codex
-      gemini-cli
-    ];
+    codex
+    gemini-cli
+  ];
 
-    env = {
-      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
-      PUPPETEER_SKIP_DOWNLOAD = "1";
-    };
+  env = {
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
+    PUPPETEER_SKIP_DOWNLOAD = "1";
+  };
 
-    buildPhase = ''
-      runHook preBuild
-      pnpm build
-      runHook postBuild
-    '';
+  buildPhase = ''
+    runHook preBuild
+    pnpm build
+    runHook postBuild
+  '';
 
-    installPhase = /*sh*/ ''
-      runHook preInstall
+  installPhase = /* sh */ ''
+    runHook preInstall
 
-      install -d $out/lib/node_modules/${pname}
+    install -d $out/lib/node_modules/${pname}
 
-      cp -R \
-        dist \
-        assets \
-        docs \
-        extensions \
-        patches \
-        skills \
-        git-hooks \
-        scripts \
-        ui \
-        node_modules \
-        package.json \
-        README.md \
-        README-header.png \
-        CHANGELOG.md \
-        LICENSE \
-        $out/lib/node_modules/${pname}/
+    cp -R \
+      dist \
+      assets \
+      docs \
+      extensions \
+      patches \
+      packages \
+      skills \
+      git-hooks \
+      scripts \
+      ui \
+      node_modules \
+      package.json \
+      README.md \
+      README-header.png \
+      CHANGELOG.md \
+      LICENSE \
+      $out/lib/node_modules/${pname}/
 
-      install -d $out/bin
+    install -d $out/bin
 
-      cat > $out/bin/openclaw <<'EOF'
-      #!${stdenv.shell}
-      set -euo pipefail
+    cat > $out/bin/openclaw <<'EOF'
+    #!${stdenv.shell}
+    set -euo pipefail
 
-      # Set up Homebrew paths
-      if [ -n "''${XDG_DATA_HOME:-}" ]; then
-        brew_home="$XDG_DATA_HOME/.openclaw/homebrew"
-      else
-        brew_home="$HOME/.openclaw/homebrew"
-      fi
+    # Set up Homebrew paths
+    if [ -n "''${XDG_DATA_HOME:-}" ]; then
+      brew_home="$XDG_DATA_HOME/.openclaw/homebrew"
+    else
+      brew_home="$HOME/.openclaw/homebrew"
+    fi
 
-      export HOMEBREW_PREFIX="''${HOMEBREW_PREFIX:-$brew_home}"
-      export HOMEBREW_REPOSITORY="''${HOMEBREW_REPOSITORY:-$brew_home}"
-      export HOMEBREW_CELLAR="''${HOMEBREW_CELLAR:-$brew_home/Cellar}"
+    export HOMEBREW_PREFIX="''${HOMEBREW_PREFIX:-$brew_home}"
+    export HOMEBREW_REPOSITORY="''${HOMEBREW_REPOSITORY:-$brew_home}"
+    export HOMEBREW_CELLAR="''${HOMEBREW_CELLAR:-$brew_home/Cellar}"
 
-      # Initialize Homebrew on first run
-      if [ ! -d "$brew_home/Library" ]; then
-        mkdir -p "$brew_home"
-        cp -R ${homebrew}/* "$brew_home/"
-      fi
+    # Initialize Homebrew on first run
+    if [ ! -d "$brew_home/Library" ]; then
+      mkdir -p "$brew_home"
+      cp -R ${homebrew}/* "$brew_home/"
+    fi
 
-      # Set up npm prefix for global packages
-      npm_prefix="''${XDG_DATA_HOME:-$HOME/.openclaw}/npm"
-      mkdir -p "$npm_prefix"
-      export NPM_CONFIG_PREFIX="$npm_prefix"
+    # Set up npm prefix for global packages
+    npm_prefix="''${XDG_DATA_HOME:-$HOME/.openclaw}/npm"
+    mkdir -p "$npm_prefix"
+    export NPM_CONFIG_PREFIX="$npm_prefix"
 
-      # Add runtime dependencies and Homebrew to PATH
-      export PATH="$brew_home/bin:$npm_prefix/bin:$PATH"
+    # Add runtime dependencies and Homebrew to PATH
+    export PATH="$brew_home/bin:$npm_prefix/bin:$PATH"
 
-      # Execute openclaw
-      script_dir="$(cd "$(dirname "$0")" && pwd)"
-      prefix="$(cd "$script_dir/.." && pwd)"
+    # Execute openclaw
+    script_dir="$(cd "$(dirname "$0")" && pwd)"
+    prefix="$(cd "$script_dir/.." && pwd)"
 
-      exec ${nodejs_22}/bin/node \
-        "$prefix/lib/node_modules/${pname}/dist/entry.js" "$@"
-      EOF
+    exec ${nodejs_22}/bin/node \
+      "$prefix/lib/node_modules/${pname}/dist/entry.js" "$@"
+    EOF
 
-      chmod +x $out/bin/openclaw
+    chmod +x $out/bin/openclaw
 
-      runHook postInstall
-    '';
+    runHook postInstall
+  '';
 
-    meta = with lib; {
-      description = "Openclaw application";
-      homepage = "https://github.com/openclaw/openclaw";
-      license = licenses.free; # Adjust as needed
-      maintainers = [ ];
-      platforms = platforms.all;
-    };
-  }
+  meta = with lib; {
+    description = "Openclaw application";
+    homepage = "https://github.com/openclaw/openclaw";
+    license = licenses.free; # Adjust as needed
+    maintainers = [ ];
+    platforms = platforms.all;
+  };
+}

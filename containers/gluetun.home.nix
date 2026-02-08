@@ -1,15 +1,24 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
-  sops.secrets."local/gluetun_private_key" = { };
-  sops.secrets."local/gluetun_preshared_key" = { };
-  sops.secrets."local/gluetun_addresses" = { };
+  sops = {
+    defaultSopsFile = ../sops/secrets.home.yaml;
+    defaultSopsFormat = "yaml";
 
-  sops.templates."gluetun.env".content = ''
-    WIREGUARD_PRIVATE_KEY=${config.sops.placeholder."local/gluetun_private_key"}
-    WIREGUARD_PRESHARED_KEY=${config.sops.placeholder."local/gluetun_preshared_key"}
-    WIREGUARD_ADDRESSES=${config.sops.placeholder."local/gluetun_addresses"}
-  '';
+    age.keyFile = "/home/neko/.config/sops/age/keys.txt";
+
+    secrets = {
+      "local/gluetun_private_key" = { };
+      "local/gluetun_preshared_key" = { };
+      "local/gluetun_addresses" = { };
+    };
+
+    templates."gluetun.env".content = ''
+      WIREGUARD_PRIVATE_KEY=${config.sops.placeholder."local/gluetun_private_key"}
+      WIREGUARD_PRESHARED_KEY=${config.sops.placeholder."local/gluetun_preshared_key"}
+      WIREGUARD_ADDRESSES=${config.sops.placeholder."local/gluetun_addresses"}
+    '';
+  };
 
   services.podman.containers.gluetun = {
     image = "qmcgaw/gluetun";
