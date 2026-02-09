@@ -3,6 +3,8 @@
 ./.aider*
 GEMINI.md
 
+.editorconfig
+
 ### CONTAINERS
 containers/khoj
 containers/arr apps
@@ -15,7 +17,8 @@ containers/grimoire
 #NIX HANDLES THIS
 .config/environment.d
 #NVIM SETUP IS SEPERATE REPO
-./.config/nvim/
+.config/nvim/
+.config/nvim-vscode/
 #DONT EVEN USE THIS ANYMORE
 .config/nvimFnl/
 .config/nvimWithoutLazy/
