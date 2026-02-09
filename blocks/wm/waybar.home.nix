@@ -2,6 +2,7 @@
 {
   home.packages = [
     pkgs.nerd-fonts.terminess-ttf
+    pkgs.nerd-fonts.symbols-only
   ];
   programs.waybar = {
     enable = true;
@@ -247,7 +248,7 @@
     style = /* css */ ''
       window#waybar {
         font-size: 18px;
-        font-family: Terminess Nerd Font Mono;
+        font-family: "Terminess Nerd Font Mono", "Symbols Nerd Font";
         background: #2e3440;
         color: #fdf6e3;
       }
