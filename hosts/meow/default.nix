@@ -16,7 +16,6 @@ in
     ../../containers/pihole.sys.nix
 
     ## PROGRAMS
-    ../../programs/agl.sys.nix
 
     ## MODULES
     ../../blocks/music.sys.nix
