@@ -1,13 +1,21 @@
 { pkgs, ... }:
+let
+  piholeIPv4 = "192.168.1.200";
+in
 {
-  networking.firewall.allowedTCPPorts = [
-    53
-    8053
-  ];
-
-  networking.firewall.allowedUDPPorts = [
-    53
-  ];
+  networking = {
+    nameservers = [ piholeIPv4 ];
+    networkmanager.insertNameservers = [ piholeIPv4 ];
+    firewall = {
+      allowedTCPPorts = [
+        53 # DNS DUH
+        8053 # DNS DUH
+      ];
+      allowedUDPPorts = [
+        53 # DNS DUH
+      ];
+    };
+  };
 
   virtualisation.oci-containers = {
     backend = "podman";

@@ -19,9 +19,9 @@ in
     ../../programs/agl.sys.nix
 
     ## MODULES
-    ../../components/music.sys.nix
-    ../../components/gaming.sys.nix
-    ../../components/caddy-tailscale.sys.nix
+    ../../blocks/music.sys.nix
+    ../../blocks/gaming.sys.nix
+    ../../blocks/caddy-tailscale.sys.nix
 
     ## SECRETS
     inputs.sops-nix.nixosModules.sops
@@ -32,10 +32,10 @@ in
     ../../services/vaultwarden.sys.nix
 
     inputs.nixarr.nixosModules.default
-    ../../components/nixarr.sys.nix
+    ../../blocks/nixarr.sys.nix
 
     ## WINDOW MANAGERS
-    ../../components/wm/hyprland.sys.nix
+    ../../blocks/wm/hyprland.sys.nix
   ];
 
   #-------- PACKAGES --------#

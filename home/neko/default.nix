@@ -23,9 +23,9 @@
     ###########
     # MODULES #
     ###########
-    #../../components/openComposite.home.nix # WiVRn
-    ../../components/music.home.nix
-    #FIX: ../../components/notes.home.nix
+    #../../blocks/openComposite.home.nix # WiVRn
+    ../../blocks/music.home.nix
+    #FIX: ../../blocks/notes.home.nix
 
     ############
     # PROGRAMS #
@@ -64,8 +64,8 @@
     # WINDOW MANAGERS #
     ###################
     #./programs/gnome-shell.home.nix
-    ../../components/wm/hyprland.home.nix
-    ../../components/wm/niri.home.nix
+    ../../blocks/wm/hyprland.home.nix
+    ../../blocks/wm/niri.home.nix
   ];
 
   ##########################
