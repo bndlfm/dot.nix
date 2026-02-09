@@ -4,6 +4,8 @@ pkgs,
 ...
 }:
 {
+  sops.secrets."internet/TWITCH_IRC_OAUTH" = { };
+
   home.packages =
     with pkgs;
     [

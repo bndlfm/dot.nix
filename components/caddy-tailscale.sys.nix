@@ -28,7 +28,7 @@
 
   services = {
     caddy = {
-      enable = false;
+      enable = true;
       package = pkgs.caddy.withPlugins {
         plugins = [
           "github.com/tailscale/caddy-tailscale@v0.0.0-20250207163903-69a970c84556"
@@ -37,7 +37,7 @@
         hash = "sha256-deSMEs9pmbmc6B+IexAjywpw7cCRn1ZOCTbVJve8SjI=";
       };
 
-      virtualHosts."homeassistant.meow.munchkin-sun.ts.net".extraConfig = ''
+      virtualHosts."homeassistant.munchkin-sun.ts.net".extraConfig = ''
         bind tailscale/homeassistant:443
         reverse_proxy localhost:8123
       '';

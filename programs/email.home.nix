@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  sops.secrets."internet/GMAIL_APP_PASS" = { };
+
   accounts.email.accounts =
     {
       fflb = {

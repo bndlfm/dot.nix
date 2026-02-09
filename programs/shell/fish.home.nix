@@ -1,4 +1,6 @@
 { pkgs, config, ...}:{
+  sops.secrets."ai_keys/GEMINI_SECRET_KEY" = { };
+
   home.packages = with pkgs; [
     meow
     bat

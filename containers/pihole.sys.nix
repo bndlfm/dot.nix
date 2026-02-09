@@ -96,4 +96,9 @@
       "pihole-macvlan-shim.service"
     ];
   };
+
+  services.caddy.virtualHosts."pihole.munchkin-sun.ts.net".extraConfig = ''
+    bind tailscale/pihole:443
+    reverse_proxy 192.168.1.200:80
+  '';
 }

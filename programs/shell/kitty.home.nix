@@ -1,4 +1,9 @@
 { config, pkgs, ... }:{
+  sops.secrets = {
+    "ai_keys/GROQ_SECRET_KEY" = { };
+    "ai_keys/GEMINI_SECRET_KEY" = { };
+  };
+
   programs.kitty = {
     enable = true;
     shellIntegration = {

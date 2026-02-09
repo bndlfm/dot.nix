@@ -1,4 +1,9 @@
 { config, pkgs, ... }:{
+  sops.secrets = {
+    "discord/clawdbot" = { };
+    "ai_keys/ANTHROPIC_API_KEY" = { };
+  };
+
   home.packages = with pkgs; [
     _obsidian-cli
     _gifgrep
