@@ -9,7 +9,7 @@ in
     firewall = {
       allowedTCPPorts = [
         53 # DNS DUH
-        8053 # DNS DUH
+        8053
       ];
       allowedUDPPorts = [
         53 # DNS DUH
@@ -27,7 +27,7 @@ in
       ];
       extraOptions = [
         "--network=pihole-macvlan"
-        "--ip=192.168.1.200"
+        "--ip=${piholeIPv4}"
       ];
       environment = {
         TZ = "America/Chicago";
@@ -40,6 +40,14 @@ in
   systemd.services.pihole-macvlan-network = {
     description = "Create Podman macvlan network for Pi-hole";
     wantedBy = [ "multi-user.target" ];
+    after = [
+      "network-online.target"
+      "NetworkManager-wait-online.service"
+    ];
+    wants = [
+      "network-online.target"
+      "NetworkManager-wait-online.service"
+    ];
     before = [ "podman-pihole.service" ];
     serviceConfig = {
       Type = "oneshot";
@@ -47,7 +55,12 @@ in
     };
     script = ''
       set -eu
-      iface="$(${pkgs.iproute2}/bin/ip -4 route list default | ${pkgs.gawk}/bin/awk '{print $5; exit}')"
+      iface=""
+      for _ in $(seq 1 30); do
+        iface="$(${pkgs.iproute2}/bin/ip -4 route list default | ${pkgs.gawk}/bin/awk '{print $5; exit}')"
+        [ -n "$iface" ] && break
+        sleep 1
+      done
       if [ -z "$iface" ]; then
         echo "Could not determine default network interface for macvlan parent"
         exit 1
@@ -67,15 +80,26 @@ in
   systemd.services.pihole-macvlan-shim = {
     description = "Create host macvlan shim interface for Pi-hole reachability";
     wantedBy = [ "multi-user.target" ];
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
+    after = [
+      "network-online.target"
+      "NetworkManager-wait-online.service"
+    ];
+    wants = [
+      "network-online.target"
+      "NetworkManager-wait-online.service"
+    ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
     };
     script = ''
       set -eu
-      iface="$(${pkgs.iproute2}/bin/ip -4 route list default | ${pkgs.gawk}/bin/awk '{print $5; exit}')"
+      iface=""
+      for _ in $(seq 1 30); do
+        iface="$(${pkgs.iproute2}/bin/ip -4 route list default | ${pkgs.gawk}/bin/awk '{print $5; exit}')"
+        [ -n "$iface" ] && break
+        sleep 1
+      done
       if [ -z "$iface" ]; then
         echo "Could not determine default network interface for macvlan shim"
         exit 1
@@ -107,6 +131,6 @@ in
 
   services.caddy.virtualHosts."pihole.munchkin-sun.ts.net".extraConfig = ''
     bind tailscale/pihole:443
-    reverse_proxy 192.168.1.200:80
+    reverse_proxy ${piholeIPv4}:80
   '';
 }
