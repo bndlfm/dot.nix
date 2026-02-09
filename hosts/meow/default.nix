@@ -226,8 +226,8 @@ in
     blueman.enable = true;
     gnome.sushi.enable = false;
     desktopManager = {
-      gnome.enable = false;
-      plasma6.enable = true;
+      gnome.enable = true;
+      plasma6.enable = false;
     };
     displayManager = {
       defaultSession = "niri";
