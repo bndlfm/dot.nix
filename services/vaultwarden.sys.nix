@@ -10,9 +10,9 @@
     };
   };
 
-  #services.caddy.virtualHosts."https://vault.munchkin-sun.ts.net".extraConfig =
-  #  ''
-  #    bind tailscale/vault:443
-  #    reverse_proxy localhost:8222
-  #  '';
+  services.caddy.virtualHosts."vault.munchkin-sun.ts.net".extraConfig =
+    ''
+      bind tailscale/vault:443
+      reverse_proxy localhost:8222
+    '';
 }

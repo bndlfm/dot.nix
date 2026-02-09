@@ -13,6 +13,7 @@
     secrets = {
       "internet/CADDY_TS_AUTHKEY" = {};
     };
+
   };
 
   environment.systemPackages = with pkgs; [
@@ -47,10 +48,8 @@
         };
 
       virtualHosts."homeassistant.meow.munchkin-sun.ts.net".extraConfig = ''
+        bind tailscale/homeassistant:443
         reverse_proxy localhost:8123
-        tls {
-          get_certificate tailscale
-        }
       '';
     };
     networkd-dispatcher = {

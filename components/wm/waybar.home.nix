@@ -10,24 +10,6 @@
         _g = import ../../lib/globals.nix { inherit config; };
         default_modules = builtins.fromJSON /* json */ ''
           {
-            "custom/wl-gammarelay-temperature": {
-                "format": "{} ",
-                "exec": "wl-gammarelay-rs watch {t}",
-                "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +100",
-                "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -100"
-            },
-            "custom/wl-gammarelay-brightness": {
-                "format": "{}% ",
-                "exec": "wl-gammarelay-rs watch {bp}",
-                "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.02",
-                "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.02"
-            },
-            "custom/wl-gammarelay-gamma": {
-                "format": "{}% γ",
-                "exec": "wl-gammarelay-rs watch {g}",
-                "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d +0.02",
-                "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d -0.02"
-            },
             "wlr/workspaces": {
               "disable-scroll": false,
               "all-outputs": false,
@@ -127,16 +109,16 @@
               "spacing": 2
             },
             "clock": {
-              "format": " <b>{:%H:%M}</b> ",
+              "format": "<b>{:%H:%M}</b> ",
               "tooltip-format": "\n<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
               "format-alt": "{:%Y-%m-%d}"
             },
             "cpu": {
-              "format": "{usage} ",
+              "format": "{usage}   ",
               "tooltip": true
             },
             "memory": {
-              "format": "{} "
+              "format": "{}  "
             },
             "temperature": {
               "critical-threshold": 80,
@@ -179,8 +161,8 @@
               "on-click": "pavucontrol"
             },
             "wireplumber": {
-              "format": "{volume}% {icon}",
-              "format-muted": "Muted {icon}",
+              "format": "{volume}% {icon}  ",
+              "format-muted": "Muted {icon}  ",
               "format-icons": {
                   "default": ["", "", ""]
               },
@@ -189,6 +171,24 @@
               "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
               "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
               "scroll-step": 5
+            },
+            "custom/wl-gammarelay-temperature": {
+                "format": "{} ",
+                "exec": "wl-gammarelay-rs watch {t}",
+                "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +100",
+                "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -100"
+            },
+            "custom/wl-gammarelay-brightness": {
+                "format": "{}% ",
+                "exec": "wl-gammarelay-rs watch {bp}",
+                "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.02",
+                "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.02"
+            },
+            "custom/wl-gammarelay-gamma": {
+                "format": "{}% γ",
+                "exec": "wl-gammarelay-rs watch {g}",
+                "on-scroll-up": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d +0.02",
+                "on-scroll-down": "busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateGamma d -0.02"
             }
           }
         '';
@@ -246,8 +246,8 @@
       ];
     style = /* css */ ''
       window#waybar {
-        font-size: 14px;
-        font-family: "Inconsolata Nerd Font Mono";
+        font-size: 16px;
+        font-family: CaskaydiaMono Nerd Font Mono;
         background: #2e3440;
         color: #fdf6e3;
       }
@@ -340,6 +340,9 @@
         padding: 0 10px;
       }
     '';
-    systemd.enable = true;
+    systemd = {
+      enable = true;
+      target = "graphical-session.target";
+    };
   };
 }

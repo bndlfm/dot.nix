@@ -1,6 +1,5 @@
 { pkgs, ... }: {
   imports = [
-    ../../containers/pihole.home.nix
     ../../programs/shell.home.nix
     ../../programs/neovim.home.nix
   ];

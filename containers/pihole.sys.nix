@@ -1,0 +1,99 @@
+{ pkgs, ... }:
+{
+  networking.firewall.allowedTCPPorts = [
+    53
+    8053
+  ];
+
+  networking.firewall.allowedUDPPorts = [
+    53
+  ];
+
+  virtualisation.oci-containers = {
+    backend = "podman";
+    containers.pihole = {
+      image = "docker.io/pihole/pihole:latest";
+      volumes = [
+        "pihole:/etc/pihole"
+        "dnsmasq:/etc/dnsmasq.d"
+      ];
+      extraOptions = [
+        "--network=pihole-macvlan"
+        "--ip=192.168.1.200"
+      ];
+      environment = {
+        TZ = "America/Chicago";
+        WEB_PORT = "8053";
+        DNSMASQ_LISTENING = "all";
+      };
+    };
+  };
+
+  systemd.services.pihole-macvlan-network = {
+    description = "Create Podman macvlan network for Pi-hole";
+    wantedBy = [ "multi-user.target" ];
+    before = [ "podman-pihole.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      set -eu
+      iface="$(${pkgs.iproute2}/bin/ip -4 route list default | ${pkgs.gawk}/bin/awk '{print $5; exit}')"
+      if [ -z "$iface" ]; then
+        echo "Could not determine default network interface for macvlan parent"
+        exit 1
+      fi
+
+      if ! ${pkgs.podman}/bin/podman network exists pihole-macvlan; then
+        ${pkgs.podman}/bin/podman network create \
+          --driver macvlan \
+          --subnet 192.168.1.0/24 \
+          --gateway 192.168.1.1 \
+          -o parent="$iface" \
+          pihole-macvlan
+      fi
+    '';
+  };
+
+  systemd.services.pihole-macvlan-shim = {
+    description = "Create host macvlan shim interface for Pi-hole reachability";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      set -eu
+      iface="$(${pkgs.iproute2}/bin/ip -4 route list default | ${pkgs.gawk}/bin/awk '{print $5; exit}')"
+      if [ -z "$iface" ]; then
+        echo "Could not determine default network interface for macvlan shim"
+        exit 1
+      fi
+
+      if ! ${pkgs.iproute2}/bin/ip link show pihole-shim >/dev/null 2>&1; then
+        ${pkgs.iproute2}/bin/ip link add pihole-shim link "$iface" type macvlan mode bridge
+      fi
+
+      if ! ${pkgs.iproute2}/bin/ip addr show dev pihole-shim | ${pkgs.gnugrep}/bin/grep -q "192.168.1.201/32"; then
+        ${pkgs.iproute2}/bin/ip addr add 192.168.1.201/32 dev pihole-shim
+      fi
+
+      ${pkgs.iproute2}/bin/ip link set pihole-shim up
+
+      # Force host-to-container traffic through the shim; "ip route show" exits 0
+      # even when no matching route exists, so use replace unconditionally.
+      ${pkgs.iproute2}/bin/ip route replace 192.168.1.200/32 dev pihole-shim
+    '';
+  };
+
+  systemd.services.podman-pihole = {
+    requires = [ "pihole-macvlan-network.service" ];
+    after = [
+      "pihole-macvlan-network.service"
+      "pihole-macvlan-shim.service"
+    ];
+  };
+}

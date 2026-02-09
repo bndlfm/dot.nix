@@ -39,16 +39,12 @@
   services = {
     caddy.virtualHosts = {
       "jellyfin.munchkin-sun.ts.net".extraConfig = ''
+        bind tailscale/jellyfin:443
         reverse_proxy localhost:8096
-        tls {
-            get_certificate tailscale
-        }
       '';
       "jellyseerr.munchkin-sun.ts.net".extraConfig = ''
+        bind tailscale/jellyseerr:443
         reverse_proxy localhost:5055
-        tls {
-            get_certificate tailscale
-        }
       '';
     };
     flaresolverr.enable = true;

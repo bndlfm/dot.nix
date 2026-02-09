@@ -13,6 +13,7 @@ in
     ../../cachix.nix
 
     ## CONTAINERS
+    ../../containers/pihole.sys.nix
 
     ## PROGRAMS
     ../../programs/agl.sys.nix
