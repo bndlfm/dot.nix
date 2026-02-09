@@ -1,20 +1,12 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
-}:{
-
-  imports = [ inputs.sops-nix.nixosModules.sops ];
-  sops = {
-    defaultSopsFile = ../sops/secrets.sys.yaml;
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-
-    secrets = {
-      "internet/CADDY_TS_AUTHKEY" = {};
-    };
-
-  };
+}:
+{
+  sops.secrets."internet/CADDY_TS_AUTHKEY" = { };
 
   environment.systemPackages = with pkgs; [
     ethtool
@@ -36,16 +28,14 @@
 
   services = {
     caddy = {
-      enable = true;
-      package = pkgs.caddy.withPlugins
-        {
-          plugins =
-            [
-              "github.com/tailscale/caddy-tailscale@v0.0.0-20250207163903-69a970c84556"
-              "github.com/jasonlovesdoggo/caddy-defender@v0.8.5"
-            ];
-          hash = "sha256-deSMEs9pmbmc6B+IexAjywpw7cCRn1ZOCTbVJve8SjI=";
-        };
+      enable = false;
+      package = pkgs.caddy.withPlugins {
+        plugins = [
+          "github.com/tailscale/caddy-tailscale@v0.0.0-20250207163903-69a970c84556"
+          "github.com/jasonlovesdoggo/caddy-defender@v0.8.5"
+        ];
+        hash = "sha256-deSMEs9pmbmc6B+IexAjywpw7cCRn1ZOCTbVJve8SjI=";
+      };
 
       virtualHosts."homeassistant.meow.munchkin-sun.ts.net".extraConfig = ''
         bind tailscale/homeassistant:443
@@ -56,11 +46,10 @@
       enable = true;
       rules = {
         "50-tailscale" = {
-          onState = ["routable"];
-          script =
-            ''
-              ${pkgs.lib.getExe pkgs.ethtool} -K enp6s0 rx-udp-gro-forwarding on rx-gro-list off
-            '';
+          onState = [ "routable" ];
+          script = ''
+            ${pkgs.lib.getExe pkgs.ethtool} -K enp6s0 rx-udp-gro-forwarding on rx-gro-list off
+          '';
         };
       };
     };
@@ -72,7 +61,7 @@
     };
   };
 
-  systemd.services.caddy.serviceConfig = {
+  systemd.services.caddy.serviceConfig = lib.mkIf config.services.caddy.enable {
     EnvironmentFile = config.sops.secrets."internet/CADDY_TS_AUTHKEY".path;
     StateDirectory = "caddy";
   };

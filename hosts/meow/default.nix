@@ -25,6 +25,7 @@ in
 
     ## SECRETS
     inputs.sops-nix.nixosModules.sops
+    ../../sops/sops.sys.nix
 
     ## SERVICES
     ../../services/sunshine.sys.nix
@@ -523,11 +524,10 @@ in
   xdg = {
     portal = {
       enable = true;
-      extraPortals = with pkgs;
-        [
-          xdg-desktop-portal-gtk
-          kdePackages.xdg-desktop-portal-kde
-        ];
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+        kdePackages.xdg-desktop-portal-kde
+      ];
       config = {
         common = {
           default = [

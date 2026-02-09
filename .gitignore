@@ -15,7 +15,7 @@ containers/grimoire
 #NIX HANDLES THIS
 .config/environment.d
 #NVIM SETUP IS SEPERATE REPO
-.config/nvim/
+./.config/nvim/
 #DONT EVEN USE THIS ANYMORE
 .config/nvimFnl/
 .config/nvimWithoutLazy/
