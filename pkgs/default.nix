@@ -3,16 +3,18 @@
 pkgs:
 let
   cPkg = pkgs.callPackage;
-in {
+in
+{
   fennelPackages._antifennel = cPkg ./antifennel.nix { };
   _beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix { };
   _fish-ai = cPkg ./fishPlugins/fish-ai.nix { };
   _gamma-launcher = cPkg ./gamma-launcher.nix { };
+  _homeassistant-desktop = cPkg ./gamma-launcher.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };
   _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
 
   #--- Openclaw CLIs ---#
-  _openclaw = cPkg ./openclaw/default.nix {};
+  _openclaw = cPkg ./openclaw/default.nix { };
   _bird = cPkg ./openclaw/plugins/bird/default.nix { };
   _blogwatcher = cPkg ./openclaw/plugins/blogwatcher/default.nix { };
   _camsnap = cPkg ./openclaw/plugins/camsnap/default.nix { };
@@ -25,7 +27,7 @@ in {
   _songsee = cPkg ./openclaw/plugins/songsee/default.nix { };
   _summarize = cPkg ./openclaw/plugins/summarize/default.nix { };
   _sag = cPkg ./openclaw/plugins/sag/default.nix { };
- 
+
   #--- M O D E L  C O N T E X T  P R O T O C O L ---#
   _mpd-mcp-server = cPkg ./mcp/mpd-mcp-server/default.nix { };
   _mcp-arr = cPkg ./mcp/mcp-arr/default.nix { };

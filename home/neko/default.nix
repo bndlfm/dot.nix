@@ -79,15 +79,15 @@
       allowUnfreePredicate = (_: true);
       permittedInsecurePackages = [
         ## NIXARR
-        "dotnet-combined"
-        "dotnet-core-combined"
-        "dotnet-runtime-7.0.20"
-        "dotnet-runtime-wrapped-7.0.20"
-        "dotnet-wrapped-combined"
-        "dotnet-sdk-6.0.428"
-        "dotnet-sdk-wrapped-6.0.428"
-        "dotnet-sdk-7.0.410"
-        "dotnet-sdk-wrapped-7.0.410"
+        #"dotnet-combined"
+        #"dotnet-core-combined"
+        #"dotnet-runtime-7.0.20"
+        #"dotnet-runtime-wrapped-7.0.20"
+        #"dotnet-wrapped-combined"
+        #"dotnet-sdk-6.0.428"
+        #"dotnet-sdk-wrapped-6.0.428"
+        #"dotnet-sdk-7.0.410"
+        #"dotnet-sdk-wrapped-7.0.410"
       ];
     };
     overlays = [ inputs.nur.overlays.default ];
@@ -121,7 +121,6 @@
       let
         patched = [
           #inputs.deejavu.packages.x86_64-linux.default
-          darktable
         ];
 
         ai = [
@@ -167,8 +166,6 @@
 
         browsers = [
           #firefox-devedition: programs/hm/firefox.nix
-          chromium
-          google-chrome
           tor-browser
           qutebrowser
         ];
@@ -176,23 +173,18 @@
         cli = [
           age
           bat
-          cachix
           chafa
           duf
           eza
           fd
           ffmpeg-full
-          file
           fzf
-          gnugrep
           gopass
-          grex
           jq
           libnotify
           libqalculate
           nix-index
           (pkgs.pass.withExtensions (exts: [ exts.pass-otp ]))
-          p7zip
           ripgrep
           sd
           silver-searcher
@@ -216,18 +208,18 @@
         ];
 
         gaming = [
-          airshipper # Veloren (Cube World)
+          #airshipper # Veloren (Cube World)
           crawlTiles
           glfw3-minecraft
           #inputs.openmw-vr.packages.x86_64-linux.default
 
           # DECOMP
-          sm64coopdx
+          #sm64coopdx
           #shipwright # Ocarina of Time
-          _2ship2harkinian # Majora's Mask
+          #_2ship2harkinian # Majora's Mask
 
           # EMULATION
-          shadps4
+          #shadps4
 
           # RHYTHM GAMES
           clonehero
@@ -236,28 +228,21 @@
           # LAUNCHERS
           _gamma-launcher
           heroic
-          pkgs.bndlfm.hydralauncher
-          #itch
           lutris
           prismlauncher
-          runelite
 
           # MODDING
-          _beatSaberModManager
-          sidequest
+          #_beatSaberModManager
 
           # MISC
           mangohud
           protontricks
-          protonup-ng
           steamtinkerlaunch
         ];
 
         media = [
           calibre
-          freetube
           mpv
-          # spotify: ~/.nixcfg/theme/spicetify.nix
         ];
 
         notes = [
@@ -271,8 +256,8 @@
           #
           # DOTNET
           #-------
-          dotnetCorePackages.dotnet_10.sdk
-          dotnetCorePackages.dotnet_10.runtime
+          #dotnetCorePackages.dotnet_10.sdk
+          #dotnetCorePackages.dotnet_10.runtime
 
           #
           # GIT TOOLS
@@ -286,13 +271,7 @@
           #
           # PYTHON
           #-------
-          (python3.withPackages (
-            pkgs: with pkgs; [
-              llama-cpp
-              pynvim
-              ueberzug
-            ]
-          ))
+          (python3.withPackages (pkgs: with pkgs; [ ]))
 
           #
           # NIX DEV TOOLS
@@ -304,16 +283,14 @@
           #
           # OTHER DEV TOOLS
           #----------------
-          code-cursor-fhs
-          godot_4
-          godot_4-export-templates-bin
+          #godot_4
+          #godot_4-export-templates-bin
           meld
           zenity
         ];
 
         social = [
           vesktop
-          discord
           signal-desktop
           hexchat
           telegram-desktop
@@ -339,9 +316,6 @@
           ];
 
           nerdFonts = with pkgs.nerd-fonts; [
-            caskaydia-cove
-            caskaydia-mono
-            d2coding
             inconsolata
             inconsolata-lgc
             inconsolata-go
@@ -365,37 +339,25 @@
           iotop
           nvtopPackages.nvidia
           ## FILE MANAGERS AND UTILITIES
-          highlight
           page
           pulsemixer
           ncdu # like dir stat but terminal
           ranger
-          tdf # pretty pdf reader (zathura alternative)
         ];
 
         utilities = {
           wayland = [
-            #_azote
-            gammastep
-            nwg-look
-            waybar
-            wttrbar
-            wlr-randr
             wl-clipboard
             wl-clipboard-x11
             wl-clip-persist
+            gammastep
             wl-gammactl
+            wttrbar
+            wlr-randr
           ];
 
           xorg = [
-            dunst
-            eww
-            jgmenu
             weather-icons
-            nitrogen
-            scrot
-            sxhkd
-            tdrop
             xbindkeys
             xorg.xkill
             xorg.xhost
@@ -403,9 +365,7 @@
 
           other = [
             appimage-run
-            clipboard-jh
             copyq
-            deskflow
             gnome-tweaks
             google-drive-ocamlfuse
             gparted
@@ -413,7 +373,6 @@
             keymapp
             nicotine-plus
             nix-prefetch
-            pavucontrol
             qbittorrent
             qdirstat
             rofi
