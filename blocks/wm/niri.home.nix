@@ -18,6 +18,7 @@ in
   home.packages = with pkgs; [
     clipse
     fuzzel
+    _homeassistant-desktop
     swaybg
     swayidle
     swaylock-effects
@@ -130,13 +131,15 @@ in
               "--hide-window"
             ];
           }
-          { ## CLIPBOARD
+          {
+            ## CLIPBOARD
             command = [
               "copyq"
               "--start-server"
             ];
           }
-          { ## GAMMA
+          {
+            ## GAMMA
             command = [
               "gammastep-indicator"
               "-l"
@@ -152,13 +155,18 @@ in
               "/home/neko/Documents/GoogleDrive/"
             ];
           }
-          { ## KDE-CONNECT
+          {
+            ## KDE-CONNECT
             command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect" ];
           }
           {
             command = [ "kdeconnect-indicator" ];
           }
-          { ## POWER SAVINGS
+          {
+            command = [ "homeassistant-desktop" ];
+          }
+          {
+            ## POWER SAVINGS
             command = [
               "sh"
               "-c"
@@ -220,10 +228,12 @@ in
             ## TERMINAL/LAUNCHER
             "${Mod}+D".action.spawn = "fuzzel";
             ## NEWELLE
-            "Alt+BackSpace".action = sh ( builtins.concatStringsSep "; " [
-              "flatpak run --command=gsettings moe.nyarchlinux.assistant set moe.nyarchlinux.assistant startup-mode 'mini'"
-              "flatpak run moe.nyarchlinux.assistant"
-            ]);
+            "Alt+BackSpace".action = sh (
+              builtins.concatStringsSep "; " [
+                "flatpak run --command=gsettings moe.nyarchlinux.assistant set moe.nyarchlinux.assistant startup-mode 'mini'"
+                "flatpak run moe.nyarchlinux.assistant"
+              ]
+            );
 
             "${Mod}+BackSpace".action.spawn = "kitty";
             ## RESTART WAYBAR/SWAYBAR
@@ -392,13 +402,16 @@ in
             ## VS CODE FLICKERS WITH TRANSPARENCY
             {
               matches = [
-                { # the leftover carcass of windsurf
+                {
+                  # the leftover carcass of windsurf
                   app-id = "windsurf";
                 }
-                { # google antigravity
+                {
+                  # google antigravity
                   app-id = "antigravity";
                 }
-                { # vs code
+                {
+                  # vs code
                   app-id = "code";
                 }
                 {

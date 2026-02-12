@@ -1,6 +1,7 @@
 { lib
 , buildNpmPackage
 , electron
+, fetchFromGitHub
 , makeWrapper
 }:
 
@@ -8,7 +9,12 @@ buildNpmPackage rec {
   pname = "homeassistant-desktop";
   version = "1.5.3";
 
-  src = lib.cleanSource ./.;
+  src = fetchFromGitHub {
+    owner = "bndlfm";
+    repo = "homeassistant-desktop";
+    rev = "7b4e77c7f74a9ab89efe64313d28265f69b202c5";
+    hash = "sha256-p0wUa+71OraRyceoh8q5hh9YTzgsgSfyGYgzGVNB9b4=";
+  };
 
   npmDepsHash = "sha256-yrNGWqv13os54k5H7HpOPui/H8qQ1KHEh9oJG23cCW0=";
   dontNpmBuild = true;
