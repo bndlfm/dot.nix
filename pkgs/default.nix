@@ -12,6 +12,7 @@ in
   _homeassistant-desktop = cPkg ./homeassistant-desktop/default.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };
   _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
+  _noctalia-plugin-ai-usage = cPkg ./noctalia/plugins/ai-usage/default.nix { };
 
   #--- Openclaw CLIs ---#
   _openclaw = cPkg ./openclaw/default.nix { };

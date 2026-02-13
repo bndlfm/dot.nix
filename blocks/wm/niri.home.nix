@@ -131,7 +131,7 @@ in
           ## BLUETOOOTH
           { command = [ "blueman-applet" ]; }
           ## NOTIFICATIONS
-          { command = [ "swaync" ]; }
+          # Noctalia Shell provides its own notification daemon.
           ## TAILSCALE TRAY
           {
             command = [
@@ -234,7 +234,13 @@ in
             ## CLOSE WINDOW
             "${Mod}+Q".action.close-window = [ ];
             ## TERMINAL/LAUNCHER
-            "${Mod}+D".action.spawn = "fuzzel";
+            "${Mod}+D".action.spawn = [
+              "noctalia-shell"
+              "ipc"
+              "call"
+              "launcher"
+              "toggle"
+            ];
             ## NEWELLE
             "Alt+BackSpace".action = sh (
               builtins.concatStringsSep "; " [
@@ -549,5 +555,10 @@ in
       };
     };
 
+  };
+
+  xdg.configFile."noctalia-shell/plugins/ai-usage" = {
+    source = "${pkgs._noctalia-plugin-ai-usage}/share/noctalia-shell/plugins/ai-usage";
+    recursive = true;
   };
 }

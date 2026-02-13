@@ -59,7 +59,7 @@ inputs,
       kitty.enable = true;
       lazygit.enable = true;
       qutebrowser.enable = true;
-      rofi.enable = true;
+      rofi.enable = false;
       vim.enable = false;
       xresources.enable = true;
       yazi.enable = true;

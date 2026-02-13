@@ -130,7 +130,6 @@ stdenv.mkDerivation rec {
       node_modules \
       package.json \
       README.md \
-      README-header.png \
       CHANGELOG.md \
       LICENSE \
       $out/lib/node_modules/${pname}/

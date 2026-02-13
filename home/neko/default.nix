@@ -40,7 +40,6 @@
     ../../programs/neovim.home.nix
     ../../programs/password-store.home.nix
     ../../programs/ranger.home.nix
-    ../../programs/rofi.home.nix
     ../../programs/yazi.home.nix
 
     ###########
@@ -376,7 +375,6 @@
             nix-prefetch
             qbittorrent
             qdirstat
-            rofi
             zathura
             zsa-udev-rules
           ];
@@ -504,10 +502,6 @@
       };
       "ranger" = {
         source = ../../.config/ranger;
-        recursive = true;
-      };
-      "rofi" = {
-        source = ../../.config/rofi;
         recursive = true;
       };
       "tridactyl" = {

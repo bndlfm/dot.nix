@@ -1,0 +1,21 @@
+{
+  "id": "ai-usage",
+  "name": "AI Usage",
+  "version": "0.1.0",
+  "author": "neko",
+  "description": "Shows current AI usage in the Noctalia bar from a command output.",
+  "entryPoints": {
+    "barWidget": "BarWidget.qml",
+    "settings": "Settings.qml"
+  },
+  "metadata": {
+    "defaultSettings": {
+      "command": "ai-usage --json",
+      "intervalSec": 30,
+      "icon": "brain",
+      "showIcon": true,
+      "showText": true,
+      "showWhenUnavailable": true
+    }
+  }
+}
