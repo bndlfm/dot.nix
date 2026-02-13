@@ -47,7 +47,7 @@
       ## X11
       feh
       slop
-      xorg.libX11
+      libX11
     ];
 
     meta = with pkgs.lib; {

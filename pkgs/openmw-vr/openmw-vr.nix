@@ -49,10 +49,10 @@ in
       SDL2
       unshield
       yaml-cpp
-      xorg.libXdmcp
-      xorg.libXrandr
-      xorg.libXt
-      xorg.libXxf86vm
+      libXdmcp
+      libXrandr
+      libXt
+      libXxf86vm
     ];
 
     nativeBuildInputs = with pkgs; [

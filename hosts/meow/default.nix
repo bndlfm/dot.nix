@@ -86,7 +86,7 @@ in
     runc
     tailscale
     xsettingsd
-    xorg.xrdb
+    #xorg.xrdb
   ];
 
   #------- MY MODULES -------#

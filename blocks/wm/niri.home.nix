@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   config,
   inputs,
   ...
@@ -11,9 +12,11 @@ in
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
   imports = [
-    ./waybar.home.nix
+    inputs.noctalia.homeModules.default
     ../../mod/nyarch-assistant.home.nix
   ];
+
+  programs.waybar.enable = lib.mkForce false;
 
   home.packages = with pkgs; [
     clipse
@@ -34,6 +37,11 @@ in
   };
 
   programs = {
+    noctalia-shell = {
+      enable = true;
+      systemd.enable = true;
+    };
+
     niri = {
       package = pkgs.niri-unstable;
       settings = {
@@ -236,10 +244,10 @@ in
             );
 
             "${Mod}+BackSpace".action.spawn = "kitty";
-            ## RESTART WAYBAR/SWAYBAR
+            ## RESTART SHELL/WALLPAPER
             "${Mod}+W".action = sh (
               builtins.concatStringsSep "; " [
-                "systemctl --user restart waybar.service"
+                "systemctl --user restart noctalia-shell.service"
                 "systemctl --user restart swaybg.service"
               ]
             );

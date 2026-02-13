@@ -24,7 +24,7 @@
   homebrewRev ? "master",
   homebrewHash ? "sha256-/ZPWV/RjvRM3uuFgeP/ZJQRsGQEJ84yUxKE7M9/oeek=",
   openclawRev ? "master",
-  openclawHash ? "sha256-hWt5J9dWfQvxioyuamuxRueuaU7qyN9Mpt9Hd41LHBs=",
+  openclawHash ? "sha256-x/KLC79ZeaqJNpK0MtbEgE2XzYPimX1kgaTK27Izjjg=",
 }:
 
 let
@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
     lockfile = "${src}/pnpm-lock.yaml";
-    hash = "sha256-uOhFo64Y0JmgY4JFjoX6z7M/Vg9mnjBa/oOPWmXz2IU=";
+    hash = "sha256-fyQOPolsaBtPlvbZRCJCgq1jm2mrGt4qSbqni4ebLVQ=";
     fetcherVersion = 3;
   };
 
