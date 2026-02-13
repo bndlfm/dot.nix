@@ -63,7 +63,7 @@ in
       "kitty_mod+f>o" = "kitten hints --type path";
       "kitty_mod+f>l" = "kitten hints --type line --program -";
       "kitty_mod+f>w" = "kitten hints --type word --program -";
-      "kitty_mod+f>h" = "kitten hints --type hash --program -";
+      "kitty_mod+f>h" = "kitten hints --type regex --regex '(?i)\\b([0-9a-f]{7,128}|sha256-[A-Za-z0-9+/=]+|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\\b' --program -";
       "kitty_mod+f>n" = "kitten hints --type linenum";
 
       "kitty_mod+/" =
