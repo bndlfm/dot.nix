@@ -152,6 +152,7 @@
           _gogcli
           _mcp-arr
           _clawdhub
+          chromium
           himalaya
           tmux
           openai-whisper
@@ -359,8 +360,8 @@
           xorg = [
             weather-icons
             xbindkeys
-            xorg.xkill
-            xorg.xhost
+            xkill
+            xhost
           ];
 
           other = [
