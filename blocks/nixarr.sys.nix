@@ -52,6 +52,14 @@
       enable = true;
       openFirewall = true;
     };
+
+    # Anchorr is packaged locally and can be enabled here to keep media
+    # orchestration in one place.
+    #anchorr = {
+    #  enable = true;
+    #  openFirewall = true;
+    #  environmentFile = "/data/.secret/anchorr.env";
+    #};
   };
 
   networking.firewall = {

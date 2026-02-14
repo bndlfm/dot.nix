@@ -22,6 +22,7 @@ in
     clipse
     fuzzel
     _homeassistant-desktop
+    _waybar-ai-usage
     swaybg
     swayidle
     swaylock-effects
@@ -45,6 +46,7 @@ in
     niri = {
       package = pkgs.niri-unstable;
       settings = {
+        prefer-no-csd = true;
         cursor = {
           size = 32;
           theme = "volantes_light_cursors";
@@ -139,13 +141,13 @@ in
               "--hide-window"
             ];
           }
-          {
-            ## CLIPBOARD
-            command = [
-              "copyq"
-              "--start-server"
-            ];
-          }
+          #{
+          #  ## CLIPBOARD
+          #  command = [
+          #    "copyq"
+          #    "--start-server"
+          #  ];
+          #}
           {
             ## GAMMA
             command = [
@@ -181,16 +183,16 @@ in
               "swayidle -w timeout 1201 'niri msg action power-off-monitors' timeout 1200 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'"
             ];
           }
-          ## WALLPAPER
           {
+            ## WALLPAPER
             command = [
               "swaybg"
               "-i"
               "/home/neko/Pictures/Wallpapers/4K/Weather/Wallpaper forest, trees, snow, winter, 4k, Nature 8421417542.jpg"
             ];
           }
-          ## XWAYLAND
           {
+            ## XWAYLAND
             command = [
               "xrandr"
               "--output"
@@ -262,7 +264,10 @@ in
             # CLIPBOARD #
             #-----------#
             "${Mod}+Control+V".action.spawn = [
-              "copyq"
+              "noctalia-shell"
+              "ipc"
+              "call"
+              "clipboard"
               "toggle"
             ];
 
@@ -557,7 +562,7 @@ in
 
   };
 
-  xdg.configFile."noctalia-shell/plugins/ai-usage" = {
+  xdg.configFile."noctalia/plugins/ai-usage" = {
     source = "${pkgs._noctalia-plugin-ai-usage}/share/noctalia-shell/plugins/ai-usage";
     recursive = true;
   };

@@ -4,15 +4,19 @@ pkgs:
 let
   cPkg = pkgs.callPackage;
 in
-{
+rec {
   fennelPackages._antifennel = cPkg ./antifennel.nix { };
   _beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix { };
   _fish-ai = cPkg ./fishPlugins/fish-ai.nix { };
   _gamma-launcher = cPkg ./gamma-launcher.nix { };
+  _anchorr = cPkg ./anchorr/default.nix { };
   _homeassistant-desktop = cPkg ./homeassistant-desktop/default.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };
   _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
-  _noctalia-plugin-ai-usage = cPkg ./noctalia/plugins/ai-usage/default.nix { };
+  _waybar-ai-usage = cPkg ./waybar-ai-usage/default.nix { };
+  _noctalia-plugin-ai-usage = cPkg ./noctalia/plugins/ai-usage/default.nix {
+    waybarAiUsage = _waybar-ai-usage;
+  };
 
   #--- Openclaw CLIs ---#
   _openclaw = cPkg ./openclaw/default.nix { };
@@ -32,6 +36,7 @@ in
   #--- M O D E L  C O N T E X T  P R O T O C O L ---#
   _mpd-mcp-server = cPkg ./mcp/mpd-mcp-server/default.nix { };
   _mcp-arr = cPkg ./mcp/mcp-arr/default.nix { };
+  _screenpipe = cPkg ./screenpipe/package.nix { };
 
   #--- BIN ---#
   _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix { };

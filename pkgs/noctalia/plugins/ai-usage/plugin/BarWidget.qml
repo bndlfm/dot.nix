@@ -23,7 +23,7 @@ Item {
   readonly property real barFontSize: Style.getBarFontSizeForScreen(screenName)
 
   readonly property var defaults: ({
-      "command": "ai-usage --json",
+      "command": "ai-usage",
       "intervalSec": 30,
       "icon": "brain",
       "showIcon": true,
@@ -40,6 +40,12 @@ Item {
     if (fromUser)
       base = Object.assign(base, fromUser);
     return base;
+  }
+  readonly property string effectiveCommand: {
+    var cmd = String(settings.command || "").trim();
+    if (cmd === "" || cmd === "ai-usage --json")
+      return "ai-usage";
+    return cmd;
   }
 
   property real usagePercent: -1
@@ -198,7 +204,7 @@ Item {
 
   Process {
     id: pollProcess
-    command: ["sh", "-lc", String(root.settings.command || "")]
+    command: ["sh", "-lc", root.effectiveCommand]
     stdout: StdioCollector { }
     stderr: StdioCollector { }
 

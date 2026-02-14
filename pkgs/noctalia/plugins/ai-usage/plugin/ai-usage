@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CLAUDE_USAGE_BIN="__CLAUDE_USAGE_BIN__"
+CODEX_USAGE_BIN="__CODEX_USAGE_BIN__"
+
+normalize_json() {
+  jq -c '
+    def pick_percent:
+      .percent // .percentage // .usage_percentage // .usagePercent // .usage // .value;
+
+    . as $raw
+    | (pick_percent) as $p
+    | if ($p == null) then
+        {
+          status: ($raw.status // "unknown"),
+          message: ($raw.message // "No usage value found")
+        }
+      else
+        {
+          status: ($raw.status // "ok"),
+          percent: (
+            ($p | tonumber) as $n
+            | if $n <= 1 then ($n * 100) else $n end
+            | if . < 0 then 0 elif . > 100 then 100 else . end
+          ),
+          message: ($raw.message // null)
+        }
+      end
+  '
+}
+
+extract_waybar_percent() {
+  jq -r '
+    if (type != "object") then ""
+    else
+      (.percentage // .percent // empty | tostring)
+    end
+  ' 2>/dev/null
+}
+
+extract_waybar_status() {
+  jq -r '
+    if (type != "object") then "unknown"
+    else
+      (.text // "" | tostring) as $t
+      | if ($t | test("Pause")) then "paused"
+        elif ($t | test("Ready")) then "ready"
+        else "ok"
+        end
+    end
+  ' 2>/dev/null
+}
+
+collect_from_waybar_usage_tools() {
+  local claude_json codex_json claude_pct codex_pct claude_status codex_status
+  claude_json=""
+  codex_json=""
+
+  if [[ -x "${CLAUDE_USAGE_BIN}" ]]; then
+    claude_json="$("${CLAUDE_USAGE_BIN}" --waybar 2>/dev/null || true)"
+  fi
+  if [[ -x "${CODEX_USAGE_BIN}" ]]; then
+    codex_json="$("${CODEX_USAGE_BIN}" --waybar 2>/dev/null || true)"
+  fi
+
+  if [[ -z "${claude_json}" && -z "${codex_json}" ]]; then
+    return 1
+  fi
+
+  claude_pct=""
+  codex_pct=""
+  claude_status="unknown"
+  codex_status="unknown"
+
+  if [[ -n "${claude_json}" ]] && jq -e . >/dev/null 2>&1 <<<"${claude_json}"; then
+    claude_pct="$(extract_waybar_percent <<<"${claude_json}")"
+    claude_status="$(extract_waybar_status <<<"${claude_json}")"
+  fi
+
+  if [[ -n "${codex_json}" ]] && jq -e . >/dev/null 2>&1 <<<"${codex_json}"; then
+    codex_pct="$(extract_waybar_percent <<<"${codex_json}")"
+    codex_status="$(extract_waybar_status <<<"${codex_json}")"
+  fi
+
+  if [[ -z "${claude_pct}" && -z "${codex_pct}" ]]; then
+    return 1
+  fi
+
+  local merged_percent status message
+  merged_percent=0
+  if [[ -n "${claude_pct}" ]]; then
+    merged_percent="${claude_pct}"
+  fi
+  if [[ -n "${codex_pct}" ]] && (( $(printf '%.0f\n' "${codex_pct}") > $(printf '%.0f\n' "${merged_percent}") )); then
+    merged_percent="${codex_pct}"
+  fi
+
+  status="ok"
+  if [[ "${claude_status}" == "paused" || "${codex_status}" == "paused" ]]; then
+    status="paused"
+  elif [[ "${claude_status}" == "ready" && "${codex_status}" == "ready" ]]; then
+    status="ready"
+  fi
+
+  message="Claude ${claude_pct:-N/A}% | Codex ${codex_pct:-N/A}%"
+  printf '{"status":"%s","percent":%s,"message":"%s"}\n' "${status}" "${merged_percent}" "${message}"
+  return 0
+}
+
+if collect_from_waybar_usage_tools; then
+  exit 0
+fi
+
+if [[ -f "${HOME}/.cache/ai-usage.json" ]] && jq -e . >/dev/null 2>&1 < "${HOME}/.cache/ai-usage.json"; then
+  normalize_json < "${HOME}/.cache/ai-usage.json"
+  exit 0
+fi
+
+echo '{"status":"unavailable","message":"No usage source found. Install waybar-ai-usage package or write ~/.cache/ai-usage.json"}'

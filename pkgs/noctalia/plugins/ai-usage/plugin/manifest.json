@@ -10,7 +10,7 @@
   },
   "metadata": {
     "defaultSettings": {
-      "command": "ai-usage --json",
+      "command": "__AI_USAGE_CMD__",
       "intervalSec": 30,
       "icon": "brain",
       "showIcon": true,

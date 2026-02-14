@@ -10,7 +10,7 @@ ColumnLayout {
   required property var pluginApi
 
   readonly property var defaults: ({
-      "command": "ai-usage --json",
+      "command": "ai-usage",
       "intervalSec": 30,
       "icon": "brain",
       "showIcon": true,
@@ -42,9 +42,9 @@ ColumnLayout {
     id: commandInput
     Layout.fillWidth: true
     label: "Usage Command"
-    description: "Command must print JSON or text containing a percent. Example: ai-usage --json"
+    description: "Command must print JSON or text containing a percent. Default is the packaged ai-usage helper."
     text: root.settings.command
-    placeholderText: "ai-usage --json"
+    placeholderText: "ai-usage"
     onEditingFinished: {
       root.settings.command = text;
       root.persist();

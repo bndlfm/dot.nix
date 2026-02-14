@@ -31,6 +31,7 @@ in
     ../../services/vaultwarden.sys.nix
 
     inputs.nixarr.nixosModules.default
+    ../../modules/anchorr.sys.nix
     ../../blocks/nixarr.sys.nix
 
     ## WINDOW MANAGERS
