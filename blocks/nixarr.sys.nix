@@ -53,13 +53,23 @@
       openFirewall = true;
     };
 
-    # Anchorr is packaged locally and can be enabled here to keep media
-    # orchestration in one place.
-    #anchorr = {
-    #  enable = true;
-    #  openFirewall = true;
-    #  environmentFile = "/data/.secret/anchorr.env";
-    #};
+    # Anchorr: non-secret defaults here, secrets via sops-provisioned env file.
+    anchorr = {
+      enable = true;
+      openFirewall = true;
+      port = 8282;
+      environmentFile = "/data/.secret/anchorr.env";
+      environment = {
+        AUTO_START_BOT = "true";
+        JELLYSEERR_AUTO_APPROVE = "false";
+        NOTIFY_ON_AVAILABLE = "false";
+        PRIVATE_MESSAGE_MODE = "false";
+        JELLYFIN_NOTIFY_MOVIES = "true";
+        JELLYFIN_NOTIFY_SERIES = "true";
+        JELLYFIN_NOTIFY_SEASONS = "false";
+        JELLYFIN_NOTIFY_EPISODES = "false";
+      };
+    };
   };
 
   networking.firewall = {

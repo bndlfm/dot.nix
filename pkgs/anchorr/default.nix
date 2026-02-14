@@ -1,4 +1,5 @@
 {
+  bash,
   lib,
   buildNpmPackage,
   fetchFromGitHub,
@@ -16,8 +17,8 @@ buildNpmPackage rec {
     hash = "sha256-8xlablHtBtJuOgm/7hl4XWmyWYD+fE7L9igRECErDX4=";
   };
 
-  npmDepsHash = lib.fakeHash;
-  npmBuildScript = "none";
+  npmDepsHash = "sha256-YXPLHloxRci8PIDB5g+myxP36JFhQ2M54hQC86+1mMY=";
+  dontNpmBuild = true;
 
   installPhase = ''
     runHook preInstall
@@ -27,21 +28,10 @@ buildNpmPackage rec {
 
     mkdir -p "$out/bin"
     cat > "$out/bin/anchorr" <<EOF
-    #!${lib.getExe nodejs}
-    import { spawn } from "node:child_process";
-    import process from "node:process";
-
-    const appDir = "${placeholder "out"}/lib/anchorr";
-    const child = spawn(process.execPath, ["app.js"], {
-      cwd: appDir,
-      stdio: "inherit",
-      env: process.env,
-    });
-
-    child.on("exit", (code, signal) => {
-      if (signal) process.kill(process.pid, signal);
-      process.exit(code ?? 0);
-    });
+    #!${lib.getExe bash}
+    set -euo pipefail
+    cd "${placeholder "out"}/lib/anchorr"
+    exec ${lib.getExe nodejs} app.js
     EOF
     chmod +x "$out/bin/anchorr"
 

@@ -35,6 +35,7 @@ rec {
 
   #--- M O D E L  C O N T E X T  P R O T O C O L ---#
   _mpd-mcp-server = cPkg ./mcp/mpd-mcp-server/default.nix { };
+  _jellyseerr-mcp = cPkg ./mcp/jellyseerr-mcp/default.nix { };
   _mcp-arr = cPkg ./mcp/mcp-arr/default.nix { };
   _screenpipe = cPkg ./screenpipe/package.nix { };
 

@@ -37,7 +37,7 @@ in
     };
 
     dataDir = lib.mkOption {
-      type = lib.types.path;
+      type = lib.types.str;
       default = "/var/lib/anchorr";
       description = "Persistent state directory for Anchorr runtime files and config.";
     };
