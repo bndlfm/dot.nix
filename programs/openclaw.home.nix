@@ -1,4 +1,5 @@
-{ config, pkgs, ... }:{
+{ config, pkgs, ... }:
+{
   sops.secrets = {
     "discord/clawdbot" = { };
     "ai_keys/ANTHROPIC_API_KEY" = { };
@@ -37,7 +38,7 @@
 
     instances = {
       default = {
-        enable = true;
+        enable = false;
         package = pkgs._openclaw;
 
         stateDir = "${config.home.homeDirectory}/.openclaw";
@@ -46,7 +47,10 @@
         config.channels.discord.accounts.default = {
           enabled = true;
           token = builtins.readFile config.sops.secrets."discord/clawdbot".path;
-          intents = { guildMembers = true; presence = true; };
+          intents = {
+            guildMembers = true;
+            presence = true;
+          };
           guilds."1465431090817663094".requireMention = true;
         };
       };

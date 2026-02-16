@@ -2,6 +2,7 @@
 {
   programs.zen-browser = {
     enable = true;
+    suppressXdgMigrationWarning = true;
     nativeMessagingHosts = with pkgs; [
       tridactyl-native
       kdePackages.plasma-browser-integration

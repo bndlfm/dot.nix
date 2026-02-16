@@ -1,4 +1,5 @@
-{ pkgs, config, ...}:{
+{ pkgs, config, ... }:
+{
   sops.secrets."ai_keys/GEMINI_SECRET_KEY" = { };
 
   home.packages = with pkgs; [
@@ -7,12 +8,14 @@
   ];
 
   programs = {
-    /*************
-    * FISH SHELL *
-    *************/
+    /**
+      ***********
+      * FISH SHELL *
+      ************
+    */
     fish = {
       enable = true;
-      interactiveShellInit = /*sh*/ ''
+      interactiveShellInit = /* sh */ ''
         set PATH $PATH /home/neko/.local/bin
         set pisces_only_insert_at_eol 1
 
@@ -88,11 +91,26 @@
             sha256 = "sha256-pR5RKU+zIb7CS0Y6vjx2QIZ8Iu/3ojRfAcAdjCOxl1U=";
           };
         }
-        { name = "pisces"; src = pkgs.fishPlugins.pisces.src; }
-        { name = "colored-man-pages"; src = pkgs.fishPlugins.colored-man-pages.src; }
-        { name = "done"; src = pkgs.fishPlugins.done.src; }
-        { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
-        { name = "forgit"; src = pkgs.fishPlugins.forgit.src; }
+        {
+          name = "pisces";
+          src = pkgs.fishPlugins.pisces.src;
+        }
+        {
+          name = "colored-man-pages";
+          src = pkgs.fishPlugins.colored-man-pages.src;
+        }
+        {
+          name = "done";
+          src = pkgs.fishPlugins.done.src;
+        }
+        {
+          name = "fzf-fish";
+          src = pkgs.fishPlugins.fzf-fish.src;
+        }
+        {
+          name = "forgit";
+          src = pkgs.fishPlugins.forgit.src;
+        }
         {
           name = "fish-abbreviation-tips";
           src = pkgs.fetchFromGitHub {
@@ -102,7 +120,10 @@
             sha256 = "05b5qp7yly7mwsqykjlb79gl24bs6mbqzaj5b3xfn3v2b7apqnqp";
           };
         }
-        { name = "fish-ai"; src = pkgs._fish-ai; }
+        {
+          name = "fish-ai";
+          src = pkgs._fish-ai;
+        }
         {
           name = "fish-fastdir";
           src = pkgs.fetchFromGitHub {
@@ -112,7 +133,10 @@
             sha256 = "iu7zNO7yKVK2bhIIlj4UKHHqDaGe4q2tIdNgifxPev4=";
           };
         }
-        { name = "grc"; src = pkgs.fishPlugins.grc.src; }
+        {
+          name = "grc";
+          src = pkgs.fishPlugins.grc.src;
+        }
         {
           name = "tacklebox";
           src = pkgs.fetchFromGitHub {
@@ -122,112 +146,124 @@
             sha256 = "BGFPnGdF/wmnJH8YJqyBi4Pb6DlPM509fj+GnTnWkQc=";
           };
         }
-        { name = "tide"; src = pkgs.fishPlugins.tide.src; }
+        {
+          name = "tide";
+          src = pkgs.fishPlugins.tide.src;
+        }
       ];
       shellAbbrs = {
         ### APP ABBR ###
-          fpk = "flatpak";
-          mutt = "neomutt";
-          vi = "nvim";
-          vim = "nvim";
+        fpk = "flatpak";
+        mutt = "neomutt";
+        vi = "nvim";
+        vim = "nvim";
 
         ### EDIT CONFIG ###
-          # other config abbr
-            dbx = "distrobox";
-            rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
-            rwayb = "nvim ~/.nixcfg/.config/waybar/config";
-            zni = "cd ~/.nixcfg";
-          ## NIX SPECIFIC CONFIGS
-            nxs = "nix-search-tv print | fzf --preview 'nix-search-tv preview {}' --scheme history";
-            nxc = "nixos-container";
-            ## REBUILD SYSTEM
-              nfu = "nix flake update --flake ~/.nixcfg/";
-              nxrb = "nh os switch ~/.nixcfg";
-              hmrb = "nh home switch ~/.nixcfg/ -b hmbackup -- --impure";
-            ## GARBAGE COLLECTION
-              nxgc = "sudo nix-collect-garbage -d";
-              hmgc = "nix-collect-garbage -d";
+        # other config abbr
+        dbx = "distrobox";
+        rtri = "nvim ~/.nixcfg/.config/tridactyl/tridactylrc";
+        rwayb = "nvim ~/.nixcfg/.config/waybar/config";
+        zni = "cd ~/.nixcfg";
+        ## NIX SPECIFIC CONFIGS
+        nxs = "nix-search-tv print | fzf --preview 'nix-search-tv preview {}' --scheme history";
+        nxc = "nixos-container";
+        ## REBUILD SYSTEM
+        nfu = "nix flake update --flake ~/.nixcfg/";
+        nxrb = "nh os switch ~/.nixcfg";
+        hmrb = "nh home switch ~/.nixcfg/ -b hmbackup -- --impure";
+        ## GARBAGE COLLECTION
+        nxgc = "sudo nix-collect-garbage -d";
+        hmgc = "nix-collect-garbage -d";
 
         ### CURL SHENANIGANS ###
-          #cheat.sh
-            cht = { setCursor = true; expansion = "curl cht.sh/%"; };
-            cheat = { setCursor = true; expansion = "curl cht.sh/%"; };
-          #weather
-            wttr = "curl wttr.in";
-          #get ip
-            gIPv4-way = "bash -c 'curl ipv4.icanhazip.com | tee >(wl-copy)'";
-            gIPv6-way = "bash -c 'curl ipv6.icanhazip.com | tee >(wl-copy)'";
-            gIPv4-x11 = "bash -c 'curl ipv4.icanhazip.com | xclip -i -selection clipboard'";
-            gIPv6-x11 = "bash -c 'curl ipv6.icanhazip.com | xclip -i -selection clipboard'";
+        #cheat.sh
+        cht = {
+          setCursor = true;
+          expansion = "curl cht.sh/%";
+        };
+        cheat = {
+          setCursor = true;
+          expansion = "curl cht.sh/%";
+        };
+        #weather
+        wttr = "curl wttr.in";
+        #get ip
+        gIPv4-way = "bash -c 'curl ipv4.icanhazip.com | tee >(wl-copy)'";
+        gIPv6-way = "bash -c 'curl ipv6.icanhazip.com | tee >(wl-copy)'";
+        gIPv4-x11 = "bash -c 'curl ipv4.icanhazip.com | xclip -i -selection clipboard'";
+        gIPv6-x11 = "bash -c 'curl ipv6.icanhazip.com | xclip -i -selection clipboard'";
 
         ### GIT SHORTCUTS ###
-          g = "git";
-          gco = "git checkout";
-          gcl = "git clone";
-          gcp = "git cherry-pick";
-          glg = "git log --graph --oneline --all";
-          gst = "git status";
-          #git branch
-          gb = "git branch";
-          gba = "git branch -a";
-          #git commit
-          gc = "git commit";
-          gca = "git commit -a";
-          gcm = { setCursor = true; expansion = "git commit -m '%'";};
-          #git pull/push
-          gp = "git pull";
-          gph = "git push";
-          #git add
-          ga = "git add";
-          gau = "git add -u";
-          gaa = "git add -all";
-          #git diff
-          gd = "git diff";
-          gdc = "git diff --cached";
-          gdt = "git difftool";
+        g = "git";
+        gco = "git checkout";
+        gcl = "git clone";
+        gcp = "git cherry-pick";
+        glg = "git log --graph --oneline --all";
+        gst = "git status";
+        #git branch
+        gb = "git branch";
+        gba = "git branch -a";
+        #git commit
+        gc = "git commit";
+        gca = "git commit -a";
+        gcm = {
+          setCursor = true;
+          expansion = "git commit -m '%'";
+        };
+        #git pull/push
+        gp = "git pull";
+        gph = "git push";
+        #git add
+        ga = "git add";
+        gau = "git add -u";
+        gaa = "git add -all";
+        #git diff
+        gd = "git diff";
+        gdc = "git diff --cached";
+        gdt = "git difftool";
 
         ### SYSTEMCTL ###
-          #systemctl
-            scu = "systemctl --user";
-            ssc = "sudo systemctl";
-          #systemctl status
-            scust = "systemctl --user status";
-            sscst = "sudo systemctl status";
-          #systemctl stop
-            scus = "systemctl --user stop";
-            sscs = "sudo systemctl stop";
-          #systemctl enable now
-            scuen = "systemctl --user enable --now";
-            sscen = "sudo systemctl enable --now";
-          #systemctl restart
-            scur = "systemctl --user restart";
-            sscr = "sudo systemctl restart";
-          #systemctl daemon reload
-            scudr = "systemctl --user daemon-reload";
-            sscdr = "sudo systemctl daemon-reload";
-          #systemctl disable
-            scud = "systemctl --user disable";
-            sscd = "sudo systemctl disable";
-          #systemctl start
-            scuS = "systemctl --user start";
-            sscS = "sudo systemctl start";
-          #systemctl try-restart
-            scutr = "systemctl --user try-restart";
-            ssctr = "sudo systemctl try-restart";
-          #systemctl edit runtime
-            scue = "systemctl --user edit --runtime";
-            ssce = "sudo systemctl edit --runtime";
-          #systemctl failed
-            scuf = "systemctl --user --failed";
-            sscf = "sudo systemctl --failed";
+        #systemctl
+        scu = "systemctl --user";
+        ssc = "sudo systemctl";
+        #systemctl status
+        scust = "systemctl --user status";
+        sscst = "sudo systemctl status";
+        #systemctl stop
+        scus = "systemctl --user stop";
+        sscs = "sudo systemctl stop";
+        #systemctl enable now
+        scuen = "systemctl --user enable --now";
+        sscen = "sudo systemctl enable --now";
+        #systemctl restart
+        scur = "systemctl --user restart";
+        sscr = "sudo systemctl restart";
+        #systemctl daemon reload
+        scudr = "systemctl --user daemon-reload";
+        sscdr = "sudo systemctl daemon-reload";
+        #systemctl disable
+        scud = "systemctl --user disable";
+        sscd = "sudo systemctl disable";
+        #systemctl start
+        scuS = "systemctl --user start";
+        sscS = "sudo systemctl start";
+        #systemctl try-restart
+        scutr = "systemctl --user try-restart";
+        ssctr = "sudo systemctl try-restart";
+        #systemctl edit runtime
+        scue = "systemctl --user edit --runtime";
+        ssce = "sudo systemctl edit --runtime";
+        #systemctl failed
+        scuf = "systemctl --user --failed";
+        sscf = "sudo systemctl --failed";
 
         ### GENERAL SHORTCUTS ###
-          c = "clear";
-          del = "trash";
-          rm = "rm -Iv";
-          ls = "eza --group-directories-first --icons --color-scale all";
-          suvi = "sudoedit";
-          yay = "nix search nixpkgs";
+        c = "clear";
+        del = "trash";
+        rm = "rm -Iv";
+        ls = "eza --group-directories-first --icons --color-scale all";
+        suvi = "sudoedit";
+        yay = "nix search nixpkgs";
       };
       shellAliases = {
         "..." = "cd ../..";
@@ -235,9 +271,11 @@
       };
     };
 
-  /*********************
-  * SHELL INTEGRATIONS *
-  *********************/
+    /**
+      *******************
+      * SHELL INTEGRATIONS *
+      ********************
+    */
     broot = {
       enable = true;
       enableFishIntegration = true;
@@ -283,12 +321,10 @@
       enableFishIntegration = true;
     };
     yazi = {
-      enable = true;
       enableFishIntegration = true;
     };
     zellij = {
-      enable = false;
-      enableFishIntegration = true;
+      enableFishIntegration = false;
     };
     zoxide = {
       enable = true;
@@ -316,6 +352,7 @@
   };
 
   xdg.configFile."fish-ai.ini".source =
-    config.lib.file.mkOutOfStoreSymlink config.sops.templates."fish-ai.ini".path;
+    config.lib.file.mkOutOfStoreSymlink
+      config.sops.templates."fish-ai.ini".path;
 
 }

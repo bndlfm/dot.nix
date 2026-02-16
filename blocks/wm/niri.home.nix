@@ -13,7 +13,7 @@ in
 
   imports = [
     inputs.noctalia.homeModules.default
-    ../../mod/nyarch-assistant.home.nix
+    ../../blocks/nyarch-assistant.home.nix
   ];
 
   programs.waybar.enable = lib.mkForce false;
@@ -23,10 +23,8 @@ in
     fuzzel
     _homeassistant-desktop
     _waybar-ai-usage
-    swaybg
     swayidle
     swaylock-effects
-    swaynotificationcenter
     wlprop
   ];
 
@@ -184,14 +182,6 @@ in
             ];
           }
           {
-            ## WALLPAPER
-            command = [
-              "swaybg"
-              "-i"
-              "/home/neko/Pictures/Wallpapers/4K/Weather/Wallpaper forest, trees, snow, winter, 4k, Nature 8421417542.jpg"
-            ];
-          }
-          {
             ## XWAYLAND
             command = [
               "xrandr"
@@ -256,7 +246,6 @@ in
             "${Mod}+W".action = sh (
               builtins.concatStringsSep "; " [
                 "systemctl --user restart noctalia-shell.service"
-                "systemctl --user restart swaybg.service"
               ]
             );
 

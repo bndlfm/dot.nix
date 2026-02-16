@@ -24,7 +24,7 @@
   homebrewRev ? "master",
   homebrewHash ? "sha256-/ZPWV/RjvRM3uuFgeP/ZJQRsGQEJ84yUxKE7M9/oeek=",
   openclawRev ? "master",
-  openclawHash ? "sha256-x/KLC79ZeaqJNpK0MtbEgE2XzYPimX1kgaTK27Izjjg=",
+  openclawHash ? "sha256-Ha+khhDT9+uL8xRmFs92avqQ5mbC6UM+i+WjMJuIlFo=",
 }:
 
 let
@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
     lockfile = "${src}/pnpm-lock.yaml";
-    hash = "sha256-fyQOPolsaBtPlvbZRCJCgq1jm2mrGt4qSbqni4ebLVQ=";
+    hash = "sha256-4mdCTkyBNHUEKYpL6dpqlJkHN4jOIjRo32xJItYWbKg=";
     fetcherVersion = 3;
   };
 
@@ -181,6 +181,7 @@ stdenv.mkDerivation rec {
   meta = with lib; {
     description = "Openclaw application";
     homepage = "https://github.com/openclaw/openclaw";
+    mainProgram = "openclaw";
     license = licenses.free; # Adjust as needed
     maintainers = [ ];
     platforms = platforms.all;

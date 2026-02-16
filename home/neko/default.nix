@@ -17,13 +17,14 @@
     ##############
     # CONTAINERS #
     ##############
+    ../../containers/openclaw.home.nix
     ../../containers/gluetun.home.nix
     ../../containers/homeassistant.home.nix
 
     ###########
     # MODULES #
     ###########
-    #../../blocks/openComposite.home.nix # WiVRn
+    ../../blocks/vr/open-composite.home.nix
     ../../blocks/music.home.nix
     #FIX: ../../blocks/notes.home.nix
 
@@ -33,6 +34,7 @@
     ../../programs/programs.home.nix
     ../../programs/email.home.nix
     ../../programs/shell
+    ../../blocks/shell/zellij.home.nix
     ../../programs/twitch.home.nix
 
     ../../programs/firefox.home.nix
@@ -77,16 +79,6 @@
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
       permittedInsecurePackages = [
-        ## NIXARR
-        #"dotnet-combined"
-        #"dotnet-core-combined"
-        #"dotnet-runtime-7.0.20"
-        #"dotnet-runtime-wrapped-7.0.20"
-        #"dotnet-wrapped-combined"
-        #"dotnet-sdk-6.0.428"
-        #"dotnet-sdk-wrapped-6.0.428"
-        #"dotnet-sdk-7.0.410"
-        #"dotnet-sdk-wrapped-7.0.410"
       ];
     };
     overlays = [ inputs.nur.overlays.default ];
@@ -123,7 +115,6 @@
         ];
 
         ai = [
-          #_open-claude-cowork
           antigravity-fhs
           code-cursor-fhs
           vscode-fhs
@@ -138,24 +129,11 @@
 
           ## OPEN CLAW PKGS
           _openclaw
-          _gifgrep
-          _bird
-          _blogwatcher
-          _goplaces
-          _mcporter
-          _songsee
-          _summarize
-          _sag
-          _nano-pdf
-          _camsnap
-          _gogcli
-          _mcp-arr
-          _clawdhub
           chromium
-          himalaya
-          tmux
-          openai-whisper
-          uv
+          #himalaya
+          #tmux
+          #openai-whisper
+          #uv
 
           sillytavern
         ];
@@ -180,6 +158,7 @@
           ffmpeg-full
           fzf
           gopass
+          gpu-screen-recorder
           jq
           libnotify
           libqalculate
@@ -303,7 +282,7 @@
           qt6Packages.qt6ct
           qt6Packages.qtstyleplugin-kvantum
           # Wine/Proton
-          wineWowPackages.stable
+          wineWow64Packages.stable
           winetricks
         ];
 

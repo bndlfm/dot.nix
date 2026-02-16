@@ -1,10 +1,8 @@
 {
   inputs = {
-    /**
-      *****************
-      * PERMANENT INPUTS *
-      ******************
-    */
+    #********************
+    #* PERMANENT INPUTS *
+    #********************
     ## NIX
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
@@ -59,20 +57,23 @@
     };
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
-    /**
-      *******************
-      * ALTERNATIVE INPUTS *
-      ********************
-    */
-    ## NOTE: Check if fixed upstream!
+    ## VIRTUALIZATION
+    microvm = {
+      url = "github:astro/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
-    extra-subsituters = [
-      "https://cache.nixos.org"
+    extra-substituters = [
+      "https://cuda-maintainers.cachix.org"
+      "https://hyprland.cachix.org"
+      "https://niri.cachix.org"
     ];
     extra-trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "niri.cachix.org-1:Wv0OmO7PsuJ9OV2cw8rE8lF6cNfyGl6z1h28T+uDCN8="
     ];
   };
 
@@ -89,6 +90,8 @@
 
       hyprland,
       niri,
+
+      microvm,
 
       spicetify-nix,
       sops-nix,
@@ -130,6 +133,8 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays overlays;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
+            ## CACHES
+            ./cachix.nix
             ## FLATPAK
             nix-flatpak.homeManagerModules.nix-flatpak
             (import ./services/flatpak.home.nix)
@@ -166,6 +171,8 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             ({ nixpkgs.overlays = overlays; })
+            ## CACHES
+            ./cachix.nix
             ## PROGRAMS
             lsfg-vk.nixosModules.default
             ## FLATPAK

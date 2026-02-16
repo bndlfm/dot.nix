@@ -36,17 +36,32 @@
         "dmask=0022"
       ];
     };
+
     "/" = {
       device = "/dev/disk/by-uuid/8a82f24c-5b0d-4f5e-900d-a6e615f0dc77";
       fsType = "ext4";
     };
-    "/mnt/data" = {
-      device = "/dev/disk/by-uuid/c282b6e2-6fd0-4fb6-b124-606b4f88932a";
+
+    "/home/neko/GamesHDD" = {
+      device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
       fsType = "btrfs";
       options = [
+        "subvol=@games"
         "noatime"
         "nodiratime"
-        "defaults"
+        "discard"
+        "compress=zstd:4"
+      ];
+    };
+    "/mnt/data" = {
+      device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
+      fsType = "btrfs";
+      options = [
+        "subvol=@data"
+        "noatime"
+        "nodiratime"
+        "discard"
+        "compress=zstd:4"
       ];
     };
     "/media" = {
@@ -57,7 +72,18 @@
         "noatime"
         "nodiratime"
         "discard"
-        "compress=zstd:6"
+        "compress=zstd:4"
+      ];
+    };
+    "/home/neko/Pictures" = {
+      device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
+      fsType = "btrfs";
+      options = [
+        "subvol=@pictures"
+        "noatime"
+        "nodiratime"
+        "discard"
+        "compress=zstd:4"
       ];
     };
   };

@@ -726,7 +726,7 @@ stdenv.mkDerivation {
       coreutils
       gnugrep
       gnused
-      wineWowPackages.stable
+      wineWow64Packages.stable
     ];
 
   installPhase =
@@ -751,4 +751,3 @@ stdenv.mkDerivation {
       mainProgram = "wabbajack_install";
     };
 }
-

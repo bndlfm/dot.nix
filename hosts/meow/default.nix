@@ -10,17 +10,16 @@ let
 in
 {
   imports = [
-    ../../cachix.nix
-
     ## CONTAINERS
     ../../containers/pihole.sys.nix
 
     ## PROGRAMS
 
     ## MODULES
+    ../../blocks/caddy-tailscale.sys.nix
     ../../blocks/music.sys.nix
     ../../blocks/gaming.sys.nix
-    ../../blocks/caddy-tailscale.sys.nix
+    ../../blocks/vr/monado.sys.nix
 
     ## SECRETS
     inputs.sops-nix.nixosModules.sops
@@ -31,8 +30,8 @@ in
     ../../services/vaultwarden.sys.nix
 
     inputs.nixarr.nixosModules.default
-    ../../modules/anchorr.sys.nix
     ../../blocks/nixarr.sys.nix
+    ../../modules/anchorr.sys.nix
 
     ## WINDOW MANAGERS
     ../../blocks/wm/hyprland.sys.nix
@@ -63,12 +62,12 @@ in
         };
       };
       permittedInsecurePackages = [
-        "aspnetcore-runtime-wrapped-6.0.36"
-        "aspnetcore-runtime-6.0.36"
-        "dotnet-runtime-7.0.20"
-        "dotnet-core-combined"
-        "dotnet-sdk-wrapped-6.0.428"
-        "dotnet-sdk-6.0.428"
+        #"aspnetcore-runtime-wrapped-6.0.36"
+        #"aspnetcore-runtime-6.0.36"
+        #"dotnet-runtime-7.0.20"
+        #"dotnet-core-combined"
+        #"dotnet-sdk-wrapped-6.0.428"
+        #"dotnet-sdk-6.0.428"
       ];
     };
     overlays = [ ];
@@ -111,6 +110,7 @@ in
     dconf = {
       enable = true;
     };
+    extra-container.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
@@ -227,13 +227,13 @@ in
     blueman.enable = true;
     gnome.sushi.enable = false;
     desktopManager = {
-      gnome.enable = true;
-      plasma6.enable = false;
+      gnome.enable = false;
+      plasma6.enable = true;
     };
     displayManager = {
       defaultSession = "niri";
-      sddm.enable = false;
-      gdm.enable = true;
+      sddm.enable = true;
+      gdm.enable = false;
     };
     fail2ban.enable = true;
     flatpak.enable = true;
@@ -246,10 +246,6 @@ in
     lsfg-vk = {
       enable = true;
       ui.enable = true;
-    };
-    monado = {
-      enable = false;
-      defaultRuntime = false;
     };
     usbmuxd = {
       enable = true;
@@ -323,16 +319,6 @@ in
     ];
   };
 
-  fileSystems."/srv/sftp/neko/Movies" = {
-    device = "/data/media/library/movies";
-    options = [
-      "bind"
-      "nofail"
-      "x-systemd.automount"
-      "x-systemd.requires-mounts-for=/data"
-    ];
-  };
-
   #-------- NETWORKING --------#
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller
@@ -400,30 +386,30 @@ in
     pulse.enable = true;
     jack.enable = true;
     extraConfig = {
-      pipewire."92-low-latency" = {
+      pipewire."92-stable-audio" = {
         "context.properties" = {
           "default.clock.rate" = 48000;
-          "default.clock.quantum" = 128;
-          "default.clock.min-quantum" = 128;
-          "default.clock.max-quantum" = 256;
+          "default.clock.quantum" = 256;
+          "default.clock.min-quantum" = 256;
+          "default.clock.max-quantum" = 1024;
         };
       };
-      pipewire-pulse."92-low-latency" = {
+      pipewire-pulse."92-stable-audio" = {
         context.modules = [
           {
             name = "libpipewire-module-protocol-pulse";
             args = {
-              pulse.min.req = "128/48000";
-              pulse.default.req = "128/48000";
-              pulse.max.req = "256/48000";
-              pulse.min.quantum = "128/48000";
-              pulse.max.quantum = "256/48000";
+              pulse.min.req = "256/48000";
+              pulse.default.req = "256/48000";
+              pulse.max.req = "1024/48000";
+              pulse.min.quantum = "256/48000";
+              pulse.max.quantum = "1024/48000";
             };
           }
         ];
         stream.properties = {
-          node.latency = "128/48000";
-          resample.quality = 1;
+          node.latency = "256/48000";
+          resample.quality = 4;
         };
       };
     };
@@ -448,7 +434,24 @@ in
     };
     nvidia = {
       open = true;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package =
+        let
+          base = config.boot.kernelPackages.nvidiaPackages.latest;
+          cachyos-nvidia-patch = pkgs.fetchpatch {
+            url = "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/master/nvidia/nvidia-utils/kernel-6.19.patch";
+            sha256 = "sha256-YuJjSUXE6jYSuZySYGnWSNG5sfVei7vvxDcHx3K+IN4=";
+          };
+
+          # Patch the appropriate driver based on config.hardware.nvidia.open
+          driverAttr = if config.hardware.nvidia.open then "open" else "bin";
+        in
+        base
+        // {
+          ${driverAttr} = base.${driverAttr}.overrideAttrs (oldAttrs: {
+            patches = (oldAttrs.patches or [ ]) ++ [ cachyos-nvidia-patch ];
+          });
+        };
+
       modesetting.enable = true;
       nvidiaSettings = true;
       powerManagement.enable = false;

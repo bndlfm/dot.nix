@@ -20,10 +20,8 @@ in
     hdrop
     hyprpaper
     hyprshot
-    swaybg
     swayidle
     swaylock-effects
-    swaynotificationcenter
     wayland-utils
   ];
 

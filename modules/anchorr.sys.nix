@@ -109,6 +109,7 @@ in
         Group = cfg.group;
         WorkingDirectory = "${cfg.dataDir}/app";
         ExecStart = "${lib.getExe pkgs.nodejs} app.js";
+        EnvironmentFile = lib.mkIf (cfg.environmentFile != null) cfg.environmentFile;
         Restart = "on-failure";
         RestartSec = "5s";
         NoNewPrivileges = true;
@@ -123,9 +124,6 @@ in
           WEBHOOK_PORT = toString cfg.port;
         }
         // cfg.environment;
-    }
-    // lib.optionalAttrs (cfg.environmentFile != null) {
-      environmentFile = cfg.environmentFile;
     };
   };
 }

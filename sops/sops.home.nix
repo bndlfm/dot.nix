@@ -7,22 +7,22 @@
     age.keyFile = "/home/neko/.config/sops/age/keys.txt";
 
     secrets = {
-      "ai_keys/ANTHROPIC_API_KEY" = {};
-      "ai_keys/COMPOSIO_API_KEY" = {};
-      "ai_keys/GEMINI_SECRET_KEY" = {};
-      "ai_keys/GROQ_SECRET_KEY" = {};
-      "ai_keys/HUGGINGFACE_API_KEY" = {};
-      "ai_keys/HUGGINGFACE_PASSWD" = {};
+      "ai_keys/ANTHROPIC_API_KEY" = { };
+      "ai_keys/COMPOSIO_API_KEY" = { };
+      "ai_keys/GEMINI_SECRET_KEY" = { };
+      "ai_keys/GROQ_SECRET_KEY" = { };
+      "ai_keys/HUGGINGFACE_API_KEY" = { };
+      "ai_keys/HUGGINGFACE_PASSWD" = { };
 
-      "internet/DUCKDNS_TOKEN" = {};
-      "internet/GMAIL_APP_PASS" = {};
-      "internet/lastfm_pass" = {};
-      "internet/TWITCH_IRC_OAUTH" = {};
-	
-      "discord/clawdbot" = {};
+      "internet/DUCKDNS_TOKEN" = { };
+      "internet/GMAIL_APP_PASS" = { };
+      "internet/lastfm_pass" = { };
+      "internet/TWITCH_IRC_OAUTH" = { };
 
-      "local/OBSIDIAN_REST_API_KEY" = {};
-      "local/CLAWDBOT_GATEWAY_TOKEN" = {};
+      "discord/clawdbot" = { };
+
+      "local/OBSIDIAN_REST_API_KEY" = { };
+      "local/CLAWDBOT_GATEWAY_TOKEN" = { };
     };
     templates = {
       "session-secrets" = {
@@ -47,4 +47,3 @@
     };
   };
 }
-
