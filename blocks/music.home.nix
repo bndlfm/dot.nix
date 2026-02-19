@@ -1,7 +1,13 @@
-{ config, inputs, pkgs, ...}:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 let
-  musicDir = "/data/media/library/music";
-in {
+  musicDir = "/media/media/library/music";
+in
+{
   sops.secrets."internet/lastfm_pass" = { };
 
   programs = {
@@ -9,30 +15,99 @@ in {
       enable = true;
       package = pkgs.stable.ncmpcpp;
       bindings = [
-        { key = "h"; command = "previous_column"; }
-        { key = "n"; command = "scroll_down"; }
-        { key = "e"; command = "scroll_up"; }
-        { key = "i"; command = "next_column"; }
-        { key = "."; command = "next_found_item"; }
-        { key = ","; command = "previous_found_item"; }
-        { key = "h"; command = "volume_down"; }
-        { key = "i"; command = "volume_up"; }
-        { key = "H"; command = "seek_backward"; }
-        { key = "I"; command = "seek_forward"; }
-        { key = "g"; command = "move_home"; }
-        { key = "G"; command = "move_end"; }
-        { key = "w"; command = "scroll_down_album"; }
-        { key = "b"; command = "scroll_up_album"; }
-        { key = "N"; command = "move_selected_items_down"; }
-        { key = "E"; command = "move_selected_items_up"; }
-        { key = "K"; command = "edit_song"; }
-        { key = "?"; command = "show_help"; }
-        { key = "S"; command = "show_song_info"; }
-        { key = "a"; command = "show_artist_info"; }
-        { key = "ctrl-l"; command = "update_database"; }
-        { key = "t"; command = "execute_command"; }
-        { key = "s"; command = "save_playlist"; }
-        ];
+        {
+          key = "h";
+          command = "previous_column";
+        }
+        {
+          key = "n";
+          command = "scroll_down";
+        }
+        {
+          key = "e";
+          command = "scroll_up";
+        }
+        {
+          key = "i";
+          command = "next_column";
+        }
+        {
+          key = ".";
+          command = "next_found_item";
+        }
+        {
+          key = ",";
+          command = "previous_found_item";
+        }
+        {
+          key = "h";
+          command = "volume_down";
+        }
+        {
+          key = "i";
+          command = "volume_up";
+        }
+        {
+          key = "H";
+          command = "seek_backward";
+        }
+        {
+          key = "I";
+          command = "seek_forward";
+        }
+        {
+          key = "g";
+          command = "move_home";
+        }
+        {
+          key = "G";
+          command = "move_end";
+        }
+        {
+          key = "w";
+          command = "scroll_down_album";
+        }
+        {
+          key = "b";
+          command = "scroll_up_album";
+        }
+        {
+          key = "N";
+          command = "move_selected_items_down";
+        }
+        {
+          key = "E";
+          command = "move_selected_items_up";
+        }
+        {
+          key = "K";
+          command = "edit_song";
+        }
+        {
+          key = "?";
+          command = "show_help";
+        }
+        {
+          key = "S";
+          command = "show_song_info";
+        }
+        {
+          key = "a";
+          command = "show_artist_info";
+        }
+        {
+          key = "ctrl-l";
+          command = "update_database";
+        }
+        {
+          key = "t";
+          command = "execute_command";
+        }
+        {
+          key = "s";
+          command = "save_playlist";
+        }
+      ];
       settings = {
         ncmpcpp_directory = "~/.config/ncmpcpp";
         mpd_host = "localhost";
@@ -150,8 +225,7 @@ in {
     };
     rmpc = {
       enable = true;
-      config =
-      ''
+      config = ''
         #![enable(implicit_some)]
         #![enable(unwrap_newtypes)]
         #![enable(unwrap_variant_newtypes)]
@@ -347,48 +421,48 @@ in {
         };
         spotifyVersion = "1.2.59.514.g834e17d4";
         rev = "86";
-      in {
+      in
+      {
         enable = true;
-        spotifyPackage =
-          pkgs.spotify.overrideAttrs (old: {
-            version = spotifyVersion;
-            src = pkgs.fetchurl {
-              name = "spotify-${spotifyVersion}-${rev}.snap";
-              url = "https://api.snapcraft.io/api/v1/snaps/download/pOBIoZ2LrCB3rDohMxoYGnbN14EHOgD7_${rev}.snap";
-              hash = "sha512-b9VlPwZ6JJ7Kt2p0ji1qtTJQHZE9d4KBO3iqQwsYh6k+ljtV/mSdinZi+B//Yb+KXhMErd0oaVzIpCCMqft6FQ==";
-            };
-            nativeBuildInputs =
-              old.nativeBuildInputs
-              ++ (with pkgs; [
-                util-linux
-                perl
-                unzip
-                zip
-                curl
-              ]);
+        spotifyPackage = pkgs.spotify.overrideAttrs (old: {
+          version = spotifyVersion;
+          src = pkgs.fetchurl {
+            name = "spotify-${spotifyVersion}-${rev}.snap";
+            url = "https://api.snapcraft.io/api/v1/snaps/download/pOBIoZ2LrCB3rDohMxoYGnbN14EHOgD7_${rev}.snap";
+            hash = "sha512-b9VlPwZ6JJ7Kt2p0ji1qtTJQHZE9d4KBO3iqQwsYh6k+ljtV/mSdinZi+B//Yb+KXhMErd0oaVzIpCCMqft6FQ==";
+          };
+          nativeBuildInputs =
+            old.nativeBuildInputs
+            ++ (with pkgs; [
+              util-linux
+              perl
+              unzip
+              zip
+              curl
+            ]);
 
-            unpackPhase =
-              builtins.replaceStrings
-                [ "runHook postUnpack" ]
-                [
-                  ''
-                    patchShebangs --build ${spotx}
-                    runHook postUnpack
-                  ''
-                ]
-                old.unpackPhase;
+          unpackPhase =
+            builtins.replaceStrings
+              [ "runHook postUnpack" ]
+              [
+                ''
+                  patchShebangs --build ${spotx}
+                  runHook postUnpack
+                ''
+              ]
+              old.unpackPhase;
 
-            installPhase =
-              builtins.replaceStrings
-                [ "runHook postInstall" ]
-                [
-                  ''
-                    bash ${spotx} -f -P "$out/share/spotify"
-                    runHook postInstall
-                  ''
-                ]
-                old.installPhase;
-          });
+          installPhase =
+            builtins.replaceStrings
+              [ "runHook postInstall" ]
+              [
+                ''
+                  bash ${spotx} -f -P "$out/share/spotify"
+                  runHook postInstall
+                ''
+              ]
+              old.installPhase;
+        });
         enabledExtensions = with spicePkgs.extensions; [
           fullAppDisplay
           hidePodcasts
@@ -398,51 +472,55 @@ in {
         enabledCustomApps = with spicePkgs.apps; [
           marketplace
         ];
-    };
+      };
   };
   services = {
-    mopidy = let
-      mopidyPackagesOverride = pkgs.mopidyPackages.overrideScope (prev: final: {
-        extraPkgs = pkgs: [ pkgs.yt-dlp ];
-      });
-    in {
-      enable = false;
-      extensionPackages = with mopidyPackagesOverride; [
-        mopidy-youtube
-        mopidy-mpd
-        mopidy-local
-        mopidy-scrobbler
-        mopidy-notify
-      ];
-      settings = {
-        file = {
-          media_dirs = [
-            musicDir
-          ];
-          follow_symlinks = false;
-          excluded_file_extensions = [
-            ".html"
-            ".zip"
-            ".jpg"
-            ".jpeg"
-            ".png"
-            ".tif"
-            ".tiff"
-          ];
-        };
-        local = {
-          media_dir = musicDir;
-        };
-        mpd = {
-          enabled = true;
-          hostname = "0.0.0.0";
-          port = 6600;
-        };
-        youtube = {
-          youtube_dl_package = "yt_dlp";
+    mopidy =
+      let
+        mopidyPackagesOverride = pkgs.mopidyPackages.overrideScope (
+          prev: final: {
+            extraPkgs = pkgs: [ pkgs.yt-dlp ];
+          }
+        );
+      in
+      {
+        enable = false;
+        extensionPackages = with mopidyPackagesOverride; [
+          mopidy-youtube
+          mopidy-mpd
+          mopidy-local
+          mopidy-scrobbler
+          mopidy-notify
+        ];
+        settings = {
+          file = {
+            media_dirs = [
+              musicDir
+            ];
+            follow_symlinks = false;
+            excluded_file_extensions = [
+              ".html"
+              ".zip"
+              ".jpg"
+              ".jpeg"
+              ".png"
+              ".tif"
+              ".tiff"
+            ];
+          };
+          local = {
+            media_dir = musicDir;
+          };
+          mpd = {
+            enabled = true;
+            hostname = "0.0.0.0";
+            port = 6600;
+          };
+          youtube = {
+            youtube_dl_package = "yt_dlp";
+          };
         };
       };
-    };
     mpd = {
       enable = true;
       musicDirectory = musicDir;
@@ -460,7 +538,7 @@ in {
     mpd-discord-rpc.enable = true;
     mpdris2 = {
       enable = true;
-      mpd = {};
+      mpd = { };
       multimediaKeys = true;
       notifications = true;
     };

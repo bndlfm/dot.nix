@@ -27,7 +27,7 @@
       enable = true;
       # WARNING: This file must _not_ be in the config git directory
       # You can usually get this wireguard file from your VPN provider
-      wgConf = "/data/.secret/vpn/airvpn_sweden.conf";
+      wgConf = "/media/.secret/vpn/airvpn_sweden.conf";
     };
     transmission = {
       enable = true;
@@ -58,16 +58,16 @@
       enable = true;
       openFirewall = true;
       port = 8282;
-      environmentFile = "/data/.secret/anchorr.env";
+      environmentFile = "/mnt/data/.secrets/anchorr/anchorr.env";
       environment = {
         AUTO_START_BOT = "true";
         JELLYSEERR_AUTO_APPROVE = "false";
-        NOTIFY_ON_AVAILABLE = "false";
+        NOTIFY_ON_AVAILABLE = "true";
         PRIVATE_MESSAGE_MODE = "false";
         JELLYFIN_NOTIFY_MOVIES = "true";
-        JELLYFIN_NOTIFY_SERIES = "true";
+        JELLYFIN_NOTIFY_SERIES = "false";
         JELLYFIN_NOTIFY_SEASONS = "false";
-        JELLYFIN_NOTIFY_EPISODES = "false";
+        JELLYFIN_NOTIFY_EPISODES = "true";
       };
     };
   };
