@@ -141,13 +141,13 @@ in
               "--hide-window"
             ];
           }
-          #{
-          #  ## CLIPBOARD
-          #  command = [
-          #    "copyq"
-          #    "--start-server"
-          #  ];
-          #}
+          {
+            ## CLIPBOARD
+            command = [
+              "copyq"
+              "--start-server"
+            ];
+          }
           {
             ## GAMMA
             command = [
@@ -175,14 +175,14 @@ in
           {
             command = [ "homeassistant-desktop" ];
           }
-          {
-            ## POWER SAVINGS
-            command = [
-              "sh"
-              "-c"
-              "swayidle -w timeout 1201 'niri msg action power-off-monitors' timeout 1200 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'"
-            ];
-          }
+          #{
+          #  ## POWER SAVINGS
+          #  command = [
+          #    "sh"
+          #    "-c"
+          #    "swayidle -w timeout 1201 'niri msg action power-off-monitors' timeout 1200 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'"
+          #  ];
+          #}
           {
             ## XWAYLAND
             command = [
@@ -558,4 +558,5 @@ in
     source = "${pkgs._noctalia-plugin-ai-usage}/share/noctalia-shell/plugins/ai-usage";
     recursive = true;
   };
+
 }

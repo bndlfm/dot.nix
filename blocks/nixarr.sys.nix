@@ -6,8 +6,8 @@
     # else you want
     #WARNING: Do _not_ set them to `/home/user/whatever`, it will not work!
     #mediaDir = "/media/content/";
-    #stateDir = "/media/.state/nixarr";
-    #
+    stateDir = "/mnt/data/container_state";
+
     jellyfin = {
       enable = true;
     };

@@ -66,11 +66,13 @@
 
   nixConfig = {
     extra-substituters = [
+      "https://nix-community.cachix.org"
       "https://cuda-maintainers.cachix.org"
       "https://hyprland.cachix.org"
       "https://niri.cachix.org"
     ];
     extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "niri.cachix.org-1:Wv0OmO7PsuJ9OV2cw8rE8lF6cNfyGl6z1h28T+uDCN8="
@@ -117,17 +119,18 @@
         nixpkgs-bndlfm
       ];
     in
-    {
+    rec {
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      container = {
+        openclaw = nixosConfigurations.meow.config.containers.openclaw.config.system.build.toplevel;
+      };
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
 
-      /**
-        *********************
-         HOME CONFIGURATIONS *
-        *********************
-      */
+      #*********************#
+      # HOME CONFIGURATIONS #
+      #*********************#
       homeConfigurations = {
         "neko@meow" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays overlays;
@@ -161,11 +164,9 @@
         };
       };
 
-      /**
-        **********************
-         NIXOS CONFIGURATIONS *
-        **********************
-      */
+      #**********************#
+      # NIXOS CONFIGURATIONS #
+      #**********************#
       nixosConfigurations = {
         "meow" = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
@@ -189,6 +190,30 @@
               };
               niri-flake.cache.enable = true;
             }
+            ## CONTAINER MODULES
+            {
+              containers.openclaw = {
+                autoStart = true;
+                privateNetwork = false;
+
+                bindMounts = {
+                  "/home/neko/.openclaw" = {
+                    hostPath = "/home/neko/.openclaw";
+                    isReadOnly = false;
+                  };
+                  "/home/neko/Notes" = {
+                    hostPath = "/home/neko/Notes";
+                    isReadOnly = false;
+                  };
+                  "/home/neko/.nixcfg" = {
+                    hostPath = "/home/neko/.nixcfg";
+                    isReadOnly = false;
+                  };
+                };
+
+                path = nixosConfigurations.openclaw.config.system.build.toplevel;
+              };
+            }
             ## IMPORTS
             ./hosts/meow/default.nix
             ./hosts/meow/hardware.nix
@@ -199,6 +224,53 @@
             ## IMPORTS
             ./hosts/server/default.nix
             ./hosts/server/hardware.nix
+          ];
+        };
+
+        #************#
+        # CONTAINERS #
+        #************#
+        "openclaw" = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            (
+              { pkgs, ... }:
+              {
+                boot.isContainer = true;
+                users.users.neko = {
+                  isNormalUser = true;
+                  uid = 1000;
+                  home = "/home/neko";
+                  createHome = true;
+                };
+
+                systemd.services.openclaw-gateway = {
+                  description = "OpenClaw Gateway";
+                  wantedBy = [ "multi-user.target" ];
+                  after = [ "network-online.target" ];
+                  wants = [ "network-online.target" ];
+                  serviceConfig = {
+                    Type = "simple";
+                    User = "neko";
+                    Group = "neko";
+                    WorkingDirectory = "/home/neko";
+                    Restart = "on-failure";
+                    Environment = [
+                      "HOME=/home/neko"
+                      "XDG_CONFIG_HOME=/home/neko/.config"
+                      "XDG_STATE_HOME=/home/neko/.local/state"
+                      "NVIDIA_VISIBLE_DEVICES=all"
+                      "NVIDIA_DRIVER_CAPABILITIES=all"
+                    ];
+                    ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /home/neko/.config /home/neko/.local/state /home/neko/Notes /home/neko/.nixcfg /home/neko/.openclaw /home/neko/.clawdbot";
+                    ExecStart = "${pkgs._openclaw}/bin/openclaw gateway --bind loopback --port 18789";
+                  };
+                };
+
+                system.stateVersion = "25.11";
+              }
+            )
           ];
         };
       };

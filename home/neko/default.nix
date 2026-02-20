@@ -17,14 +17,12 @@
     ##############
     # CONTAINERS #
     ##############
-    ../../containers/openclaw.home.nix
     ../../containers/gluetun.home.nix
     ../../containers/homeassistant.home.nix
 
     ###########
     # MODULES #
     ###########
-    ../../blocks/vr/open-composite.home.nix
     ../../blocks/music.home.nix
     #FIX: ../../blocks/notes.home.nix
 
@@ -263,6 +261,7 @@
 
         social = [
           vesktop
+          discord
           signal-desktop
           hexchat
           telegram-desktop
@@ -286,6 +285,8 @@
             rictydiminished-with-firacode
             font-awesome
             gyre-fonts
+            noto-fonts
+            noto-fonts-cjk-sans
             noto-fonts-emoji-blob-bin
           ];
 

@@ -19,8 +19,8 @@
       };
 
       sansSerif = {
-        package = pkgs.gyre-fonts;
-        name = "TeX Gyre Heros";
+        package = pkgs.noto-fonts;
+        name = "Noto Sans";
       };
 
       monospace = {

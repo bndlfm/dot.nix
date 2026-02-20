@@ -19,7 +19,6 @@ in
     ../../blocks/caddy-tailscale.sys.nix
     ../../blocks/music.sys.nix
     ../../blocks/gaming.sys.nix
-    ../../blocks/vr/monado.sys.nix
 
     ## SECRETS
     inputs.sops-nix.nixosModules.sops
@@ -225,15 +224,15 @@ in
       openFirewall = true;
     };
     blueman.enable = true;
-    gnome.sushi.enable = false;
+    gnome.sushi.enable = true;
     desktopManager = {
-      gnome.enable = false;
-      plasma6.enable = true;
+      gnome.enable = true;
+      plasma6.enable = false;
     };
     displayManager = {
       defaultSession = "niri";
-      sddm.enable = true;
-      gdm.enable = false;
+      sddm.enable = false;
+      gdm.enable = true;
     };
     fail2ban.enable = true;
     flatpak.enable = true;
