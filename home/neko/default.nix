@@ -79,6 +79,7 @@
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
       permittedInsecurePackages = [
+        "ventoy-qt5-1.1.10"
       ];
     };
     overlays = [ inputs.nur.overlays.default ];
@@ -130,10 +131,6 @@
           ## OPEN CLAW PKGS
           _openclaw
           chromium
-          #himalaya
-          #tmux
-          #openai-whisper
-          #uv
 
           sillytavern
         ];
@@ -242,7 +239,6 @@
           # GIT TOOLS
           #----------
           git
-          git-filter-repo
           git-lfs
           git-credential-manager
           git-credential-gopass
@@ -262,10 +258,7 @@
           #
           # OTHER DEV TOOLS
           #----------------
-          #godot_4
-          #godot_4-export-templates-bin
           meld
-          zenity
         ];
 
         social = [
@@ -276,11 +269,13 @@
         ];
 
         system = [
+          nwg-look
           openrgb
 
           # Plasma/QT
           qt6Packages.qt6ct
-          qt6Packages.qtstyleplugin-kvantum
+
+          ventoy-full-qt
           # Wine/Proton
           wineWow64Packages.stable
           winetricks

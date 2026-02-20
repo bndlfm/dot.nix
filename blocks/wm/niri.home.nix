@@ -38,7 +38,7 @@ in
   programs = {
     noctalia-shell = {
       enable = true;
-      systemd.enable = true;
+      systemd.enable = false;
     };
 
     niri = {
@@ -130,6 +130,8 @@ in
         spawn-at-startup = [
           ## BLUETOOOTH
           { command = [ "blueman-applet" ]; }
+          ## SHELL
+          { command = [ "noctalia-shell" ]; }
           ## NOTIFICATIONS
           # Noctalia Shell provides its own notification daemon.
           ## TAILSCALE TRAY
@@ -245,7 +247,8 @@ in
             ## RESTART SHELL/WALLPAPER
             "${Mod}+W".action = sh (
               builtins.concatStringsSep "; " [
-                "systemctl --user restart noctalia-shell.service"
+                "pkill -x noctalia-shell || true"
+                "noctalia-shell >/dev/null 2>&1 &"
               ]
             );
 

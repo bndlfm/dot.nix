@@ -80,6 +80,9 @@ EOF
         "/home/neko/.openclaw:/home/ceru/.clawdbot:rw"
         "/home/neko/Notes:/home/ceru/Notes:rw"
         "/home/neko/.nixcfg:/home/ceru/nixcfg:rw"
+        "/nix/var/nix/daemon-socket/socket:/nix/var/nix/daemon-socket/socket:rw"
+        "/nix/store:/nix/store:ro"
+        "/home/neko/.config/gogcli:/home/ceru/.config/gogcli:rw"
       ];
 
       environment = {
@@ -88,6 +91,7 @@ EOF
         XDG_STATE_HOME = "/home/ceru/.local/state";
         NVIDIA_VISIBLE_DEVICES = "all";
         NVIDIA_DRIVER_CAPABILITIES = "all";
+        NIX_REMOTE = "daemon";
       };
 
       exec = "bash -lc 'mkdir -p /home/ceru/.config /home/ceru/.local/state /home/ceru/Notes /home/ceru/nixcfg /home/ceru/.openclaw && exec node dist/index.js gateway --bind loopback --port 18789'";
