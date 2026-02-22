@@ -24,7 +24,7 @@
   homebrewRev ? "master",
   homebrewHash ? "sha256-/ZPWV/RjvRM3uuFgeP/ZJQRsGQEJ84yUxKE7M9/oeek=",
   openclawRev ? "master",
-  openclawHash ? "sha256-Ha+khhDT9+uL8xRmFs92avqQ5mbC6UM+i+WjMJuIlFo=",
+  openclawHash ? "sha256-FNYXAr2NWzX3PZ0dmZ2Yjivb2pgBt+nyuELN5XLgcdI=",
 }:
 
 let
@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
     lockfile = "${src}/pnpm-lock.yaml";
-    hash = "sha256-4mdCTkyBNHUEKYpL6dpqlJkHN4jOIjRo32xJItYWbKg=";
+    hash = "sha256-x4uB91wUStN6ljiV1Jqx0qWK3RwAwd+5msbrlSb/sSE=";
     fetcherVersion = 3;
   };
 
@@ -107,7 +107,26 @@ stdenv.mkDerivation rec {
 
   buildPhase = ''
     runHook preBuild
-    pnpm build
+
+    # Upstream A2UI bundling can fail in source-only fetches when vendor/app
+    # dirs are not present. For gateway runtime, a placeholder bundle is
+    # sufficient to keep CLI/server builds working.
+    if ! pnpm canvas:a2ui:bundle; then
+      echo "A2UI bundle step failed; writing placeholder bundle for Nix build."
+      install -d src/canvas-host/a2ui
+      printf '%s\n' 'export default {};' > src/canvas-host/a2ui/a2ui.bundle.js
+      echo "nix-placeholder" > src/canvas-host/a2ui/.bundle.hash
+    fi
+
+    pnpm -s exec tsdown
+    pnpm build:plugin-sdk:dts
+    node --import tsx scripts/write-plugin-sdk-entry-dts.ts
+    node --import tsx scripts/canvas-a2ui-copy.ts
+    node --import tsx scripts/copy-hook-metadata.ts
+    node --import tsx scripts/copy-export-html-templates.ts
+    node --import tsx scripts/write-build-info.ts
+    node --import tsx scripts/write-cli-compat.ts
+
     runHook postBuild
   '';
 

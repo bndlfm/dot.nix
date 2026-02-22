@@ -12,6 +12,7 @@ in
   imports = [
     ## CONTAINERS
     ../../containers/pihole.sys.nix
+    ../../containers/openclaw.sys.nix
 
     ## PROGRAMS
 
@@ -89,6 +90,13 @@ in
   ];
 
   #------- MY MODULES -------#
+  services.openclawGateway = {
+    enable = true;
+    user = "neko";
+    group = "neko";
+    uid = 1000;
+    gid = 1000;
+  };
 
   #--------- ENV ---------#
   environment.variables = {

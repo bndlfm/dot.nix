@@ -9,7 +9,7 @@ let
     owner = "openclaw";
     repo = "openclaw";
     rev = "master";
-    hash = "sha256-Ha+khhDT9+uL8xRmFs92avqQ5mbC6UM+i+WjMJuIlFo=";
+    hash = "sha256-FNYXAr2NWzX3PZ0dmZ2Yjivb2pgBt+nyuELN5XLgcdI=";
   };
 
   srcStoreName = builtins.baseNameOf (toString openclawSrc);
@@ -18,7 +18,7 @@ let
   );
 
   # Extra tools installed by upstream Dockerfile via OPENCLAW_DOCKER_APT_PACKAGES.
-  aptPackages = "git curl jq ffmpeg nix-bin";
+  aptPackages = "git curl jq ffmpeg";
   aptHash = builtins.substring 0 12 (builtins.hashString "sha256" aptPackages);
 
   imageName = "openclaw-repo";

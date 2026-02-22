@@ -3,6 +3,9 @@
 ./.aider*
 GEMINI.md
 
+architecture.mmd
+container-networking.mmd
+
 .editorconfig
 
 ### CONTAINERS
