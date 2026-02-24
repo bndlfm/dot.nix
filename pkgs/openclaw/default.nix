@@ -24,7 +24,7 @@
   homebrewRev ? "master",
   homebrewHash ? "sha256-/ZPWV/RjvRM3uuFgeP/ZJQRsGQEJ84yUxKE7M9/oeek=",
   openclawRev ? "master",
-  openclawHash ? "sha256-FNYXAr2NWzX3PZ0dmZ2Yjivb2pgBt+nyuELN5XLgcdI=",
+  openclawHash ? "sha256-dq7WOWQZKM38Lpu6rhfwnzxHgFqTqNxZKYyD328xY0c=",
 }:
 
 let

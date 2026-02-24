@@ -18,7 +18,7 @@
         id = 1;
         name = "dev-edition-default";
         isDefault = true;
-        settings = {};
+        settings = { };
         search = {
           force = true;
           default = "google";
@@ -30,36 +30,57 @@
 
             ## NIX DOC SEARCH
             "home-manager-Options" = {
-              urls = [{ template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master"; }];
+              urls = [
+                { template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master"; }
+              ];
               icon = "https://home-manager-options.extranix.com/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000;
               definedAliases = [ "@ho" ];
             };
             "nix-packages" = {
-              urls = [{
-                template = "https://search.nixos.org/packages";
-                params = [
-                  { name = "type"; value = "packages"; }
-                  { name = "query"; value = "{searchTerms}"; }
-                ];
-              }];
+              urls = [
+                {
+                  template = "https://search.nixos.org/packages";
+                  params = [
+                    {
+                      name = "type";
+                      value = "packages";
+                    }
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@np" ];
             };
             "nixos-options" = {
-              urls = [{
-                template = "https://search.nixos.org/options";
-                params = [
-                  { name = "type"; value = "packages"; }
-                  { name = "channel"; value = "unstable"; }
-                  { name = "query"; value = "{searchTerms}"; }
-                ];
-              }];
+              urls = [
+                {
+                  template = "https://search.nixos.org/options";
+                  params = [
+                    {
+                      name = "type";
+                      value = "packages";
+                    }
+                    {
+                      name = "channel";
+                      value = "unstable";
+                    }
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@no" ];
             };
             "nixos-wiki" = {
-              urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
+              urls = [ { template = "https://nixos.wiki/index.php?search={searchTerms}"; } ];
               icon = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000; # every day
               definedAliases = [ "@nw" ];
@@ -67,7 +88,7 @@
 
             ## MEDIA
             "youtube" = {
-              urls = [{ template = "https://www.youtube.com/results?search_query={searchTerms}"; }];
+              urls = [ { template = "https://www.youtube.com/results?search_query={searchTerms}"; } ];
               icon = "https://www.youtube.com/favicon.ico";
               updateInterval = 24 * 60 * 60 * 1000; # every day
               definedAliases = [ "@yt" ];
@@ -75,15 +96,10 @@
           };
         };
 
-        /* ---- EXTENSIONS ---- */
+        # ---- EXTENSIONS ----
         extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           augmented-steam
           blocktube
-          ##(pkgs.fetchFromGitea {
-          ##  url = "https://gitflic.ru/project/magnolia1234/bpc_uploads.git";
-          ##  ref = "main";
-          ##  rev = "997898dccabb11f3c357a25c7696d4391e230a0e";
-          ##})
           chatgptbox
           copy-selection-as-markdown
           darkreader

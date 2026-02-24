@@ -118,6 +118,7 @@ in
             nix
             git
             cacert
+            _openclaw
           ];
 
           systemd.services.openclaw-gateway = {

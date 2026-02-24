@@ -40,7 +40,7 @@
     };
     openmw-vr.url = "github:bndlfm/openmw-vr.nix";
     zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
+      url = "github:0xc000022070/zen-browser-flake/beta";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -155,11 +155,8 @@
             ./home/neko/default.nix
           ];
         };
-<<<<<<< HEAD
+
         "ceru@server" = home-manager.lib.homeManagerConfiguration {
-=======
-        "neko@server" = home-manager.lib.homeManagerConfiguration {
->>>>>>> 7ae725d0da966f37207fbb84fd5cca524c8c1380
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [
             ## SECRETS

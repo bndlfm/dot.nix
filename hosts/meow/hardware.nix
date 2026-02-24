@@ -51,6 +51,7 @@
         "nodiratime"
         "discard"
         "compress=zstd:4"
+        "x-systemd.device-timeout=600s"
       ];
     };
     "/mnt/data" = {
@@ -62,6 +63,7 @@
         "nodiratime"
         "discard"
         "compress=zstd:4"
+        "x-systemd.device-timeout=600s"
       ];
     };
     "/media" = {
@@ -73,6 +75,7 @@
         "nodiratime"
         "discard"
         "compress=zstd:4"
+        "x-systemd.device-timeout=600s"
       ];
     };
     "/home/neko/Pictures" = {
@@ -84,6 +87,7 @@
         "nodiratime"
         "discard"
         "compress=zstd:4"
+        "x-systemd.device-timeout=600s"
       ];
     };
   };

@@ -1,19 +1,23 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [
-    ../../programs/shell.home.nix
+    ## PROGS BRAH
+    ../../programs/shell/default.nix
     ../../programs/neovim.home.nix
+
+    ## CONTAINERS
+    ../../containers/homeassistant.home.nix
   ];
 
   home.stateVersion = "23.11";
-  home.username = "server";
-  home.homeDirectory = "/home/server";
+  home.username = "ceru";
+  home.homeDirectory = "/home/ceru";
 
   nixpkgs = {
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
       permittedInsecurePackages = [
-        "nix-2.16.2"
       ];
     };
     overlays = [
@@ -23,60 +27,60 @@
   home.packages = with pkgs; [
 
     #!!!! TEMP INSTALLS !!!!#
-      distrobox
-      ethtool
-      zellij
+    distrobox
+    ethtool
+    zellij
 
     ### CLI
-      age
-      eza
-      fd
-      ffmpeg-full
-      fzf
-      gnugrep
-      gopass
-      jq
-      libqalculate
-      nix-index
-      ripgrep
-      silver-searcher
-      trashy
-      wireguard-tools
-      zip
-      zoxide
+    age
+    eza
+    fd
+    ffmpeg-full
+    fzf
+    gnugrep
+    gopass
+    jq
+    libqalculate
+    nix-index
+    ripgrep
+    silver-searcher
+    trashy
+    wireguard-tools
+    zip
+    zoxide
 
     ### TUI
-      ### TOP-LIKES
-        btop
-        iotop
-      ranger
-      joshuto
-        highlight
-      page
+    ### TOP-LIKES
+    btop
+    iotop
+    ranger
+    joshuto
+    highlight
+    page
 
     ### PROGRAMMING
-      ### GIT
-        git
-        git-filter-repo
-        git-lfs
-        git-credential-gopass
-      direnv
-      dotnetCorePackages.sdk_8_0_2xx
-      python3
+    ### GIT
+    git
+    git-filter-repo
+    git-lfs
+    git-credential-gopass
+    direnv
+    dotnetCorePackages.sdk_8_0_2xx
+    python3
 
     ### SYSTEM
-      podman
-      podman-compose
-      winetricks
-      wineWow64Packages.staging
+    podman
+    podman-compose
+    winetricks
+    wineWow64Packages.staging
 
     ### UTILITIES
-      appimage-run
-      clipboard-jh
-      google-drive-ocamlfuse
-      grc
-      pkgs.kdePackages.kdeconnect-kde
-      rofi
+    appimage-run
+    clipboard-jh
+    google-drive-ocamlfuse
+    grc
+    pkgs.kdePackages.kdeconnect-kde
+    rofi
   ];
 
   ######### (HM) ENVIRONMENT VARIABLES #########
