@@ -155,7 +155,7 @@
             ./home/neko/default.nix
           ];
         };
-        "neko@nyaa" = home-manager.lib.homeManagerConfiguration {
+        "ceru@server" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [
             ## SECRETS
@@ -197,7 +197,7 @@
             ./hosts/meow/hardware.nix
           ];
         };
-        "nyaa" = nixpkgs.lib.nixosSystem {
+        "server" = nixpkgs.lib.nixosSystem {
           modules = [
             ## IMPORTS
             ./hosts/server/default.nix

@@ -1,344 +1,128 @@
+# Edit this configuration file to define what should be installed on
+# your system. Help is available in the configuration.nix(5) man page, on
+# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-
-  ### CONTAINERS
-    ../../containers/pihole.sys.nix
-    #../../containers/grimoire/grimoire.nix
-    #../../containers/home-assistant.nix
-    #../../containers/jellyfin.nix
-    #../../containers/retroarch-web.nix
-
-  ### MODULES
-    ../../modules/caddy-tailscale.sys.nix
-  ];
-
-  nix = {
-    settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" "@wheel" ];
-      trusted-substituters = [
-        "https://cache.nixos.org"
-        "https://nix-community.cachix.org"
-        "https://cosmic.cachix.org/"
-      ];
-      trusted-public-keys = [
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
-      ];
-    };
-  };
-
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      qt5 = {
-        enable = true;
-        platformTheme  = "qt5ct";
-          style = {
-            package = pkgs.utterly-nord-plasma;
-            name = "Utterly Nord Plasma";
-        };
-        };
-      qt6 = {
-        enable = true;
-        platformTheme  = "qt6ct";
-          style = {
-            package = pkgs.utterly-nord-plasma;
-            name = "Utterly Nord Plasma";
-          };
-      };
-    };
-    overlays = [
-      #(import ../../overlays/overlays.nix)
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware.nix
     ];
-  };
 
-#------- SPECIALIZATION -------#
-  ### SPECIALIZATION COMMETH
-  specialisation = {
-    PaperWM.configuration = {
-      system.nixos.tags = [ "PaperWM" ];
-      services = {
-        xserver = {
-          desktopManager = {
-            gnome.enable = true;
-          };
-        };
-      };
-    };
-    lxqt.configuration = {
-      system.nixos.tags = [ "lxqt" ];
-      services = {
-        xserver = {
-          desktopManager = {
-            lxqt.enable = false;
-          };
-        };
-      };
-    };
-  };
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-#------- PACKAGES -------#
-  environment = {
-    systemPackages = with pkgs; [
-      ethtool
-      git
-    ];
-    variables= {
-      QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
-      QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
-    };
-    sessionVariables = {
-      XDG_CONFIG_HOME = "$HOME/.config";
-      XDG_DATA_HOME = "$HOME/.local/share";
-      XDG_CACHE_HOME = "$HOME/.cache";
-      XDG_STATE_HOME = "$HOME/.local/state";
-      XDG_BIN_HOME = "$HOME/.local/bin";
-      #XDG_RUNTIME_DIR = "/run/user/$(id -u)";
-    };
-  };
+  # Use latest kernel.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  #-------- PACKAGE MODULES --------#
-  programs = {
-    extra-container.enable = true;
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-    };
-    nbd.enable = false;
-    nix-ld = {
-      enable = true;
-      libraries = with pkgs; [
-        cmake
-      ];
-    };
-    steam = {
-      enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
-    };
-  };
+  networking.hostName = "server"; # Define your hostname.
 
-#------- SERVICES -------#
-  services = {
-    avahi = { # CUPS NETWORKING (PRINTING)
-      enable = true;
-      nssmdns4 = true;
-      openFirewall = true;
-    };
-    blueman.enable = true;
-    desktopManager = {
-      plasma6.enable = lib.mkIf (config.specialisation !={}) true;
-    };
-    fail2ban.enable = true;
-    flatpak.enable = true;
-    ollama = {
-      enable = false;
-      acceleration = "cuda";
-    };
-    openssh.enable = true;
-    postgresql = {
-      enable = false;
-      ensureDatabases = [ "khoj" ];
-      enableTCPIP = false;
-      extraPlugins = ps: with pkgs; [
-        postgresqlPackages.pgvector
-      ];
-      authentication = pkgs.lib.mkOverride 10 ''
-        #type database DBuser auth-method
-        local all      all    trust
-      '';
-    };
-    printing.enable = true; # CUPS (PRINTING)
-    xserver = { # X11
-      enable = true;
-      displayManager.gdm.enable = true;
-      xkb.layout = "us";
-      xkb.variant = "";
-    };
-  };
-
-#-------- CONTAINERS / VM --------#
-  virtualisation = {
-    docker.enable = false;
-    podman = {
-      enable = true;
-      dockerSocket.enable = true;
-      defaultNetwork.settings.dnsname_enabled = true;
-    };
-    vmVariant = {
-      # used with nixos-rebuild build-vm
-      virtualisation = {
-        memorySize = "8192";
-        cores = "2";
-      };
-    };
-    vmVariantWithBootLoader = {
-      # used with nixos-rebuild build-vm-bootloader
-      virtualisation = {
-        memorySize = "8192";
-        cores = "2";
-      };
-    };
-  };
-
-  environment.extraInit = ''
-    if [ -z "$DOCKER_HOST" -a -n "$XDG_RUNTIME_DIR" ]; then
-      export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
-    fi
-  '';
-
-
-
-#------- NETWORKING -------#
-  networking = {
-    hostName = "nyaa";
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [
-        53    #PIHOLE
-        5173  #GRIMOIRE
-        12525 #BITBURNER / NPM WATCH
-        41641 #TAILSCALE
-      ];
-      allowedUDPPorts = [
-        53    #PIHOLE
-        5173  #GRIMOIRE
-        12525 #BITBURNER / NPM WATCH
-        41641 #TAILSCALE
-      ];
-    };
-    networkmanager.enable = true;
-  };
-
-
-#------- SYSTEMD -------#
-  systemd = {
-    extraConfig = ''
-      DefaultTimeoutStopSec=10s
-    '';
-    sleep.extraConfig = ''
-      AllowSuspend=no
-      AllowHibernation=no
-      AllowHybridSleep=no
-      AllowSuspendThenHibernate=no
-    '';
-  };
-
-
-#------- USERS -------#
-users = {
-  users = {
-    "neko" = {
-      isNormalUser = true;
-      description = "neko user";
-      extraGroups = [ "audio" "podman" "networkmanager" "wheel" ];
-      packages = with pkgs; [
-        home-manager
-      ];
-    };
-    "server" = {
-      isNormalUser = true;
-      description = "server";
-      extraGroups = [ "audio" "podman" "networkmanager" "wheel" ];
-      packages = with pkgs; [];
-    };
-    "nixosvmtest" = {
-      isSystemUser = true;
-      initialPassword = "test";
-      group = "nixosvmtest";
-    };
-  };
-  groups = {
-    "nixosvmtest" = {};
-  };
-};
-
-
-
-#------- STORAGE / DRIVES -------#
-  fileSystems."/media" = {
-    device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
-    fsType = "btrfs";
-    options = [ "subvol=@media" "noatime" "compress=zstd:3" ];
-  };
-
-#------- BOOTLOADER -------#
-  boot = {
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
-    kernelModules = [ "kvm-intel" ];
-    kernelParams = [];
-    kernel.sysctl = {
-      "net.ipv4.ip_forward" = 1;
-      "net.ipv6.conf.all.forwarding" = 1;
-    };
-  };
-
-  #-------- GPU --------#
-  hardware = {
-    opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-      extraPackages = with pkgs; [
-        intel-media-driver
-        intel-vaapi-driver
-        libvdpau-va-gl
-      ];
-    };
-  };
-  environment.sessionVariables = { LIBVA_DRIVER_NAME = "iHD"; };
-
-  services.xserver = {
-    videoDrivers = [ "intel" ];
-    deviceSection = ''
-      option "DRI" "2"
-      option "TearFree" "1"
-    '';
-  };
-
-  #------- SOUND -------#
-  security.rtkit.enable = true;
-  hardware.pulseaudio.enable = false;
-  services.pipewire = {
-    enable = true;
-    alsa = {
-      enable = true;
-      support32Bit = true;
-    };
-    pulse.enable = true;
-  };
-
-#------- i18n / internationalization -------#
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
-    extraLocaleSettings = {
-      LC_ADDRESS = "en_US.UTF-8";
-      LC_IDENTIFICATION = "en_US.UTF-8";
-      LC_MEASUREMENT = "en_US.UTF-8";
-      LC_MONETARY = "en_US.UTF-8";
-      LC_NAME = "en_US.UTF-8";
-      LC_NUMERIC = "en_US.UTF-8";
-      LC_PAPER = "en_US.UTF-8";
-      LC_TELEPHONE = "en_US.UTF-8";
-      LC_TIME = "en_US.UTF-8";
-    };
-  };
+  # Configure network connections interactively with nmcli or nmtui.
+  networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "America/Chicago";
+  # time.timeZone = "Europe/Amsterdam";
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+  # Select internationalisation properties.
+  # i18n.defaultLocale = "en_US.UTF-8";
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   keyMap = "us";
+  #   useXkbConfig = true; # use xkb.options in tty.
+  # };
+
+  # Enable the X11 windowing system.
+  # services.xserver.enable = true;
+
+
+  
+
+  # Configure keymap in X11
+  # services.xserver.xkb.layout = "us";
+  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+
+  # Enable CUPS to print documents.
+  # services.printing.enable = true;
+
+  # Enable sound.
+  # services.pulseaudio.enable = true;
+  # OR
+  # services.pipewire = {
+  #   enable = true;
+  #   pulse.enable = true;
+  # };
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  services.libinput.enable = true;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.ceru = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [
+    ];
+  };
+
+   # List packages installed in system profile.
+  # You can use https://search.nixos.org/ to find more packages (and options).
+  environment.systemPackages = with pkgs; [
+    #vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #wget
+    git
+  ];
+
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
+  # List services that you want to enable:
+  # Enable the OpenSSH daemon.
+  services.openssh ={
+    enable = true;
+    settings = {
+      PermitRootLogin = "yes";
+      PasswordAuthentication = true;
+    };
+  };
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
+
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in case you
+  # accidentally delete configuration.nix.
+  # system.copySystemConfiguration = true;
+
+  # This option defines the first version of NixOS you have installed on this particular machine,
+  # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
+  #
+  # Most users should NEVER change this value after the initial install, for any reason,
+  # even if you've upgraded your system to a new NixOS release.
+  #
+  # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
+  # so changing it will NOT upgrade your system - see https://nixos.org/manual/nixos/stable/#sec-upgrading for how
+  # to actually do that.
+  #
+  # This value being lower than the current NixOS release does NOT mean your system is
+  # out of date, out of support, or vulnerable.
+  #
+  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
+  # and migrated your data accordingly.
+  #
+  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+  system.stateVersion = "25.11"; # Did you read the comment?
 
 }
+
