@@ -18,7 +18,6 @@
     # CONTAINERS #
     ##############
     ../../containers/gluetun.home.nix
-    ../../containers/homeassistant.home.nix
 
     ###########
     # MODULES #
@@ -215,7 +214,8 @@
         ];
 
         media = [
-          calibre
+          #calibre
+          plezy
           mpv
         ];
 

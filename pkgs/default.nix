@@ -41,5 +41,5 @@ rec {
 
   #--- BIN ---#
   _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix { };
-  _waydroid-script = cPkg ./waydroid-script/waydroid-script.nix { };
+  #_waydroid-script = cPkg ./waydroid-script/waydroid-script.nix { };
 }

@@ -11,7 +11,6 @@ in
 {
   imports = [
     ## CONTAINERS
-    ../../containers/pihole.sys.nix
     ../../containers/openclaw.sys.nix
 
     ## PROGRAMS

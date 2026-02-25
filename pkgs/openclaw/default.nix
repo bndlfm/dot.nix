@@ -21,10 +21,8 @@
   gemini-cli,
   codex,
 
-  homebrewRev ? "master",
-  homebrewHash ? "sha256-/ZPWV/RjvRM3uuFgeP/ZJQRsGQEJ84yUxKE7M9/oeek=",
   openclawRev ? "master",
-  openclawHash ? "sha256-sIEFVxy/rYVAsrHDbO7v8lNblQiRwY8faZFSmExPnrU=",
+  openclawHash ? "sha256-Hx88jTi4CozTznBWF8M9sw0ZBjfMgC4AbKaJY1JQXVQ=",
 }:
 
 let
@@ -35,28 +33,6 @@ let
     hash = openclawHash;
   };
 
-  homebrew = stdenv.mkDerivation {
-    pname = "homebrew";
-    version = homebrewRev;
-
-    src = fetchFromGitHub {
-      owner = "Homebrew";
-      repo = "brew";
-      rev = homebrewRev;
-      hash = homebrewHash;
-    };
-
-    dontConfigure = true;
-    dontBuild = true;
-
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out
-      cp -R . $out/
-      patchShebangs $out
-      runHook postInstall
-    '';
-  };
 in
 stdenv.mkDerivation rec {
   pname = "openclaw";
@@ -67,7 +43,7 @@ stdenv.mkDerivation rec {
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
     lockfile = "${src}/pnpm-lock.yaml";
-    hash = "sha256-EAprPcqDcoFErwzhhOUy4Nupzz1Y8miIpedheSlyEvg=";
+    hash = "sha256-BjJze+4IGmQLttN1z8/kEPii8qvKjLFN56AArvipluo=";
     fetcherVersion = 3;
   };
 
@@ -93,7 +69,6 @@ stdenv.mkDerivation rec {
     pnpm
     uv
     curl
-    homebrew
     go
 
     codex
@@ -159,30 +134,13 @@ stdenv.mkDerivation rec {
     #!${stdenv.shell}
     set -euo pipefail
 
-    # Set up Homebrew paths
-    if [ -n "''${XDG_DATA_HOME:-}" ]; then
-      brew_home="$XDG_DATA_HOME/.openclaw/homebrew"
-    else
-      brew_home="$HOME/.openclaw/homebrew"
-    fi
-
-    export HOMEBREW_PREFIX="''${HOMEBREW_PREFIX:-$brew_home}"
-    export HOMEBREW_REPOSITORY="''${HOMEBREW_REPOSITORY:-$brew_home}"
-    export HOMEBREW_CELLAR="''${HOMEBREW_CELLAR:-$brew_home/Cellar}"
-
-    # Initialize Homebrew on first run
-    if [ ! -d "$brew_home/Library" ]; then
-      mkdir -p "$brew_home"
-      cp -R ${homebrew}/* "$brew_home/"
-    fi
-
     # Set up npm prefix for global packages
     npm_prefix="''${XDG_DATA_HOME:-$HOME/.openclaw}/npm"
     mkdir -p "$npm_prefix"
     export NPM_CONFIG_PREFIX="$npm_prefix"
 
     # Add runtime dependencies and Homebrew to PATH
-    export PATH="$brew_home/bin:$npm_prefix/bin:$PATH"
+    export PATH="$npm_prefix/bin:$PATH"
 
     # Execute openclaw
     script_dir="$(cd "$(dirname "$0")" && pwd)"

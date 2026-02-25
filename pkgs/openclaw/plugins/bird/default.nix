@@ -1,11 +1,13 @@
-{ lib
-, stdenvNoCC
-, fetchFromGitHub
-, fetchPnpmDeps
-, makeBinaryWrapper
-, nodejs
-, pnpm_9
-, pnpmConfigHook
+{
+  lib,
+  stdenvNoCC,
+  fetchFromGitHub,
+  fetchPnpmDeps,
+  makeBinaryWrapper,
+  nodejs,
+  pnpm_9,
+  pnpmConfigHook,
+  jq,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
@@ -16,7 +18,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     owner = "steipete";
     repo = "bird";
     rev = "main";
-    hash = "sha256-cLT392XhO1ulyjDGMVpFJcGuS3YLXEfDuvHCGCzANeg=";
+    hash = "sha256-3l9rt7qoUkihsCopDSHxC9Oq5XwkFI65SzehHDOg46c=";
   };
 
   pnpmDeps = fetchPnpmDeps {
@@ -25,15 +27,17 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     fetcherVersion = 1;
     pnpmInstallFlags = [ "--no-frozen-lockfile" ];
     postPatch = ''
-      sed -i '/"pnpm": {/,/},/d' package.json
+      ${jq}/bin/jq 'del(.pnpm, .packageManager)' package.json > package.json.tmp && mv package.json.tmp package.json
+      sed -i '/^overrides:/,/^importers:/ {/importers:/!d;}' pnpm-lock.yaml
       sed -i '/^patchedDependencies:/,/^importers:/ {/importers:/!d;}' pnpm-lock.yaml
       sed -i 's/(patch_hash=[^)]*)//g' pnpm-lock.yaml
       cat > pnpm-workspace.yaml <<'EOF'
       packages:
         - '.'
+        - 'packages/*'
       EOF
     '';
-    hash = "sha256-zYxGT/cIJCTNy0ROxMzYLGhgrvH3kDe5mlNfjvKNiZI=";
+    hash = "sha256-NCKSxN1dbokeZh/gCt7qHV+EyVDqG1n4HWuWSordK5I=";
   };
 
   nativeBuildInputs = [
@@ -41,28 +45,31 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     nodejs
     pnpmConfigHook
     pnpm_9
+    jq
   ];
 
   postPatch = ''
-    sed -i '/"pnpm": {/,/},/d' package.json
+    jq 'del(.pnpm, .packageManager)' package.json > package.json.tmp && mv package.json.tmp package.json
+    sed -i '/^overrides:/,/^importers:/ {/importers:/!d;}' pnpm-lock.yaml
     sed -i '/^patchedDependencies:/,/^importers:/ {/importers:/!d;}' pnpm-lock.yaml
     sed -i 's/(patch_hash=[^)]*)//g' pnpm-lock.yaml
     cat > pnpm-workspace.yaml <<'EOF'
     packages:
       - '.'
+      - 'packages/*'
     EOF
   '';
 
   buildPhase = ''
     runHook preBuild
-    pnpm run build:dist
+    pnpm run build
     runHook postBuild
   '';
 
   installPhase = ''
     runHook preInstall
     mkdir -p $out/{bin,lib/bird}
-    cp -r dist node_modules package.json $out/lib/bird
+    cp -r dist packages node_modules package.json $out/lib/bird
     makeWrapper ${lib.getExe nodejs} $out/bin/bird \
       --inherit-argv0 \
       --add-flags $out/lib/bird/dist/cli.js

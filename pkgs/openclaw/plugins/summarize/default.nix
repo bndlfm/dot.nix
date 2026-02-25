@@ -1,12 +1,13 @@
-{ lib
-, stdenvNoCC
-, fetchFromGitHub
-, fetchPnpmDeps
-, makeBinaryWrapper
-, nodejs_22
-, pnpm_10
-, pnpmConfigHook
-, git
+{
+  lib,
+  stdenvNoCC,
+  fetchFromGitHub,
+  fetchPnpmDeps,
+  makeBinaryWrapper,
+  nodejs_22,
+  pnpm_10,
+  pnpmConfigHook,
+  git,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
@@ -17,7 +18,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     owner = "steipete";
     repo = "summarize";
     rev = "main";
-    hash = "sha256-v74cbrdev93WaqKm4aFQ2S/SF9KlwMFl15DNFNu/fn8=";
+    hash = "sha256-3l9rt7qoUkihsCopDSHxC9Oq5XwkFI65SzehHDOg46c=";
   };
 
   pnpmDeps = fetchPnpmDeps {
@@ -25,7 +26,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     pnpm = pnpm_10;
     fetcherVersion = 1;
     pnpmInstallFlags = [ "--no-frozen-lockfile" ];
-    hash = "sha256-qXPpOym6M4PcEGYDuOjCamgPhcUe5abDekZSzeZbCBU=";
+    hash = "sha256-PA/FEHyUPddWi/9wryyHWNMruZHauK0Fx2o3l8kFsZI=";
   };
 
   nativeBuildInputs = [

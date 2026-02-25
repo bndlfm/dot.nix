@@ -1,6 +1,7 @@
-{ lib
-, buildGoModule
-, fetchFromGitHub
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
 }:
 
 buildGoModule rec {
@@ -11,10 +12,14 @@ buildGoModule rec {
     owner = "steipete";
     repo = "gogcli";
     rev = "main";
-    hash = "sha256-DXRw5jf/5fC8rgwLIy5m9qkxy3zQNrUpVG5C0RV7zKM=";
+    hash = "sha256-k8dqJmeQlAP+Fqd+PrDHNys/jGdE0/6AAjN6WHNh5hw=";
   };
 
-  vendorHash = "sha256-nig3GI7eM1XRtIoAh1qH+9PxPPGynl01dCZ2ppyhmzU=";
+  vendorHash = "sha256-jMvPQfh4E3EKzFqFxaNMq1Ae/ZXQvUU3eAZ0DqM7+hc=";
+
+  patches = [
+    ./fix-types.patch
+  ];
 
   ldflags = [
     "-s"

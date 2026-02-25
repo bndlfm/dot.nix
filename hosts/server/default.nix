@@ -4,6 +4,7 @@
 
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -13,7 +14,32 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
+
+    ## CONTAINERS
+    ../../containers/pihole.sys.nix
+
+    ## MODULES
+    ../../blocks/caddy-tailscale.sys.nix
+
+    ## SECRETS
+    inputs.sops-nix.nixosModules.sops
+    ../../sops/sops.sys.nix
   ];
+
+  #-------- PACKAGES --------#
+  nix = {
+    package = pkgs.nix;
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
+    };
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

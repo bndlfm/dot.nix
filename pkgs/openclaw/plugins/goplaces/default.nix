@@ -1,6 +1,7 @@
-{ lib
-, buildGoModule
-, fetchFromGitHub
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
 }:
 
 buildGoModule rec {
@@ -11,7 +12,7 @@ buildGoModule rec {
     owner = "steipete";
     repo = "goplaces";
     rev = "main";
-    hash = "sha256-C14EvcdAGwRJmQPlhVKHL0Ugrk79RvHJRMjTo/JeYKE=";
+    hash = "sha256-JvdDP4jlvOOHbcCypicl/m4jMG5j87lylObZRO8TyK8=";
   };
 
   vendorHash = "sha256-OFTjLtKwYSy4tM+D12mqI28M73YJdG4DyqPkXS7ZKUg=";

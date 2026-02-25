@@ -84,6 +84,11 @@ in
       config =
         { ... }:
         {
+          nix.settings.experimental-features = [
+            "nix-command"
+            "flakes"
+          ];
+
           users.groups.${cfg.group} = {
             gid = cfg.gid;
           };
@@ -101,6 +106,23 @@ in
             git
             cacert
             _openclaw
+            _bird
+            _blogwatcher
+            _camsnap
+            _clawdhub
+            _gifgrep
+            _gogcli
+            _goplaces
+            _mcporter
+            _nano-pdf
+            _songsee
+            _summarize
+            _sag
+
+            #--- M O D E L  C O N T E X T  P R O T O C O L ---#
+            _mpd-mcp-server
+            _jellyseerr-mcp
+            _mcp-arr
           ];
 
           systemd.services.openclaw-gateway = {
