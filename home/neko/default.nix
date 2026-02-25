@@ -215,7 +215,7 @@
         ];
 
         media = [
-          calibre
+          #calibre
           mpv
         ];
 
