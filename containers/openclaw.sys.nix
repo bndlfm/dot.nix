@@ -59,18 +59,6 @@ in
       autoStart = cfg.autoStart;
 
       bindMounts = {
-        "/nix/store" = {
-          hostPath = "/nix/store";
-          isReadOnly = true;
-        };
-        "/nix/var/nix/db" = {
-          hostPath = "/nix/var/nix/db";
-          isReadOnly = true;
-        };
-        "/nix/var/nix/daemon-socket" = {
-          hostPath = "/nix/var/nix/daemon-socket";
-          isReadOnly = false;
-        };
         "/home/${cfg.user}/.openclaw" = {
           hostPath = "/home/${cfg.user}/.openclaw";
           isReadOnly = false;
@@ -96,12 +84,6 @@ in
       config =
         { ... }:
         {
-          nix.package = pkgs.nix;
-          nix.settings.experimental-features = [
-            "nix-command"
-            "flakes"
-          ];
-
           users.groups.${cfg.group} = {
             gid = cfg.gid;
           };

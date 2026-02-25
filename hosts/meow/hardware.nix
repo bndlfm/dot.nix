@@ -51,7 +51,7 @@
         "nodiratime"
         "discard"
         "compress=zstd:4"
-        "x-systemd.device-timeout=600s"
+        "x-systemd.device-timeout=180s"
       ];
     };
     "/mnt/data" = {
@@ -63,7 +63,7 @@
         "nodiratime"
         "discard"
         "compress=zstd:4"
-        "x-systemd.device-timeout=600s"
+        "x-systemd.device-timeout=180s"
       ];
     };
     "/media" = {
@@ -75,7 +75,7 @@
         "nodiratime"
         "discard"
         "compress=zstd:4"
-        "x-systemd.device-timeout=600s"
+        "x-systemd.device-timeout=180s"
       ];
     };
     "/home/neko/Pictures" = {
@@ -87,7 +87,7 @@
         "nodiratime"
         "discard"
         "compress=zstd:4"
-        "x-systemd.device-timeout=600s"
+        "x-systemd.device-timeout=180s"
       ];
     };
   };

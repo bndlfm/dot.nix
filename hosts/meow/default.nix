@@ -174,7 +174,6 @@ in
   #-------- GROUPS ---------#
   users.groups = {
     docker = { };
-    sftp = { };
   };
 
   #-------- USERS --------#
@@ -192,7 +191,6 @@ in
       "input"
       "media"
       "networkmanager"
-      "sftp"
       "tss"
       "wheel"
     ];
@@ -268,16 +266,7 @@ in
       openFirewall = true;
       settings = {
         PasswordAuthentication = false;
-        Subsystem = "sftp internal-sftp";
       };
-      extraConfig = ''
-        Match Group sftp
-          ChrootDirectory /srv/sftp/%u
-          ForceCommand internal-sftp -d /Movies
-          AllowTcpForwarding no
-          X11Forwarding no
-          PermitTTY no
-      '';
     };
     printing.enable = true;
     resolved.enable = true;
@@ -320,9 +309,6 @@ in
     };
     tmpfiles.rules = [
       "L+ /run/gdm/.config/monitors.xml - - - - ${builtins.readFile ../../.config/monitors.xml}"
-      "d /srv/sftp 0755 root root -"
-      "d /srv/sftp/neko 0755 root root -"
-      "d /srv/sftp/neko/Movies 0755 root root -"
     ];
   };
 
