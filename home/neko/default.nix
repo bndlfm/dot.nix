@@ -62,7 +62,7 @@
     ###################
     # WINDOW MANAGERS #
     ###################
-    #./programs/gnome-shell.home.nix
+    ../../programs/gnome-shell.home.nix
     ../../blocks/wm/hyprland.home.nix
     ../../blocks/wm/niri.home.nix
   ];
@@ -270,6 +270,7 @@
         system = [
           nwg-look
           openrgb
+          file-roller
 
           # Plasma/QT
           qt6Packages.qt6ct

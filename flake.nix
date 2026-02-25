@@ -40,7 +40,7 @@
     };
     openmw-vr.url = "github:bndlfm/openmw-vr.nix";
     zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake/beta";
+      url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -76,7 +76,7 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "niri.cachix.org-1:Wv0OmO7PsuJ9OV2cw8rE8lF6cNfyGl6z1h28T+uDCN8="
+      "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
     ];
   };
 
