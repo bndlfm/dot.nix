@@ -126,10 +126,11 @@
           warp-terminal
 
           ## OPEN CLAW PKGS
-          _openclaw
           chromium
 
           sillytavern
+          _xhisper-local
+          _screenpipe
         ];
 
         apple = [

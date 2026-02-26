@@ -32,6 +32,7 @@ rec {
   _songsee = cPkg ./openclaw/plugins/songsee/default.nix { };
   _summarize = cPkg ./openclaw/plugins/summarize/default.nix { };
   _sag = cPkg ./openclaw/plugins/sag/default.nix { };
+  _xhisper-local = cPkg ./xhisper-local/default.nix { };
 
   #--- M O D E L  C O N T E X T  P R O T O C O L ---#
   _mpd-mcp-server = cPkg ./mcp/mpd-mcp-server/default.nix { };
