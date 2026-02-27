@@ -234,7 +234,7 @@ in
               "toggle"
             ];
             ## STT Transcribe Tool
-            "Alt+Shift+D".action.spawn = [ "xhisper" ];
+            "${Mod}+Shift+D".action.spawn = [ "xhisper" ];
             ## NEWELLE
             "Alt+BackSpace".action = sh (
               builtins.concatStringsSep "; " [

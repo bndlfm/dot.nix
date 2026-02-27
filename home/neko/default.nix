@@ -75,6 +75,7 @@
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
+      cudaSupport = true;
       permittedInsecurePackages = [
         "ventoy-qt5-1.1.10"
       ];
@@ -215,11 +216,8 @@
         ];
 
         media = [
-          #calibre
-<<<<<<< HEAD
+          calibre
           plezy
-=======
->>>>>>> 43f9121da7c6d7c0b1ac7169332eaeb0be76af66
           mpv
         ];
 
