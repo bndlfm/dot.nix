@@ -19,7 +19,7 @@ let
             ueberzug
             pillow
             cairosvg
-            plotly
+            pkgs.stable.python3Packages.plotly
             ipykernel
             pyperclip
             pnglatex
@@ -56,7 +56,7 @@ in {
                 jupyter-client
                 pillow
                 pip
-                plotly
+                pkgs.stable.python3Packages.plotly
                 pnglatex
                 pyperclip
                 pynvim

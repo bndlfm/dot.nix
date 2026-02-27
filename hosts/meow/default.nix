@@ -61,12 +61,6 @@ in
         };
       };
       permittedInsecurePackages = [
-        #"aspnetcore-runtime-wrapped-6.0.36"
-        #"aspnetcore-runtime-6.0.36"
-        #"dotnet-runtime-7.0.20"
-        #"dotnet-core-combined"
-        #"dotnet-sdk-wrapped-6.0.428"
-        #"dotnet-sdk-6.0.428"
       ];
     };
     overlays = [ ];
@@ -85,7 +79,6 @@ in
     runc
     tailscale
     xsettingsd
-    #xorg.xrdb
   ];
 
   #------- MY MODULES -------#

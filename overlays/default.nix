@@ -22,17 +22,7 @@
         wrapProgram $out/bin/cursor --set ELECTRON_OZONE_PLATFORM_HINT X11
       '';
     });
-    sunshine = prev.sunshine.override {
-      boost = final.boost187;
-    };
-    python3 = prev.python3.override {
-      packageOverrides = pyFinal: pyPrev: {
-        plotly = pyPrev.plotly.overrideAttrs (_: {
-          doCheck = false;
-        });
-      };
-    };
-    python3Packages = final.python3.pkgs;
+    sunshine = final.stable.sunshine;
   };
 
   # When applied, the stable nixpkgs set (declared in the flake inputs) will

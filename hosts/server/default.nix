@@ -19,7 +19,7 @@
     ../../containers/pihole.sys.nix
 
     ## MODULES
-    ../../blocks/caddy-tailscale.sys.nix
+    #../../blocks/caddy-tailscale.sys.nix
 
     ## SECRETS
     inputs.sops-nix.nixosModules.sops

@@ -3,8 +3,8 @@ let
   src = pkgs.fetchFromGitHub {
     owner = "mediar-ai";
     repo = "screenpipe";
-    rev = "58f26bc327b83b477396fdeddcc827d1b8a18332";
-    hash = "sha256-YdFt5yK+Pp4RmUdKx0TTj5+IzGfJ7gwq9UVPcdKUGY8=";
+    rev = "7b75b9ec36bb2894639f6e9852773d75772a449e";
+    hash = "sha256-Qx4q1lJc+3gom/zHL+DlAXnSs8ltmgqvnBF5Q7zmc9E=";
   };
 
   cudaLibs = pkgs.lib.optionals pkgs.config.cudaSupport (with pkgs.cudaPackages; [
@@ -30,25 +30,9 @@ let
     '';
     installPhase = "true";
   };
-
-  v8Prebuilt = pkgs.fetchurl {
-    url = "https://github.com/denoland/rusty_v8/releases/download/v0.106.0/librusty_v8_release_x86_64-unknown-linux-gnu.a.gz";
-    hash = "sha256-jLYl/CJp2Z+Ut6qZlh6u+CtR8KN+ToNTB+72QnVbIKM=";
-  };
-  v8Lib = pkgs.stdenvNoCC.mkDerivation {
-    pname = "rusty-v8-prebuilt";
-    version = "0.106.0";
-    src = v8Prebuilt;
-    phases = [ "unpackPhase" "installPhase" ];
-    unpackPhase = ''
-      mkdir -p "$out/lib"
-      gzip -d < "$src" > "$out/lib/librusty_v8.a"
-    '';
-    installPhase = "true";
-  };
 in
 pkgs.callPackage ./default.nix {
-  inherit src cudaLibs ortLib v8Lib;
+  inherit src cudaLibs ortLib;
   cudatoolkit = if pkgs.config.cudaSupport then pkgs.cudaPackages.cudatoolkit else null;
   stdenv = pkgs.gcc14Stdenv;
 }

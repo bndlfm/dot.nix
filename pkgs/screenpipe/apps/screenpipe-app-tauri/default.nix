@@ -24,13 +24,13 @@
 , llvmPackages
 , src
 , ortLib
-, v8Lib
 , ...
 }:
 let
   appLock = builtins.readFile "${src}/apps/screenpipe-app-tauri/src-tauri/Cargo.lock";
   filteredAppLock = lib.replaceStrings
     [
+      # Remove problematic macos-only git dependencies that collide or fail
       ''
         [[package]]
         name = "nokhwa-bindings-macos"
@@ -60,43 +60,72 @@ let
         ]
 
       ''
+      # Replace hf-hub registry with git to match workspace
       ''
         [[package]]
         name = "hf-hub"
         version = "0.3.2"
         source = "registry+https://github.com/rust-lang/crates.io-index"
         checksum = "2b780635574b3d92f036890d8373433d6f9fc7abb320ee42a5c25897fc8ed732"
-        dependencies = [
-         "dirs 5.0.1",
-         "indicatif",
-         "log",
-         "native-tls",
-         "rand 0.8.5",
-         "serde",
-         "serde_json",
-         "thiserror 1.0.69",
-         "ureq 2.12.1",
-        ]
-
       ''
       ''
          "nokhwa-bindings-macos",
       ''
     ]
-    [ "" "" "" "" ]
+    [
+      ""
+      ""
+      ''
+        [[package]]
+        name = "hf-hub"
+        version = "0.3.2"
+        source = "git+https://github.com/neo773/hf-hub#437dcf4049233f4a0e0cfc4e1c1dbf5ed2c57760"
+      ''
+      ""
+    ]
     appLock;
+
+  hfHubEntry = ''
+
+[[package]]
+name = "num_cpus"
+version = "1.17.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "91df4bbde75afed763b708b7eee1e8e7651e02d97f6d5dd763e89367e957b23b"
+dependencies = [
+ "hermit-abi",
+]
+'';
 in
 rustPlatform.buildRustPackage rec {
   pname = "screenpipe-app";
-  version = "2.0.439";
+  version = "2.0.482";
 
   inherit src;
   cargoRoot = "apps/screenpipe-app-tauri/src-tauri";
   buildAndTestSubdir = cargoRoot;
 
   cargoLock = {
-    lockFileContents = filteredAppLock;
+    lockFileContents = filteredAppLock + hfHubEntry;
     allowBuiltinFetchGit = true;
+    outputHashes = {
+      "accessibility-0.3.0" = "sha256-SBYB62kFmldfangDBtnLqA+T9iUfn+GCCvi0p6E5ou8=";
+      "accessibility-sys-0.2.0" = "sha256-S/o9u4T7jA7Y+7KPr6vW6mKjD2Z9fX9oM0N0X9oM0N0=";
+      "cidre-0.14.0" = "sha256-eBDf4wMZrN2CwEHKMJiolK1I5s5SSoe1X2XRQ4OE7o8=";
+      "cpal-0.15.3" = "sha256-XNRx1VgDQ2UrPETX0vZY7l/3RiBXPhFAdJ8udyWUDoI=";
+      "ffmpeg-sidecar-2.3.0" = "sha256-iRl3raOR5rDvpx4vZ7dBGfXqxWbyi+hcFbMC2i10JqU=";
+      "fix-path-env-0.0.0" = "sha256-UygkxJZoiJlsgp8PLf1zaSVsJZx1GGdQyTXqaFv3oGk=";
+      "hf-hub-0.3.2" = "sha256-hTAdRgJKCN4kTyZXy4SOHPEhBY4/UX+tWJPoUroKLD0=";
+      "knf-rs-0.2.4" = "sha256-06k6o14+RlY+04p0BKi++JCHRh+0/jg/wg/wdgPm2Yw=";
+      "knf-rs-sys-0.2.4" = "sha256-06k6o14+RlY+04p0BKi++JCHRh+0/jg/wg/wdgPm2Yw=";
+      "rusty-tesseract-1.1.10" = "sha256-XT74zGn+DetEBUujHm4Soe2iorQcIoUeZbscTv+64hw=";
+      "sck-rs-0.1.0" = "sha256-unTVi0HtUY4KPU8S9gPaZAs7v4Z8UMbz+T0EGVsm19o=";
+      "tauri-nspanel-2.0.1" = "sha256-pQgv/Lkc9yE+DSv+MdOV1NZRj2nkMhAm+Wn41qvdvvE=";
+      "vad-rs-0.2.0" = "sha256-F6jf1fhheeyGmmClUg3fzT1klhXRgfE0szjfG9J+Nl4=";
+      "whisper-rs-0.15.1" = "sha256-ehMAYbRY3MI6b6ehRBbhYvdcbRxVrSoWJOkmaP/zM7c=";
+      "whisper-rs-sys-0.14.1" = "sha256-ehMAYbRY3MI6b6ehRBbhYvdcbRxVrSoWJOkmaP/zM7c=";
+      "windows-icons-0.1.1" = "sha256-Lrw9W71ihFYsC4EHThfQdmeJdEW3dE71NiNrFKZp7Ks=";
+    };
   };
 
   postPatch = ''
@@ -152,7 +181,6 @@ rustPlatform.buildRustPackage rec {
   '';
 
   LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
-  RUSTY_V8_ARCHIVE = "${v8Lib}/lib/librusty_v8.a";
   ORT_LIB_LOCATION = "${ortLib}/lib";
   ORT_STRATEGY = "system";
   RUSTONIG_SYSTEM_LIBONIG = "1";
