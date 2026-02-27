@@ -132,8 +132,6 @@ in
           { command = [ "blueman-applet" ]; }
           ## SHELL
           { command = [ "noctalia-shell" ]; }
-          ## NOTIFICATIONS
-          # Noctalia Shell provides its own notification daemon.
           ## TAILSCALE TRAY
           {
             command = [
@@ -141,8 +139,8 @@ in
               "--hide-window"
             ];
           }
+          ## CLIPBOARD
           {
-            ## CLIPBOARD
             command = [
               "copyq"
               "--start-server"
@@ -165,8 +163,8 @@ in
               "/home/neko/Documents/GoogleDrive/"
             ];
           }
+          ## KDE-CONNECT
           {
-            ## KDE-CONNECT
             command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect" ];
           }
           {
@@ -235,6 +233,8 @@ in
               "launcher"
               "toggle"
             ];
+            ## STT Transcribe Tool
+            "Alt+Shift+D".action.spawn = [ "xhisper" ];
             ## NEWELLE
             "Alt+BackSpace".action = sh (
               builtins.concatStringsSep "; " [
