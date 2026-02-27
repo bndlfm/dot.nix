@@ -216,7 +216,10 @@
 
         media = [
           #calibre
+<<<<<<< HEAD
           plezy
+=======
+>>>>>>> 43f9121da7c6d7c0b1ac7169332eaeb0be76af66
           mpv
         ];
 

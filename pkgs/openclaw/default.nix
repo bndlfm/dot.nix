@@ -22,7 +22,11 @@
   codex,
 
   openclawRev ? "master",
+<<<<<<< HEAD
   openclawHash ? "sha256-Hx88jTi4CozTznBWF8M9sw0ZBjfMgC4AbKaJY1JQXVQ=",
+=======
+  openclawHash ? "sha256-Dz7JtiBsaiIojtOIC3JdbgygBOsBy6gX1F7ALnm6EB4=",
+>>>>>>> 43f9121da7c6d7c0b1ac7169332eaeb0be76af66
 }:
 
 let
