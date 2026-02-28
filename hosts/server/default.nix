@@ -3,9 +3,7 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 {
-  config,
   inputs,
-  lib,
   pkgs,
   ...
 }:
@@ -22,8 +20,7 @@
     #../../blocks/caddy-tailscale.sys.nix
 
     ## SECRETS
-    inputs.sops-nix.nixosModules.sops
-    ../../sops/sops.sys.nix
+    #../../sops/sops.sys.nix
   ];
 
   #-------- PACKAGES --------#
@@ -103,7 +100,7 @@
     enable = true;
     settings = {
       PermitRootLogin = "yes";
-      PasswordAuthentication = false;
+      PasswordAuthentication = true;
     };
   };
 
