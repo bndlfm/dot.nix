@@ -14,7 +14,7 @@
     ./hardware.nix
 
     ## CONTAINERS
-    ../../containers/pihole.sys.nix
+    #../../containers/pihole.sys.nix
 
     ## MODULES
     #../../blocks/caddy-tailscale.sys.nix
@@ -105,8 +105,8 @@
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ ];
-  networking.firewall.allowedUDPPorts = [ ];
+  #networking.firewall.allowedTCPPorts = [ ];
+  #networking.firewall.allowedUDPPorts = [ ];
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
