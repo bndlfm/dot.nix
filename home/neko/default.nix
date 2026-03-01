@@ -114,13 +114,6 @@
         ];
 
         ai = [
-          antigravity-fhs
-          code-cursor-fhs
-          vscode-fhs
-          windsurf
-
-          #codex
-          gemini-cli
 
           opencode
           #inputs.llama-cpp_ik.packages.x86_64-linux.cuda
@@ -130,8 +123,6 @@
           chromium
 
           sillytavern
-          _xhisper-local
-          _screenpipe
         ];
 
         apple = [
@@ -140,6 +131,7 @@
 
         browsers = [
           #firefox-devedition: programs/hm/firefox.nix
+          #zen browser: ./programs/zen-browser.home.nix
           tor-browser
           qutebrowser
         ];
@@ -178,8 +170,8 @@
         ];
 
         editing = [
-          gimp
-          libreoffice-qt
+          #gimp #NOTE: Not caching
+          #libreoffice-qt
         ];
 
         gaming = [
@@ -230,8 +222,14 @@
 
         programming = [
           #
+          # AGENTS
+          #--------
+          #
+          gemini-cli
+
+          #
           # DOTNET
-          #-------
+          #--------
           #dotnetCorePackages.dotnet_10.sdk
           #dotnetCorePackages.dotnet_10.runtime
 
@@ -244,9 +242,18 @@
           git-credential-gopass
 
           #
+          # IDE
+          #-----
+          antigravity-fhs
+          code-cursor-fhs
+
+          #
           # PYTHON
           #-------
-          (python3.withPackages (pkgs: with pkgs; [ ]))
+          (python3.withPackages (
+            pkgs: with pkgs; [
+            ]
+          ))
 
           #
           # NIX DEV TOOLS
