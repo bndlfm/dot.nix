@@ -65,21 +65,6 @@
     };
   };
 
-  nixConfig = {
-    extra-substituters = [
-      "https://nix-community.cachix.org"
-      "https://cuda-maintainers.cachix.org"
-      "https://hyprland.cachix.org"
-      "https://niri.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
-    ];
-  };
-
   outputs =
     {
       self,
@@ -162,7 +147,7 @@
             ## SECRETS
             inputs.sops-nix.homeManagerModules.sops
             ## IMPORTS
-            ./home/server/default.nix
+            ./home/ceru/default.nix
           ];
         };
       };
@@ -199,6 +184,7 @@
           ];
         };
         "server" = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
           modules = [
             ## IMPORTS
             ./hosts/server/default.nix

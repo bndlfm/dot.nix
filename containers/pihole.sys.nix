@@ -4,8 +4,10 @@ let
 in
 {
   networking = {
-    nameservers = [ piholeIPv4 ];
-    networkmanager.insertNameservers = [ piholeIPv4 ];
+    # Host will use standard upstream DNS, NOT the Pi-hole container.
+    # This prevents the server from losing internet if the container fails.
+    nameservers = [ "1.1.1.1" "8.8.8.8" ];
+    
     firewall = {
       allowedTCPPorts = [
         53 # DNS DUH
