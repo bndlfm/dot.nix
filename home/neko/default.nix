@@ -119,10 +119,11 @@
               let
                 src-orig = inputs.llama-cpp_ik;
                 package-nix = builtins.readFile (src-orig + "/.devops/nix/package.nix");
-                patched = builtins.replaceStrings
-                  [ "env = optionals useRocm" "src = lib.cleanSource ../../." ]
-                  [ "env = lib.optionalAttrs useRocm" "src = \"${src-orig}\"" ]
-                  package-nix;
+                patched =
+                  builtins.replaceStrings
+                    [ "env = optionals useRocm" "src = lib.cleanSource ../../." ]
+                    [ "env = lib.optionalAttrs useRocm" "src = \"${src-orig}\"" ]
+                    package-nix;
                 patchedFile = pkgs.writeText "package-patched.nix" patched;
               in
               pkgs.callPackage patchedFile {
@@ -131,13 +132,12 @@
               };
           in
           [
+            chromium # OPENCLAW
+            _jules
             llama-cpp-patched
+            sillytavern
             warp-terminal
-
-          sillytavern
-          ## OPEN CLAW PKGS
-          chromium
-        ];
+          ];
 
         apple = [
           uxplay
