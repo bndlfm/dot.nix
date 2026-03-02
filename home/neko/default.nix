@@ -113,16 +113,30 @@
           #inputs.deejavu.packages.x86_64-linux.default
         ];
 
-        ai = [
-
-          opencode
-          #inputs.llama-cpp_ik.packages.x86_64-linux.cuda
-          warp-terminal
-
-          ## OPEN CLAW PKGS
-          chromium
+        ai =
+          let
+            llama-cpp-patched =
+              let
+                src-orig = inputs.llama-cpp_ik;
+                package-nix = builtins.readFile (src-orig + "/.devops/nix/package.nix");
+                patched = builtins.replaceStrings
+                  [ "env = optionals useRocm" "src = lib.cleanSource ../../." ]
+                  [ "env = lib.optionalAttrs useRocm" "src = \"${src-orig}\"" ]
+                  package-nix;
+                patchedFile = pkgs.writeText "package-patched.nix" patched;
+              in
+              pkgs.callPackage patchedFile {
+                llamaVersion = src-orig.shortRev or "0.0.0";
+                useCuda = true;
+              };
+          in
+          [
+            llama-cpp-patched
+            warp-terminal
 
           sillytavern
+          ## OPEN CLAW PKGS
+          chromium
         ];
 
         apple = [
@@ -226,6 +240,7 @@
           #--------
           #
           gemini-cli
+          opencode
 
           #
           # DOTNET

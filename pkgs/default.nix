@@ -39,6 +39,7 @@ rec {
   _jellyseerr-mcp = cPkg ./mcp/jellyseerr-mcp/default.nix { };
   _mcp-arr = cPkg ./mcp/mcp-arr/default.nix { };
   _screenpipe = cPkg ./screenpipe/package.nix { };
+  _jules = cPkg ./jules.nix { };
 
   #--- BIN ---#
   _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix { };
