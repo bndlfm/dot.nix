@@ -11,7 +11,7 @@ in
 {
   imports = [
     ## CONTAINERS
-    ../../containers/openclaw.sys.nix
+    #../../containers/openclaw.sys.nix
 
     ## PROGRAMS
 
@@ -30,7 +30,8 @@ in
 
     inputs.nixarr.nixosModules.default
     ../../blocks/nixarr.sys.nix
-    ../../modules/anchorr.sys.nix
+
+    #../../modules/anchorr.sys.nix
 
     ## WINDOW MANAGERS
     ../../blocks/wm/hyprland.sys.nix

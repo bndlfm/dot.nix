@@ -113,31 +113,12 @@
           #inputs.deejavu.packages.x86_64-linux.default
         ];
 
-        ai =
-          let
-            llama-cpp-patched =
-              let
-                src-orig = inputs.llama-cpp_ik;
-                package-nix = builtins.readFile (src-orig + "/.devops/nix/package.nix");
-                patched =
-                  builtins.replaceStrings
-                    [ "env = optionals useRocm" "src = lib.cleanSource ../../." ]
-                    [ "env = lib.optionalAttrs useRocm" "src = \"${src-orig}\"" ]
-                    package-nix;
-                patchedFile = pkgs.writeText "package-patched.nix" patched;
-              in
-              pkgs.callPackage patchedFile {
-                llamaVersion = src-orig.shortRev or "0.0.0";
-                useCuda = true;
-              };
-          in
-          [
-            chromium # OPENCLAW
-            _jules
-            llama-cpp-patched
-            sillytavern
-            warp-terminal
-          ];
+        ai = [
+          chromium # OPENCLAW
+          _jules
+          sillytavern
+          warp-terminal
+        ];
 
         apple = [
           uxplay

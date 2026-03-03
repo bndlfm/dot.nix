@@ -22,11 +22,7 @@
   codex,
 
   openclawRev ? "master",
-<<<<<<< HEAD
-  openclawHash ? "sha256-Hx88jTi4CozTznBWF8M9sw0ZBjfMgC4AbKaJY1JQXVQ=",
-=======
-  openclawHash ? "sha256-Dz7JtiBsaiIojtOIC3JdbgygBOsBy6gX1F7ALnm6EB4=",
->>>>>>> 43f9121da7c6d7c0b1ac7169332eaeb0be76af66
+  openclawHash ? "sha256-XDlfmhxygdZxazjZ9UNxJGpBSLyVuKsPG6Uagwp9BzM=",
 }:
 
 let
@@ -47,7 +43,7 @@ stdenv.mkDerivation rec {
   pnpmDeps = fetchPnpmDeps {
     inherit pname version src;
     lockfile = "${src}/pnpm-lock.yaml";
-    hash = "sha256-BjJze+4IGmQLttN1z8/kEPii8qvKjLFN56AArvipluo=";
+    hash = "sha256-QnKPVUPgy3znCQRmfqiIPtRLgZ0SPwWqUsJ4USF2LJE=";
     fetcherVersion = 3;
   };
 
