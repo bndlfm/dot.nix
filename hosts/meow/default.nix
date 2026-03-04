@@ -524,6 +524,12 @@ in
             "gtk"
           ];
         };
+        niri = {
+          default = [
+            "gtk"
+            "kde"
+          ];
+        };
         kde = {
           default = [
             "kde"

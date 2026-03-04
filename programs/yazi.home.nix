@@ -6,58 +6,214 @@
     enableBashIntegration = true;
     enableZshIntegration = true;
     shellWrapperName = "y";
+    settings = {
+      manager = {
+        ratio = [ 1 4 3 ];
+        sort_by = "alphabetical";
+        sort_sensitive = false;
+        sort_reverse = false;
+        sort_dir_first = false;
+        linemode = "none";
+        show_hidden = false;
+        show_symlink = true;
+        scrolloff = 5;
+      };
+      preview = {
+        tab_size = 2;
+        max_width = 600;
+        max_height = 900;
+        cache_dir = "";
+        image_filter = "triangle";
+        image_quality = 75;
+        sixel_fraction = 15;
+        ueberzug_scale = 1;
+        ueberzug_offset = [ 0 0 0 0 ];
+      };
+      opener = {
+        edit = [
+          { run = ''''${EDITOR:=vi} "$@"''; desc = "$EDITOR"; block = true; "for" = "unix"; }
+          { run = ''code "%*"''; orphan = true; "for" = "windows"; }
+        ];
+        open = [
+          { run = ''xdg-open "$@"''; desc = "Open"; "for" = "linux"; }
+          { run = ''open "$@"''; desc = "Open"; "for" = "macos"; }
+          { run = ''start "" "%1"''; orphan = true; desc = "Open"; "for" = "windows"; }
+        ];
+        reveal = [
+          { run = ''open -R "$1"''; desc = "Reveal"; "for" = "macos"; }
+          { run = ''explorer /select, "%1"''; orphan = true; "for" = "windows"; }
+          { run = ''exiftool "$1"; echo "Press enter to exit"; read''; block = true; desc = "Show EXIF"; "for" = "unix"; }
+        ];
+        extract = [
+          { run = ''unar "$1"''; desc = "Extract here"; "for" = "unix"; }
+          { run = ''unar "%1"''; desc = "Extract here"; "for" = "windows"; }
+        ];
+        play = [
+          { run = ''mpv "$@"''; orphan = true; "for" = "unix"; }
+          { run = ''mpv "%1"''; orphan = true; "for" = "windows"; }
+          { run = ''mediainfo "$1"; echo "Press enter to exit"; read''; block = true; desc = "Show media info"; "for" = "unix"; }
+        ];
+      };
+      open = {
+        rules = [
+          { name = "*/"; use = [ "edit" "open" "reveal" ]; }
+          { mime = "text/*"; use = [ "edit" "reveal" ]; }
+          { mime = "image/*"; use = [ "open" "reveal" ]; }
+          { mime = "video/*"; use = [ "play" "reveal" ]; }
+          { mime = "audio/*"; use = [ "play" "reveal" ]; }
+          { mime = "inode/x-empty"; use = [ "edit" "reveal" ]; }
+          { mime = "application/json"; use = [ "edit" "reveal" ]; }
+          { mime = "*/javascript"; use = [ "edit" "reveal" ]; }
+          { mime = "application/zip"; use = [ "extract" "reveal" ]; }
+          { mime = "application/gzip"; use = [ "extract" "reveal" ]; }
+          { mime = "application/x-tar"; use = [ "extract" "reveal" ]; }
+          { mime = "application/x-bzip"; use = [ "extract" "reveal" ]; }
+          { mime = "application/x-bzip2"; use = [ "extract" "reveal" ]; }
+          { mime = "application/x-7z-compressed"; use = [ "extract" "reveal" ]; }
+          { mime = "application/x-rar"; use = [ "extract" "reveal" ]; }
+          { mime = "application/xz"; use = [ "extract" "reveal" ]; }
+          { mime = "*"; use = [ "open" "reveal" ]; }
+        ];
+      };
+      tasks = {
+        micro_workers = 10;
+        macro_workers = 25;
+        bizarre_retry = 5;
+        image_alloc = 536870912;
+        image_bound = [ 0 0 ];
+        suppress_preload = false;
+      };
+      plugin = {
+        preloaders = [
+          { name = "*"; cond = "!mime"; run = "mime"; multi = true; prio = "high"; }
+          { mime = "image/vnd.djvu"; run = "noop"; }
+          { mime = "image/*"; run = "image"; }
+          { mime = "video/*"; run = "video"; }
+          { mime = "application/pdf"; run = "pdf"; }
+        ];
+        previewers = [
+          { name = "*/"; run = "folder"; sync = true; }
+          { mime = "text/*"; run = "code"; }
+          { mime = "*/xml"; run = "code"; }
+          { mime = "*/javascript"; run = "code"; }
+          { mime = "*/x-wine-extension-ini"; run = "code"; }
+          { mime = "application/json"; run = "json"; }
+          { mime = "image/vnd.djvu"; run = "noop"; }
+          { mime = "image/*"; run = "image"; }
+          { mime = "video/*"; run = "video"; }
+          { mime = "application/pdf"; run = "pdf"; }
+          { mime = "application/zip"; run = "archive"; }
+          { mime = "application/gzip"; run = "archive"; }
+          { mime = "application/x-tar"; run = "archive"; }
+          { mime = "application/x-bzip"; run = "archive"; }
+          { mime = "application/x-bzip2"; run = "archive"; }
+          { mime = "application/x-7z-compressed"; run = "archive"; }
+          { mime = "application/x-rar"; run = "archive"; }
+          { mime = "application/xz"; run = "archive"; }
+          { name = "*"; run = "file"; }
+        ];
+      };
+      input = {
+        cd_title = "Change directory:";
+        cd_origin = "top-center";
+        cd_offset = [ 0 2 50 3 ];
+        create_title = [ "Create file:" "Create directory:" ];
+        create_origin = "top-center";
+        create_offset = [ 0 2 50 3 ];
+        rename_title = "Rename:";
+        rename_origin = "hovered";
+        rename_offset = [ 0 1 50 3 ];
+        trash_title = "Move {n} selected file{s} to trash? (y/N)";
+        trash_origin = "top-center";
+        trash_offset = [ 0 2 50 3 ];
+        delete_title = "Delete {n} selected file{s} permanently? (y/N)";
+        delete_origin = "top-center";
+        delete_offset = [ 0 2 50 3 ];
+        filter_title = "Filter:";
+        filter_origin = "top-center";
+        filter_offset = [ 0 2 50 3 ];
+        find_title = [ "Find next:" "Find previous:" ];
+        find_origin = "top-center";
+        find_offset = [ 0 2 50 3 ];
+        search_title = "Search via {n}:";
+        search_origin = "top-center";
+        search_offset = [ 0 2 50 3 ];
+        shell_title = [ "Shell:" "Shell (block):" ];
+        shell_origin = "top-center";
+        shell_offset = [ 0 2 50 3 ];
+        overwrite_title = "Overwrite an existing file? (y/N)";
+        overwrite_origin = "top-center";
+        overwrite_offset = [ 0 2 50 3 ];
+        quit_title = "{n} task{s} running, sure to quit? (y/N)";
+        quit_origin = "top-center";
+        quit_offset = [ 0 2 50 3 ];
+      };
+      select = {
+        open_title = "Open with:";
+        open_origin = "hovered";
+        open_offset = [ 0 1 50 7 ];
+      };
+      which = {
+        sort_by = "none";
+        sort_sensitive = false;
+        sort_reverse = false;
+      };
+      log = {
+        enabled = false;
+      };
+    };
     keymap = {
       mgr.keymap = [
         {
           on = [ "<Esc>" ];
-          exec = "escape";
+          run = "escape";
           desc = "Exit visual mode, clear selected, or cancel search";
         }
         {
           on = [ "q" ];
-          exec = "quit";
+          run = "quit";
           desc = "Exit the process";
         }
         {
           on = [ "Q" ];
-          exec = "quit --no-cwd-file";
+          run = "quit --no-cwd-file";
           desc = "Exit the process without writing cwd-file";
         }
         {
           on = [ "<C-q>" ];
-          exec = "close";
+          run = "close";
           desc = "Close the current tab, or quit if it is last tab";
         }
         {
           on = [ "<C-z>" ];
-          exec = "suspend";
+          run = "suspend";
           desc = "Suspend the process";
         }
 
         # NAVIGATION
         {
           on = [ "e" ];
-          exec = "arrow -1";
+          run = "arrow -1";
           desc = "Move cursor up";
         }
         {
           on = [ "n" ];
-          exec = "arrow 1";
+          run = "arrow 1";
           desc = "Move cursor down";
         }
         {
           on = [ "E" ];
-          exec = "arrow -5";
+          run = "arrow -5";
           desc = "Move cursor up 5 lines";
         }
         {
           on = [ "N" ];
-          exec = "arrow 5";
+          run = "arrow 5";
           desc = "Move cursor down 5 lines";
         }
         {
           on = [ "h" ];
-          exec = [
+          run = [
             "leave"
             "escape --visual --select"
           ];
@@ -65,7 +221,7 @@
         }
         {
           on = [ "i" ];
-          exec = [
+          run = [
             "enter"
             "escape --visual --select"
           ];
@@ -73,107 +229,107 @@
         }
         {
           on = [ "H" ];
-          exec = "back";
+          run = "back";
           desc = "Go back to the previous directory";
         }
         {
           on = [ "I" ];
-          exec = "forward";
+          run = "forward";
           desc = "Go forward to the next directory";
         }
         {
           on = [ "<S-Up>" ];
-          exec = "arrow -5";
+          run = "arrow -5";
           desc = "Move cursor up 5 lines";
         }
         {
           on = [ "<S-Down>" ];
-          exec = "arrow 5";
+          run = "arrow 5";
           desc = "Move cursor down 5 lines";
         }
 
         {
           on = [ "<C-u>" ];
-          exec = "arrow -50%";
+          run = "arrow -50%";
           desc = "Move cursor up half page";
         }
         {
           on = [ "<C-d>" ];
-          exec = "arrow 50%";
+          run = "arrow 50%";
           desc = "Move cursor down half page";
         }
         {
           on = [ "<C-b>" ];
-          exec = "arrow -100%";
+          run = "arrow -100%";
           desc = "Move cursor up one page";
         }
         {
           on = [ "<C-f>" ];
-          exec = "arrow 100%";
+          run = "arrow 100%";
           desc = "Move cursor down one page";
         }
 
         {
           on = [ "<C-PageUp>" ];
-          exec = "arrow -50%";
+          run = "arrow -50%";
           desc = "Move cursor up half page";
         }
         {
           on = [ "<C-PageDown>" ];
-          exec = "arrow 50%";
+          run = "arrow 50%";
           desc = "Move cursor down half page";
         }
         {
           on = [ "<PageUp>" ];
-          exec = "arrow -100%";
+          run = "arrow -100%";
           desc = "Move cursor up one page";
         }
         {
           on = [ "<PageDown>" ];
-          exec = "arrow 100%";
+          run = "arrow 100%";
           desc = "Move cursor down one page";
         }
 
         # PREVIEW
         {
           on = [ "<A-e>" ];
-          exec = "seek -5";
+          run = "seek -5";
           desc = "Seek up 5 units in the preview";
         }
         {
           on = [ "<A-n>" ];
-          exec = "seek 5";
+          run = "seek 5";
           desc = "Seek down 5 units in the preview";
         }
         {
           on = [ "<A-PageUp>" ];
-          exec = "seek -5";
+          run = "seek -5";
           desc = "Seek up 5 units in the preview";
         }
         {
           on = [ "<A-PageDown>" ];
-          exec = "seek 5";
+          run = "seek 5";
           desc = "Seek down 5 units in the preview";
         }
 
         {
           on = [ "<Up>" ];
-          exec = "arrow -1";
+          run = "arrow -1";
           desc = "Move cursor up";
         }
         {
           on = [ "<Down>" ];
-          exec = "arrow 1";
+          run = "arrow 1";
           desc = "Move cursor down";
         }
         {
           on = [ "<Left>" ];
-          exec = "leave";
+          run = "leave";
           desc = "Go back to the parent directory";
         }
         {
           on = [ "<Right>" ];
-          exec = "enter";
+          run = "enter";
           desc = "Enter the child directory";
         }
 
@@ -182,19 +338,19 @@
             "g"
             "g"
           ];
-          exec = "arrow -99999999";
+          run = "arrow -99999999";
           desc = "Move cursor to the top";
         }
         {
           on = [ "G" ];
-          exec = "arrow 99999999";
+          run = "arrow 99999999";
           desc = "Move cursor to the bottom";
         }
 
         # Selection
         {
           on = [ "<Space>" ];
-          exec = [
+          run = [
             "select --state=none"
             "arrow 1"
           ];
@@ -202,139 +358,139 @@
         }
         {
           on = [ "v" ];
-          exec = "visual_mode";
+          run = "visual_mode";
           desc = "Enter visual mode (selection mode)";
         }
         {
           on = [ "V" ];
-          exec = "visual_mode --unset";
+          run = "visual_mode --unset";
           desc = "Enter visual mode (unset mode)";
         }
         {
           on = [ "<C-a>" ];
-          exec = "select_all --state=true";
+          run = "select_all --state=true";
           desc = "Select all files";
         }
         {
           on = [ "<C-r>" ];
-          exec = "select_all --state=none";
+          run = "select_all --state=none";
           desc = "Inverse selection of all files";
         }
 
         # Operation
         {
           on = [ "o" ];
-          exec = "open";
+          run = "open";
           desc = "Open the selected files";
         }
         {
           on = [ "O" ];
-          exec = "open --interactive";
+          run = "open --interactive";
           desc = "Open the selected files interactively";
         }
         {
           on = [ "<Enter>" ];
-          exec = "open";
+          run = "open";
           desc = "Open the selected files";
         }
         {
           on = [ "<C-Enter>" ];
-          exec = "open --interactive";
+          run = "open --interactive";
           desc = "Open the selected files interactively";
         }
         {
           on = [ "y" ];
-          exec = "yank";
+          run = "yank";
           desc = "Copy the selected files";
         }
         {
           on = [ "Y" ];
-          exec = "unyank";
+          run = "unyank";
           desc = "Cancel the yank status of files";
         }
         {
           on = [ "x" ];
-          exec = "yank --cut";
+          run = "yank --cut";
           desc = "Cut the selected files";
         }
         {
           on = [ "p" ];
-          exec = "paste";
+          run = "paste";
           desc = "Paste the files";
         }
         {
           on = [ "P" ];
-          exec = "paste --force";
+          run = "paste --force";
           desc = "Paste the files (overwrite if the destination exists)";
         }
         {
           on = [ "-" ];
-          exec = "link";
+          run = "link";
           desc = "Symlink the absolute path of files";
         }
         {
           on = [ "_" ];
-          exec = "link --relative";
+          run = "link --relative";
           desc = "Symlink the relative path of files";
         }
         {
           on = [ "d" ];
-          exec = "remove";
+          run = "remove";
           desc = "Move the files to the trash";
         }
         {
           on = [ "D" ];
-          exec = "remove --permanently";
+          run = "remove --permanently";
           desc = "Permanently delete the files";
         }
         {
           on = [ "a" ];
-          exec = "create";
+          run = "create";
           desc = "Create a file or directory (ends with / for directories)";
         }
         {
           on = [ "r" ];
-          exec = "rename --cursor=before_ext";
+          run = "rename --cursor=before_ext";
           desc = "Rename a file or directory";
         }
         {
           on = [ ";" ];
-          exec = "shell";
+          run = "shell";
           desc = "Run a shell command";
         }
         {
           on = [ ":" ];
-          exec = "shell --block";
+          run = "shell --block";
           desc = "Run a shell command (block the UI until the command finishes)";
         }
         {
           on = [ "." ];
-          exec = "hidden toggle";
+          run = "hidden toggle";
           desc = "Toggle the visibility of hidden files";
         }
         {
           on = [ "s" ];
-          exec = "search fd";
+          run = "search fd";
           desc = "Search files by name using fd";
         }
         {
           on = [ "S" ];
-          exec = "search rg";
+          run = "search rg";
           desc = "Search files by content using ripgrep";
         }
         {
           on = [ "<C-s>" ];
-          exec = "search none";
+          run = "search none";
           desc = "Cancel the ongoing search";
         }
         {
           on = [ "z" ];
-          exec = "jump zoxide";
+          run = "jump zoxide";
           desc = "Jump to a directory using zoxide";
         }
         {
           on = [ "Z" ];
-          exec = "jump fzf";
+          run = "jump fzf";
           desc = "Jump to a directory; or reveal a file using fzf";
         }
 
@@ -344,7 +500,7 @@
             "m"
             "s"
           ];
-          exec = "linemode size";
+          run = "linemode size";
           desc = "Set linemode to size";
         }
         {
@@ -352,7 +508,7 @@
             "m"
             "p"
           ];
-          exec = "linemode permissions";
+          run = "linemode permissions";
           desc = "Set linemode to permissions";
         }
         {
@@ -360,7 +516,7 @@
             "m"
             "m"
           ];
-          exec = "linemode mtime";
+          run = "linemode mtime";
           desc = "Set linemode to mtime";
         }
         {
@@ -368,7 +524,7 @@
             "m"
             "n"
           ];
-          exec = "linemode none";
+          run = "linemode none";
           desc = "Set linemode to none";
         }
 
@@ -378,7 +534,7 @@
             "c"
             "c"
           ];
-          exec = "copy path";
+          run = "copy path";
           desc = "Copy the absolute path";
         }
         {
@@ -386,7 +542,7 @@
             "c"
             "d"
           ];
-          exec = "copy dirname";
+          run = "copy dirname";
           desc = "Copy the path of the parent directory";
         }
         {
@@ -394,7 +550,7 @@
             "c"
             "f"
           ];
-          exec = "copy filename";
+          run = "copy filename";
           desc = "Copy the name of the file";
         }
         {
@@ -402,36 +558,36 @@
             "c"
             "n"
           ];
-          exec = "copy name_without_ext";
+          run = "copy name_without_ext";
           desc = "Copy the name of the file without the extension";
         }
 
         # Filter
         {
           on = [ "f" ];
-          exec = "filter --smart";
+          run = "filter --smart";
           desc = "Filter the files";
         }
 
         # Find
         {
           on = [ "/" ];
-          exec = "find --smart";
+          run = "find --smart";
           desc = "Find next file";
         }
         {
           on = [ "?" ];
-          exec = "find --previous --smart";
+          run = "find --previous --smart";
           desc = "Find previous file";
         }
         {
           on = [ "n" ];
-          exec = "find_arrow";
+          run = "find_arrow";
           desc = "Go to next found file";
         }
         {
           on = [ "N" ];
-          exec = "find_arrow --previous";
+          run = "find_arrow --previous";
           desc = "Go to previous found file";
         }
 
@@ -441,7 +597,7 @@
             ";"
             "m"
           ];
-          exec = "sort modified --dir-first";
+          run = "sort modified --dir-first";
           desc = "Sort by modified time";
         }
         {
@@ -449,7 +605,7 @@
             ";"
             "M"
           ];
-          exec = "sort modified --reverse --dir-first";
+          run = "sort modified --reverse --dir-first";
           desc = "Sort by modified time (reverse)";
         }
         {
@@ -457,7 +613,7 @@
             ";"
             "c"
           ];
-          exec = "sort created --dir-first";
+          run = "sort created --dir-first";
           desc = "Sort by created time";
         }
         {
@@ -465,7 +621,7 @@
             ";"
             "C"
           ];
-          exec = "sort created --reverse --dir-first";
+          run = "sort created --reverse --dir-first";
           desc = "Sort by created time (reverse)";
         }
         {
@@ -473,7 +629,7 @@
             ";"
             "e"
           ];
-          exec = "sort extension --dir-first";
+          run = "sort extension --dir-first";
           desc = "Sort by extension";
         }
         {
@@ -481,7 +637,7 @@
             ";"
             "E"
           ];
-          exec = "sort extension --reverse --dir-first";
+          run = "sort extension --reverse --dir-first";
           desc = "Sort by extension (reverse)";
         }
         {
@@ -489,7 +645,7 @@
             ";"
             "a"
           ];
-          exec = "sort alphabetical --dir-first";
+          run = "sort alphabetical --dir-first";
           desc = "Sort alphabetically";
         }
         {
@@ -497,7 +653,7 @@
             ";"
             "A"
           ];
-          exec = "sort alphabetical --reverse --dir-first";
+          run = "sort alphabetical --reverse --dir-first";
           desc = "Sort alphabetically (reverse)";
         }
         {
@@ -505,7 +661,7 @@
             ";"
             "n"
           ];
-          exec = "sort natural --dir-first";
+          run = "sort natural --dir-first";
           desc = "Sort naturally";
         }
         {
@@ -513,7 +669,7 @@
             ";"
             "N"
           ];
-          exec = "sort natural --reverse --dir-first";
+          run = "sort natural --reverse --dir-first";
           desc = "Sort naturally (reverse)";
         }
         {
@@ -521,7 +677,7 @@
             ";"
             "s"
           ];
-          exec = "sort size --dir-first";
+          run = "sort size --dir-first";
           desc = "Sort by size";
         }
         {
@@ -529,89 +685,89 @@
             ";"
             "S"
           ];
-          exec = "sort size --reverse --dir-first";
+          run = "sort size --reverse --dir-first";
           desc = "Sort by size (reverse)";
         }
 
         # Tabs
         {
           on = [ "t" ];
-          exec = "tab_create --current";
+          run = "tab_create --current";
           desc = "Create a new tab using the current path";
         }
 
         {
           on = [ "1" ];
-          exec = "tab_switch 0";
+          run = "tab_switch 0";
           desc = "Switch to the first tab";
         }
         {
           on = [ "2" ];
-          exec = "tab_switch 1";
+          run = "tab_switch 1";
           desc = "Switch to the second tab";
         }
         {
           on = [ "3" ];
-          exec = "tab_switch 2";
+          run = "tab_switch 2";
           desc = "Switch to the third tab";
         }
         {
           on = [ "4" ];
-          exec = "tab_switch 3";
+          run = "tab_switch 3";
           desc = "Switch to the fourth tab";
         }
         {
           on = [ "5" ];
-          exec = "tab_switch 4";
+          run = "tab_switch 4";
           desc = "Switch to the fifth tab";
         }
         {
           on = [ "6" ];
-          exec = "tab_switch 5";
+          run = "tab_switch 5";
           desc = "Switch to the sixth tab";
         }
         {
           on = [ "7" ];
-          exec = "tab_switch 6";
+          run = "tab_switch 6";
           desc = "Switch to the seventh tab";
         }
         {
           on = [ "8" ];
-          exec = "tab_switch 7";
+          run = "tab_switch 7";
           desc = "Switch to the eighth tab";
         }
         {
           on = [ "9" ];
-          exec = "tab_switch 8";
+          run = "tab_switch 8";
           desc = "Switch to the ninth tab";
         }
 
         {
           on = [ "[" ];
-          exec = "tab_switch -1 --relative";
+          run = "tab_switch -1 --relative";
           desc = "Switch to the previous tab";
         }
         {
           on = [ "]" ];
-          exec = "tab_switch 1 --relative";
+          run = "tab_switch 1 --relative";
           desc = "Switch to the next tab";
         }
 
         {
           on = [ "{" ];
-          exec = "tab_swap -1";
+          run = "tab_swap -1";
           desc = "Swap the current tab with the previous tab";
         }
         {
           on = [ "}" ];
-          exec = "tab_swap 1";
+          run = "tab_swap 1";
           desc = "Swap the current tab with the next tab";
         }
 
         # Tasks
         {
           on = [ "w" ];
-          exec = "tasks_show";
+          run = "tasks_show";
           desc = "Show the tasks manager";
         }
 
@@ -621,7 +777,7 @@
             "g"
             "h"
           ];
-          exec = "cd ~";
+          run = "cd ~";
           desc = "Go to the home directory";
         }
         {
@@ -629,7 +785,7 @@
             "g"
             "c"
           ];
-          exec = "cd ~/.config";
+          run = "cd ~/.config";
           desc = "Go to the config directory";
         }
         {
@@ -637,7 +793,7 @@
             "g"
             "d"
           ];
-          exec = "cd ~/Downloads";
+          run = "cd ~/Downloads";
           desc = "Go to the downloads directory";
         }
         {
@@ -645,7 +801,7 @@
             "g"
             "t"
           ];
-          exec = "cd /tmp";
+          run = "cd /tmp";
           desc = "Go to the temporary directory";
         }
         {
@@ -653,14 +809,14 @@
             "g"
             "<Space>"
           ];
-          exec = "cd --interactive";
+          run = "cd --interactive";
           desc = "Go to a directory interactively";
         }
 
         # Help
         {
           on = [ "~" ];
-          exec = "help";
+          run = "help";
           desc = "Open help";
         }
 
@@ -670,7 +826,7 @@
             "g"
             "h"
           ];
-          exec = "cd ~";
+          run = "cd ~";
           desc = "Go to the home directory";
         }
         {
@@ -678,7 +834,7 @@
             "g"
             "c"
           ];
-          exec = "cd ~/.config";
+          run = "cd ~/.config";
           desc = "Go to the config directory";
         }
         {
@@ -686,7 +842,7 @@
             "g"
             "d"
           ];
-          exec = "cd ~/Downloads";
+          run = "cd ~/Downloads";
           desc = "Go to the downloads directory";
         }
         {
@@ -694,7 +850,7 @@
             "g"
             "t"
           ];
-          exec = "cd /tmp";
+          run = "cd /tmp";
           desc = "Go to the temporary directory";
         }
         {
@@ -702,164 +858,164 @@
             "g"
             "<Space>"
           ];
-          exec = "cd --interactive";
+          run = "cd --interactive";
           desc = "Go to a directory interactively";
         }
       ];
       tasks.keymap = [
         {
           on = [ "<Esc>" ];
-          exec = "close";
+          run = "close";
           desc = "Hide the task manager";
         }
         {
           on = [ "<C-q>" ];
-          exec = "close";
+          run = "close";
           desc = "Hide the task manager";
         }
         {
           on = [ "w" ];
-          exec = "close";
+          run = "close";
           desc = "Hide the task manager";
         }
 
         {
           on = [ "e" ];
-          exec = "arrow -1";
+          run = "arrow -1";
           desc = "Move cursor up";
         }
         {
           on = [ "n" ];
-          exec = "arrow 1";
+          run = "arrow 1";
           desc = "Move cursor down";
         }
 
         {
           on = [ "<Up>" ];
-          exec = "arrow -1";
+          run = "arrow -1";
           desc = "Move cursor up";
         }
         {
           on = [ "<Down>" ];
-          exec = "arrow 1";
+          run = "arrow 1";
           desc = "Move cursor down";
         }
 
         {
           on = [ "<Enter>" ];
-          exec = "inspect";
+          run = "inspect";
           desc = "Inspect the task";
         }
         {
           on = [ "x" ];
-          exec = "cancel";
+          run = "cancel";
           desc = "Cancel the task";
         }
 
         {
           on = [ "~" ];
-          exec = "help";
+          run = "help";
           desc = "Open help";
         }
       ];
       select.keymap = [
         {
           on = [ "<C-q>" ];
-          exec = "close";
+          run = "close";
           desc = "Cancel selection";
         }
         {
           on = [ "<Esc>" ];
-          exec = "close";
+          run = "close";
           desc = "Cancel selection";
         }
         {
           on = [ "<Enter>" ];
-          exec = "close --submit";
+          run = "close --submit";
           desc = "Submit the selection";
         }
 
         {
           on = [ "e" ];
-          exec = "arrow -1";
+          run = "arrow -1";
           desc = "Move cursor up";
         }
         {
           on = [ "n" ];
-          exec = "arrow 1";
+          run = "arrow 1";
           desc = "Move cursor down";
         }
 
         {
           on = [ "E" ];
-          exec = "arrow -5";
+          run = "arrow -5";
           desc = "Move cursor up 5 lines";
         }
         {
           on = [ "N" ];
-          exec = "arrow 5";
+          run = "arrow 5";
           desc = "Move cursor down 5 lines";
         }
 
         {
           on = [ "<Up>" ];
-          exec = "arrow -1";
+          run = "arrow -1";
           desc = "Move cursor up";
         }
         {
           on = [ "<Down>" ];
-          exec = "arrow 1";
+          run = "arrow 1";
           desc = "Move cursor down";
         }
 
         {
           on = [ "<S-Up>" ];
-          exec = "arrow -5";
+          run = "arrow -5";
           desc = "Move cursor up 5 lines";
         }
         {
           on = [ "<S-Down>" ];
-          exec = "arrow 5";
+          run = "arrow 5";
           desc = "Move cursor down 5 lines";
         }
 
         {
           on = [ "~" ];
-          exec = "help";
+          run = "help";
           desc = "Open help";
         }
       ];
       input.keymap = [
         {
           on = [ "<C-q>" ];
-          exec = "close";
+          run = "close";
           desc = "Cancel input";
         }
         {
           on = [ "<Enter>" ];
-          exec = "close --submit";
+          run = "close --submit";
           desc = "Submit the input";
         }
         {
           on = [ "<Esc>" ];
-          exec = "escape";
+          run = "escape";
           desc = "Go back the normal mode, or cancel input";
         }
 
         # Mode
         {
           on = [ "i" ];
-          exec = "insert";
+          run = "insert";
           desc = "Enter insert mode";
         }
         {
           on = [ "a" ];
-          exec = "insert --append";
+          run = "insert --append";
           desc = "Enter append mode";
         }
         {
           on = [ "I" ];
-          exec = [
+          run = [
             "move -999"
             "insert"
           ];
@@ -867,7 +1023,7 @@
         }
         {
           on = [ "A" ];
-          exec = [
+          run = [
             "move 999"
             "insert --append"
           ];
@@ -875,12 +1031,12 @@
         }
         {
           on = [ "v" ];
-          exec = "visual";
+          run = "visual";
           desc = "Enter visual mode";
         }
         {
           on = [ "V" ];
-          exec = [
+          run = [
             "move -999"
             "visual"
             "move 999"
@@ -891,149 +1047,149 @@
         # Character-wise movement
         {
           on = [ "h" ];
-          exec = "move -1";
+          run = "move -1";
           desc = "Move back a character";
         }
         {
           on = [ "i" ];
-          exec = "move 1";
+          run = "move 1";
           desc = "Move forward a character";
         }
 
         {
           on = [ "<Left>" ];
-          exec = "move -1";
+          run = "move -1";
           desc = "Move back a character";
         }
         {
           on = [ "<Right>" ];
-          exec = "move 1";
+          run = "move 1";
           desc = "Move forward a character";
         }
 
         {
           on = [ "<C-b>" ];
-          exec = "move -1";
+          run = "move -1";
           desc = "Move back a character";
         }
         {
           on = [ "<C-f>" ];
-          exec = "move 1";
+          run = "move 1";
           desc = "Move forward a character";
         }
 
         # Word-wise Movement
         {
           on = [ "b" ];
-          exec = "backward";
+          run = "backward";
           desc = "Move back to the start of the current or previous word";
         }
         {
           on = [ "w" ];
-          exec = "forward";
+          run = "forward";
           desc = "Move forward to the start of the next word";
         }
         {
           on = [ "l" ];
-          exec = "forward --end-of-word";
+          run = "forward --end-of-word";
           desc = "Move forward to the end of the current or next word";
         }
         {
           on = [ "<A-b>" ];
-          exec = "backward";
+          run = "backward";
           desc = "Move back to the start of the current or previous word";
         }
         {
           on = [ "<A-f>" ];
-          exec = "forward --end-of-word";
+          run = "forward --end-of-word";
           desc = "Move forward to the end of the current or next word";
         }
 
         # Line-wise movement
         {
           on = [ "0" ];
-          exec = "move -999";
+          run = "move -999";
           desc = "Move to the BOL";
         }
         {
           on = [ "$" ];
-          exec = "move 999";
+          run = "move 999";
           desc = "Move to the EOL";
         }
         {
           on = [ "<C-a>" ];
-          exec = "move -999";
+          run = "move -999";
           desc = "Move to the BOL";
         }
         {
           on = [ "<C-e>" ];
-          exec = "move 999";
+          run = "move 999";
           desc = "Move to the EOL";
         }
         {
           on = [ "<Home>" ];
-          exec = "move -999";
+          run = "move -999";
           desc = "Move to the BOL";
         }
         {
           on = [ "<End>" ];
-          exec = "move 999";
+          run = "move 999";
           desc = "Move to the EOL";
         }
 
         # Delete
         {
           on = [ "<Backspace>" ];
-          exec = "backspace";
+          run = "backspace";
           desc = "Delete the character before the cursor";
         }
         {
           on = [ "<Delete>" ];
-          exec = "backspace --under";
+          run = "backspace --under";
           desc = "Delete the character under the cursor";
         }
         {
           on = [ "<C-h>" ];
-          exec = "backspace";
+          run = "backspace";
           desc = "Delete the character before the cursor";
         }
         {
           on = [ "<C-d>" ];
-          exec = "backspace --under";
+          run = "backspace --under";
           desc = "Delete the character under the cursor";
         }
 
         # Kill
         {
           on = [ "<C-u>" ];
-          exec = "kill bol";
+          run = "kill bol";
           desc = "Kill backwards to the BOL";
         }
         {
           on = [ "<C-k>" ];
-          exec = "kill eol";
+          run = "kill eol";
           desc = "Kill forwards to the EOL";
         }
         {
           on = [ "<C-w>" ];
-          exec = "kill backward";
+          run = "kill backward";
           desc = "Kill backwards to the start of the current word";
         }
         {
           on = [ "<A-d>" ];
-          exec = "kill forward";
+          run = "kill forward";
           desc = "Kill forwards to the end of the current word";
         }
 
         # Cut/Yank/Paste
         {
           on = [ "d" ];
-          exec = "delete --cut";
+          run = "delete --cut";
           desc = "Cut the selected characters";
         }
         {
           on = [ "D" ];
-          exec = [
+          run = [
             "delete --cut"
             "move 999"
           ];
@@ -1041,12 +1197,12 @@
         }
         {
           on = [ "c" ];
-          exec = "delete --cut --insert";
+          run = "delete --cut --insert";
           desc = "Cut the selected characters; and enter insert mode";
         }
         {
           on = [ "C" ];
-          exec = [
+          run = [
             "delete --cut --insert"
             "move 999"
           ];
@@ -1054,7 +1210,7 @@
         }
         {
           on = [ "x" ];
-          exec = [
+          run = [
             "delete --cut"
             "move 1 --in-operating"
           ];
@@ -1062,47 +1218,47 @@
         }
         {
           on = [ "y" ];
-          exec = "yank";
+          run = "yank";
           desc = "Copy the selected characters";
         }
         {
           on = [ "p" ];
-          exec = "paste";
+          run = "paste";
           desc = "Paste the copied characters after the cursor";
         }
         {
           on = [ "P" ];
-          exec = "paste --before";
+          run = "paste --before";
           desc = "Paste the copied characters before the cursor";
         }
 
         # Undo/Redo
         {
           on = [ "u" ];
-          exec = "undo";
+          run = "undo";
           desc = "Undo the last operation";
         }
         {
           on = [ "<C-r>" ];
-          exec = "redo";
+          run = "redo";
           desc = "Redo the last operation";
         }
 
         # Help
         {
           on = [ "~" ];
-          exec = "help";
+          run = "help";
           desc = "Open help";
         }
 
         {
           on = [ "k" ];
-          exec = "insert";
+          run = "insert";
           desc = "Enter insert mode";
         }
         {
           on = [ "K" ];
-          exec = [
+          run = [
             "move -999"
             "insert"
           ];
@@ -1112,17 +1268,17 @@
       completion.keymap = [
         {
           on = [ "<C-q>" ];
-          exec = "close";
+          run = "close";
           desc = "Cancel completion";
         }
         {
           on = [ "<Tab>" ];
-          exec = "close --submit";
+          run = "close --submit";
           desc = "Submit the completion";
         }
         {
           on = [ "<Enter>" ];
-          exec = [
+          run = [
             "close --submit"
             "close_input --submit"
           ];
@@ -1131,119 +1287,119 @@
 
         {
           on = [ "<A-k>" ];
-          exec = "arrow -1";
+          run = "arrow -1";
           desc = "Move cursor up";
         }
         {
           on = [ "<A-j>" ];
-          exec = "arrow 1";
+          run = "arrow 1";
           desc = "Move cursor down";
         }
 
         {
           on = [ "<Up>" ];
-          exec = "arrow -1";
+          run = "arrow -1";
           desc = "Move cursor up";
         }
         {
           on = [ "<Down>" ];
-          exec = "arrow 1";
+          run = "arrow 1";
           desc = "Move cursor down";
         }
 
         {
           on = [ "~" ];
-          exec = "help";
+          run = "help";
           desc = "Open help";
         }
       ];
       help.keymap = [
         {
           on = [ "e" ];
-          exec = "arrow -1";
+          run = "arrow -1";
           desc = "Move cursor up";
         }
         {
           on = [ "n" ];
-          exec = "arrow 1";
+          run = "arrow 1";
           desc = "Move cursor down";
         }
         {
           on = [ "E" ];
-          exec = "arrow -5";
+          run = "arrow -5";
           desc = "Move cursor up 5 lines";
         }
         {
           on = [ "N" ];
-          exec = "arrow 5";
+          run = "arrow 5";
           desc = "Move cursor down 5 lines";
         }
 
         {
           on = [ "<Esc>" ];
-          exec = "escape";
+          run = "escape";
           desc = "Clear the filter, or hide the help";
         }
         {
           on = [ "q" ];
-          exec = "close";
+          run = "close";
           desc = "Exit the process";
         }
         {
           on = [ "<C-q>" ];
-          exec = "close";
+          run = "close";
           desc = "Hide the help";
         }
 
         # Navigation
         {
           on = [ "k" ];
-          exec = "arrow -1";
+          run = "arrow -1";
           desc = "Move cursor up";
         }
         {
           on = [ "j" ];
-          exec = "arrow 1";
+          run = "arrow 1";
           desc = "Move cursor down";
         }
 
         {
           on = [ "K" ];
-          exec = "arrow -5";
+          run = "arrow -5";
           desc = "Move cursor up 5 lines";
         }
         {
           on = [ "J" ];
-          exec = "arrow 5";
+          run = "arrow 5";
           desc = "Move cursor down 5 lines";
         }
 
         {
           on = [ "<Up>" ];
-          exec = "arrow -1";
+          run = "arrow -1";
           desc = "Move cursor up";
         }
         {
           on = [ "<Down>" ];
-          exec = "arrow 1";
+          run = "arrow 1";
           desc = "Move cursor down";
         }
 
         {
           on = [ "<S-Up>" ];
-          exec = "arrow -5";
+          run = "arrow -5";
           desc = "Move cursor up 5 lines";
         }
         {
           on = [ "<S-Down>" ];
-          exec = "arrow 5";
+          run = "arrow 5";
           desc = "Move cursor down 5 lines";
         }
 
         # Filtering
         {
           on = [ "/" ];
-          exec = "filter";
+          run = "filter";
           desc = "Apply a filter for the help items";
         }
       ];
@@ -1448,7 +1604,7 @@
         on = {
           fg = "magenta";
         };
-        exec = {
+        run = {
           fg = "cyan";
         };
         desc = {

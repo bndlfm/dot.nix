@@ -192,7 +192,7 @@ in
           font_size 14.0
 
         #--- MISC APPEARANCE ---#
-          background_opacity 1
+          background_opacity 0.85
           dynamic_background_opacity yes
           hide_window_decorations yes
 

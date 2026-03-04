@@ -107,10 +107,6 @@
         source = ../../.config/ranger;
         recursive = true;
       };
-      "yazi" = {
-        source = ../../.config/yazi;
-        recursive = true;
-      };
     };
   };
 }

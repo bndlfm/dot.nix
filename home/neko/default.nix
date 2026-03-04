@@ -496,10 +496,6 @@
       "qutebrowser/config.py" = {
         source = ../../.config/qutebrowser/config.py;
       };
-      "yazi" = {
-        source = ../../.config/yazi;
-        recursive = true;
-      };
       "zathura" = {
         source = ../../.config/zathura;
         recursive = true;

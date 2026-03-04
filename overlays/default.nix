@@ -16,6 +16,10 @@
     sunshine = final.stable.sunshine;
     calibre = final.stable.calibre;
 
+    gemini-cli = prev.gemini-cli.overrideAttrs (old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ final.nodejs_22 ];
+    });
+
     python3 = prev.python3.override {
       packageOverrides = pyFinal: pyPrev: {
         plotly = pyPrev.plotly.overrideAttrs (_: {

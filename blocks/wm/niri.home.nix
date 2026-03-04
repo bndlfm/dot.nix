@@ -408,7 +408,7 @@ in
                   is-focused = false;
                 }
               ];
-              opacity = 0.97;
+              opacity = 0.93;
             }
             ## VS CODE FLICKERS WITH TRANSPARENCY
             {
