@@ -75,6 +75,7 @@
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
+      cudaSupport = true;
       permittedInsecurePackages = [
         "ventoy-qt5-1.1.10"
       ];
@@ -113,24 +114,10 @@
         ];
 
         ai = [
-          antigravity-fhs
-          code-cursor-fhs
-          vscode-fhs
-          windsurf
-
-          #codex
-          gemini-cli
-
-          opencode
-          #inputs.llama-cpp_ik.packages.x86_64-linux.cuda
-          warp-terminal
-
-          ## OPEN CLAW PKGS
-          chromium
-
+          chromium # OPENCLAW
+          _jules
           sillytavern
-          _xhisper-local
-          _screenpipe
+          warp-terminal
         ];
 
         apple = [
@@ -139,6 +126,7 @@
 
         browsers = [
           #firefox-devedition: programs/hm/firefox.nix
+          #zen browser: ./programs/zen-browser.home.nix
           tor-browser
           qutebrowser
         ];
@@ -177,8 +165,8 @@
         ];
 
         editing = [
-          gimp
-          libreoffice-qt
+          #gimp #NOTE: Not caching
+          #libreoffice-qt
         ];
 
         gaming = [
@@ -215,11 +203,8 @@
         ];
 
         media = [
-          #calibre
-<<<<<<< HEAD
+          calibre
           plezy
-=======
->>>>>>> 43f9121da7c6d7c0b1ac7169332eaeb0be76af66
           mpv
         ];
 
@@ -232,8 +217,15 @@
 
         programming = [
           #
+          # AGENTS
+          #--------
+          #
+          gemini-cli
+          opencode
+
+          #
           # DOTNET
-          #-------
+          #--------
           #dotnetCorePackages.dotnet_10.sdk
           #dotnetCorePackages.dotnet_10.runtime
 
@@ -246,9 +238,18 @@
           git-credential-gopass
 
           #
+          # IDE
+          #-----
+          antigravity-fhs
+          code-cursor-fhs
+
+          #
           # PYTHON
           #-------
-          (python3.withPackages (pkgs: with pkgs; [ ]))
+          (python3.withPackages (
+            pkgs: with pkgs; [
+            ]
+          ))
 
           #
           # NIX DEV TOOLS
@@ -494,10 +495,6 @@
       };
       "qutebrowser/config.py" = {
         source = ../../.config/qutebrowser/config.py;
-      };
-      "yazi" = {
-        source = ../../.config/yazi;
-        recursive = true;
       };
       "zathura" = {
         source = ../../.config/zathura;

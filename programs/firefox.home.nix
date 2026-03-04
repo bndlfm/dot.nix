@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   programs.firefox = {
-    enable = true;
+    enable = false;
     nativeMessagingHosts = with pkgs; [
       tridactyl-native
       gopass-jsonapi
@@ -19,43 +19,64 @@
         id = 1;
         name = "dev-edition-default";
         isDefault = true;
-        settings = {};
+        settings = { };
         search = {
           force = true;
           default = "google";
           order = [ "google" ];
           engines = {
             "nix-packages" = {
-              urls = [{
-                template = "https://search.nixos.org/packages";
-                params = [
-                  { name = "type"; value = "packages"; }
-                  { name = "query"; value = "{searchTerms}"; }
-                ];
-              }];
+              urls = [
+                {
+                  template = "https://search.nixos.org/packages";
+                  params = [
+                    {
+                      name = "type";
+                      value = "packages";
+                    }
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
               icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@np" ];
             };
             "nixos-options" = {
-              urls = [{
-                template = "https://search.nixos.org/options";
-                params = [
-                  { name = "type"; value = "packages"; }
-                  { name = "channel"; value = "unstable"; }
-                  { name = "query"; value = "{searchTerms}"; }
-                ];
-              }];
+              urls = [
+                {
+                  template = "https://search.nixos.org/options";
+                  params = [
+                    {
+                      name = "type";
+                      value = "packages";
+                    }
+                    {
+                      name = "channel";
+                      value = "unstable";
+                    }
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
               icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@no" ];
             };
             "nixos-wiki" = {
-              urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
+              urls = [ { template = "https://nixos.wiki/index.php?search={searchTerms}"; } ];
               icon = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000; # every day
               definedAliases = [ "@nw" ];
             };
             "home-manager-options" = {
-              urls = [{ template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master"; }];
+              urls = [
+                { template = "https://home-manager-options.extranix.com/?query={searchTerms}&release=master"; }
+              ];
               icon = "https://home-manager-options.extranix.com/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000;
               definedAliases = [ "@ho" ];
@@ -65,7 +86,7 @@
           };
         };
 
-        /* ---- EXTENSIONS ---- */
+        # ---- EXTENSIONS ----
         extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           augmented-steam
           blocktube
@@ -96,7 +117,7 @@
           yomitan
         ];
 
-        /* ---- userChrome ---- */
+        # ---- userChrome ----
         userChrome = /* css */ ''
           /* NOTE: Hide tabs bar b/c of sideberry */
               #TabsToolbar{ visibility: collapse !important }

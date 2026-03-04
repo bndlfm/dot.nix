@@ -63,13 +63,15 @@ in
       "kitty_mod+f>o" = "kitten hints --type path";
       "kitty_mod+f>l" = "kitten hints --type line --program -";
       "kitty_mod+f>w" = "kitten hints --type word --program -";
-      "kitty_mod+f>h" = "kitten hints --type regex --regex '(?i)\\b([0-9a-f]{7,128}|sha256-[A-Za-z0-9+/=]+|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\\b' --program -";
+      "kitty_mod+f>h" =
+        "kitten hints --type regex --regex '(?i)\\b([0-9a-f]{7,128}|sha256-[A-Za-z0-9+/=]+|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\\b' --program -";
       "kitty_mod+f>n" = "kitten hints --type linenum";
 
       "kitty_mod+/" =
         "launch --allow-remote-control kitty +kitten kitty_search/search.py @active-kitty-window-id";
 
       "kitty_mod+a>m" = "set_background_opacity +0.1";
+
       "kitty_mod+a>l" = "set_background_opacity -0.1";
       "kitty_mod+a>1" = "set_background_opacity 1";
       "kitty_mod+a>d" = "set_background_opacity default";
@@ -79,8 +81,8 @@ in
       "kitty_mod+a>t" = "remote_control_script ${selectTabAttachTab}";
       "kitty_mod+a>p" = "remote_control_script ${selectWindowAttachTab}";
 
-      "kitty_mod+b" = "launch --location=hsplit";
-      "kitty_mod+o" = "launch --location=vsplit";
+      "kitty_mod+|" = "launch --location=hsplit";
+      "kitty_mod+b" = "launch --location=vsplit";
       "kitty_mod+j" = "layout_action rotate";
 
       "shift+up" = "move_window up";
@@ -190,7 +192,7 @@ in
           font_size 14.0
 
         #--- MISC APPEARANCE ---#
-          background_opacity 1
+          background_opacity 0.85
           dynamic_background_opacity yes
           hide_window_decorations yes
 

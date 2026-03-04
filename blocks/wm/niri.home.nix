@@ -234,7 +234,7 @@ in
               "toggle"
             ];
             ## STT Transcribe Tool
-            "Alt+Shift+D".action.spawn = [ "xhisper" ];
+            "${Mod}+Shift+D".action.spawn = [ "xhisper" ];
             ## NEWELLE
             "Alt+BackSpace".action = sh (
               builtins.concatStringsSep "; " [
@@ -408,7 +408,7 @@ in
                   is-focused = false;
                 }
               ];
-              opacity = 0.97;
+              opacity = 0.93;
             }
             ## VS CODE FLICKERS WITH TRANSPARENCY
             {

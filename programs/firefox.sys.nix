@@ -1,4 +1,4 @@
-{...}:
+{ ... }:
 let
   lock-false = {
     Value = false;
@@ -12,9 +12,10 @@ let
     Value = "";
     Status = "locked";
   };
-in {
+in
+{
   programs.firefox = {
-    enable = true;
+    enable = false;
 
     policies = {
       DisableTelemetry = true;

@@ -73,6 +73,22 @@
     winetricks
     wineWow64Packages.staging
 
+    ### OPENCLAW
+    _openclaw
+    _bird
+    _blogwatcher
+    _camsnap
+    _clawdhub
+    _gifgrep
+    _gogcli
+    _goplaces
+    _mcporter
+    _nano-pdf
+    _songsee
+    _summarize
+    _sag
+    _xhisper-local
+
     ### UTILITIES
     appimage-run
     clipboard-jh
@@ -87,6 +103,28 @@
     #EDITOR = "nvim";
     #MANPAGER = "nvim +Man!";
     OPENAI_API_BASE = "http://localhost:11434/v1/";
+<<<<<<< HEAD
     #VISUAL = "vim";
+=======
+    VISUAL = "vim";
+  };
+
+  ######### (HM) DOTFILES ########
+  xdg = {
+    configFile = {
+      "nvim" = {
+        source = ../../.config/nvim;
+        recursive = true;
+      };
+      "pulsemixer.cfg" = {
+        source = ../../.config/pulsemixer.cfg;
+        recursive = false;
+      };
+      "ranger" = {
+        source = ../../.config/ranger;
+        recursive = true;
+      };
+    };
+>>>>>>> 5a23226ff71990fa92c412b17f18f611877020ff
   };
 }

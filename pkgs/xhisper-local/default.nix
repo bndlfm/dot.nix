@@ -27,6 +27,7 @@ let
   cudaPath = lib.makeLibraryPath [
     cudaPackages.cudnn
     cudaPackages.libcublas
+    cudaPackages.cuda_cudart
     zlib
   ];
 in
@@ -43,6 +44,10 @@ stdenv.mkDerivation rec {
 
   postPatch = ''
     sed -i '/export LD_LIBRARY_PATH=/d' xhisper.sh
+    sed -i 's/XHISPERTOOL="xhispertool"/XHISPERTOOL="''${XHISPERTOOL:-xhispertool}"/' xhisper.sh
+    sed -i 's/XHISPERTOOLD="xhispertoold"/XHISPERTOOLD="''${XHISPERTOOLD:-xhispertoold}"/' xhisper.sh
+    sed -i 's/TRANSCRIPT_SCRIPT="xhisper_transcribe"/TRANSCRIPT_SCRIPT="''${TRANSCRIPT_SCRIPT:-xhisper_transcribe}"/' xhisper.sh
+    sed -i 's|local transcription=$(python3 "$TRANSCRIPT_SCRIPT" "$recording" $cmd_args 2>/dev/null)|local transcription=$("$TRANSCRIPT_SCRIPT" "$recording" $cmd_args 2>> "$LOGFILE")|' xhisper.sh
   '';
 
   nativeBuildInputs = [
@@ -66,6 +71,11 @@ stdenv.mkDerivation rec {
   '';
 
   postFixup = ''
+    wrapProgram $out/bin/xhisper_transcribe \
+      --prefix PATH : ${lib.makeBinPath [ ffmpeg pythonEnv ]} \
+      --prefix LD_LIBRARY_PATH : ${cudaPath} \
+      --prefix PYTHONPATH : ${pythonEnv}/${python3.sitePackages}
+
     wrapProgram $out/bin/xhisper \
       --prefix PATH : ${lib.makeBinPath [
         pipewire
@@ -79,9 +89,7 @@ stdenv.mkDerivation rec {
         gawk
         wl-clipboard
         xclip
-        pythonEnv
       ]} \
-      --prefix LD_LIBRARY_PATH : ${cudaPath} \
       --set XHISPERTOOL $out/bin/xhispertool \
       --set XHISPERTOOLD $out/bin/xhispertoold \
       --set TRANSCRIPT_SCRIPT $out/bin/xhisper_transcribe

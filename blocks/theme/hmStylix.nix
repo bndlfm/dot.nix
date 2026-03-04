@@ -1,7 +1,7 @@
 {
-pkgs,
-inputs,
-...
+  pkgs,
+  inputs,
+  ...
 }:
 {
   stylix = {
@@ -46,13 +46,13 @@ inputs,
     };
 
     targets = {
-    ### WINDOW MANAGER / COMPOSITOR
+      ### WINDOW MANAGER / COMPOSITOR
       hyprland.enable = true;
       bat.enable = true;
       bspwm.enable = true;
       btop.enable = true;
       dunst.enable = true;
-      firefox.enable = true;
+      firefox.enable = false;
       fish.enable = true;
       fzf.enable = true;
       gtk.enable = true;
