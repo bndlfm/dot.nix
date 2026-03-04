@@ -82,19 +82,10 @@ in
     xsettingsd
   ];
 
-  #------- MY MODULES -------#
-  services.openclawGateway = {
-    enable = true;
-    user = "neko";
-    group = "neko";
-    uid = 1000;
-    gid = 1000;
-  };
-
   #--------- ENV ---------#
   environment.variables = {
-    QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
-    QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
+    #QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
+    #QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
   };
 
   environment.sessionVariables = {
@@ -419,25 +410,24 @@ in
       extraPackages = with pkgs; [ nvidia-vaapi-driver ];
     };
     nvidia = {
-      open = true;
-      package =
-        let
-          base = config.boot.kernelPackages.nvidiaPackages.latest;
-          cachyos-nvidia-patch = pkgs.fetchpatch {
-            url = "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/master/nvidia/nvidia-utils/kernel-6.19.patch";
-            sha256 = "sha256-YuJjSUXE6jYSuZySYGnWSNG5sfVei7vvxDcHx3K+IN4=";
-          };
+      open = false;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
+      #let
+      #  base = config.boot.kernelPackages.nvidiaPackages.latest;
+      #  cachyos-nvidia-patch = pkgs.fetchpatch {
+      #    url = "https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/master/nvidia/nvidia-utils/kernel-6.19.patch";
+      #    sha256 = "sha256-YuJjSUXE6jYSuZySYGnWSNG5sfVei7vvxDcHx3K+IN4=";
+      #  };
 
-          # Patch the appropriate driver based on config.hardware.nvidia.open
-          driverAttr = if config.hardware.nvidia.open then "open" else "bin";
-        in
-        base
-        // {
-          ${driverAttr} = base.${driverAttr}.overrideAttrs (oldAttrs: {
-            patches = (oldAttrs.patches or [ ]) ++ [ cachyos-nvidia-patch ];
-          });
-        };
-
+      #  # Patch the appropriate driver based on config.hardware.nvidia.open
+      #  driverAttr = if config.hardware.nvidia.open then "open" else "bin";
+      #in
+      #base
+      #// {
+      #  ${driverAttr} = base.${driverAttr}.overrideAttrs (oldAttrs: {
+      #    patches = (oldAttrs.patches or [ ]) ++ [ cachyos-nvidia-patch ];
+      #  });
+      #};
       modesetting.enable = true;
       nvidiaSettings = true;
       powerManagement.enable = false;
@@ -492,7 +482,8 @@ in
       "nvidia_drm"
     ];
     kernelParams = [
-      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      #"nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      "nvidia.NVreg_EnableGpuFirmware=0"
       "nvidia_drm.modeset=1"
       "nvidia_drm.fbdev=1"
       "nvidia.hdmi_deepcolor=1"
