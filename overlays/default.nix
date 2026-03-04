@@ -7,7 +7,7 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    code-cursor = prev.code-cursor.overrideAttrs (oldAttrs: rec {
+    code-cursor = prev.code-cursor.overrideAttrs (oldAttrs: {
       postBuild = ''
         wrapProgram $out/bin/cursor --set ELECTRON_OZONE_PLATFORM_HINT X11
       '';
@@ -17,7 +17,21 @@
     calibre = final.stable.calibre;
 
     gemini-cli = prev.gemini-cli.overrideAttrs (old: {
-      buildInputs = (old.buildInputs or [ ]) ++ [ final.nodejs_22 ];
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.makeWrapper ];
+      postBuild = (old.postBuild or "") + ''
+        wrapProgram $out/bin/gemini --prefix PATH : ${final.lib.makeBinPath [ final.nodejs_22 ]}
+      '';
+    });
+
+    wivrn = prev.wivrn.overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.makeWrapper ];
+      postBuild = (old.postBuild or "") + ''
+        for bin in wivrnctl wivrn-dashboard wivrn-server; do
+          if [ -e $out/bin/$bin ]; then
+            wrapProgram $out/bin/$bin --prefix PATH : ${final.lib.makeBinPath [ final.android-tools ]}
+          fi
+        done
+      '';
     });
 
     python3 = prev.python3.override {

@@ -74,6 +74,22 @@
     winetricks
     wineWow64Packages.staging
 
+    ### OPENCLAW
+    _openclaw
+    _bird
+    _blogwatcher
+    _camsnap
+    _clawdhub
+    _gifgrep
+    _gogcli
+    _goplaces
+    _mcporter
+    _nano-pdf
+    _songsee
+    _summarize
+    _sag
+    _xhisper-local
+
     ### UTILITIES
     appimage-run
     clipboard-jh
