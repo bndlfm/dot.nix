@@ -10,8 +10,6 @@ in
     "ai_keys/GEMINI_SECRET_KEY" = { };
   };
 
-  stylix.targets.kitty.enable = false;
-
   programs.kitty = {
     enable = true;
     font = {
@@ -152,6 +150,7 @@ in
           # Base16 Nord - kitty color config
           # Scheme by arcticicestudio
           background #2E3440
+          #background_opacity 0.92
           foreground #E5E9F0
           selection_background #E5E9F0
           selection_foreground #2E3440
@@ -210,11 +209,6 @@ in
           inactive_tab_font_style  italic
 
           # Window Pane Theming
-          draw_minimal_borders yes
-          single_window_margin_width -1000.0
-          window_padding_width 0.0
-          window_margin_width 1
-
           # Window Pane Borders
           window_border_width 2
     '';

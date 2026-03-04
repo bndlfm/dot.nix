@@ -20,13 +20,12 @@ in
     programs.waybar.enable = lib.mkForce false;
 
     home.packages = with pkgs; [
-      clipse
-      fuzzel
+      cliphist
       _homeassistant-desktop
-      _waybar-ai-usage
       swayidle
       swaylock-effects
       wlprop
+      _waybar-ai-usage
     ];
 
     gtk = {
@@ -44,33 +43,6 @@ in
 
       niri = {
         package = pkgs.niri-unstable;
-        extraConfig = ''
-          window-rule {
-            geometry-corner-radius 8.0
-            clip-to-geometry true
-            background-effect {
-              blur true
-              xray true
-            }
-          }
-
-          window-rule {
-            match is-floating=true
-            background-effect {
-              blur false
-              xray false
-            }
-          }
-
-          layer-rule {
-            match namespace="^noctalia-shell$"
-            match namespace="^launcher$"
-            background-effect {
-              blur true
-              xray true
-            }
-          }
-        '';
         settings = {
           prefer-no-csd = true;
           cursor = {
@@ -156,18 +128,17 @@ in
           };
 
           spawn-at-startup = [
-            ## BLUETOOOTH
             { command = [ "blueman-applet" ]; }
-            ## SHELL
             { command = [ "noctalia-shell" ]; }
-            ## TAILSCALE TRAY
+            { command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect" ]; }
+            { command = [ "kdeconnect-indicator" ]; }
+            { command = [ "homeassistant-desktop" ]; }
             {
               command = [
                 "trayscale"
                 "--hide-window"
               ];
             }
-            ## CLIPBOARD
             {
               command = [
                 "copyq"
@@ -175,32 +146,29 @@ in
               ];
             }
             {
-              ## GAMMA
-              command = [
-                "gammastep-indicator"
-                "-l"
-                "38.0628:-91.4035"
-                "-t"
-                "6500:4800"
-              ];
-            }
-            ## GDRIVE
-            {
               command = [
                 "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse"
                 "/home/neko/Documents/GoogleDrive/"
               ];
             }
-            ## KDE-CONNECT
             {
-              command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect" ];
+              command = [
+                "xrandr"
+                "--output"
+                "DP-1"
+                "--primary"
+              ];
             }
-            {
-              command = [ "kdeconnect-indicator" ];
-            }
-            {
-              command = [ "homeassistant-desktop" ];
-            }
+            #{
+            #  ## GAMMA
+            #  command = [
+            #    "gammastep-indicator"
+            #    "-l"
+            #    "38.0628:-91.4035"
+            #    "-t"
+            #    "6500:4800"
+            #  ];
+            #}
             #{
             #  ## POWER SAVINGS
             #  command = [
@@ -209,15 +177,6 @@ in
             #    "swayidle -w timeout 1201 'niri msg action power-off-monitors' timeout 1200 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'"
             #  ];
             #}
-            {
-              ## XWAYLAND
-              command = [
-                "xrandr"
-                "--output"
-                "DP-1"
-                "--primary"
-              ];
-            }
           ];
 
           binds =
@@ -240,11 +199,9 @@ in
             in
             {
 
-              /**
-                ******
-                * BASIC *
-                *******
-              */
+              #----------------#
+              # BASIC KEYBINDS #
+              #----------------#
               ## QUIT NIRI/TURN OFF MONITORS
               "${Mod}+Shift+Escape".action = quit;
               "${Mod}+Shift+P".action = power-off-monitors;
@@ -358,8 +315,7 @@ in
               "${Mod}+Shift+F".action = fullscreen-window;
 
               ## COLUMN SCREEN ALIGNMENT
-              #"${Mod}+Ctrl+Shift+C".action = center-column;
-              #"${Mod}+Ctrl+Shift+Z".action = center-column;
+              "${Mod}+Z".action = center-column;
 
               #-------#
               # FOCUS #
@@ -384,11 +340,10 @@ in
               "${Mod}+3".action = focus-workspace 3;
               "${Mod}+4".action = focus-workspace 4;
 
-              /**
-                *******************
-                * MOVE WINDOW/COLUMN *
-                ********************
-              */
+              #--------------------#
+              # MOVE WINDOW/COLUMN #
+              #--------------------#
+
               ## MOVE COLUMN/WINDOW WITH VI KEYS
               "${Mod}+Shift+H".action = move-column-left;
               "${Mod}+Shift+N".action = move-window-down-or-to-workspace-down;
@@ -401,12 +356,6 @@ in
               "${Mod}+Control+Down".action = move-window-to-monitor-down;
               "${Mod}+Control+Up".action = move-window-to-monitor-up;
               "${Mod}+Control+Right".action = move-window-to-monitor-right;
-              ## MOVE WINDOW TO WORKSPACE
-              #  "${Mod}+Shift+1".action = move-column-to-workspace 1;
-              #  "${Mod}+Shift+2".action = move-column-to-workspace 2;
-              #  "${Mod}+Shift+3".action = move-column-to-workspace 3;
-              #  "${Mod}+Shift+4".action = move-column-to-workspace 4;
-              #  "${Mod}+Shift+5".action = move-column-to-workspace 5;
             };
 
           window-rules =
@@ -414,57 +363,58 @@ in
               colors = config.lib.stylix.colors.withHashtag;
             in
             [
-              ## DRAW UNFOCUSED WITH OPACITY (BROKEN ON NVIDIA 570, flickers)
+              #--------#
+              # GLOBAL #
+              #--------#
               {
-                matches = [
-                  {
-                    is-focused = false;
-                  }
-                ];
-                opacity = 0.95;
+                clip-to-geometry = true;
+                geometry-corner-radius = {
+                  top-right = 12.0;
+                  top-left = 12.0;
+                  bottom-right = 12.0;
+                  bottom-left = 12.0;
+                };
               }
-              ## VS CODE FLICKERS WITH TRANSPARENCY
               {
-                matches = [
-                  {
-                    # the leftover carcass of windsurf
-                    app-id = "windsurf";
-                  }
-                  {
-                    # google antigravity
-                    app-id = "antigravity";
-                  }
-                  {
-                    # vs code
-                    app-id = "code";
-                  }
-                  {
-                    app-id = "kiri";
-                  }
-                ];
-                opacity = null;
+                matches = [ { is-focused = false; } ];
+                opacity = 0.90;
               }
-              ## Nyarch Assistant
               {
-                matches = [
-                  {
-                    app-id = "moe.nyarchlinux.assistant";
-                  }
-                ];
-                open-floating = true;
-                open-focused = true;
-              }
-              ## MAKE MPV OPAQUE
-              {
-                matches = [
-                  {
-                    is-focused = false;
-                    app-id = "mpv";
-                  }
-                ];
+                ## THIS PREVENTS NIRI WM HELP MENU FROM BEING TRANSPARENT I THINK
+                matches = [ { app-id = "^niri$"; } ];
                 opacity = 1.0;
               }
-              ## FLOAT ZEN PIP
+
+              #---------#
+              # BROWSER #
+              #---------#
+              {
+                matches = [
+                  {
+                    app-id = "^firefox$";
+                    title = "^Picture-in-Picture$";
+                  }
+                ];
+                opacity = 0.9;
+                open-floating = true;
+                open-focused = false;
+                default-column-width.fixed = 425;
+                default-window-height.fixed = 250;
+                default-floating-position = {
+                  relative-to = "top-right";
+                  x = 75;
+                  y = 50;
+                };
+              }
+              {
+                matches = [
+                  {
+                    app-id = "^firefox$";
+                    title = "Private Browsing";
+                  }
+                ];
+                border.active.color = colors.base0E;
+              }
               {
                 matches = [
                   {
@@ -483,88 +433,69 @@ in
                   y = 50;
                 };
               }
-              ## FLOAT FF PIP
+
+              #-----#
+              # IDE #
+              #-----#
               {
+                ## VS CODE FLICKERS WITH TRANSPARENCY
                 matches = [
-                  {
-                    app-id = "^firefox-aurora$";
-                    title = "^Picture-in-Picture$";
-                  }
+                  { app-id = "windsurf"; }
+                  { app-id = "antigravity"; }
+                  { app-id = "code"; }
+                  { app-id = "kiri"; }
                 ];
-                opacity = 0.9;
-                open-floating = true;
-                open-focused = false;
-                default-column-width.fixed = 425;
-                default-window-height.fixed = 250;
-                default-floating-position = {
-                  relative-to = "top-right";
-                  x = 75;
-                  y = 50;
-                };
+                opacity = null;
               }
-              ## COPYQ CLIPBOARD MANAGER
+
+              #----------#
+              # TERMINAL #
+              #----------#
+              #{
+              #  matches = [
+              #    {
+              #      app-id = "^kitty$";
+              #      is-focused = true;
+              #    }
+              #  ];
+              #  opacity = 0.93;
+              #}
+              #{
+              #  matches = [ { app-id = "^kitty_dropdown$"; } ];
+              #  opacity = 0.85;
+              #  open-floating = true;
+              #}
+
+              #------#
+              # MISC #
+              #------#
               {
-                matches = [
-                  {
-                    app-id = "^com.github.hluk.copyq$";
-                  }
-                ];
-                open-floating = true;
-              }
-              ## CLIPSE CLIPBOARD MANAGER
-              {
-                matches = [
-                  {
-                    title = "^clipse.*";
-                    app-id = "^kitty$";
-                  }
-                ];
-                open-floating = true;
-              }
-              ## SUSHI - GNOME FILES PREVIEW
-              {
-                matches = [
-                  {
-                    app-id = "^org.gnome.NautiliusPreviewer";
-                  }
-                ];
+                matches = [ { app-id = "^com.github.hluk.copyq$"; } ];
                 open-floating = true;
               }
-              ## KITTY
               {
-                matches = [ { app-id = "^kitty$"; } ];
-                opacity = 0.93;
-              }
-              ## KITTY DROPDOWN
-              {
-                matches = [ { app-id = "^kitty_dropdown$"; } ];
-                opacity = 0.85;
+                matches = [ { app-id = "moe.nyarchlinux.assistant"; } ];
                 open-floating = true;
+                open-focused = true;
               }
-              ## HIGHLIGHT PRIVATE BROWSING
               {
                 matches = [
                   {
-                    app-id = "^firefox$";
-                    title = "Private Browsing";
+                    is-focused = false;
+                    app-id = "mpv";
                   }
                 ];
-                border.active.color = colors.base0E;
-              }
-              ## PREVENT SCREEN CAPTURE OF SENSITIVE APPS
-              {
-                matches = [
-                  {
-                    app-id = "^signal$";
-                  }
-                ];
-                block-out-from = "screencast";
-              }
-              ## THIS PREVENTS NIRI WM HELP MENU FROM BEING TRANSPARENT I THINK
-              {
-                matches = [ { app-id = "^niri$"; } ];
                 opacity = 1.0;
               }
+              {
+                matches = [ { app-id = "^org.gnome.NautiliusPreviewer"; } ];
+                open-floating = true;
+              }
+              {
+                matches = [ { app-id = "^signal$"; } ];
+                block-out-from = "screencast";
+              }
+
             ];
         };
       };

@@ -17,10 +17,7 @@
     calibre = final.stable.calibre;
 
     gemini-cli = prev.gemini-cli.overrideAttrs (old: {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.makeWrapper ];
-      postBuild = (old.postBuild or "") + ''
-        wrapProgram $out/bin/gemini --prefix PATH : ${final.lib.makeBinPath [ final.nodejs_22 ]}
-      '';
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ final.nodejs_22 ];
     });
 
     wivrn = prev.wivrn.overrideAttrs (old: {
