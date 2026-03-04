@@ -121,7 +121,7 @@ in
           encoders = [
             {
               encoder = "nvenc";
-              codec = "av1";
+              codec = "h265";
               # 0.8 x 0.8 scaling
               width = 0.8;
               height = 0.8;
