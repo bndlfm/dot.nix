@@ -11,6 +11,35 @@ in
 {
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
+  options.programs.niri.settings = {
+    window-rules = lib.mkOption {
+      type = lib.types.listOf (lib.types.submodule {
+        options.background-effect = lib.mkOption {
+          type = lib.types.nullOr lib.types.attrs;
+          default = null;
+        };
+      });
+    };
+    layer-rules = lib.mkOption {
+      type = lib.types.listOf (lib.types.submodule {
+        options = {
+          matches = lib.mkOption {
+            type = lib.types.listOf lib.types.attrs;
+            default = [ ];
+          };
+          background-effect = lib.mkOption {
+            type = lib.types.nullOr lib.types.attrs;
+            default = null;
+          };
+          opacity = lib.mkOption {
+            type = lib.types.nullOr lib.types.float;
+            default = null;
+          };
+        };
+      });
+    };
+  };
+
   imports = [
     inputs.noctalia.homeModules.default
     ../../blocks/nyarch-assistant.home.nix
@@ -126,6 +155,19 @@ in
 
         workspaces = {
         };
+
+        layer-rules = [
+          {
+            matches = [
+              { namespace = "^noctalia-shell$"; }
+              { namespace = "^launcher$"; }
+            ];
+            background-effect = {
+              blur = true;
+              xray = true;
+            };
+          }
+        ];
 
         spawn-at-startup = [
           ## BLUETOOOTH
@@ -386,7 +428,7 @@ in
             colors = config.lib.stylix.colors.withHashtag;
           in
           [
-            ## ROUNDED CORNERS
+            ## ROUNDED CORNERS, BLUR + XRAY BY DEFAULT
             {
               draw-border-with-background = false;
               geometry-corner-radius =
@@ -400,6 +442,18 @@ in
                   bottom-right = r;
                 };
               clip-to-geometry = true;
+              background-effect = {
+                blur = true;
+                xray = true;
+              };
+            }
+            ## NO BLUR FOR FLOATING WINDOWS
+            {
+              matches = [ { is-floating = true; } ];
+              background-effect = {
+                blur = false;
+                xray = false;
+              };
             }
             ## DRAW UNFOCUSED WITH OPACITY (BROKEN ON NVIDIA 570, flickers)
             {
@@ -408,7 +462,7 @@ in
                   is-focused = false;
                 }
               ];
-              opacity = 0.93;
+              opacity = 0.95;
             }
             ## VS CODE FLICKERS WITH TRANSPARENCY
             {
@@ -517,11 +571,15 @@ in
               ];
               open-floating = true;
             }
+            ## KITTY
+            {
+              matches = [ { app-id = "^kitty$"; } ];
+              opacity = 0.93;
+            }
             ## KITTY DROPDOWN
             {
-              matches = [
-                { app-id = "^kitty_dropdown$"; }
-              ];
+              matches = [ { app-id = "^kitty_dropdown$"; } ];
+              opacity = 0.85;
               open-floating = true;
             }
             ## HIGHLIGHT PRIVATE BROWSING

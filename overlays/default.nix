@@ -42,6 +42,30 @@
       };
     };
     python3Packages = final.python3.pkgs;
+
+    niri-unstable =
+      let
+        unstablePkg = inputs.niri.packages.${final.system}.niri-unstable;
+        patchedSrc = final.applyPatches {
+          name = "${unstablePkg.pname or "niri-unstable"}-patched-src-${unstablePkg.version}";
+          src = unstablePkg.src;
+          patches = [
+            (final.fetchpatch {
+              url = "https://github.com/niri-wm/niri/pull/3483.patch";
+              hash = "sha256-QFT7NRhq8TYaqba6BzPSpm35VthDuNIjH2e4oNsnoQU=";
+            })
+          ];
+        };
+      in
+      unstablePkg.overrideAttrs (old: {
+        src = patchedSrc;
+        cargoDeps = final.rustPlatform.fetchCargoVendor {
+          pname = old.pname or "niri-unstable";
+          inherit (old) version;
+          src = patchedSrc;
+          hash = "sha256-uo4AWT4nGV56iiSLhXK30goI7HCPc7AUZjRLgUvLfUE=";
+        };
+      });
   };
 
   # When applied, the stable nixpkgs set (declared in the flake inputs) will

@@ -10,6 +10,8 @@ in
     "ai_keys/GEMINI_SECRET_KEY" = { };
   };
 
+  stylix.targets.kitty.enable = false;
+
   programs.kitty = {
     enable = true;
     font = {
@@ -192,7 +194,6 @@ in
           font_size 14.0
 
         #--- MISC APPEARANCE ---#
-          background_opacity 0.85
           dynamic_background_opacity yes
           hide_window_decorations yes
 
