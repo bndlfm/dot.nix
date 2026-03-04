@@ -410,7 +410,7 @@ in
       extraPackages = with pkgs; [ nvidia-vaapi-driver ];
     };
     nvidia = {
-      open = false;
+      open = true;
       package = config.boot.kernelPackages.nvidiaPackages.latest;
       #FIX: delete
       # let
@@ -472,9 +472,6 @@ in
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    extraModprobeConfig = ''
-      options nvidia NVreg_EnableGpuFirmware=0
-    '';
     kernelModules = [
       "nvidia"
       "nvidia_modeset"
@@ -483,7 +480,6 @@ in
     ];
     kernelParams = [
       #"nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-      "nvidia.NVreg_EnableGpuFirmware=0"
       "nvidia_drm.modeset=1"
       "nvidia_drm.fbdev=1"
       "nvidia.hdmi_deepcolor=1"

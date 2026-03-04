@@ -262,7 +262,7 @@ in
                 "toggle"
               ];
               ## STT Transcribe Tool
-              "${Mod}+Shift+D".action.spawn = [ "xhisper" ];
+              "${Mod}+Shift+D".action.spawn = [ "/home/neko/.local/state/nix/profiles/imperative/bin/xhisper" ];
               ## NEWELLE
               "Alt+BackSpace".action = sh (
                 builtins.concatStringsSep "; " [
