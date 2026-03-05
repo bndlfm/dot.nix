@@ -96,11 +96,31 @@
     enableSSHSupport = true;
   };
 
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "yes";
-      PasswordAuthentication = true;
+  systemd = {
+    sleep.extraConfig = ''
+      AllowSuspend=no
+      AllowHibernation=no
+      AllowHybridSleep=no
+      AllowSuspendThenHibernate=no
+    '';
+    #services = {
+    #  "getty@tty1".enable = false;
+    #  "autovt@tty1".enable = false;
+    #};
+  };
+
+  services = {
+    displayManager.autoLogin = {
+      enable = true;
+      user = "ceru";
+    };
+    logind.lidSwitchExternalPower = "ignore";
+    openssh = {
+      enable = true;
+      settings = {
+        PermitRootLogin = "yes";
+        PasswordAuthentication = true;
+      };
     };
   };
 
