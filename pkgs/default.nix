@@ -41,6 +41,9 @@ rec {
   _screenpipe = cPkg ./screenpipe/package.nix { };
   _jules = cPkg ./jules.nix { };
 
+  #--- N U L L C L A W ---#
+  _nullclaw = cPkg ./nullclaw/default.nix { };
+
   #--- BIN ---#
   _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix { };
   _schaltwerk = cPkg ./schaltwerk/default.nix { };
