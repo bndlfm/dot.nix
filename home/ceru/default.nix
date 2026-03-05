@@ -29,7 +29,6 @@
     #!!!! TEMP INSTALLS !!!!#
     distrobox
     ethtool
-    zellij
 
     ### CLI
     age
@@ -37,6 +36,7 @@
     fd
     ffmpeg-full
     fzf
+    gemini-cli
     gnugrep
     gopass
     jq
@@ -65,7 +65,6 @@
     git-lfs
     git-credential-gopass
     direnv
-    dotnetCorePackages.sdk_8_0_2xx
     python3
 
     ### SYSTEM
@@ -100,20 +99,19 @@
 
   ######### (HM) ENVIRONMENT VARIABLES #########
   home.sessionVariables = {
-    DOTNET_ROOT = "${pkgs.dotnetCorePackages.sdk_8_0_2xx}";
-    EDITOR = "nvim";
-    MANPAGER = "nvim +Man!";
+    #EDITOR = "nvim";
+    #MANPAGER = "nvim +Man!";
     OPENAI_API_BASE = "http://localhost:11434/v1/";
-    VISUAL = "vim";
+    #VISUAL = "vim";
   };
 
   ######### (HM) DOTFILES ########
   xdg = {
     configFile = {
-      "nvim" = {
-        source = ../../.config/nvim;
-        recursive = true;
-      };
+      #"nvim" = {
+      #  source = ../../.config/nvim;
+      #  recursive = true;
+      #};
       "pulsemixer.cfg" = {
         source = ../../.config/pulsemixer.cfg;
         recursive = false;

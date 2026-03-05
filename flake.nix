@@ -142,10 +142,11 @@
         };
 
         "ceru@server" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+	  pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays overlays;
           modules = [
             ## SECRETS
-            inputs.sops-nix.homeManagerModules.sops
+	    inputs.sops-nix.homeManagerModules.sops
+	    (import ./sops/sops.home.nix)
             ## IMPORTS
             ./home/ceru/default.nix
           ];

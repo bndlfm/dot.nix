@@ -11,7 +11,7 @@
         autoStart = true;
         network = "host";
         volumes = [
-          "/mnt/data/homeassistant:/config"
+          "/mnt/containers/homeassistant:/config"
         ];
         environment = {
           TZ = "America/Chicago";
