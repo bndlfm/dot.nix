@@ -87,7 +87,6 @@
     _songsee
     _summarize
     _sag
-    _xhisper-local
 
     ### UTILITIES
     appimage-run
