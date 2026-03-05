@@ -22,7 +22,7 @@
   codex,
 
   openclawRev ? "master",
-  openclawHash ? "sha256-XDlfmhxygdZxazjZ9UNxJGpBSLyVuKsPG6Uagwp9BzM=",
+  openclawHash ? "sha256-LDiikp81s6RKxctlbxtrgQXI9fKAlWog6AQS9MrB36Q=",
 }:
 
 let

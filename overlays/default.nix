@@ -14,8 +14,6 @@
     });
 
     sunshine = final.stable.sunshine;
-<<<<<<< HEAD
-=======
     calibre = final.stable.calibre;
 
     gemini-cli = prev.gemini-cli.overrideAttrs (old: {
@@ -35,7 +33,6 @@
         done
       '';
     });
->>>>>>> 5a23226ff71990fa92c412b17f18f611877020ff
 
     python3 = prev.python3.override {
       packageOverrides = pyFinal: pyPrev: {
