@@ -74,7 +74,7 @@
     wineWow64Packages.staging
 
     ### OPENCLAW
-    _openclaw
+    _nullclaw
     _bird
     _blogwatcher
     _camsnap

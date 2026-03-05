@@ -172,13 +172,13 @@
             (import ./blocks/theme/nxStylix.nix)
             ## WINDOW MANAGERS
             niri.nixosModules.niri
-            {
+            ({ pkgs, ... }: {
               programs.niri = {
                 enable = true;
-                package = inputs.niri.packages.x86_64-linux.niri-unstable;
+                package = pkgs.niri-unstable;
               };
               niri-flake.cache.enable = true;
-            }
+            })
             ## IMPORTS
             ./hosts/meow/default.nix
             ./hosts/meow/hardware.nix

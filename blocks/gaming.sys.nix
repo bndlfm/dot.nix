@@ -46,6 +46,7 @@ in
     systemPackages = with pkgs; [
       cmake # Cross-platform, open-source build system generator
       steam-rom-manager # App for adding 3rd party games/ROMs as Steam launch items
+      xrizer
     ];
     variables = {
     };
@@ -121,7 +122,7 @@ in
           encoders = [
             {
               encoder = "nvenc";
-              codec = "av1";
+              codec = "h265";
               # 0.8 x 0.8 scaling
               width = 0.8;
               height = 0.8;
@@ -129,9 +130,9 @@ in
               offset_y = 0.0;
             }
           ];
+          openvr-compat-path = "${pkgs.xrizer}";
         };
       };
-      #package = (pkgs.wivrn.override { cudaSupport = true; }); # nVidia GPU support: not needed if systemwide cudaSupport = true;
     };
   };
 
