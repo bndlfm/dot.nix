@@ -16,7 +16,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     owner = "steipete";
     repo = "mcporter";
     rev = "main";
-    hash = "sha256-C4LnoDVhzfNQi/uEDluGP1cSTrIsH4XBuY5LDlH8Llg=";
+    hash = "sha256-wdoSinsN5uhXYRRtYi0PjKI18Q276fYUCWN1QF8lFD0=";
   };
 
   pnpmDeps = fetchPnpmDeps {
@@ -24,7 +24,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     pnpm = pnpm_10;
     fetcherVersion = 1;
     pnpmInstallFlags = [ "--no-frozen-lockfile" ];
-    hash = "sha256-3DUaeQYX1mizEbGk8/elcuHFDVSBPBXWEzd3m+oZIUQ=";
+    hash = "sha256-ZUB/+bNgs6S68DtIEOZ1D0U+C4bLeCEX+qYNiz20Dg8=";
   };
 
   nativeBuildInputs = [

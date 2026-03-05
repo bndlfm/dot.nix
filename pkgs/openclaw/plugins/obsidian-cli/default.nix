@@ -11,7 +11,7 @@ buildGoModule rec {
     owner = "Yakitrak";
     repo = "obsidian-cli";
     rev = "main";
-    hash = "sha256-i20xt5e867KJ+9uuktc2vEemvkUft9dPdJwYTjBl9Gk=";
+    hash = "sha256-dvhun4gMaG1no1mnGaeiWeLaLFz6J5SB8sh6J8S+YaM=";
   };
 
   vendorHash = null;

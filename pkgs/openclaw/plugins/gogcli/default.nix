@@ -12,14 +12,10 @@ buildGoModule rec {
     owner = "steipete";
     repo = "gogcli";
     rev = "main";
-    hash = "sha256-k8dqJmeQlAP+Fqd+PrDHNys/jGdE0/6AAjN6WHNh5hw=";
+    hash = "sha256-BEUoxZwpnOeX7pKlU5/1OkHC4L7dAc7xjloOUNh0glA=";
   };
 
-  vendorHash = "sha256-jMvPQfh4E3EKzFqFxaNMq1Ae/ZXQvUU3eAZ0DqM7+hc=";
-
-  patches = [
-    ./fix-types.patch
-  ];
+  vendorHash = "sha256-o92LiyLZ9GTU5ap6kehqqahdLZvroognA8LxCQ17ysg=";
 
   ldflags = [
     "-s"

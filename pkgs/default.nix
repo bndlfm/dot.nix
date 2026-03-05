@@ -29,7 +29,9 @@ rec {
   _goplaces = cPkg ./openclaw/plugins/goplaces/default.nix { };
   _mcporter = cPkg ./openclaw/plugins/mcporter/default.nix { };
   _nano-pdf = cPkg ./openclaw/plugins/nano-pdf/default.nix { };
+  _obsidian-cli = cPkg ./openclaw/plugins/obsidian-cli/default.nix { };
   _songsee = cPkg ./openclaw/plugins/songsee/default.nix { };
+  _spogo = cPkg ./openclaw/plugins/spogo/default.nix { };
   _summarize = cPkg ./openclaw/plugins/summarize/default.nix { };
   _sag = cPkg ./openclaw/plugins/sag/default.nix { };
   _xhisper-local = cPkg ./xhisper-local/default.nix { };
