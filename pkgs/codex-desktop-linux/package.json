@@ -1,0 +1,12 @@
+{
+  "name": "codex-native-modules",
+  "version": "1.0.0",
+  "dependencies": {
+    "better-sqlite3": "12.4.6",
+    "node-pty": "1.1.0"
+  },
+  "devDependencies": {
+    "electron": "40.0.0",
+    "@electron/rebuild": "^3.6.0"
+  }
+}

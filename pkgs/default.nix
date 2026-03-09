@@ -46,6 +46,10 @@ rec {
   #--- N U L L C L A W ---#
   _nullclaw = cPkg ./nullclaw/default.nix { };
 
+  _codex-desktop-linux = cPkg ./codex-desktop-linux/default.nix {
+    electron = pkgs.electron_40;
+  };
+
   #--- BIN ---#
   _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix { };
   _schaltwerk = cPkg ./schaltwerk/default.nix { };
