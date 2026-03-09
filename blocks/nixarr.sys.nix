@@ -1,19 +1,44 @@
-{ ... }:
+{ config, ... }:
 {
+  sops = {
+    defaultSopsFile = ../sops/secrets.sys.yaml;
+    defaultSopsFormat = "yaml";
+
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
+    secrets = {
+      "discord/ANCHORR_DISCORD_TOKEN" = { };
+      "discord/ANCHORR_BOT_ID" = { };
+      "discord/ANCHORR_GUILD_ID" = { };
+    };
+
+    templates."anchorr.env".content = ''
+      DISCORD_TOKEN=${config.sops.placeholder."discord/ANCHORR_DISCORD_TOKEN"}
+      DISCORD_BOT_ID=${config.sops.placeholder."discord/ANCHORR_BOT_ID"}
+      DISCORD_GUILD_ID=${config.sops.placeholder."discord/ANCHORR_GUILD_ID"}
+      TMDB_API_KEY=
+      JELLYSEERR_API_KEY=
+    '';
+  };
   nixarr = {
     enable = true;
     # These two values are also the default, but you can set them to whatever
     # else you want
     #WARNING: Do _not_ set them to `/home/user/whatever`, it will not work!
-    #mediaDir = "/media/content/";
+    mediaDir = "/media/media/";
     stateDir = "/mnt/data/container_state";
-    #
+
     jellyfin = {
       enable = true;
     };
     plex = {
       enable = true;
       openFirewall = true;
+    };
+
+    anchorr = {
+      enable = true;
+      secretsFile = config.sops.templates."anchorr.env".path;
     };
 
     bazarr.enable = true;
@@ -52,24 +77,6 @@
       enable = true;
       openFirewall = true;
     };
-
-    # Anchorr: non-secret defaults here, secrets via sops-provisioned env file.
-    #anchorr = {
-    #  enable = true;
-    #  openFirewall = true;
-    #  port = 8282;
-    #  environmentFile = "/mnt/data/.secrets/anchorr/anchorr.env";
-    #  environment = {
-    #    AUTO_START_BOT = "true";
-    #    JELLYSEERR_AUTO_APPROVE = "false";
-    #    NOTIFY_ON_AVAILABLE = "true";
-    #    PRIVATE_MESSAGE_MODE = "false";
-    #    JELLYFIN_NOTIFY_MOVIES = "true";
-    #    JELLYFIN_NOTIFY_SERIES = "false";
-    #    JELLYFIN_NOTIFY_SEASONS = "false";
-    #    JELLYFIN_NOTIFY_EPISODES = "true";
-    #  };
-    #};
   };
 
   networking.firewall = {
@@ -78,6 +85,7 @@
       8920 # Jellyfin HTTPS
       32400 # Plex
       37285 # Nixarr AirVPN Torrenting
+      8282 # Anchorr
     ];
     allowedUDPPorts = [
       1900

@@ -112,6 +112,11 @@ stdenv.mkDerivation {
     mkdir -p $out/share/${pname}
     cp app.asar $out/share/${pname}/app.asar
     cp app-extracted/package.json $out/share/${pname}/package.json
+    
+    # Satisfy "ensure the Electron resources include bin/codex"
+    mkdir -p $out/share/${pname}/bin
+    ln -s ${codex-cli}/bin/codex $out/share/${pname}/bin/codex
+
     if [ -d app.asar.unpacked ]; then
       cp -r app.asar.unpacked $out/share/${pname}/app.asar.unpacked
     fi

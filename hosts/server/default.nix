@@ -38,45 +38,40 @@
     };
   };
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  networking.hostName = "server"; # Define your hostname.
-
-  # Configure network connections interactively with nmcli or nmtui.
-  networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
-
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
-
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
+  environment.systemPackages = with pkgs; [
+    git
+  ];
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  networking = {
+    hostName = "server";
+    networkmanager.enable = true;
+    firewall = {
+      allowedTCPPorts = [ 8123 ];
+      #allowedUDPPorts = [ ];
+    };
+  };
+
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
+  services = {
+    printing.enable = true;
+    pipewire = {
+      enable = true;
+      pulse.enable = true;
+    };
+  };
+
   users.users.ceru = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
@@ -85,36 +80,19 @@
     ];
   };
 
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
-  environment.systemPackages = with pkgs; [
-    git
-  ];
-
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  systemd = {
-    sleep.extraConfig = ''
-      AllowSuspend=no
-      AllowHibernation=no
-      AllowHybridSleep=no
-      AllowSuspendThenHibernate=no
-    '';
-    #services = {
-    #  "getty@tty1".enable = false;
-    #  "autovt@tty1".enable = false;
-    #};
-  };
-
+  #$$$$$$$$$$$$$$$$$$$$$#
+  # LAPTOP SERVER TINGS #
+  #$$$$$$$$$$$$$$$$$$$$$#
   services = {
     displayManager.autoLogin = {
       enable = true;
       user = "ceru";
     };
-    logind.lidSwitchExternalPower = "ignore";
+    getty.autologinUser = "ceru";
+    logind = {
+      lidSwitch = "ignore";
+      lidSwitchDocked = "ignore";
+    };
     openssh = {
       enable = true;
       settings = {
@@ -124,9 +102,14 @@
     };
   };
 
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 8123 ];
-  #networking.firewall.allowedUDPPorts = [ ];
+  systemd = {
+    sleep.extraConfig = ''
+      AllowSuspend=no
+      AllowHibernation=no
+      AllowHybridSleep=no
+      AllowSuspendThenHibernate=no
+    '';
+  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

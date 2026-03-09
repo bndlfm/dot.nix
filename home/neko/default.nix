@@ -77,7 +77,7 @@
       allowUnfreePredicate = (_: true);
       cudaSupport = true;
       permittedInsecurePackages = [
-        "ventoy-qt5-1.1.10"
+        "ventoy-gtk3-1.1.10"
       ];
     };
     overlays = [ inputs.nur.overlays.default ];
@@ -276,11 +276,8 @@
           nwg-look
           openrgb
           file-roller
+          ventoy-full-gtk
 
-          # Plasma/QT
-          qt6Packages.qt6ct
-
-          ventoy-full-qt
           # Wine/Proton
           wineWow64Packages.stable
           winetricks

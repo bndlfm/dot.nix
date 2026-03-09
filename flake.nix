@@ -25,7 +25,7 @@
     };
 
     ## MEDIA
-    nixarr.url = "github:rasmus-kirk/nixarr";
+    nixarr.url = "github:bndlfm/nixarr";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix?rev=f0595e3b59260457042450749eaec00a5a47db35";
 
     ## PROGRAMS
