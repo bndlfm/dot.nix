@@ -9,6 +9,7 @@
 , python3
 , electron
 , buildNpmPackage
+, autoPatchelfHook
 }:
 
 let
@@ -18,6 +19,23 @@ let
   dmg = fetchurl {
     url = "https://persistent.oaistatic.com/codex-app-prod/Codex.dmg";
     hash = "sha256-4oKdhkRmwUbvnexeguuwfv+oRHhR3WYbUwewB9rpLDc=";
+  };
+
+  # Statically linked codex-cli binary from npm
+  codex-cli = stdenv.mkDerivation rec {
+    pname = "codex-cli";
+    version = "0.112.0";
+    src = fetchurl {
+      url = "https://registry.npmjs.org/@openai/codex/-/codex-${version}-linux-x64.tgz";
+      hash = "sha256-WCeXsmiZuw48VCxruyGqQ3J/LXZbkv3szRZQORMPj54=";
+    };
+    nativeBuildInputs = [ p7zip ];
+    unpackPhase = "7z x $src && tar -xf *.tar";
+    installPhase = ''
+      mkdir -p $out/bin
+      cp package/vendor/x86_64-unknown-linux-musl/codex/codex $out/bin/codex
+      chmod +x $out/bin/codex
+    '';
   };
 
   # Rebuild native modules for Linux and Electron 40
@@ -114,14 +132,13 @@ WEBVIEW_DIR="$out/share/${pname}/content/webview"
 # Try to start python server on port 5175 if webview files exist
 if [ -d "\$WEBVIEW_DIR" ] && [ "\$(ls -A "\$WEBVIEW_DIR" 2>/dev/null)" ]; then
     echo "Starting webview server..."
-    # Start in a new process group to make cleanup easier
     ${python3}/bin/python3 -m http.server 5175 --directory "\$WEBVIEW_DIR" &> /dev/null &
     HTTP_PID=\$!
     trap "kill \$HTTP_PID 2>/dev/null" EXIT
 fi
 
-# Ensure codex CLI is in PATH if possible
-export PATH="\$PATH:\$HOME/.npm-global/bin"
+# Use the bundled CLI or system one
+export CODEX_CLI_PATH="''${CODEX_CLI_PATH:-${codex-cli}/bin/codex}"
 export BUILD_FLAVOR=prod
 
 ${electron}/bin/electron "$out/share/${pname}/app.asar" --no-sandbox "\$@"
