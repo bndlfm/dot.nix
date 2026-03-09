@@ -232,7 +232,7 @@ in
               ## RESTART SHELL/WALLPAPER
               "${Mod}+W".action = sh (
                 builtins.concatStringsSep "; " [
-                  "pkill -x noctalia-shell || true"
+                  "pkill -x .quickshell-wra || true"
                   "noctalia-shell >/dev/null 2>&1 &"
                 ]
               );
