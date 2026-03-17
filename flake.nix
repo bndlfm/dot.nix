@@ -99,7 +99,6 @@
         modifications
         nixpkgs-stable
         nixpkgs-bndlfm
-        niri.overlays.niri
       ];
     in
     rec {
@@ -139,11 +138,11 @@
         };
 
         "ceru@server" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays overlays;
+	  pkgs = nixpkgs.legacyPackages.x86_64-linux.appendOverlays overlays;
           modules = [
             ## SECRETS
-            inputs.sops-nix.homeManagerModules.sops
-            (import ./sops/sops.home.nix)
+	    inputs.sops-nix.homeManagerModules.sops
+	    (import ./sops/sops.home.nix)
             ## IMPORTS
             ./home/ceru/default.nix
           ];
@@ -169,16 +168,13 @@
             (import ./blocks/theme/nxStylix.nix)
             ## WINDOW MANAGERS
             niri.nixosModules.niri
-            (
-              { pkgs, ... }:
-              {
-                programs.niri = {
-                  enable = true;
-                  package = pkgs.niri-unstable;
-                };
-                niri-flake.cache.enable = true;
-              }
-            )
+            ({ pkgs, ... }: {
+              programs.niri = {
+                enable = true;
+                package = pkgs.niri-unstable;
+              };
+              niri-flake.cache.enable = true;
+            })
             ## IMPORTS
             ./hosts/meow/default.nix
             ./hosts/meow/hardware.nix

@@ -40,7 +40,6 @@
 
     anchorr = {
       enable = true;
-      # Use sops-nix template to provide secrets
       environmentFiles = [ config.sops.templates."anchorr.env".path ];
     };
 
@@ -74,16 +73,30 @@
         bind tailscale/jellyseerr:443
         reverse_proxy localhost:5055
       '';
-      "anchorr.munchkin-sun.ts.net".extraConfig = ''
-        bind tailscale/anchorr:443
-        reverse_proxy localhost:8282
-      '';
     };
     flaresolverr.enable = true;
     jellyseerr = {
       enable = true;
       openFirewall = true;
     };
+
+    # Anchorr: non-secret defaults here, secrets via sops-provisioned env file.
+    #anchorr = {
+    #  enable = true;
+    #  openFirewall = true;
+    #  port = 8282;
+    #  environmentFile = "/mnt/data/.secrets/anchorr/anchorr.env";
+    #  environment = {
+    #    AUTO_START_BOT = "true";
+    #    JELLYSEERR_AUTO_APPROVE = "false";
+    #    NOTIFY_ON_AVAILABLE = "true";
+    #    PRIVATE_MESSAGE_MODE = "false";
+    #    JELLYFIN_NOTIFY_MOVIES = "true";
+    #    JELLYFIN_NOTIFY_SERIES = "false";
+    #    JELLYFIN_NOTIFY_SEASONS = "false";
+    #    JELLYFIN_NOTIFY_EPISODES = "true";
+    #  };
+    #};
   };
 
   networking.firewall = {
@@ -92,7 +105,6 @@
       8920 # Jellyfin HTTPS
       32400 # Plex
       37285 # Nixarr AirVPN Torrenting
-      8282 # Anchorr
     ];
     allowedUDPPorts = [
       1900
