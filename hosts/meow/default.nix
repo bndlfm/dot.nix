@@ -10,31 +10,7 @@ let
 in
 {
   imports = [
-    ## CONTAINERS
-    #../../containers/openclaw.sys.nix
-
-    ## PROGRAMS
-
-    ## MODULES
-    ../../blocks/caddy-tailscale.sys.nix
-    ../../blocks/music.sys.nix
-    ../../blocks/gaming.sys.nix
-
-    ## SECRETS
-    inputs.sops-nix.nixosModules.sops
-    ../../sops/sops.sys.nix
-
-    ## SERVICES
-    ../../services/sunshine.sys.nix
-    ../../services/vaultwarden.sys.nix
-
-    inputs.nixarr.nixosModules.default
-    ../../blocks/nixarr.sys.nix
-
-    #../../modules/anchorr.sys.nix
-
-    ## WINDOW MANAGERS
-    ../../blocks/wm/hyprland.sys.nix
+    # Main imports moved to flake.nix
   ];
 
   #-------- PACKAGES --------#
@@ -456,12 +432,6 @@ in
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-<<<<<<< HEAD
-    #extraModprobeConfig = ''
-    #  options nvidia NVreg_EnableGpuFirmware=0
-    #'';
-=======
->>>>>>> niri-blur-patch
     kernelModules = [
       "nvidia"
       "nvidia_modeset"
@@ -469,11 +439,7 @@ in
       "nvidia_drm"
     ];
     kernelParams = [
-<<<<<<< HEAD
-      #  "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-=======
       #"nvidia.NVreg_PreserveVideoMemoryAllocations=1"
->>>>>>> niri-blur-patch
       "nvidia_drm.modeset=1"
       "nvidia_drm.fbdev=1"
       "nvidia.hdmi_deepcolor=1"
@@ -495,32 +461,14 @@ in
     portal = {
       enable = true;
       extraPortals = with pkgs; [
+        xdg-desktop-portal-gnome
         xdg-desktop-portal-gtk
-        kdePackages.xdg-desktop-portal-kde
       ];
       config = {
         common = {
           default = [
-            "kde"
-            "gtk"
-          ];
-        };
-        niri = {
-          default = [
-            "gtk"
-            "kde"
-          ];
-        };
-        kde = {
-          default = [
-            "kde"
-            "gtk"
-          ];
-        };
-        gnome = {
-          default = [
             "gnome"
-            "kde"
+            "gtk"
           ];
         };
       };

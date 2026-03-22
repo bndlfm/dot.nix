@@ -42,31 +42,7 @@
       fsType = "ext4";
     };
 
-    "/home/neko/GamesHDD" = {
-      device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
-      fsType = "btrfs";
-      options = [
-        "subvol=@games"
-        "noatime"
-        "nodiratime"
-        "discard"
-        "compress=zstd:4"
-        "x-systemd.device-timeout=180s"
-      ];
-    };
-    "/mnt/data" = {
-      device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
-      fsType = "btrfs";
-      options = [
-        "subvol=@data"
-        "noatime"
-        "nodiratime"
-        "discard"
-        "compress=zstd:4"
-        "x-systemd.device-timeout=180s"
-      ];
-    };
-    "/media" = {
+    "/data" = {
       device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
       fsType = "btrfs";
       options = [
@@ -75,21 +51,35 @@
         "nodiratime"
         "discard"
         "compress=zstd:4"
-        "x-systemd.device-timeout=180s"
+        "x-systemd.device-timeout=300s"
       ];
     };
-    "/home/neko/Pictures" = {
-      device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
-      fsType = "btrfs";
-      options = [
-        "subvol=@pictures"
-        "noatime"
-        "nodiratime"
-        "discard"
-        "compress=zstd:4"
-        "x-systemd.device-timeout=180s"
-      ];
-    };
+
+    #"/data/GamesHDD" = {
+    #  device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
+    #  fsType = "btrfs";
+    #  options = [
+    #    "subvol=@games"
+    #    "noatime"
+    #    "nodiratime"
+    #    "discard"
+    #    "compress=zstd:4"
+    #    "x-systemd.device-timeout=180s"
+    #  ];
+    #};
+
+    #"/data/storage" = {
+    #  device = "/dev/disk/by-uuid/fe4494de-0116-404f-9c8a-5011115eedbf";
+    #  fsType = "btrfs";
+    #  options = [
+    #    "subvol=@data"
+    #    "noatime"
+    #    "nodiratime"
+    #    "discard"
+    #    "compress=zstd:4"
+    #    "x-systemd.device-timeout=180s"
+    #  ];
+    #};
   };
 
   swapDevices = [

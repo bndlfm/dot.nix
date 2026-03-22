@@ -208,8 +208,10 @@ in
               "${Mod}+Shift+Backslash".action = show-hotkey-overlay;
               "${Mod}+Shift+Grave".action = toggle-overview;
               # Replace this with swaylock-effects "${Mod}+L".action.spawn = "blurred-locker";
+
               ## CLOSE WINDOW
               "${Mod}+Q".action.close-window = [ ];
+
               ## TERMINAL/LAUNCHER
               "${Mod}+D".action.spawn = [
                 "noctalia-shell"
@@ -218,17 +220,13 @@ in
                 "launcher"
                 "toggle"
               ];
-              ## STT Transcribe Tool
-              "${Mod}+Shift+D".action.spawn = [ "/home/neko/.local/state/nix/profiles/imperative/bin/xhisper" ];
-              ## NEWELLE
-              "Alt+BackSpace".action = sh (
-                builtins.concatStringsSep "; " [
-                  "flatpak run --command=gsettings moe.nyarchlinux.assistant set moe.nyarchlinux.assistant startup-mode 'mini'"
-                  "flatpak run moe.nyarchlinux.assistant"
-                ]
-              );
-
+              "${Mod}+Shift+BackSpace".action.spawn = [ "wlr-which-key" ];
               "${Mod}+BackSpace".action.spawn = "kitty";
+              ## STT Transcribe Tool
+              "Alt+Control+Shift+D".action.spawn = [
+                "/home/neko/.local/state/nix/profiles/imperative/bin/xhisper"
+              ];
+
               ## RESTART SHELL/WALLPAPER
               "${Mod}+W".action = sh (
                 builtins.concatStringsSep "; " [
@@ -244,8 +242,8 @@ in
                 "noctalia-shell"
                 "ipc"
                 "call"
+                "launcher"
                 "clipboard"
-                "toggle"
               ];
 
               #------------#
@@ -363,6 +361,12 @@ in
               colors = config.lib.stylix.colors.withHashtag;
             in
             [
+              {
+                matches = [ { app-id = "vgtrans-overlay"; } ];
+                open-floating = true;
+                opacity = 1.0;
+                block-out-from = "screencast"; # Optional: keeps translations private
+              }
               #--------#
               # GLOBAL #
               #--------#

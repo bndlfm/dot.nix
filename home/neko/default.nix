@@ -13,57 +13,8 @@
   news.display = "silent";
 
   imports = [
-    ../../cachix.nix
-    ##############
-    # CONTAINERS #
-    ##############
-    ../../containers/gluetun.home.nix
-
-    ###########
-    # MODULES #
-    ###########
-    ../../blocks/music.home.nix
-    #FIX: ../../blocks/notes.home.nix
-
-    ############
-    # PROGRAMS #
-    ############
-    ../../programs/programs.home.nix
-    ../../programs/email.home.nix
-    ../../programs/shell
-    ../../blocks/shell/zellij.home.nix
-    ../../programs/twitch.home.nix
-
-    ../../programs/firefox.home.nix
-    ../../programs/git.home.nix
-    ../../programs/neovim.home.nix
-    ../../programs/password-store.home.nix
-    ../../programs/ranger.home.nix
-    ../../programs/yazi.home.nix
-
-    ###########
-    # SECRETS #
-    ###########
-    inputs.sops-nix.homeManagerModules.sops
-    ../../sops/sops.home.nix
-
-    ############
-    # SERVICES #
-    ############
-    ../../services/espanso.home.nix
-    ../../services/services.home.nix
-
-    ###########
-    # SPOTIFY #
-    ###########
-    inputs.spicetify-nix.homeManagerModules.default
-
-    ###################
-    # WINDOW MANAGERS #
-    ###################
-    ../../programs/gnome-shell.home.nix
-    ../../blocks/wm/hyprland.home.nix
-    ../../blocks/wm/niri.home.nix
+    # Local imports or truly unique user configs can stay here
+    # But for now we moved everything to flake.nix
   ];
 
   ##########################
@@ -189,7 +140,7 @@
           # GAMING UTILITIES
           # LAUNCHERS
           _gamma-launcher
-          heroic
+          pkgs.stable.heroic
           lutris
           prismlauncher
 
@@ -291,6 +242,7 @@
             noto-fonts
             noto-fonts-cjk-sans
             noto-fonts-emoji-blob-bin
+            fonts._ioskeley-mono
           ];
 
           nerdFonts = with pkgs.nerd-fonts; [

@@ -24,15 +24,14 @@
 
   nixarr = {
     enable = true;
-    # These two values are also the default, but you can set them to whatever
-    # else you want
     #WARNING: Do _not_ set them to `/home/user/whatever`, it will not work!
-    mediaDir = "/media/media/";
-    stateDir = "/mnt/data/container_state";
+    mediaDir = "/data/media/";
+    stateDir = "/data/.state/nixarr/";
 
     jellyfin = {
       enable = true;
     };
+
     plex = {
       enable = true;
       openFirewall = true;
@@ -54,7 +53,7 @@
       enable = true;
       # WARNING: This file must _not_ be in the config git directory
       # You can usually get this wireguard file from your VPN provider
-      wgConf = "/media/.secret/vpn/airvpn_sweden.conf";
+      wgConf = "/data/.secret/vpn/airvpn_sweden.conf";
     };
     transmission = {
       enable = true;

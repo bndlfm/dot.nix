@@ -2,7 +2,8 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   # Enable overlays for Niri
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
@@ -11,5 +12,8 @@
     enable = true;
     package = pkgs.niri-unstable;
   };
-  xdg.portal.config.niri.default = [ "gtk" "kde" ];
+  xdg.portal.config.niri.default = [
+    "gnome"
+    "gtk"
+  ];
 }

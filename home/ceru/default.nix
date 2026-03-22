@@ -1,12 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
-    ## PROGS BRAH
-    ../../programs/shell/default.nix
-    ../../programs/neovim.home.nix
-
-    ## CONTAINERS
-    ../../containers/homeassistant.home.nix
+    # Main imports moved to flake.nix
   ];
 
   home.stateVersion = "23.11";

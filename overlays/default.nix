@@ -13,9 +13,6 @@
       '';
     });
 
-    sunshine = final.stable.sunshine;
-    calibre = final.stable.calibre;
-
     gemini-cli = prev.gemini-cli.overrideAttrs (old: {
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ final.nodejs_22 ];
     });
@@ -30,15 +27,6 @@
         done
       '';
     });
-
-    python3 = prev.python3.override {
-      packageOverrides = pyFinal: pyPrev: {
-        plotly = pyPrev.plotly.overrideAttrs (_: {
-          doCheck = false;
-        });
-      };
-    };
-    python3Packages = final.python3.pkgs;
   };
 
   # When applied, the stable nixpkgs set (declared in the flake inputs) will

@@ -1,0 +1,133 @@
+{ ... }:
+
+{
+  programs.wlr-which-key = {
+    enable = true;
+    settings = {
+      font = "Inconsolata Nerd Font Mono 12";
+      background = "#2e3440e0";
+      color = "#d8dee9";
+      border = "#88c0d0";
+      separator = " ➜ ";
+      border_width = 2;
+      corner_r = 10;
+      padding = 15;
+      anchor = "bottom-right";
+      margin_bottom = 0;
+      inhibit_compositor_keyboard_shortcuts = true;
+      auto_kbd_layout = true;
+    };
+    menus = [
+      {
+        key = "a";
+        desc = "Apps";
+        submenu = [
+          { key = "t"; desc = "Terminal (Kitty)"; cmd = "kitty"; }
+          { key = "d"; desc = "Launcher (Noctalia)"; cmd = "noctalia-shell ipc call launcher toggle"; }
+          { key = "c"; desc = "Clipboard (Noctalia)"; cmd = "noctalia-shell ipc call clipboard toggle"; }
+          { key = "x"; desc = "Xhisper Transcribe"; cmd = "/home/neko/.local/state/nix/profiles/imperative/bin/xhisper"; }
+          { key = "s"; desc = "Scratchpad Terminal"; cmd = "kitty --class kitty_dropdown kitten quick-access-terminal"; }
+        ];
+      }
+      {
+        key = "w";
+        desc = "Window";
+        submenu = [
+          { key = "c"; desc = "Close Window"; cmd = "niri msg action close-window"; }
+          { key = "f"; desc = "Toggle Floating"; cmd = "niri msg action toggle-window-floating"; }
+          { key = "t"; desc = "Toggle Tabbed Display"; cmd = "niri msg action toggle-column-tabbed-display"; }
+          { key = "m"; desc = "Maximize Column"; cmd = "niri msg action maximize-column"; }
+          { key = "F"; desc = "Fullscreen Window"; cmd = "niri msg action fullscreen-window"; }
+          { key = "z"; desc = "Center Column"; cmd = "niri msg action center-column"; }
+          { key = "["; desc = "Consume into Column"; cmd = "niri msg action consume-window-into-column"; }
+          { key = "]"; desc = "Expel from Column"; cmd = "niri msg action expel-window-from-column"; }
+        ];
+      }
+      {
+        key = "r";
+        desc = "Resize";
+        submenu = [
+          { key = "w"; desc = "Switch Preset Column Width"; cmd = "niri msg action switch-preset-column-width"; }
+          { key = "W"; desc = "Switch Preset Window Width"; cmd = "niri msg action switch-preset-window-width"; }
+          { key = "h"; desc = "Switch Preset Window Height"; cmd = "niri msg action switch-preset-window-height"; }
+          { key = "H"; desc = "Shrink Width"; cmd = "niri msg action set-window-width \"-1%\""; }
+          { key = "I"; desc = "Expand Width"; cmd = "niri msg action set-window-width \"+1%\""; }
+          { key = "N"; desc = "Expand Height"; cmd = "niri msg action set-window-height \"+1%\""; }
+          { key = "E"; desc = "Shrink Height"; cmd = "niri msg action set-window-height \"-1%\""; }
+        ];
+      }
+      {
+        key = "f";
+        desc = "Focus";
+        submenu = [
+          { key = "h"; desc = "Left"; cmd = "niri msg action focus-column-left"; }
+          { key = "n"; desc = "Down"; cmd = "niri msg action focus-window-or-workspace-down"; }
+          { key = "e"; desc = "Up"; cmd = "niri msg action focus-window-or-workspace-up"; }
+          { key = "i"; desc = "Right"; cmd = "niri msg action focus-column-right"; }
+          {
+            key = "m";
+            desc = "Monitor";
+            submenu = [
+              { key = "h"; desc = "Left"; cmd = "niri msg action focus-monitor-left"; }
+              { key = "n"; desc = "Down"; cmd = "niri msg action focus-monitor-down"; }
+              { key = "e"; desc = "Up"; cmd = "niri msg action focus-monitor-up"; }
+              { key = "i"; desc = "Right"; cmd = "niri msg action focus-monitor-right"; }
+            ];
+          }
+          { key = "1"; desc = "Workspace 1"; cmd = "niri msg action focus-workspace 1"; }
+          { key = "2"; desc = "Workspace 2"; cmd = "niri msg action focus-workspace 2"; }
+          { key = "3"; desc = "Workspace 3"; cmd = "niri msg action focus-workspace 3"; }
+          { key = "4"; desc = "Workspace 4"; cmd = "niri msg action focus-workspace 4"; }
+        ];
+      }
+      {
+        key = "m";
+        desc = "Move";
+        submenu = [
+          { key = "h"; desc = "Left"; cmd = "niri msg action move-column-left"; }
+          { key = "n"; desc = "Down"; cmd = "niri msg action move-window-down-or-to-workspace-down"; }
+          { key = "e"; desc = "Up"; cmd = "niri msg action move-window-up-or-to-workspace-up"; }
+          { key = "i"; desc = "Right"; cmd = "niri msg action move-column-right"; }
+          {
+            key = "m";
+            desc = "Monitor";
+            submenu = [
+              { key = "h"; desc = "Left"; cmd = "niri msg action move-column-to-monitor-left"; }
+              { key = "n"; desc = "Down"; cmd = "niri msg action move-column-to-monitor-down"; }
+              { key = "e"; desc = "Up"; cmd = "niri msg action move-column-to-monitor-up"; }
+              { key = "i"; desc = "Right"; cmd = "niri msg action move-column-to-monitor-right"; }
+            ];
+          }
+        ];
+      }
+      {
+        key = "s";
+        desc = "Screenshot";
+        submenu = [
+          { key = "s"; desc = "Screenshot Area/Active"; cmd = "niri msg action screenshot"; }
+          { key = "w"; desc = "Screenshot Window"; cmd = "niri msg action screenshot-window"; }
+        ];
+      }
+      {
+        key = "v";
+        desc = "Volume";
+        submenu = [
+          { key = "u"; desc = "Raise Volume"; cmd = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+"; }
+          { key = "d"; desc = "Lower Volume"; cmd = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-"; }
+          { key = "m"; desc = "Mute"; cmd = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+        ];
+      }
+      {
+        key = "S";
+        desc = "System";
+        submenu = [
+          { key = "q"; desc = "Quit Niri"; cmd = "niri msg action quit"; }
+          { key = "p"; desc = "Power Off Monitors"; cmd = "niri msg action power-off-monitors"; }
+          { key = "r"; desc = "Restart Shell/Wallpaper"; cmd = "pkill -x .quickshell-wra || true; noctalia-shell >/dev/null 2>&1 &"; }
+          { key = "o"; desc = "Toggle Overview"; cmd = "niri msg action toggle-overview"; }
+          { key = "h"; desc = "Hotkey Overlay"; cmd = "niri msg action show-hotkey-overlay"; }
+        ];
+      }
+    ];
+  };
+}

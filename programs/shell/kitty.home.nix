@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
 let
   smartYankScript = import ./kitty.smartYank.nix { inherit config pkgs; };
-  selectWindowAttachTab = import ./kitty.attachWindowToCurrentTab.nix { inherit pkgs; };
-  selectTabAttachTab = import ./kitty.attachTabToCurrentOSWindow.nix { inherit pkgs; };
 in
 {
   sops.secrets = {
@@ -78,8 +76,8 @@ in
 
       "kitty_mod+d>p" = "detach_window";
       "kitty_mod+d>t" = "detach_tab";
-      "kitty_mod+a>t" = "remote_control_script ${selectTabAttachTab}";
-      "kitty_mod+a>p" = "remote_control_script ${selectWindowAttachTab}";
+      "kitty_mod+a>t" = "detach_tab ask";
+      "kitty_mod+a>p" = "detach_window ask";
 
       "kitty_mod+|" = "launch --location=hsplit";
       "kitty_mod+b" = "launch --location=vsplit";
@@ -150,7 +148,6 @@ in
           # Base16 Nord - kitty color config
           # Scheme by arcticicestudio
           background #2E3440
-          #background_opacity 0.92
           foreground #E5E9F0
           selection_background #E5E9F0
           selection_foreground #2E3440
@@ -185,7 +182,7 @@ in
           color15 #8FBCBB
 
         #--- FONTS ---#
-          #font_family      InconsolataNFM-Regular
+          font_family      InconsolataNFM-Regular
           bold_font        InconsolataNFM-Bold
           italic_font      TerminessNF
           bold_italic_font TerminessNF-Bold
@@ -208,8 +205,9 @@ in
           active_tab_font_style    bold
           inactive_tab_font_style  italic
 
-          # Window Pane Theming
-          # Window Pane Borders
+          # FIXES ROUNDED CORNERS CLIPPING
+          window_margin_width 0 1
+          window_padding_width 0
           window_border_width 2
     '';
     shellIntegration = {

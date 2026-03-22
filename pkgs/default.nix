@@ -3,8 +3,11 @@
 pkgs:
 let
   cPkg = pkgs.callPackage;
+  fonts = import ./fonts { inherit pkgs; };
 in
 rec {
+  inherit fonts;
+
   fennelPackages._antifennel = cPkg ./antifennel.nix { };
   _beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix { };
   _fish-ai = cPkg ./fishPlugins/fish-ai.nix { };
@@ -43,15 +46,10 @@ rec {
   _screenpipe = cPkg ./screenpipe/package.nix { };
   _jules = cPkg ./jules.nix { };
 
-  #--- N U L L C L A W ---#
-  _nullclaw = cPkg ./nullclaw/default.nix { };
-
-  _codex-desktop-linux = cPkg ./codex-desktop-linux/default.nix {
-    electron = pkgs.electron_40;
-  };
-
   #--- BIN ---#
   _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix { };
   _schaltwerk = cPkg ./schaltwerk/default.nix { };
-  #_waydroid-script = cPkg ./waydroid-script/waydroid-script.nix { };
+  _codex-desktop-linux = cPkg ./codex-desktop-linux/default.nix {
+    electron = pkgs.electron_40;
+  };
 }
