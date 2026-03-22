@@ -116,12 +116,11 @@
         ];
 
         editing = [
-          #gimp #NOTE: Not caching
-          #libreoffice-qt
+          gimp
+          libreoffice-qt
         ];
 
         gaming = [
-          #airshipper # Veloren (Cube World)
           crawlTiles
           glfw3-minecraft
           #inputs.openmw-vr.packages.x86_64-linux.default
@@ -137,15 +136,11 @@
           # RHYTHM GAMES
           clonehero
 
-          # GAMING UTILITIES
           # LAUNCHERS
           _gamma-launcher
-          pkgs.stable.heroic
+          heroic
           lutris
           prismlauncher
-
-          # MODDING
-          #_beatSaberModManager
 
           # MISC
           mangohud
@@ -173,12 +168,6 @@
           #
           gemini-cli
           opencode
-
-          #
-          # DOTNET
-          #--------
-          #dotnetCorePackages.dotnet_10.sdk
-          #dotnetCorePackages.dotnet_10.runtime
 
           #
           # GIT TOOLS
@@ -242,7 +231,7 @@
             noto-fonts
             noto-fonts-cjk-sans
             noto-fonts-emoji-blob-bin
-            fonts._ioskeley-mono
+            fonts._ioskeley-mono-NF
           ];
 
           nerdFonts = with pkgs.nerd-fonts; [

@@ -1,4 +1,4 @@
 { pkgs, ... }:
 {
-  _ioskeley = pkgs.callPackage ./ioskeley-mono.nix { };
+  _ioskeley-mono-NF = pkgs.callPackage ./ioskeley-mono.nix { };
 }

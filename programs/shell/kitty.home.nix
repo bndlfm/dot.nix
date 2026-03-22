@@ -187,7 +187,7 @@ in
           italic_font      TerminessNF
           bold_italic_font TerminessNF-Bold
 
-          font_size 14.0
+          font_size 16.0
 
         #--- MISC APPEARANCE ---#
           dynamic_background_opacity yes
