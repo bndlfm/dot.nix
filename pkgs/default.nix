@@ -16,6 +16,7 @@ rec {
   _homeassistant-desktop = cPkg ./homeassistant-desktop/default.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };
   _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
+  _proton-dw = cPkg ./proton-dw.nix { };
   _waybar-ai-usage = cPkg ./waybar-ai-usage/default.nix { };
   _noctalia-plugin-ai-usage = cPkg ./noctalia/plugins/ai-usage/default.nix {
     waybarAiUsage = _waybar-ai-usage;

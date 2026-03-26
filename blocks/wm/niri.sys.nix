@@ -13,7 +13,7 @@
     package = pkgs.niri-unstable;
   };
   xdg.portal.config.niri.default = [
-    "gnome"
-    "gtk"
+    "kde"
+    "hyprland"
   ];
 }

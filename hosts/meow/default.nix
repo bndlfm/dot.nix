@@ -192,22 +192,16 @@ in
     blueman.enable = true;
     gnome.sushi.enable = true;
     desktopManager = {
-      gnome.enable = true;
-      plasma6.enable = false;
+      gnome.enable = false;
+      plasma6.enable = true;
     };
     displayManager = {
       defaultSession = "niri";
-      sddm.enable = false;
-      gdm.enable = true;
+      sddm.enable = true;
     };
     fail2ban.enable = true;
     flatpak.enable = true;
     guix.enable = false;
-    llama-cpp = {
-      enable = false;
-      openFirewall = false;
-      extraFlags = [ "" ];
-    };
     lsfg-vk = {
       enable = true;
       ui.enable = true;
@@ -215,11 +209,6 @@ in
     usbmuxd = {
       enable = true;
       package = pkgs.usbmuxd2;
-    };
-    ollama = {
-      enable = true; # ## SEE PODMAN + HARBOR
-      host = "0.0.0.0";
-      openFirewall = true;
     };
     openssh = {
       enable = true;
@@ -236,7 +225,7 @@ in
       '';
     };
     xserver = {
-      enable = true;
+      enable = false;
       windowManager = {
         bspwm.enable = false;
       };
