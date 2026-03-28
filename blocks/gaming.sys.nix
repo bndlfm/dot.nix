@@ -87,7 +87,7 @@ in
       };
       remotePlay.openFirewall = true;
       extraCompatPackages = with pkgs; [
-        _proton-dw
+        #_proton-ge-rtsp
         gamescope
       ];
     };
