@@ -313,6 +313,8 @@ in
         "NVD_BACKEND,direct"
         "XCURSOR,volantes-cursors"
         "XCURSOR_SIZE,24"
+        "HYPRCURSOR_THEME,volantes"
+        "HYPRCURSOR_SIZE,24"
       ];
 
       experimental = {
