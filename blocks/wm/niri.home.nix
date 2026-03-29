@@ -25,7 +25,6 @@ in
       swayidle
       swaylock-effects
       wlprop
-      _waybar-ai-usage
     ];
 
     gtk = {
@@ -503,11 +502,6 @@ in
             ];
         };
       };
-    };
-
-    xdg.configFile."noctalia/plugins/ai-usage" = {
-      source = "${pkgs._noctalia-plugin-ai-usage}/share/noctalia-shell/plugins/ai-usage";
-      recursive = true;
     };
   };
 }

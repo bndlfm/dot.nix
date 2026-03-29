@@ -6,20 +6,37 @@ let
   fonts = import ./fonts { inherit pkgs; };
 in
 rec {
-  inherit fonts;
-
-  fennelPackages._antifennel = cPkg ./antifennel.nix { };
   _beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix { };
   _fish-ai = cPkg ./fishPlugins/fish-ai.nix { };
   _gamma-launcher = cPkg ./gamma-launcher.nix { };
   _anchorr = cPkg ./anchorr/default.nix { };
   _homeassistant-desktop = cPkg ./homeassistant-desktop/default.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };
-  _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
-  _waybar-ai-usage = cPkg ./waybar-ai-usage/default.nix { };
-  _noctalia-plugin-ai-usage = cPkg ./noctalia/plugins/ai-usage/default.nix {
-    waybarAiUsage = _waybar-ai-usage;
+
+  #--- APPEARANCE ---#
+  inherit fonts;
+  _volantes-hyprcursor = cPkg ./volantes_hyprcursor/default.nix { };
+
+  #--- BIN ---#
+  _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix { };
+  _schaltwerk = cPkg ./schaltwerk/default.nix { };
+  _codex-desktop-linux = cPkg ./codex-desktop-linux/default.nix {
+    electron = pkgs.electron_40;
   };
+
+  #--- M O D E L  C O N T E X T  P R O T O C O L ---#
+  _mpd-mcp-server = cPkg ./mcp/mpd-mcp-server/default.nix { };
+  _jellyseerr-mcp = cPkg ./mcp/jellyseerr-mcp/default.nix { };
+  _mcp-arr = cPkg ./mcp/mcp-arr/default.nix { };
+  _screenpipe = cPkg ./screenpipe/package.nix { };
+  _jules = cPkg ./jules.nix { };
+
+  #--- Programming ---#
+  fennelPackages._antifennel = cPkg ./antifennel.nix { };
+
+  #--- Proton Versions ---#
+  _dwproton = cPkg ./proton-dw.nix { };
+  _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
 
   #--- Openclaw CLIs ---#
   _openclaw = cPkg ./openclaw/default.nix { };
@@ -38,18 +55,4 @@ rec {
   _summarize = cPkg ./openclaw/plugins/summarize/default.nix { };
   _sag = cPkg ./openclaw/plugins/sag/default.nix { };
   _xhisper-local = cPkg ./xhisper-local/default.nix { };
-
-  #--- M O D E L  C O N T E X T  P R O T O C O L ---#
-  _mpd-mcp-server = cPkg ./mcp/mpd-mcp-server/default.nix { };
-  _jellyseerr-mcp = cPkg ./mcp/jellyseerr-mcp/default.nix { };
-  _mcp-arr = cPkg ./mcp/mcp-arr/default.nix { };
-  _screenpipe = cPkg ./screenpipe/package.nix { };
-  _jules = cPkg ./jules.nix { };
-
-  #--- BIN ---#
-  _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix { };
-  _schaltwerk = cPkg ./schaltwerk/default.nix { };
-  _codex-desktop-linux = cPkg ./codex-desktop-linux/default.nix {
-    electron = pkgs.electron_40;
-  };
 }

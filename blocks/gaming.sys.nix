@@ -66,9 +66,6 @@ in
           end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
         };
         gpu = {
-          #apply_gpu_optimisations = "accept-responsibility"; # For systems with AMD GPUs
-          #gpu_device = 0;
-          #amd_performance_level = "high";
         };
       };
     };
@@ -87,7 +84,8 @@ in
       };
       remotePlay.openFirewall = true;
       extraCompatPackages = with pkgs; [
-        #_proton-ge-rtsp
+        _proton-ge-rtsp
+        _dwproton
         gamescope
       ];
     };

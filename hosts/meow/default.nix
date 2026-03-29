@@ -13,6 +13,11 @@ in
     # Main imports moved to flake.nix
   ];
 
+  # NOTE: Because Konqi crash loop, fix later.
+  environment.etc."xdg/drkonqirc".text = ''
+    [General]
+    Enabled=false
+  '';
   #-------- PACKAGES --------#
   nix = {
     package = pkgs.nix;
@@ -172,6 +177,19 @@ in
       #  type = "-";
       #  value = "99";
       #}
+      ## Quickshell FD Limit Issue Fix?
+      {
+        domain = "*";
+        type = "soft";
+        item = "nofile";
+        value = "8192";
+      }
+      {
+        domain = "*";
+        item = "nofile";
+        type = "hard";
+        value = "1048576";
+      }
     ];
     tpm2 = {
       enable = true;

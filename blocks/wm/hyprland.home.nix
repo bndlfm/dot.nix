@@ -6,7 +6,7 @@
 }:
 let
   _g = import ../../lib/globals.nix { inherit config; };
-  useHyprscrolling = false;
+  useHyprscrolling = true;
 in
 {
 
@@ -32,15 +32,92 @@ in
       enable = true;
     };
 
-    plugins = lib.mkIf useHyprscrolling (with pkgs.hyprlandPlugins; [ hyprscrolling ]);
+    #plugins = lib.mkIf useHyprscrolling (with pkgs.hyprlandPlugins; [ hyprscrolling ]);
 
     settings = {
+      #-------- Hyprland Variables --------#
+      general = {
+        # https://wiki.hyprland.org/Configuring/Variables/ for more
+        allow_tearing = true;
+        gaps_in = 5;
+        gaps_out = 10;
+        border_size = 4;
+        layout = if useHyprscrolling then "scrolling" else "dwindle";
+
+        "col.active_border" = "rgba(99c0d0ff) rgba(5e81acff) 45deg";
+        "col.inactive_border" = "rgba(2e3440ff)";
+        "col.nogroup_border" = "rgba(60728aff)";
+      };
+
+      animations = {
+        enabled = "yes";
+        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
+        animation = [
+          "windows, 1, 2, myBezier"
+          "windowsOut, 1, 2, default, popin 80%"
+          "border, 1, 2, default"
+          "borderangle, 1, 2, default"
+          "fade, 1, 2, default"
+          "workspaces, 1, 2, default"
+        ];
+      };
+
+      cursor = {
+        no_hardware_cursors = false;
+      };
+
+      dwindle = {
+        force_split = 2;
+        preserve_split = true;
+      };
+
+      scrolling = {
+        focus_fit_method = 0;
+      };
+
+      debug = {
+        disable_logs = false;
+      };
+
+      decoration = {
+        rounding = 7;
+      };
+
+      env = [
+        "LIBVA_DRIVER_NAME,nvidia"
+        "XDG_SESSION_TYPE,wayland"
+        "GBM_BACKEND,nvidia-drm"
+        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+        "NVD_BACKEND,direct"
+        "XCURSOR_THEME,volantes-cursors"
+        "XCURSOR_SIZE,24"
+        "HYPRCURSOR_THEME,volantes"
+        "HYPRCURSOR_SIZE,24"
+      ];
+
+      experimental = {
+      };
+
+      input = {
+        kb_layout = "us";
+        repeat_rate = 80;
+        repeat_delay = 280;
+        follow_mouse = 2;
+        mouse_refocus = false;
+        float_switch_override_focus = 0;
+        numlock_by_default = true;
+        sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
+      };
+
+      misc = {
+        vfr = true;
+      };
       #-------- Startup --------#
       exec-once = [
         "noctalia-shell"
-        ## Idleing stuff
-        #        "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
-        #        "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
+        # ## Idleing stuff
+        "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
+        "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
         ## Clipboard Shenanigans
         "copyq --start-server"
         ## KDE Connect
@@ -50,56 +127,61 @@ in
         "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/GoogleDrive" # Google Drive
         "xrandr --output DP-1 --primary" # set Primary Monitor for Xwayland
         #"gammastep-indicator -l 38.0628:-91.4035 -t 6500:4800" # (Night/Red/Blue)shift for wayland
-        "hyprpaper"
       ];
 
       #-------- Window Rules --------#
-      #windowrulev2 = [
-      #  ## Clipboard
-      #    "float, class:(clipse)"
-      #    "size 622 652, class:(clipse)"
-      #  ## File Pickers
-      #    "float, class:xdg-desktop-portal(.*)"
-      #    "size 1060 960, title:(.*)(Select a)(.*)"
-      #    "center, title:(.*)(Select a)(.*)"
-      #  ## FIREFOX Picture-in-Picture
-      #    "float, class:^(firefox-devedition)$, title:(.*)(Picture-in-Picture)(.*)"
-      #    "size 615 346, class:^(firefox-devedition)$, title:(.*)(Picture-in-Picture)(.*)"
-      #    "move 1920 56, class:^(firefox-devedition)$, title:(.*)(Picture-in-Picture)(.*)"
-      #    "noinitialfocus, class:^(firefox-devedition)$, title:(.*)(Picture-in-Picture)(.*)"
-      #  ## FIREFOX-NIGHTLY Picture-in-Picture
-      #    "float, class:^(firefox-nightly)$, title:(.*)(Picture-in-Picture)(.*)"
-      #    "size 615 346, class:^(firefox-nightly)$, title:(.*)(Picture-in-Picture)(.*)"
-      #    "move 1920 56, class:^(firefox-nightly)$, title:(.*)(Picture-in-Picture)(.*)"
-      #    "noinitialfocus, class:^(firefox-nightly)$, title:(.*)(Picture-in-Picture)(.*)"
-      #  ## GPT FIREFOX
-      #    "float, title:^(.*ChatGPTBox.*Firefox Developer Edition.*)$"
-      #  ## Pin Entry (GPG)
-      #    "float, class:Pinentry(.*)"
-      #    "center, class:Pinentry(.*)"
-      #  ## Steam
-      #    "immediate, class:^(steam_app_(.*))"
-      #    "workspace 7 silent, class:^(steam_app_(.*))"
-      #    "float, class:^(steam_app_(.*))"
-      #  ## qBittorrent
-      #    "workspace 9 silent, class:org.qbittorrent.qBittorrent"
+      #
+      windowrules = [
+        ## Clipboard
+        "float, match:class ^clipse$"
+        "size 622 652, match:class ^clipse$"
 
-      #  ### --- CONVERTED RULES START --- ###
-      #  ### Chatterino/Streamlink-Twitch-GUI
-      #    "workspace 10 silent, class:^(streamlink-twitch-gui)$"
-      #    "workspace 10 silent, class:^(chatterino)$"
-      #  ### Copyq Clipboard Manager
-      #    "float, class:^(com.github.hluk.copyq)$"
-      #  ### Discord
-      #    "workspace 10 silent, class:^(vencorddesktop)$" # Assuming vencorddesktop is the class
-      #  ### MPV Picture-in-Picture
-      #    "workspace 10, class:^(mpv_pip)$" # Assuming mpv_pip is the class or a specific title/role
-      #    "float, class:^(mpv_pip)$"
-      #    "size 659 369, class:^(mpv_pip)$"
-      #    "move 416 33, class:^(mpv_pip)$"
-      #    "pin, class:^(mpv_pip)$"
-      #  ### --- CONVERTED RULES END --- ###
-      #  ];
+        ## File Pickers
+        "float, match:class xdg-desktop-portal(.*)"
+        "size 1060 960, match:title (.*)(Select a)(.*)"
+        "center, match:title (.*)(Select a)(.*)"
+
+        ## FIREFOX Picture-in-Picture
+        "float, match:class ^firefox-devedition$, match:title (.*)(Picture-in-Picture)(.*)"
+        "size 615 346, match:class ^firefox-devedition$, match:title (.*)(Picture-in-Picture)(.*)"
+        "move 1920 56, match:class ^firefox-devedition$, match:title (.*)(Picture-in-Picture)(.*)"
+        "no_initial_focus, match:class ^firefox-devedition$, match:title (.*)(Picture-in-Picture)(.*)"
+
+        ## FIREFOX-NIGHTLY Picture-in-Picture
+        "float, match:class ^firefox-nightly$, match:title (.*)(Picture-in-Picture)(.*)"
+        "size 615 346, match:class ^firefox-nightly$, match:title (.*)(Picture-in-Picture)(.*)"
+        "move 1920 56, match:class ^firefox-nightly$, match:title (.*)(Picture-in-Picture)(.*)"
+        "no_initial_focus, match:class ^firefox-nightly$, match:title (.*)(Picture-in-Picture)(.*)"
+
+        ## Pin Entry (GPG)
+        "float, match:class Pinentry(.*)"
+        "center, match:class Pinentry(.*)"
+
+        ## Steam
+        "immediate, match:class ^steam_app_(.*)"
+        "workspace 7 silent, match:class ^steam_app_(.*)"
+        "float, match:class ^steam_app_(.*)"
+
+        ## qBittorrent
+        "workspace 9 silent, match:class ^org\.qbittorrent\.qBittorrent$"
+
+        ## Chatterino / Streamlink-Twitch-GUI
+        "workspace 10 silent, match:class ^streamlink-twitch-gui$"
+        "workspace 10 silent, match:class ^chatterino$"
+
+        ## Copyq Clipboard Manager
+        "float, match:class ^com\.github\.hluk\.copyq$"
+
+        ## Discord (Vencord)
+        "workspace 10 silent, match:class ^vencorddesktop$"
+
+        ## MPV Picture-in-Picture
+        "workspace 10, match:class ^mpv_pip$"
+        "float, match:class ^mpv_pip$"
+        "size 659 369, match:class ^mpv_pip$"
+        "move 416 33, match:class ^mpv_pip$"
+        "pin, match:class ^mpv_pip$"
+      ];
 
       #-------- Key Bindings --------#
       "$mainMod" = "SUPER";
@@ -116,11 +198,6 @@ in
 
         "$mainMod, F, fullscreen"
         "$mainMod CONTROL, F, exec, nautilus"
-        "$mainMod, P, pseudo" # dwindle
-
-        # ROTATE ROTATE
-        "$mainMod, J, togglesplit" # dwindle
-
         "$mainMod, GRAVE, exec, hdrop -f -b -g 30 kitty --class kittydrop"
 
         # (not)Rofi
@@ -182,7 +259,6 @@ in
         # Volume
         ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-
       ]
       ++ lib.optionals (!useHyprscrolling) [
         # Cycle Workspaces on Monitor
@@ -195,19 +271,24 @@ in
         "$mainMod, E, movefocus, u"
         "$mainMod, I, movefocus, r"
 
+        # Dwindle Specific
+        "$mainMod, P, pseudo" # dwindle
+        "$mainMod, J, togglesplit" # dwindle
       ]
       ++ lib.optionals useHyprscrolling [
-        # HYPRSCROLLING BINDINGS
-        "$mainMod, period, focusmonitor, r"
-        "$mainMod, comma, focusmonitor, l"
-
         "$mainMod, minus, layoutmsg, colresize -conf"
-        "$mainMod SHIFT, equal, layoutmsg, colresize +conf"
+        "$mainMod, equal, layoutmsg, colresize +conf"
 
+        # Focus
         "$mainMod, H, layoutmsg, move -col"
         "$mainMod, N, movefocus, d"
         "$mainMod, E, movefocus, u"
         "$mainMod, I, layoutmsg, move +col"
+        "$mainMod, period, focusmonitor, r"
+        "$mainMod, comma, focusmonitor, l"
+
+        # Expel
+        "$mainMod, X, layoutmsg, promote"
       ];
 
       binde = [
@@ -215,6 +296,12 @@ in
         "$mainMod SHIFT, down, moveactive, 0 10"
         "$mainMod SHIFT, up, moveactive, 0 -10"
         "$mainMod SHIFT, right, moveactive, 10 0"
+
+        ## works in both scrolling / dwindle layouts
+        "$mainMod SHIFT, H, exec, ~/.config/hypr/move-windows.sh l"
+        "$mainMod SHIFT, N, exec, ~/.config/hypr/move-windows.sh d"
+        "$mainMod SHIFT, E, exec, ~/.config/hypr/move-windows.sh u"
+        "$mainMod SHIFT, I, exec, ~/.config/hypr/move-windows.sh r"
 
         ## sets repeatable binds for resizing the active window
         "$mainMod CONTROL, H, resizeactive, -30 0"
@@ -228,18 +315,8 @@ in
         "$mainMod CONTROL, down, resizeactive, 0 10"
       ]
       ++ lib.optionals (!useHyprscrolling) [
-        # Move Windows
-        "$mainMod SHIFT, H, exec, ~/.config/hypr/move-windows.sh l"
-        "$mainMod SHIFT, N, exec, ~/.config/hypr/move-windows.sh d"
-        "$mainMod SHIFT, E, exec, ~/.config/hypr/move-windows.sh u"
-        "$mainMod SHIFT, I, exec, ~/.config/hypr/move-windows.sh r"
       ]
       ++ lib.optionals useHyprscrolling [
-        # Move Focus
-        "$mainMod SHIFT, H, layoutmsg, movewindowto l"
-        "$mainMod SHIFT, N, layoutmsg, movewindowto d"
-        "$mainMod SHIFT, E, layoutmsg, movewindowto u"
-        "$mainMod SHIFT, I, layoutmsg, movewindowto r"
       ];
 
       bindm = [
@@ -261,76 +338,6 @@ in
         "10, monitor:${_g.monitors.right.output}, default:true"
       ];
 
-      #-------- Hyprland Variables --------#
-      general = {
-        # https://wiki.hyprland.org/Configuring/Variables/ for more
-        allow_tearing = true;
-        gaps_in = 5;
-        gaps_out = 10;
-        border_size = 4;
-        layout = if useHyprscrolling then "scrolling" else "dwindle";
-
-        "col.active_border" = "rgba(99c0d0ff) rgba(5e81acff) 45deg";
-        "col.inactive_border" = "rgba(2e3440ff)";
-        "col.nogroup_border" = "rgba(60728aff)";
-      };
-
-      animations = {
-        enabled = "yes";
-        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
-        animation = [
-          "windows, 1, 2, myBezier"
-          "windowsOut, 1, 2, default, popin 80%"
-          "border, 1, 2, default"
-          "borderangle, 1, 2, default"
-          "fade, 1, 2, default"
-          "workspaces, 1, 2, default"
-        ];
-      };
-
-      cursor = {
-        no_hardware_cursors = false;
-      };
-
-      dwindle = {
-        force_split = 2;
-        preserve_split = true;
-      };
-
-      debug = {
-        disable_logs = false;
-      };
-
-      decoration = {
-        rounding = 7;
-      };
-
-      env = [
-        "LIBVA_DRIVER_NAME,nvidia"
-        "XDG_SESSION_TYPE,wayland"
-        "GBM_BACKEND,nvidia-drm"
-        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-        "NVD_BACKEND,direct"
-        "XCURSOR,volantes-cursors"
-        "XCURSOR_SIZE,24"
-      ];
-
-      experimental = {
-      };
-
-      input = {
-        kb_layout = "us";
-        repeat_rate = 80;
-        repeat_delay = 280;
-        follow_mouse = 2;
-        mouse_refocus = false;
-        float_switch_override_focus = 0;
-        numlock_by_default = true;
-        sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
-      };
-      misc = {
-        vfr = true;
-      };
     };
   };
 }

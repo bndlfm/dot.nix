@@ -132,7 +132,7 @@
             (import ./blocks/theme/hmStylix.nix)
             ## ZEN BROWSER
             inputs.zen-browser.homeModules.twilight
-            (import ./programs/zen-browser.home.nix)
+            (import ./blocks/zen-browser.home.nix)
 
             ## MODULES
             outputs.homeManagerModules.wlr-which-key
@@ -140,17 +140,17 @@
             #(import ./blocks/notes.home.nix)
 
             ## PROGRAMS
-            (import ./programs/programs.home.nix)
-            (import ./programs/email.home.nix)
-            (import ./programs/shell/default.nix)
+            (import ./blocks/programs.home.nix)
+            (import ./blocks/email.home.nix)
+            (import ./blocks/shell/default.nix)
             (import ./blocks/shell/zellij.home.nix)
-            (import ./programs/twitch.home.nix)
-            (import ./programs/firefox.home.nix)
-            (import ./programs/git.home.nix)
-            (import ./programs/neovim.home.nix)
-            (import ./programs/password-store.home.nix)
-            (import ./programs/ranger.home.nix)
-            (import ./programs/yazi.home.nix)
+            (import ./blocks/twitch.home.nix)
+            (import ./blocks/firefox.home.nix)
+            (import ./blocks/git.home.nix)
+            (import ./blocks/neovim.home.nix)
+            (import ./blocks/password-store.home.nix)
+            (import ./blocks/ranger.home.nix)
+            (import ./blocks/yazi.home.nix)
 
             ## SECRETS
             inputs.sops-nix.homeManagerModules.sops
@@ -164,7 +164,7 @@
             inputs.spicetify-nix.homeManagerModules.default
 
             ## WINDOW MANAGERS
-            (import ./programs/gnome-shell.home.nix)
+            (import ./blocks/gnome-shell.home.nix)
             (import ./blocks/wm/hyprland.home.nix)
             (import ./blocks/wm/niri.home.nix)
             (import ./blocks/wm/wlr-which-key.home.nix)
@@ -182,8 +182,8 @@
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ## PROGRAMS
-            (import ./programs/shell/default.nix)
-            (import ./programs/neovim.home.nix)
+            (import ./blocks/shell/default.nix)
+            (import ./blocks/neovim.home.nix)
 
             ## CONTAINERS
             (import ./containers/homeassistant.home.nix)

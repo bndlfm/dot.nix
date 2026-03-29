@@ -30,16 +30,12 @@
         done
       '';
     });
+
     # GO FIXES
     caddy = prev.caddy.overrideAttrs (old: {
       nativeBuildInputs =
         builtins.filter (p: !(p ? pname && p.pname == "go")) (old.nativeBuildInputs or [ ])
         ++ [ final.go_1_26 ];
-    });
-    trayscale = prev.trayscale.overrideAttrs (old: {
-      nativeBuildInputs =
-        builtins.filter (p: !(p ? pname && p.pname == "go")) (old.nativeBuildInputs or [ ])
-        ++ [ final.go_1_25 ];
     });
   };
 

@@ -13,8 +13,6 @@
   news.display = "silent";
 
   imports = [
-    # Local imports or truly unique user configs can stay here
-    # But for now we moved everything to flake.nix
   ];
 
   ##########################
@@ -247,6 +245,7 @@
             base16-schemes
             ocs-url
             volantes-cursors
+            _volantes-hyprcursor
           ];
         };
 
