@@ -91,7 +91,7 @@ in
         "NVD_BACKEND,direct"
         "XCURSOR_THEME,volantes-cursors"
         "XCURSOR_SIZE,24"
-        "HYPRCURSOR_THEME,volantes"
+        "HYPRCURSOR_THEME,volantes-light-hyprcursor"
         "HYPRCURSOR_SIZE,24"
       ];
 
@@ -194,6 +194,9 @@ in
 
         "$mainMod ALT, L, exec, ~/hypr/swayidle-swaylock-hypr.sh"
 
+        # Whisper STT
+        "$mainMod CONTROL ALT SHIFT, D, exec, ~/.local/state/nix/profiles/imperative/bin/xhisper"
+
         "$mainMod, S, togglefloating,"
 
         "$mainMod, F, fullscreen"
@@ -201,8 +204,8 @@ in
         "$mainMod, GRAVE, exec, hdrop -f -b -g 30 kitty --class kittydrop"
 
         # (not)Rofi
-        "$mainMod, D, exec, fuzzel"
-        "$mainMod SHIFT, V, exec, copyq show"
+        "$mainMod, D, exec, noctalia-shell ipc call launcher toggle"
+        "$mainMod CONTROL, V, exec, noctalia-shell ipc call launcher clipboard"
 
         # Groups and Movement in / out of them
         "$mainMod, G, togglegroup"
