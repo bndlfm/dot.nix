@@ -16,13 +16,15 @@ in
 
   home.packages = with pkgs; [
     copyq
-    fuzzel
     hdrop
     hyprpaper
     hyprshot
-    swayidle
-    swaylock-effects
+    rofi
+    hypridle
+    hyprlock
+    swaynotificationcenter
     wayland-utils
+    waypaper
   ];
 
   wayland.windowManager.hyprland = {
@@ -31,8 +33,6 @@ in
     systemd = {
       enable = true;
     };
-
-    #plugins = lib.mkIf useHyprscrolling (with pkgs.hyprlandPlugins; [ hyprscrolling ]);
 
     settings = {
       #-------- Hyprland Variables --------#
@@ -114,10 +114,11 @@ in
       };
       #-------- Startup --------#
       exec-once = [
-        "noctalia-shell"
+        "waypaper --restore"
+        "swaync"
         # ## Idleing stuff
-        "swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
-        "swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
+        #"swayidle -w timeout 600 'if pgrep -x swaylock; then hyprctl dispatch dpms off; fi' resume 'hyprctl dispatch dpms on'"
+        #"swayidle -w timeout 900 'swaylock -f --screenshots --clock --indicator --indicator-radius 100 --indicator-thickness 7 --effect-blur 7x5 --effect-vignette 0.5:0.5 --ring-color bb00cc --key-hl-color 880033 --line-color 00000000 --inside-color 00000088 --separator-color 00000000 --grace 2 --fade-in 0.2' timeout 930 'hyprctl dispatch dpms off' resume 'hyprctl dispatch dpms on'"
         ## Clipboard Shenanigans
         "copyq --start-server"
         ## KDE Connect
@@ -204,8 +205,8 @@ in
         "$mainMod, GRAVE, exec, hdrop -f -b -g 30 kitty --class kittydrop"
 
         # (not)Rofi
-        "$mainMod, D, exec, noctalia-shell ipc call launcher toggle"
-        "$mainMod CONTROL, V, exec, noctalia-shell ipc call launcher clipboard"
+        "$mainMod, D, exec, rofi -show combi -combi-modes window,drun,ssh,run,filebrowser,recursivebrowser"
+        "$mainMod CONTROL, V, exec, copyq show"
 
         # Groups and Movement in / out of them
         "$mainMod, G, togglegroup"

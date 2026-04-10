@@ -17,8 +17,6 @@ in
   config = {
     nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
-    programs.waybar.enable = lib.mkForce false;
-
     home.packages = with pkgs; [
       cliphist
       _homeassistant-desktop
@@ -158,16 +156,6 @@ in
                 "--primary"
               ];
             }
-            #{
-            #  ## GAMMA
-            #  command = [
-            #    "gammastep-indicator"
-            #    "-l"
-            #    "38.0628:-91.4035"
-            #    "-t"
-            #    "6500:4800"
-            #  ];
-            #}
             #{
             #  ## POWER SAVINGS
             #  command = [

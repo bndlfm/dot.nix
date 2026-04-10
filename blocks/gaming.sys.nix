@@ -108,7 +108,6 @@ in
       enable = true;
       package = (pkgs.wivrn.override { cudaSupport = true; });
       openFirewall = true;
-      defaultRuntime = true; # Write information to /etc/xdg/openxr/1/active_runtime.json
       autoStart = true; # Run WiVRn as a systemd service on startup
       config = {
         enable = true;

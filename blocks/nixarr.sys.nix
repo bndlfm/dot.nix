@@ -10,15 +10,18 @@
       "discord/ANCHORR_DISCORD_TOKEN" = { };
       "discord/ANCHORR_BOT_ID" = { };
       "discord/ANCHORR_GUILD_ID" = { };
+      "discord/ANCHORR_SEERR_TOKEN" = { };
+      "discord/ANCHORR_TMDB_API_KEY" = { };
     };
 
     templates."anchorr.env".content = ''
       DISCORD_TOKEN=${config.sops.placeholder."discord/ANCHORR_DISCORD_TOKEN"}
       BOT_ID=${config.sops.placeholder."discord/ANCHORR_BOT_ID"}
       GUILD_ID=${config.sops.placeholder."discord/ANCHORR_GUILD_ID"}
+      TMDB_API_KEY=${config.sops.placeholder."discord/ANCHORR_TMDB_API_KEY"}
+      JELLYSEERR_API_KEY=${config.sops.placeholder."discord/ANCHORR_SEERR_TOKEN"}
       AUTO_START_BOT=true
-      TMDB_API_KEY=
-      JELLYSEERR_API_KEY=
+      JELLYSEERR_AUTO_APPROVE=true
     '';
   };
 
@@ -40,6 +43,13 @@
     anchorr = {
       enable = true;
       environmentFiles = [ config.sops.templates."anchorr.env".path ];
+      userMappings = [
+        {
+          discordUserId = "127618789448613888";
+          jellyseerrUserId = "1";
+          jellyseerrDisplayName = "neko";
+        }
+      ];
     };
 
     bazarr.enable = true;
@@ -74,7 +84,7 @@
       '';
     };
     flaresolverr.enable = true;
-    jellyseerr = {
+    seerr = {
       enable = true;
       openFirewall = true;
     };

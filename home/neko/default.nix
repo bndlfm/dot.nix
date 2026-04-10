@@ -77,7 +77,7 @@
           #firefox-devedition: programs/hm/firefox.nix
           #zen browser: ./programs/zen-browser.home.nix
           tor-browser
-          qutebrowser
+          chromium
         ];
 
         cli = [
@@ -265,10 +265,10 @@
 
         utilities = {
           wayland = [
+            deskflow
+            gammastep
             wl-clipboard
             wl-clipboard-x11
-            wl-clip-persist
-            gammastep
             wl-gammactl
             wttrbar
             wlr-randr
@@ -351,8 +351,6 @@
       TWITCH_IRC_OAUTH = "$(cat ${config.sops.secrets."internet/TWITCH_IRC_OAUTH".path})";
       OBSIDIAN_REST_API_KEY = "$(cat ${config.sops.secrets."local/OBSIDIAN_REST_API_KEY".path})";
 
-      CLAWDBOT_DISCORD_TOKEN = "$(cat ${config.sops.secrets."discord/clawdbot".path})";
-      CLAWDBOT_GATEWAY_TOKEN = "$(cat ${config.sops.secrets."local/CLAWDBOT_GATEWAY_TOKEN".path})";
       ## EDITOR
       EDITOR = "nvim";
       SUDOEDITOR = "nvim";
@@ -372,10 +370,6 @@
       ## PAGER
       PAGER = "nvim +Man!";
       MANPAGER = "nvim +Man!";
-
-      ## QT STYLING
-      QT_QPA_PLATFORMTHEME = "qt6ct";
-      QT_STYLE_OVERRIDE = "kvantum";
 
       ## ...
       ELECTRON_OZONE_PLATFORM_HINT = "wayland"; # fixes electron wayland
@@ -442,12 +436,6 @@
 
   systemd = {
     user = {
-      services = {
-        monado.environment = {
-          STEAMVR_LH_ENABLE = "1";
-          XRT_COMPOSITOR_COMPUTE = "1";
-        };
-      };
       targets.tray = {
         unitConfig = {
           Description = "Home Manager System Tray";

@@ -13,11 +13,6 @@ in
     # Main imports moved to flake.nix
   ];
 
-  # NOTE: Because Konqi crash loop, fix later.
-  environment.etc."xdg/drkonqirc".text = ''
-    [General]
-    Enabled=false
-  '';
   #-------- PACKAGES --------#
   nix = {
     package = pkgs.nix;
@@ -59,14 +54,15 @@ in
     pinentry-curses
     polkit_gnome
     runc
+    kdePackages.qt6ct
+    kdePackages.qtstyleplugin-kvantum
+    kdePackages.kirigami
     tailscale
     xsettingsd
   ];
 
   #--------- ENV ---------#
   environment.variables = {
-    #QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "qt6ct";
-    #QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
   };
 
   environment.sessionVariables = {
@@ -75,6 +71,9 @@ in
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_STATE_HOME = "$HOME/.local/state";
     XDG_BIN_HOME = "$HOME/.local/bin";
+    QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "kde";
+    #QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
+    #QT_STYLE_PLUGIN = pkgs.lib.mkForce "kvantum";
   };
 
   #-------- PACKAGE MODULES --------#
@@ -208,13 +207,13 @@ in
       openFirewall = true;
     };
     blueman.enable = true;
-    gnome.sushi.enable = true;
+    gnome.sushi.enable = false;
     desktopManager = {
-      gnome.enable = true;
-      plasma6.enable = false;
+      gnome.enable = false;
+      plasma6.enable = true;
     };
     displayManager = {
-      defaultSession = "niri";
+      defaultSession = "hyprland";
       sddm.enable = false;
       gdm.enable = true;
     };

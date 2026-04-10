@@ -102,12 +102,8 @@
         inputs.niri.overlays.niri
       ];
     in
-    rec {
+    {
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-      container = {
-        openclaw-gateway =
-          nixosConfigurations.meow.config.containers."openclaw-gateway".config.system.build.toplevel;
-      };
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
@@ -124,53 +120,53 @@
             ./cachix.nix
             ## FLATPAK
             nix-flatpak.homeManagerModules.nix-flatpak
-            (import ./services/flatpak.home.nix)
+            ./blocks/flatpak.home.nix
             ## NIRI
             niri.homeModules.niri
             ## THEMING
             stylix.homeModules.stylix
-            (import ./blocks/theme/hmStylix.nix)
+            ./blocks/theme/hmStylix.nix
             ## ZEN BROWSER
             inputs.zen-browser.homeModules.twilight
-            (import ./blocks/zen-browser.home.nix)
+            ./blocks/zen-browser.home.nix
 
             ## MODULES
             outputs.homeManagerModules.wlr-which-key
-            (import ./blocks/music.home.nix)
-            #(import ./blocks/notes.home.nix)
+            ./blocks/music.home.nix
+            #./blocks/notes.home.nix
 
             ## PROGRAMS
-            (import ./blocks/programs.home.nix)
-            (import ./blocks/email.home.nix)
-            (import ./blocks/shell/default.nix)
-            (import ./blocks/shell/zellij.home.nix)
-            (import ./blocks/twitch.home.nix)
-            (import ./blocks/firefox.home.nix)
-            (import ./blocks/git.home.nix)
-            (import ./blocks/neovim.home.nix)
-            (import ./blocks/password-store.home.nix)
-            (import ./blocks/ranger.home.nix)
-            (import ./blocks/yazi.home.nix)
+            ./blocks/programs.home.nix
+            ./blocks/email.home.nix
+            ./blocks/shell/default.nix
+            ./blocks/shell/zellij.home.nix
+            ./blocks/twitch.home.nix
+            ./blocks/firefox.home.nix
+            ./blocks/git.home.nix
+            ./blocks/neovim.home.nix
+            ./blocks/password-store.home.nix
+            ./blocks/ranger.home.nix
+            ./blocks/yazi.home.nix
 
             ## SECRETS
             inputs.sops-nix.homeManagerModules.sops
-            (import ./sops/sops.home.nix)
+            ./sops/sops.home.nix
 
             ## SERVICES
-            (import ./services/espanso.home.nix)
-            (import ./services/services.home.nix)
+            ./blocks/espanso.home.nix
+            ./blocks/services.home.nix
 
             ## SPOTIFY
             inputs.spicetify-nix.homeManagerModules.default
 
             ## WINDOW MANAGERS
-            (import ./blocks/gnome-shell.home.nix)
-            (import ./blocks/wm/hyprland.home.nix)
-            (import ./blocks/wm/niri.home.nix)
-            (import ./blocks/wm/wlr-which-key.home.nix)
+            ./blocks/gnome-shell.home.nix
+            ./blocks/wm/hyprland.home.nix
+            ./blocks/wm/niri.home.nix
+            ./blocks/wm/wlr-which-key.home.nix
 
             ## CONTAINERS
-            (import ./containers/gluetun.home.nix)
+            ./containers/gluetun.home.nix
 
             ## IMPORTS
             ./home/neko/default.nix
@@ -182,15 +178,15 @@
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ## PROGRAMS
-            (import ./blocks/shell/default.nix)
-            (import ./blocks/neovim.home.nix)
+            ./blocks/shell/default.nix
+            ./blocks/neovim.home.nix
 
             ## CONTAINERS
-            (import ./containers/homeassistant.home.nix)
+            ./containers/homeassistant.home.nix
 
             ## SECRETS
             inputs.sops-nix.homeManagerModules.sops
-            (import ./sops/sops.home.nix)
+            ./sops/sops.home.nix
 
             ## IMPORTS
             ./home/ceru/default.nix
@@ -214,7 +210,7 @@
             nix-flatpak.nixosModules.nix-flatpak
             ## THEMING
             stylix.nixosModules.stylix
-            (import ./blocks/theme/nxStylix.nix)
+            ./blocks/theme/nxStylix.nix
             ## WINDOW MANAGERS
             niri.nixosModules.niri
             (
@@ -229,22 +225,23 @@
             )
 
             ## MODULES
-            (import ./blocks/caddy-tailscale.sys.nix)
-            (import ./blocks/mympd.sys.nix)
-            (import ./blocks/gaming.sys.nix)
+            ./blocks/caddy-tailscale.sys.nix
+            ./blocks/mympd.sys.nix
+            ./blocks/gaming.sys.nix
             inputs.nixarr.nixosModules.default
-            (import ./blocks/nixarr.sys.nix)
+            ./blocks/nixarr.sys.nix
 
             ## SECRETS
             inputs.sops-nix.nixosModules.sops
-            (import ./sops/sops.sys.nix)
+            ./sops/sops.sys.nix
 
             ## SERVICES
-            (import ./services/sunshine.sys.nix)
-            (import ./services/vaultwarden.sys.nix)
+            ./blocks/sunshine.sys.nix
+            ./blocks/vaultwarden.sys.nix
+            ./blocks/synergy.sys.nix
 
             ## WINDOW MANAGERS
-            (import ./blocks/wm/hyprland.sys.nix)
+            ./blocks/wm/hyprland.sys.nix
 
             ## IMPORTS
             ./hosts/meow/default.nix

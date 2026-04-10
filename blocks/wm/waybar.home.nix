@@ -205,7 +205,7 @@
               "${_g.monitors.center.output}"
               "${_g.monitors.right.output}"
             ];
-            height = 38;
+            height = 32;
             spacing = 5;
             align = 0;
             modules-left = [
@@ -232,7 +232,7 @@
             position = "top";
             output = [
             ];
-            height = 38;
+            height = 32;
             spacing = 5;
             modules-left = [
               "niri/workspaces"
@@ -343,7 +343,7 @@
     '';
     systemd = {
       enable = true;
-      targets = "graphical-session.target";
+      targets = [ "graphical-session.target" ];
     };
   };
 }
