@@ -1,18 +1,33 @@
 { pkgs, config, ... }:
 {
-  sops.secrets."ai_keys/GEMINI_SECRET_KEY" = { };
+  sops = {
+    secrets = {
+      "ai_keys/GEMINI_SECRET_KEY" = { };
+      "internet/BRAVE_SEARCH_API_KEY" = { };
+    };
+    templates."config.ini" = {
+      content = ''
+        [fish-ai]
+        configuration = google
+        history = 10
+        preview_pipe = True
+        brave_search_api_key = ${config.sops.placeholder."internet/BRAVE_SEARCH_API_KEY"}
 
-  home.packages = with pkgs; [
-    meow
-    bat
-  ];
+        [google]
+        provider = google
+        api_key = ${config.sops.placeholder."ai_keys/GEMINI_SECRET_KEY"}
+        model = gemini-3-flash-preview
+      '';
+    };
+  };
+  xdg.configFile."fish-ai/config.ini".source =
+    config.lib.file.mkOutOfStoreSymlink
+      config.sops.templates."config.ini".path;
 
   programs = {
-    /**
-      ***********
-      * FISH SHELL *
-      ************
-    */
+    ##############
+    # FISH SHELL #
+    ##############
     fish = {
       enable = true;
       interactiveShellInit = /* sh */ ''
@@ -20,8 +35,6 @@
         set pisces_only_insert_at_eol 1
 
         function fish_greeting --description "Prints To-do.md as Shell Greeting"
-          #meow
-          #bat ~/Notes/To-do/To-do.md --style=plain --no-paging
         end
 
         function fish_user_key_bindings --description 'Colemak vi-keys'
@@ -50,11 +63,13 @@
           # USE CTRL-Y TO ACCEPT SUGGESTED TEXT AND SUBMIT
               bind -s --preset -M insert \cy "commandline -f accept-autosuggestion execute"
 
-          # CODEX.FISH OPENAI CODEX PLUGIN
-            set -g FISH_AI_KEYMAP_1 'ctrl-x'
-            bind -M insert ctrl-x _fish_ai_codify_or_explain
+          # FISH_AI // POND
+            set -g FISH_AI_KEYMAP_1 'ctrl-q'
+            #bind -M insert ctrl-a _fish_ai_codify_or_explain
             set -g FISH_AI_KEYMAP_2 'ctrl-/'
-            bind -M insert ctrl-/ _fish_ai_autocomplete_or_fix
+            #bind -M insert ctrl-/ _fish_ai_autocomplete_or_fix
+            set -g FISH_AI_KEYMAP_3 'ctrl-a'
+            #bind -M insert ctrl-x _fish_ai_agent
 
             bind -M insert \cp up-or-search # fixes fish-ai keybind
             bind -M insert \cn down-or-search # fixes fish-ai keybind
@@ -121,10 +136,6 @@
           };
         }
         {
-          name = "fish-ai";
-          src = pkgs._fish-ai;
-        }
-        {
           name = "fish-fastdir";
           src = pkgs.fetchFromGitHub {
             owner = "danhper";
@@ -136,15 +147,6 @@
         {
           name = "grc";
           src = pkgs.fishPlugins.grc.src;
-        }
-        {
-          name = "tacklebox";
-          src = pkgs.fetchFromGitHub {
-            owner = "justinmayer";
-            repo = "tacklebox";
-            rev = "1c13cecd5748013be89373ab087dac94e861598d";
-            sha256 = "BGFPnGdF/wmnJH8YJqyBi4Pb6DlPM509fj+GnTnWkQc=";
-          };
         }
         {
           name = "tide";
@@ -336,23 +338,5 @@
       enableFishIntegration = true;
     };
   };
-
-  sops.templates."fish-ai.ini" = {
-    content = ''
-      [fish-ai]
-      configuration = google
-      history = 10
-      preview_pipe = True
-
-      [google]
-      provider = google
-      api_key = ${config.sops.placeholder."ai_keys/GEMINI_SECRET_KEY"}
-      model = gemini-3-flash-preview
-    '';
-  };
-
-  xdg.configFile."fish-ai.ini".source =
-    config.lib.file.mkOutOfStoreSymlink
-      config.sops.templates."fish-ai.ini".path;
 
 }

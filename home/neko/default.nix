@@ -276,7 +276,6 @@
 
           xorg = [
             weather-icons
-            xbindkeys
             xkill
             xhost
           ];
@@ -284,6 +283,7 @@
           other = [
             appimage-run
             copyq
+            easyeffects
             gnome-tweaks
             google-drive-ocamlfuse
             gparted
@@ -378,13 +378,6 @@
       _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd";
       MOZ_DBUS_REMOTE = "1"; # make firefox see dbus
     };
-
-    ######### (HM) DOTFILES ########
-    file = {
-      ".aider.model.metadata.json" = {
-        source = ../../.config/.aider.model.metadata.json;
-      };
-    };
   };
 
   xdg = {
@@ -397,9 +390,6 @@
         source = ../../.config/joshuto;
         recursive = true;
       };
-      ##"mimeapps../..list" = {
-      ##  force = true;
-      ##};
       "mutt" = {
         source = ../../.config/mutt;
         recursive = true;
@@ -431,24 +421,6 @@
         source = ../../.config/zathura;
         recursive = true;
       };
-    };
-  };
-
-  systemd = {
-    user = {
-      targets.tray = {
-        unitConfig = {
-          Description = "Home Manager System Tray";
-          Requires = [ "graphical-session-pre.target" ];
-        };
-      };
-    };
-  };
-
-  specialisation = {
-    familyTree.configuration = {
-      home.packages = with pkgs; [
-      ];
     };
   };
 }

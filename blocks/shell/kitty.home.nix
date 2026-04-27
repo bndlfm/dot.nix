@@ -1,6 +1,144 @@
 { config, pkgs, ... }:
 let
-  smartYankScript = import ./kitty.smartYank.nix { inherit config pkgs; };
+  smartYankScript = pkgs.writeScript "smart-yank" /* fish */ ''
+    #!${pkgs.fish}/bin/fish
+
+    # SmartYank — LLM-powered copy target picker for Kitty terminal.
+    # Reads scrollback from stdin, asks an LLM to identify useful copy targets,
+    # and presents them via fzf for selection → clipboard.
+
+    # ── Dependencies ─────────────────────────────────────────────────────────────
+    set -x PATH (string split : "${
+      pkgs.lib.makeBinPath [
+        pkgs.coreutils
+        pkgs.jq
+        pkgs.curl
+        pkgs.fzf
+        pkgs.gnused
+        pkgs.wl-clipboard
+      ]
+    }") $PATH
+
+    # ── Capture stdin immediately ──────────────────────────────────────────────
+    # fish 3.4+ redirects stdin to /dev/null inside command substitutions,
+    # so we must slurp it here at the top level via the `read` builtin.
+    read -z _raw_stdin
+
+    # ── Provider Configuration ─────────────────────────────────────────────────
+    set provider (set -q SMARTYANK_API_PROVIDER; and echo $SMARTYANK_API_PROVIDER; or echo google)
+
+    switch $provider
+        case google
+            set model    (set -q SMARTYANK_GOOGLE_MODEL; and echo $SMARTYANK_GOOGLE_MODEL; or echo "gemini-2.5-flash-preview-05-20")
+            set api_key  (cat ${config.sops.secrets."ai_keys/GEMINI_SECRET_KEY".path} | string trim)
+            set provider_name "Google Gemini"
+            set endpoint "https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$api_key"
+            set auth_header ""
+            set payload_jq  '{contents: [{parts: [{text: $pt}]}], generationConfig: {maxOutputTokens: 1500}}'
+            set response_jq '.candidates[0].content.parts[0].text'
+
+        case groq
+            set model    (set -q SMARTYANK_GROQ_MODEL; and echo $SMARTYANK_GROQ_MODEL; or echo "llama3-70b-8192")
+            set api_key  (cat ${config.sops.secrets."ai_keys/GROQ_SECRET_KEY".path} | string trim)
+            set provider_name "Groq"
+            set endpoint "https://api.groq.com/openai/v1/chat/completions"
+            set auth_header "Authorization: Bearer $api_key"
+            set payload_jq  '{model: $model, messages: [{role: "user", content: $pt}], max_tokens: 1500}'
+            set response_jq '.choices[0].message.content'
+
+        case '*'
+            echo "Error: Invalid SMARTYANK_API_PROVIDER: '$provider'. Use 'google' or 'groq'." >&2
+            exit 1
+    end
+
+    if test -z "$api_key"
+        echo "Error: API key for $provider_name is empty or not configured." >&2
+        exit 1
+    end
+
+    echo "SmartYank: Using $provider_name — model: $model" >&2
+
+    # ── Process Screen Content ─────────────────────────────────────────────────
+    set screen_content (printf '%s' "$_raw_stdin" | tail -n 100 | sed -r 's/\x1B\[([0-9]{1,3}(;[0-9]{1,3})*)?[mGKH]//g' | string collect)
+
+    if test -z "$screen_content"
+        echo "Error: No screen content received from stdin." >&2
+        exit 1
+    end
+
+    # ── Build Prompt ───────────────────────────────────────────────────────────
+    set prompt "Based upon the data provided under Screen Content identify any possible copy targets for the user. URLS, COMMANDS, THE RESULT OF COMMANDS (COMMAND OUTPUT), ETC.
+    1. If you choose a command as a possible copy target suggest possible arguments, JUST THE COMMAND ITSELF IS NOT USEFUL.
+    2. Use the most recent commands to try and identify relevance of copy targets.
+    3. RETURN ONLY COPY TARGETS OR YOU WILL BREAK THE STRING, DO NOT NUMBER THE LIST.
+    4. DO NOT RETURN THE SAME TARGET MULTIPLE TIMES. IF YOU CANNOT FIND THE NUMBER OF COPY TARGETS REQUESTED RETURN AS MANY AS YOU CAN.
+    5. Invert the list so the most promising candidate is the last you return.
+    6. Return 20 possible copy targets.
+
+    Screen Content:
+
+    $screen_content"
+
+    # ── Call LLM ───────────────────────────────────────────────────────────────
+    set json_payload (jq -c -n --arg pt "$prompt" --arg model "$model" "$payload_jq")
+
+    set curl_args -s -X POST -H 'Content-Type: application/json'
+    if test -n "$auth_header"
+        set -a curl_args -H "$auth_header"
+    end
+    set -a curl_args --data "$json_payload" "$endpoint"
+
+    set llm_response (curl $curl_args | string collect)
+
+    if test -z "$llm_response"
+        echo "Error: Empty response from $provider_name." >&2
+        exit 1
+    end
+
+    # ── Parse Response ─────────────────────────────────────────────────────────
+    if echo "$llm_response" | jq -e '.error' >/dev/null 2>&1
+        echo "Error from $provider_name: "(echo "$llm_response" | jq -r '.error.message') >&2
+        echo "Full response: $llm_response" >&2
+        exit 1
+    end
+
+    if not echo "$llm_response" | jq -e "$response_jq" >/dev/null 2>&1
+        echo "Error: Unexpected response structure from $provider_name." >&2
+        echo "Response: $llm_response" >&2
+        exit 1
+    end
+
+    set copy_targets (echo "$llm_response" | jq -r "$response_jq" | string collect)
+
+    if test -z "$copy_targets"; or test "$copy_targets" = null
+        echo "No copy targets found in $provider_name response." >&2
+        echo "Raw response: $llm_response" >&2
+        exit 1
+    end
+
+    # ── Select via fzf ────────────────────────────────────────────────────────
+    set selected (echo "$copy_targets" | fzf --no-sort --reverse | string collect)
+
+    if test -z "$selected"
+        echo "No item selected. Aborting." >&2
+        exit 0
+    end
+
+    # ── Copy to Clipboard ─────────────────────────────────────────────────────
+    if type -q wl-copy
+        echo -n "$selected" | wl-copy
+        echo "Copied to Wayland clipboard." >&2
+    else if type -q xclip
+        echo -n "$selected" | xclip -i -selection clipboard
+        echo "Copied to X11 clipboard." >&2
+    else if type -q clip.exe
+        echo -n "$selected" | clip.exe
+        echo "Copied to Windows clipboard via clip.exe." >&2
+    else
+        echo "Warning: No clipboard tool found. Printing to stdout:" >&2
+        echo "$selected"
+    end
+  '';
 in
 {
   sops.secrets = {

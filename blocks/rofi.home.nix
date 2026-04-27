@@ -1,10 +1,10 @@
-{ pkgs, ... }:{
+{ pkgs, ... }:
+{
   programs.rofi = {
-    enable = false;
+    enable = true;
     #cycle = true;
     #font = "Inconsolata Nerd Font 12";
     #location = "center";
-    package = pkgs.rofi-wayland-unwrapped;
     plugins = with pkgs; [
       rofi-pass-wayland
       #rofi-calc

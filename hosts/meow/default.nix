@@ -71,7 +71,7 @@ in
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_STATE_HOME = "$HOME/.local/state";
     XDG_BIN_HOME = "$HOME/.local/bin";
-    QT_QPA_PLATFORMTHEME = pkgs.lib.mkForce "kde";
+    QT_QPA_PLATFORMTHEME = "kde";
     #QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
     #QT_STYLE_PLUGIN = pkgs.lib.mkForce "kvantum";
   };
