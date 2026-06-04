@@ -286,6 +286,7 @@ in
           # Base16 Nord - kitty color config
           # Scheme by arcticicestudio
           background #2E3440
+          background_opacity 0.9
           foreground #E5E9F0
           selection_background #E5E9F0
           selection_foreground #2E3440

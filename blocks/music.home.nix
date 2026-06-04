@@ -8,8 +8,6 @@ let
   musicDir = "/data/media/library/music";
 in
 {
-  #sops.secrets."internet/lastfm_pass" = { };
-
   programs = {
     ncmpcpp = {
       enable = true;

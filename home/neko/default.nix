@@ -63,10 +63,9 @@
         ];
 
         ai = [
-          chromium # OPENCLAW
-          _jules
           sillytavern
           warp-terminal
+          #_screenpipe
         ];
 
         apple = [
@@ -137,7 +136,7 @@
           # LAUNCHERS
           _gamma-launcher
           heroic
-          lutris
+          #lutris
           prismlauncher
 
           # MISC
@@ -205,6 +204,7 @@
         social = [
           vesktop
           discord
+          dino
           signal-desktop
           hexchat
           telegram-desktop
@@ -214,7 +214,6 @@
           nwg-look
           openrgb
           file-roller
-          ventoy-full-gtk
 
           # Wine/Proton
           wineWow64Packages.stable
@@ -382,10 +381,10 @@
 
   xdg = {
     configFile = {
-      "hypr" = {
-        source = ../../.config/hypr;
-        recursive = true;
-      };
+      # "hypr" = {
+      #   source = ../../.config/hypr;
+      #   recursive = true;
+      # };
       "joshuto" = {
         source = ../../.config/joshuto;
         recursive = true;

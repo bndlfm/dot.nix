@@ -5,7 +5,7 @@
     nativeMessagingHosts = with pkgs; [
       tridactyl-native
       kdePackages.plasma-browser-integration
-      firefoxpwa
+      #firefoxpwa
     ];
     profiles = {
       "oli3t15x.default-release" = {

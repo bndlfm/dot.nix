@@ -30,6 +30,7 @@
 
     ## PROGRAMS
     #deejavu.url = "github:bndlfm/deejavu";
+    nixCats.url = "github:BirdeeHub/nixCats-nvim";
     lsfg-vk = {
       url = "github:pabloaul/lsfg-vk-flake/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -74,6 +75,8 @@
 
       hyprland,
       niri,
+
+      nixCats,
 
       microvm,
 
@@ -143,7 +146,8 @@
             ./blocks/twitch.home.nix
             ./blocks/firefox.home.nix
             ./blocks/git.home.nix
-            ./blocks/neovim.home.nix
+            # ./blocks/neovim.home.nix
+            ./blocks/nixcats/nixcats.home.nix
             ./blocks/password-store.home.nix
             ./blocks/ranger.home.nix
             ./blocks/yazi.home.nix
@@ -161,7 +165,7 @@
 
             ## WINDOW MANAGERS
             ./blocks/gnome-shell.home.nix
-            ./blocks/wm/hyprland.home.nix
+            ./blocks/wm/hyprland-lua.home.nix
             ./blocks/wm/niri.home.nix
             ./blocks/wm/wlr-which-key.home.nix
 
@@ -179,7 +183,8 @@
           modules = [
             ## PROGRAMS
             ./blocks/shell/default.nix
-            ./blocks/neovim.home.nix
+            # ./blocks/neovim.home.nix
+            ./blocks/nixcats/nixcats.home.nix
 
             ## CONTAINERS
             ./containers/homeassistant.home.nix

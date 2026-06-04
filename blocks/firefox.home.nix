@@ -6,7 +6,7 @@
       tridactyl-native
       gopass-jsonapi
       kdePackages.plasma-browser-integration
-      firefoxpwa
+      #firefoxpwa
     ];
     package = pkgs.firefox-devedition;
     profiles = {
