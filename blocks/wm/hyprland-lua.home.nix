@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }:
@@ -44,11 +43,10 @@ in
 
     extraConfig = /* lua */ ''
       local mainMod     = "SUPER"
-      local useScrolling = ${if hyprScrolling then "true" else "false"} -- DONT SET MANUALLY
+      local useScrolling = ${if hyprScrolling then "true" else "false"} --- DONT SET MANUALLY
 
-      -- {{{ Monitors
-      -- https://wiki.hypr.land/Configuring/Basics/Monitors/
-
+      --- Monitors --- {{{
+      --- https://wiki.hypr.land/Configuring/Basics/Monitors/
       hl.monitor({
         output    = "${_g.monitors.left.output}",
         mode      = "${toString _g.monitors.left.res.width}x${toString _g.monitors.left.res.height}",
@@ -71,14 +69,12 @@ in
         scale     = 1,
         transform = 1,
       })
-      -- }}}
+      --- }}}
 
-      -- {{{ Core Config
-      -- https://wiki.hypr.land/Configuring/Basics/Variables/
-
+      --- Core Config --- {{{
+      --- https://wiki.hypr.land/Configuring/Basics/Variables/
       hl.config({
-
-        -- {{{ general
+        --- general {{{
         general = {
           allow_tearing = true,
           gaps_in       = 5,
@@ -91,46 +87,22 @@ in
             nogroup_border  = "rgba(60728aff)",
           },
         },
-        -- }}}
-
-        -- {{{ animations
-        animations = {
-          enabled = true,
-        },
-        -- }}}
-
-        -- {{{ cursor
-        cursor = {
-          no_hardware_cursors = false,
-        },
-        -- }}}
-
-        -- {{{ dwindle
+        --- }}}
+        --- layouts {{{
         dwindle = {
           force_split    = 2,
           preserve_split = true,
         },
-        -- }}}
-
-        -- {{{ scrolling
         scrolling = {
           focus_fit_method = 0,
         },
-        -- }}}
-
-        -- {{{ debug
-        debug = {
-          disable_logs = false,
-        },
-        -- }}}
-
-        -- {{{ decoration
+        --- }}}
+        --- decoration {{{
         decoration = {
           rounding = 7,
         },
-        -- }}}
-
-        -- {{{ input
+        --- }}}
+        --- input {{{
         input = {
           kb_layout               = "us",
           repeat_rate             = 80,
@@ -141,13 +113,11 @@ in
           numlock_by_default      = true,
           sensitivity             = 0,
         },
-        -- }}}
+        --- }}}
+      }) --- }}}
 
-      })
-      -- }}}
-
-      -- {{{ Animations
-      -- https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/
+      --- Animations --- {{{
+      --- https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/
 
       hl.curve("myBezier", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.05 } } })
 
@@ -157,10 +127,10 @@ in
       hl.animation({ leaf = "borderangle", enabled = true, speed = 2, bezier = "default" })
       hl.animation({ leaf = "fade",        enabled = true, speed = 2, bezier = "default" })
       hl.animation({ leaf = "workspaces",  enabled = true, speed = 2, bezier = "default" })
-      -- }}}
+      --- }}}
 
-      -- {{{ Environment Variables
-      -- https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
+      --- Environment Variables --- {{{
+      --- https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
       hl.env("LIBVA_DRIVER_NAME",         "nvidia")
       hl.env("XDG_SESSION_TYPE",          "wayland")
@@ -171,11 +141,11 @@ in
       hl.env("XCURSOR_SIZE",              "24")
       hl.env("HYPRCURSOR_THEME",          "volantes-light-hyprcursor")
       hl.env("HYPRCURSOR_SIZE",           "24")
-      -- }}}
+      --- }}}
 
-      -- {{{ Autostart
-      -- exec-once equivalent: hl.on("hyprland.start", ...)
-      -- https://wiki.hypr.land/Configuring/Basics/Autostart/
+      --- Autostart --- {{{
+      --- exec-once equivalent: hl.on("hyprland.start", ...)
+      --- https://wiki.hypr.land/Configuring/Basics/Autostart/
 
       hl.on("hyprland.start", function()
         hl.exec_cmd("waypaper --restore")
@@ -187,24 +157,24 @@ in
         hl.exec_cmd("${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/GoogleDrive")
         hl.exec_cmd("xrandr --output DP-1 --primary")
       end)
-      -- }}}
+      --- }}}
 
-      -- {{{ Window Rules
-      -- https://wiki.hypr.land/Configuring/Basics/Window-Rules/
-      -- Rules are matched top-to-bottom; multiple effects can share one match block.
+      --- Window Rules --- {{{
+      --- https://wiki.hypr.land/Configuring/Basics/Window-Rules/
+      --- Rules are matched top-to-bottom; multiple effects can share one match block.
 
-      -- {{{ Clipboard (clipse)
+      --- Clipboard (clipse) --- {{{
       hl.window_rule({ match = { class = "^clipse$" },
         float = true, size = "622 652" })
-      -- }}}
+      --- }}}
 
-      -- {{{ File Pickers
+      --- File Pickers --- {{{
       hl.window_rule({ match = { class = "xdg-desktop-portal(.*)" }, float = true })
       hl.window_rule({ match = { title = "(.*)(Select a)(.*)" },
         size = "1060 960", center = true })
-      -- }}}
+      --- }}}
 
-      -- {{{ Firefox Dev Edition – Picture-in-Picture
+      --- Firefox Dev Edition – Picture-in-Picture --- {{{
       hl.window_rule({
         match = { class = "^firefox-devedition$", title = "(.*)(Picture-in-Picture)(.*)" },
         float            = true,
@@ -212,9 +182,9 @@ in
         move             = "1920 56",
         no_initial_focus = true,
       })
-      -- }}}
+      --- }}}
 
-      -- {{{ Firefox Nightly – Picture-in-Picture
+      --- Firefox Nightly – Picture-in-Picture --- {{{
       hl.window_rule({
         match = { class = "^firefox-nightly$", title = "(.*)(Picture-in-Picture)(.*)" },
         float            = true,
@@ -222,40 +192,40 @@ in
         move             = "1920 56",
         no_initial_focus = true,
       })
-      -- }}}
+      --- }}}
 
-      -- {{{ GPG / Pinentry
+      --- GPG / Pinentry --- {{{
       hl.window_rule({ match = { class = "Pinentry(.*)" }, float = true, center = true })
-      -- }}}
+      --- }}}
 
-      -- {{{ Steam
+      --- Steam --- {{{
       hl.window_rule({
         match     = { class = "^steam_app_(.*)" },
         immediate = true,
         workspace = "7 silent",
         float     = true,
       })
-      -- }}}
+      --- }}}
 
-      -- {{{ qBittorrent
+      --- qBittorrent --- {{{
       hl.window_rule({ match = { class = "^org\\.qbittorrent\\.qBittorrent$" },
         workspace = "9 silent" })
-      -- }}}
+      --- }}}
 
-      -- {{{ Streamlink / Chatterino
+      --- Streamlink / Chatterino --- {{{
       hl.window_rule({ match = { class = "^streamlink-twitch-gui$" }, workspace = "10 silent" })
       hl.window_rule({ match = { class = "^chatterino$"            }, workspace = "10 silent" })
-      -- }}}
+      --- }}}
 
-      -- {{{ CopyQ
+      --- CopyQ --- {{{
       hl.window_rule({ match = { class = "^com\\.github\\.hluk\\.copyq$" }, float = true })
-      -- }}}
+      --- }}}
 
-      -- {{{ Vencord / Discord
+      --- Vencord / Discord --- {{{
       hl.window_rule({ match = { class = "^vencorddesktop$" }, workspace = "10 silent" })
-      -- }}}
+      --- }}}
 
-      -- {{{ MPV Picture-in-Picture
+      --- MPV Picture-in-Picture --- {{{
       hl.window_rule({
         match     = { class = "^mpv_pip$" },
         workspace = "10",
@@ -264,41 +234,41 @@ in
         move      = "416 33",
         pin       = true,
       })
-      -- }}}
+      --- }}}
 
-      -- }}}
+      --- }}}
 
-      -- {{{ Workspace Rules
-      -- https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
+      --- Workspace Rules --- {{{
+      --- https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 
       hl.workspace_rule({ workspace = "8",  monitor = "${_g.monitors.left.output}",   default = true })
       hl.workspace_rule({ workspace = "1",  monitor = "${_g.monitors.center.output}", default = true })
       hl.workspace_rule({ workspace = "7",  monitor = "${_g.monitors.center.output}" })
       hl.workspace_rule({ workspace = "10", monitor = "${_g.monitors.right.output}",  default = true })
-      -- }}}
+      --- }}}
 
-      -- {{{ Key Bindings
-      -- https://wiki.hypr.land/Configuring/Basics/Binds/
-      -- https://wiki.hypr.land/Configuring/Basics/Dispatchers/
+      --- Key Bindings --- {{{
+      --- https://wiki.hypr.land/Configuring/Basics/Binds/
+      --- https://wiki.hypr.land/Configuring/Basics/Dispatchers/
 
-      -- {{{ Misc
+      --- Misc --- {{{
       hl.bind(mainMod .. " + BACKSPACE",                 hl.dsp.exec_cmd("kitty"))
       hl.bind(mainMod .. " + Q",                         hl.dsp.window.close())
       hl.bind(mainMod .. " + ALT + ESCAPE",              hl.dsp.exit())
       hl.bind(mainMod .. " + S",                         hl.dsp.window.float({ action = "toggle" }))
       hl.bind(mainMod .. " + F",                         hl.dsp.window.fullscreen())
       hl.bind(mainMod .. " + CONTROL + F",               hl.dsp.exec_cmd("nautilus"))
-      hl.bind(mainMod .. " + GRAVE",                     hl.dsp.exec_cmd("hdrop -f -b -g 30 kitty --class kittydrop"))
+      hl.bind(mainMod .. " + GRAVE",                     hl.dsp.exec_cmd("hdrop -f -b -g 30 kitty --- class kittydrop"))
       hl.bind(mainMod .. " + ALT + L",                   hl.dsp.exec_cmd("~/hypr/swayidle-swaylock-hypr.sh"))
       hl.bind(mainMod .. " + CONTROL + ALT + SHIFT + D", hl.dsp.exec_cmd("~/.local/state/nix/profiles/imperative/bin/xhisper"))
-      -- }}}
+      --- }}}
 
-      -- {{{ Launchers
+      --- Launchers --- {{{
       hl.bind(mainMod .. " + D",           hl.dsp.exec_cmd("rofi -show combi -combi-modes window,drun,ssh,run,filebrowser,recursivebrowser"))
       hl.bind(mainMod .. " + CONTROL + V", hl.dsp.exec_cmd("copyq show"))
-      -- }}}
+      --- }}}
 
-      -- {{{ Groups
+      --- Groups --- {{{
       hl.bind(mainMod .. " + G",           hl.dsp.group.toggle())
       hl.bind(mainMod .. " + tab",         hl.dsp.group.next())
 
@@ -308,20 +278,19 @@ in
       hl.bind(mainMod .. " + ALT + down",  hl.dsp.window.move({ into_group = "d" }))
 
       hl.bind(mainMod .. " + M",           hl.dsp.window.move({ out_of_group = true }))
-      -- }}}
+      --- }}}
 
-      -- {{{ Cycle Floating Windows
-      -- cyclenext + bringactivetotop combined (was two separate bind= lines)
+      --- Cycle Floating Windows --- {{{
+      --- cyclenext + bringactivetotop combined (was two separate bind= lines)
       hl.bind(mainMod .. " + Tab", function()
         hl.dispatch(hl.dsp.window.cycle_next())
         hl.dispatch(hl.dsp.window.bring_to_top())
       end)
-      -- }}}
+      --- }}}
 
-      -- {{{ Layout-Specific Binds
+      --- Layout-Specific Binds --- {{{
       if useScrolling then
-
-        -- {{{ Hyprscrolling
+        --- Hyprscrolling --- {{{
         hl.bind(mainMod .. " + minus", hl.dsp.layout("colresize -conf"))
         hl.bind(mainMod .. " + equal", hl.dsp.layout("colresize +conf"))
 
@@ -338,13 +307,17 @@ in
         hl.bind(mainMod .. " + SHIFT + E", hl.dsp.window.move({ direction = "u" }), { repeating = true })
         hl.bind(mainMod .. " + SHIFT + I", hl.dsp.layout("swapcol r"),             { repeating = true })
 
+        --- Move active window to left/right monitor
+        hl.bind(mainMod .. " + SHIFT + comma",  hl.dsp.window.move({ monitor = "l" }))
+        hl.bind(mainMod .. " + SHIFT + period", hl.dsp.window.move({ monitor = "r" }))
+
         hl.bind(mainMod .. " + X", hl.dsp.layout("promote"))
         hl.bind(mainMod .. " + C", hl.dsp.layout("consume"))
-        -- }}}
+        --- }}}
 
       else
 
-        -- {{{ Dwindle
+        --- Dwindle --- {{{
         hl.bind(mainMod .. " + comma",  hl.dsp.focus({ workspace = "m-1" }))
         hl.bind(mainMod .. " + period", hl.dsp.focus({ workspace = "m+1" }))
 
@@ -360,43 +333,43 @@ in
         hl.bind(mainMod .. " + CONTROL + SHIFT + N", hl.dsp.layout("preselect d"))
         hl.bind(mainMod .. " + CONTROL + SHIFT + H", hl.dsp.layout("preselect l"))
         hl.bind(mainMod .. " + CONTROL + SHIFT + I", hl.dsp.layout("preselect r"))
-        -- }}}
+        --- }}}
 
       end
-      -- }}}
+      --- }}}
 
-      -- {{{ Workspace Switching
+      --- Workspace Switching --- {{{
       for i = 1, 10 do
-        local key = i % 10  -- key 0 maps to workspace 10
+        local key = i % 10  --- key 0 maps to workspace 10
         hl.bind(mainMod .. " + "         .. key, hl.dsp.focus({ workspace = i }))
         hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
       end
 
       hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
       hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
-      -- }}}
+      --- }}}
 
-      -- {{{ Screenshots
+      --- Screenshots --- {{{
       hl.bind("SHIFT + PRINT",   hl.dsp.exec_cmd("hyprshot -m window"))
       hl.bind("PRINT",           hl.dsp.exec_cmd("hyprshot -m output"))
       hl.bind("CONTROL + PRINT", hl.dsp.exec_cmd("hyprshot -m region"))
-      -- }}}
+      --- }}}
 
-      -- {{{ Volume
+      --- Volume --- {{{
       hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"))
       hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"))
-      -- }}}
+      --- }}}
 
-      -- {{{ Repeatable Binds
+      --- Repeatable Binds --- {{{
 
-      -- {{{ Move Floating Windows
+      --- Move Floating Windows --- {{{
       hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.move({ x = -10, y = 0,   relative = true }), { repeating = true })
       hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.move({ x = 0,   y = 10,  relative = true }), { repeating = true })
       hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.move({ x = 0,   y = -10, relative = true }), { repeating = true })
       hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ x = 10,  y = 0,   relative = true }), { repeating = true })
-      -- }}}
+      --- }}}
 
-      -- {{{ Resize Active Window
+      --- Resize Active Window --- {{{
       hl.bind(mainMod .. " + CONTROL + H",     hl.dsp.window.resize({ x = -30, y = 0,   relative = true }), { repeating = true })
       hl.bind(mainMod .. " + CONTROL + N",     hl.dsp.window.resize({ x = 0,   y = 30,  relative = true }), { repeating = true })
       hl.bind(mainMod .. " + CONTROL + E",     hl.dsp.window.resize({ x = 0,   y = -30, relative = true }), { repeating = true })
@@ -406,16 +379,16 @@ in
       hl.bind(mainMod .. " + CONTROL + right", hl.dsp.window.resize({ x = 10,  y = 0,   relative = true }), { repeating = true })
       hl.bind(mainMod .. " + CONTROL + up",    hl.dsp.window.resize({ x = 0,   y = -10, relative = true }), { repeating = true })
       hl.bind(mainMod .. " + CONTROL + down",  hl.dsp.window.resize({ x = 0,   y = 10,  relative = true }), { repeating = true })
-      -- }}}
+      --- }}}
 
-      -- }}}
+      --- }}}
 
-      -- {{{ Mouse Binds
+      --- Mouse Binds --- {{{
       hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
       hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
-      -- }}}
+      --- }}}
 
-      -- }}}
+      --- }}}
     '';
   };
   # }}}

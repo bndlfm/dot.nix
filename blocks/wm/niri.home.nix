@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   config,
   inputs,
   ...
@@ -33,38 +32,43 @@ in
     };
 
     programs = {
-      noctalia-shell = {
-        enable = true;
-        systemd.enable = false;
-      };
-
       niri = {
         package = pkgs.niri-unstable;
         settings = {
           prefer-no-csd = true;
+          # --- Cursor --- {{{
           cursor = {
             size = 32;
             theme = "volantes_light_cursors";
           };
+          #}}}
 
+          # --- XWayland --- {{{
           xwayland-satellite = {
             enable = true;
             path = pkgs.lib.getExe pkgs.xwayland-satellite-unstable;
           };
+          # }}}
 
+          # --- Environment Vars --- {{{
           environment = {
             NIXOS_OZONE_WL = "1"; # fixes electron wayland
             ELECTRON_OZONE_PLATFORM_HINT = "wayland"; # fixes electron wayland
           };
+          # }}}
 
+          # --- Input --- {{{
           input = {
             keyboard = {
               repeat-delay = 275;
               repeat-rate = 70;
             };
           };
+          # }}}
 
+          # --- Outputs --- {{{
           outputs = {
+            # {{{ --- Left Monitor ---
             "HDMI-A-1" = {
               enable = true;
               mode = {
@@ -77,7 +81,8 @@ in
               };
               transform.rotation = 270;
             };
-            ## CENTER MONITOR
+            # }}}
+            # {{{ --- Center Monitor ---
             "DP-1" = {
               enable = true;
               mode = {
@@ -90,7 +95,8 @@ in
               };
               variable-refresh-rate = false;
             };
-            ## RIGHT MONITOR
+            # }}}
+            # {{{ --- Right Monitor ---
             "DP-2" = {
               enable = true;
               mode = {
@@ -103,8 +109,11 @@ in
               };
               transform.rotation = 90;
             };
+            # }}}
           };
+          # }}}
 
+          # --- Layout --- {{{
           layout = {
             preset-column-widths = [
               { proportion = 2. / 5.; }
@@ -120,10 +129,14 @@ in
               { proportion = 1. / 1.; }
             ];
           };
+          # }}}
 
+          # --- Workspaces --- {{{
           workspaces = {
           };
+          # }}}
 
+          # --- Startup --- {{{
           spawn-at-startup = [
             { command = [ "blueman-applet" ]; }
             { command = [ "noctalia-shell" ]; }
@@ -164,8 +177,9 @@ in
             #    "swayidle -w timeout 1201 'niri msg action power-off-monitors' timeout 1200 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'"
             #  ];
             #}
-          ];
+          ]; # }}}
 
+          # --- Binds --- {{{
           binds =
             with config.lib.niri.actions;
             let
@@ -185,16 +199,13 @@ in
               );
             in
             {
-
-              #----------------#
-              # BASIC KEYBINDS #
-              #----------------#
+              # --- BASIC KEYBINDS --- {{{
               ## QUIT NIRI/TURN OFF MONITORS
               "${Mod}+Shift+Escape".action = quit;
               "${Mod}+Shift+P".action = power-off-monitors;
               "${Mod}+Shift+Backslash".action = show-hotkey-overlay;
               "${Mod}+Shift+Grave".action = toggle-overview;
-              # Replace this with swaylock-effects "${Mod}+L".action.spawn = "blurred-locker";
+              # "${Mod}+L".action.spawn = "blurred-locker";
 
               ## CLOSE WINDOW
               "${Mod}+Q".action.close-window = [ ];
@@ -209,6 +220,7 @@ in
               ];
               "${Mod}+Shift+BackSpace".action.spawn = [ "wlr-which-key" ];
               "${Mod}+BackSpace".action.spawn = "kitty";
+
               ## STT Transcribe Tool
               "Alt+Control+Shift+D".action.spawn = [
                 "/home/neko/.local/state/nix/profiles/imperative/bin/xhisper"
@@ -221,10 +233,9 @@ in
                   "noctalia-shell >/dev/null 2>&1 &"
                 ]
               );
+              # }}}
 
-              #-----------#
-              # CLIPBOARD #
-              #-----------#
+              # --- CLIPBOARD --- {{{
               "${Mod}+Control+V".action.spawn = [
                 "noctalia-shell"
                 "ipc"
@@ -232,10 +243,9 @@ in
                 "launcher"
                 "clipboard"
               ];
+              # }}}
 
-              #------------#
-              # SCREENSHOT #
-              #------------#
+              # --- SCREENSHOT --- {{{
               "${Mod}+Shift+S".action.spawn = [
                 "niri"
                 "msg"
@@ -248,10 +258,9 @@ in
                 "action"
                 "screenshot-window"
               ];
+              # }}}
 
-              #-----------------#
-              # VOLUME CONTROLS #
-              #-----------------#
+              # --- VOLUME CONTROLS --- {{{
               "XF86AudioRaiseVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+";
               "XF86AudioLowerVolume".action = sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-";
               "XF86AudioMute".action = sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
@@ -263,10 +272,9 @@ in
                 action = focus-column-left;
                 hotkey-overlay.hidden = true;
               };
+              # }}}
 
-              #-------------------#
-              # WINDOW MANAGEMENT #
-              #-------------------#
+              # --- WINDOW MANAGEMENT --- {{{
               ## CONSUME/EXPEL
               "${Mod}+C".action.consume-window-into-column = [ ];
               "${Mod}+X".action.expel-window-from-column = [ ];
@@ -301,11 +309,9 @@ in
 
               ## COLUMN SCREEN ALIGNMENT
               "${Mod}+Z".action = center-column;
+              # }}}
 
-              #-------#
-              # FOCUS #
-              #-------#
-
+              # --- FOCUS --- {{{
               ## FOCUS WITH VI KEYS (COLEMAK)
               "${Mod}+H".action = focus-column-left;
               "${Mod}+N".action = focus-window-or-workspace-down;
@@ -324,11 +330,9 @@ in
               "${Mod}+2".action = focus-workspace 2;
               "${Mod}+3".action = focus-workspace 3;
               "${Mod}+4".action = focus-workspace 4;
+              # }}}
 
-              #--------------------#
-              # MOVE WINDOW/COLUMN #
-              #--------------------#
-
+              # --- MOVE WINDOW/COLUMN --- {{{
               ## MOVE COLUMN/WINDOW WITH VI KEYS
               "${Mod}+Shift+H".action = move-column-left;
               "${Mod}+Shift+N".action = move-window-down-or-to-workspace-down;
@@ -341,8 +345,10 @@ in
               "${Mod}+Control+Down".action = move-window-to-monitor-down;
               "${Mod}+Control+Up".action = move-window-to-monitor-up;
               "${Mod}+Control+Right".action = move-window-to-monitor-right;
-            };
+              # }}}
+            }; # }}}
 
+          # --- Window Rules --- {{{
           window-rules =
             let
               colors = config.lib.stylix.colors.withHashtag;
@@ -354,9 +360,8 @@ in
                 opacity = 1.0;
                 block-out-from = "screencast"; # Optional: keeps translations private
               }
-              #--------#
-              # GLOBAL #
-              #--------#
+
+              # ══════════════════════════════════ GLOBAL ══════════════════════════════════ {{{
               {
                 clip-to-geometry = true;
                 geometry-corner-radius = {
@@ -375,10 +380,9 @@ in
                 matches = [ { app-id = "^niri$"; } ];
                 opacity = 1.0;
               }
+              # }}}
 
-              #---------#
-              # BROWSER #
-              #---------#
+              # ══════════════════════════════════ BROWSER ══════════════════════════════════ {{{
               {
                 matches = [
                   {
@@ -424,10 +428,9 @@ in
                   y = 50;
                 };
               }
+              # }}}
 
-              #-----#
-              # IDE #
-              #-----#
+              # ══════════════════════════════════════ IDE ══════════════════════════════════════ {{{
               {
                 ## VS CODE FLICKERS WITH TRANSPARENCY
                 matches = [
@@ -438,10 +441,9 @@ in
                 ];
                 opacity = null;
               }
+              # }}}
 
-              #----------#
-              # TERMINAL #
-              #----------#
+              # ══════════════════════════════════ TERMINAL ══════════════════════════════════ {{{
               #{
               #  matches = [
               #    {
@@ -456,10 +458,9 @@ in
               #  opacity = 0.85;
               #  open-floating = true;
               #}
+              # }}}
 
-              #------#
-              # MISC #
-              #------#
+              # ══════════════════════════════════════ MISC ══════════════════════════════════════ {{{
               {
                 matches = [ { app-id = "^com.github.hluk.copyq$"; } ];
                 open-floating = true;
@@ -486,10 +487,13 @@ in
                 matches = [ { app-id = "^signal$"; } ];
                 block-out-from = "screencast";
               }
+              # }}}
 
-            ];
+            ]; # }}}
         };
       };
     };
   };
 }
+
+# vim: foldmethod=marker foldmarker={{{,}}} foldlevel=1

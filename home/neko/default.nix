@@ -1,11 +1,11 @@
 {
   config,
   inputs,
-  lib,
   pkgs,
   ...
 }:
 {
+  # --- Home Settings --- {{{
   home.stateVersion = "23.11";
   home.username = "neko";
   home.homeDirectory = "/home/neko";
@@ -14,10 +14,9 @@
 
   imports = [
   ];
+  # }}}
 
-  ##########################
-  # NIX / NIXPKGS SETTINGS #
-  ##########################
+  # --- Nix / Nixpkgs --- {{{
   nix.package = pkgs.nix;
 
   nixpkgs = {
@@ -31,10 +30,9 @@
     };
     overlays = [ inputs.nur.overlays.default ];
   };
+  # }}}
 
-  ######################
-  # FLATPAK / PACKAGES #
-  ######################
+  # --- Flatpak / Services --- {{{
   services = {
     flatpak = {
       enable = true;
@@ -53,11 +51,14 @@
       };
     };
   };
+  # }}}
 
+  # --- Home Packages --- {{{
   home = {
     packages =
       with pkgs;
       let
+        # --- Categories --- {{{
         patched = [
           #inputs.deejavu.packages.x86_64-linux.default
         ];
@@ -73,7 +74,6 @@
         ];
 
         browsers = [
-          #firefox-devedition: programs/hm/firefox.nix
           #zen browser: ./programs/zen-browser.home.nix
           tor-browser
           chromium
@@ -97,7 +97,6 @@
           (pkgs.pass.withExtensions (exts: [ exts.pass-otp ]))
           ripgrep
           sd
-          silver-searcher
           sops
           unrar
           unzip
@@ -114,6 +113,7 @@
 
         editing = [
           gimp
+          inkscape
           libreoffice-qt
         ];
 
@@ -163,7 +163,9 @@
           # AGENTS
           #--------
           #
+          _headroom
           gemini-cli
+          claude-code
           opencode
 
           #
@@ -312,6 +314,7 @@
         misc = [
           speechd
         ];
+        # }}}
 
       in
       [ ]
@@ -335,7 +338,7 @@
       ++ virtualization
       ++ misc;
 
-    ## (HM) ENVIRONMENT VARIABLES ##
+    # --- Session Variables --- {{{
     sessionVariables = {
       ## SECRETS
       ANTHROPIC_API_KEY = "$(cat ${config.sops.secrets."ai_keys/ANTHROPIC_API_KEY".path})";
@@ -377,8 +380,11 @@
       _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd";
       MOZ_DBUS_REMOTE = "1"; # make firefox see dbus
     };
+    # }}}
   };
+  # }}}
 
+  # --- XDG --- {{{
   xdg = {
     configFile = {
       # "hypr" = {
@@ -422,4 +428,7 @@
       };
     };
   };
+  # }}}
 }
+
+# vim: foldmethod=marker foldmarker={{{,}}} foldlevel=1

@@ -30,6 +30,8 @@ rec {
   _mcp-arr = cPkg ./mcp/mcp-arr/default.nix { };
   _screenpipe = cPkg ./screenpipe/package.nix { };
   _jules = cPkg ./jules.nix { };
+  _claude-cowork = cPkg ./claude-cowork.nix { electron = pkgs.electron_41; };
+  _claude-cowork-linux = cPkg ./claude-cowork-linux/default.nix { };
 
   #--- Programming ---#
   fennelPackages._antifennel = cPkg ./antifennel.nix { };
@@ -39,6 +41,7 @@ rec {
   _proton-ge-rtsp = cPkg ./proton-ge-rtsp.nix { };
 
   #--- Openclaw CLIs ---#
+  _headroom = cPkg ./headroom/default.nix { };
   _openclaw = cPkg ./openclaw/default.nix { };
   _bird = cPkg ./openclaw/plugins/bird/default.nix { };
   _blogwatcher = cPkg ./openclaw/plugins/blogwatcher/default.nix { };

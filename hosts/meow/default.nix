@@ -9,11 +9,13 @@ let
   _g = import ../../lib/globals.nix { inherit config; }; # My global variables
 in
 {
+  # --- Imports --- {{{
   imports = [
     # Main imports moved to flake.nix
   ];
+  # }}}
 
-  #-------- PACKAGES --------#
+  # --- Nix Settings --- {{{
   nix = {
     package = pkgs.nix;
     settings = {
@@ -27,7 +29,9 @@ in
       ];
     };
   };
+  # }}}
 
+  # --- Nixpkgs --- {{{
   nixpkgs = {
     config = {
       allowUnfree = true;
@@ -42,7 +46,9 @@ in
     };
     overlays = [ ];
   };
+  # }}}
 
+  # --- System Packages --- {{{
   environment.systemPackages = with pkgs; [
     btrfs-progs
     git
@@ -60,8 +66,9 @@ in
     tailscale
     xsettingsd
   ];
+  # }}}
 
-  #--------- ENV ---------#
+  # --- Environment Variables --- {{{
   environment.variables = {
   };
 
@@ -75,8 +82,9 @@ in
     #QT_STYLE_PLUGIN = pkgs.lib.mkForce "qtstyleplugin-kvantum";
     #QT_STYLE_PLUGIN = pkgs.lib.mkForce "kvantum";
   };
+  # }}}
 
-  #-------- PACKAGE MODULES --------#
+  # --- Programs --- {{{
   programs = {
     dconf = {
       enable = true;
@@ -98,8 +106,9 @@ in
       ];
     };
   };
+  # }}}
 
-  #-------- CONTAINERS / VM --------#
+  # --- Virtualisation --- {{{
   virtualisation = {
     containers = {
       enable = true;
@@ -134,13 +143,15 @@ in
     spiceUSBRedirection.enable = true;
     waydroid.enable = true;
   };
+  # }}}
 
-  #-------- GROUPS ---------#
+  # --- Groups --- {{{
   users.groups = {
     docker = { };
   };
+  # }}}
 
-  #-------- USERS --------#
+  # --- Users --- {{{
   ##########################
   # Don't forget password! #
   ##########################
@@ -160,8 +171,9 @@ in
     ];
     linger = true;
   };
+  # }}}
 
-  #-------- SECURITY --------#
+  # --- Security --- {{{
   security = {
     pam.loginLimits = [
       #{
@@ -197,8 +209,9 @@ in
     };
     polkit.enable = true;
   };
+  # }}}
 
-  #-------- SERVICES --------#
+  # --- Services --- {{{
   services = {
     avahi = {
       # CUPS (printing)
@@ -223,7 +236,6 @@ in
     llama-cpp = {
       enable = false;
       openFirewall = false;
-      extraFlags = [ "" ];
     };
     lsfg-vk = {
       enable = true;
@@ -261,8 +273,9 @@ in
       xkb.variant = "";
     };
   };
+  # }}}
 
-  #-------- SYSTEM --------#
+  # --- Systemd --- {{{
   systemd = {
     user = {
       services = {
@@ -288,8 +301,9 @@ in
       "L+ /run/gdm/.config/monitors.xml - - - - ${builtins.readFile ../../.config/monitors.xml}"
     ];
   };
+  # }}}
 
-  #-------- NETWORKING --------#
+  # --- Networking --- {{{
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller
   networking = {
@@ -344,8 +358,9 @@ in
       ];
     };
   };
+  # }}}
 
-  #-------- AUDIO --------#
+  # --- Audio --- {{{
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -394,8 +409,9 @@ in
       }
     '';
   };
+  # }}}
 
-  #-------- GPU --------#
+  # --- GPU --- {{{
   hardware = {
     graphics = {
       enable = true;
@@ -404,7 +420,7 @@ in
     };
     nvidia = {
       open = true;
-      package = config.boot.kernelPackages.nvidiaPackages.latest;
+      #package = config.boot.kernelPackages.nvidiaPackages.latest;
       modesetting.enable = true;
       nvidiaSettings = true;
       powerManagement.enable = false;
@@ -442,9 +458,16 @@ in
     ${_g.monitors.center.output}: nvidia-auto-select +${_g.monitors.center.pos.x}+${_g.monitors.center.pos.y} {AllowGSYNCCompatible=On}, \
     ${_g.monitors.right.output}: nvidia-auto-select +${_g.monitors.right.pos.x}+${_g.monitors.right.pos.y} {rotation=right, ForceCompositionPipeline=On}"
   '';
+  # }}}
 
-  #-------- BOOTLOADER --------#
+  # --- Bootloader --- {{{
   boot = {
+    # INTEL BLUETOOTH BROKEN
+    blacklistedKernelModules = [ "btintel" ];
+    extraModprobeConfig = ''
+      install btintel /bin/false
+    '';
+
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
@@ -461,6 +484,7 @@ in
       "nvidia_drm.fbdev=1"
       "nvidia.hdmi_deepcolor=1"
       "amd_pstate=active"
+      "modprobe.blacklist=btintel"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
@@ -469,11 +493,13 @@ in
     };
     supportedFilesystems = [ "ntfs" ];
   };
+  # }}}
 
-  #-------- POWER --------#
+  # --- Power --- {{{
   powerManagement.enable = true;
+  # }}}
 
-  #-------- XDG PORTALS --------#
+  # --- XDG Portals --- {{{
   xdg = {
     portal = {
       enable = true;
@@ -501,8 +527,9 @@ in
       };
     };
   };
+  # }}}
 
-  #-------- TZ/i18n --------#
+  # --- TZ / i18n --- {{{
   # Set your time zone.
   time.timeZone = "America/Chicago";
 
@@ -519,7 +546,9 @@ in
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
+  # }}}
 
+  # --- State Version --- {{{
   ##############################################################################
   ## This value determines the NixOS release from which the default           ##
   ## settings for stateful data, like file locations and database versions    ##
@@ -529,4 +558,7 @@ in
   ## (e.g. man configuration.nix or on https://nixos.org/nixos/options.html). ##
   ##############################################################################
   system.stateVersion = "23.11"; # Did you read the comment?
+  # }}}
 }
+
+# vim: foldmethod=marker foldmarker={{{,}}} foldlevel=1

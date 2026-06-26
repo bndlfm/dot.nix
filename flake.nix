@@ -29,6 +29,7 @@
     spicetify-nix.url = "github:Gerg-L/spicetify-nix?rev=f0595e3b59260457042450749eaec00a5a47db35";
 
     ## PROGRAMS
+    claude-cowork-nix.url = "github:Reginleif88/claude-cowork-nix";
     #deejavu.url = "github:bndlfm/deejavu";
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
     lsfg-vk = {
@@ -76,6 +77,7 @@
       hyprland,
       niri,
 
+      claude-cowork-nix,
       nixCats,
 
       microvm,
@@ -140,6 +142,8 @@
 
             ## PROGRAMS
             ./blocks/programs.home.nix
+            claude-cowork-nix.homeManagerModules.default
+            ./blocks/claude-cowork.home.nix
             ./blocks/email.home.nix
             ./blocks/shell/default.nix
             ./blocks/shell/zellij.home.nix
