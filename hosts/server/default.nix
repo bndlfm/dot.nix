@@ -81,9 +81,9 @@
       user = "ceru";
     };
     getty.autologinUser = "ceru";
-    logind = {
-      lidSwitch = "ignore";
-      lidSwitchDocked = "ignore";
+    logind.settings.Login = {
+      HandleLidSwitch = "ignore";
+      HandleLidSwitchDocked = "ignore";
     };
     openssh = {
       enable = true;
@@ -95,12 +95,12 @@
   };
 
   systemd = {
-    sleep.extraConfig = ''
-      AllowSuspend=no
-      AllowHibernation=no
-      AllowHybridSleep=no
-      AllowSuspendThenHibernate=no
-    '';
+    sleep.settings.Sleep = {
+      AllowSuspend="no";
+      AllowHibernation="no";
+      AllowHybridSleep="no";
+      AllowSuspendThenHibernate="no";
+    };
   };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
