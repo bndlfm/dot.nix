@@ -66,7 +66,7 @@
         ai = [
           sillytavern
           warp-terminal
-          #_screenpipe
+          _screenpipe
         ];
 
         apple = [
