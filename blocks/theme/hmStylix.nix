@@ -68,7 +68,7 @@
 
       swaylock = {
         enable = true;
-        useWallpaper = false;
+        image.enable = false;
       };
 
       waybar = {

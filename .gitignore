@@ -2,11 +2,15 @@
 .aider*
 ./.aider*
 GEMINI.md
+CLAUDE.md
 
 architecture.mmd
 container-networking.mmd
 
 .editorconfig
+
+### BLOCKS
+blocks/nixcats
 
 ### CONTAINERS
 containers/khoj
@@ -31,7 +35,6 @@ containers/grimoire
 
 #HAS MY FIREFOX PROFILES
 .mozilla/
-
 publickey
 
 #RICE

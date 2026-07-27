@@ -1,0 +1,88 @@
+diff --git a/plugins/model-providers/google-code-assist/__init__.py b/plugins/model-providers/google-code-assist/__init__.py
+new file mode 100644
+index 000000000..5e1412fd3
+--- /dev/null
++++ b/plugins/model-providers/google-code-assist/__init__.py
+@@ -0,0 +1,52 @@
++"""Google Code Assist (pi/openclaw) provider profile."""
++
++import time
++import subprocess
++import os
++from typing import Any
++
++from providers import register_provider
++from providers.base import ProviderProfile
++
++
++_last_request_time = 0.0
++# Enforce a 2 second delay between requests to remain stealthy and avoid rate limits
++_RATE_LIMIT_DELAY = 2.0
++
++_cached_token = None
++_token_expiry = 0.0
++
++def _get_gcloud_token() -> str:
++    global _cached_token, _token_expiry
++    
++    # Prefer environment variable if set
++    env_token = os.environ.get("GOOGLE_CODE_ASSIST_TOKEN")
++    if env_token:
++        return env_token
++        
++    now = time.time()
++    if _cached_token and now < _token_expiry:
++        return _cached_token
++        
++    try:
++        # Use gcloud auth print-access-token for OAuth web login
++        result = subprocess.run(["gcloud", "auth", "print-access-token"], capture_output=True, text=True, check=True)
++        _cached_token = result.stdout.strip()
++        _token_expiry = now + 3000  # Cache for 50 minutes
++        return _cached_token
++    except Exception:
++        return ""
++
++
++class GoogleCodeAssistProfile(ProviderProfile):
++    """Google Code Assist — limits request rate to stay under the radar."""
++
++    def build_api_kwargs_extras(self, **ctx) -> tuple[dict[str, Any], dict[str, Any]]:
++        global _last_request_time
++        now = time.time()
++        time_since_last = now - _last_request_time
++        if time_since_last < _RATE_LIMIT_DELAY:
++            time.sleep(_RATE_LIMIT_DELAY - time_since_last)
++        _last_request_time = time.time()
++        
++        token = _get_gcloud_token()
++        top_level = {}
++        if token:
++            top_level["extra_headers"] = {"Authorization": f"Bearer {token}"}
++            
++        return {}, top_level
++
++
++google_code_assist = GoogleCodeAssistProfile(
++    name="google-code-assist",
++    aliases=("code-assist", "pi", "openclaw"),
++    api_mode="chat_completions",
++    env_vars=(),  # Rely on gcloud auth or GOOGLE_CODE_ASSIST_TOKEN dynamically
++    # Common endpoint for Code Assist
++    base_url="https://cloudaicompanion.googleapis.com/v1beta",
++    auth_type="bearer",
++    default_aux_model="google-code-assist",
++)
++
++register_provider(google_code_assist)
+diff --git a/plugins/model-providers/google-code-assist/plugin.yaml b/plugins/model-providers/google-code-assist/plugin.yaml
+new file mode 100644
+index 000000000..4da718381
+--- /dev/null
++++ b/plugins/model-providers/google-code-assist/plugin.yaml
+@@ -0,0 +1,5 @@
++name: google-code-assist-provider
++kind: model-provider
++version: 1.0.0
++description: Google Code Assist (pi/openclaw) with stealth rate limiting
++author: Hermes User

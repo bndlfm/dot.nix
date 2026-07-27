@@ -9,8 +9,6 @@ let
 in
 {
   imports = [
-    inputs.noctalia.homeModules.default
-    ../../blocks/nyarch-assistant.home.nix
   ];
 
   config = {
@@ -138,8 +136,8 @@ in
 
           # --- Startup --- {{{
           spawn-at-startup = [
+            { command = [ "vicinae" "server" ]; }
             { command = [ "blueman-applet" ]; }
-            { command = [ "noctalia-shell" ]; }
             { command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect" ]; }
             { command = [ "kdeconnect-indicator" ]; }
             { command = [ "homeassistant-desktop" ]; }
@@ -147,12 +145,6 @@ in
               command = [
                 "trayscale"
                 "--hide-window"
-              ];
-            }
-            {
-              command = [
-                "copyq"
-                "--start-server"
               ];
             }
             {
@@ -212,11 +204,8 @@ in
 
               ## TERMINAL/LAUNCHER
               "${Mod}+D".action.spawn = [
-                "noctalia-shell"
-                "ipc"
-                "call"
-                "launcher"
-                "toggle"
+                "vicinae"
+                "open"
               ];
               "${Mod}+Shift+BackSpace".action.spawn = [ "wlr-which-key" ];
               "${Mod}+BackSpace".action.spawn = "kitty";
@@ -227,21 +216,18 @@ in
               ];
 
               ## RESTART SHELL/WALLPAPER
-              "${Mod}+W".action = sh (
-                builtins.concatStringsSep "; " [
-                  "pkill -x .quickshell-wra || true"
-                  "noctalia-shell >/dev/null 2>&1 &"
-                ]
-              );
-              # }}}
+              #FIX:"${Mod}+W".action = sh (
+              #  builtins.concatStringsSep "; " [
+              #    "pkill -x .quickshell-wra || true"
+              #    "noctalia-shell >/dev/null 2>&1 &"
+              #  ]
+              #);
+              #}}}
 
               # --- CLIPBOARD --- {{{
               "${Mod}+Control+V".action.spawn = [
-                "noctalia-shell"
-                "ipc"
-                "call"
-                "launcher"
-                "clipboard"
+                "vicinae"
+                "vicinae://launch/clipboard/history"
               ];
               # }}}
 

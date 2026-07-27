@@ -26,6 +26,8 @@
       cudaSupport = true;
       permittedInsecurePackages = [
         "ventoy-gtk3-1.1.10"
+        "pnpm-10.29.2"
+        "electron-40.10.5"
       ];
     };
     overlays = [ inputs.nur.overlays.default ];
@@ -66,7 +68,6 @@
         ai = [
           sillytavern
           warp-terminal
-          _screenpipe
         ];
 
         apple = [
@@ -108,7 +109,7 @@
         ];
 
         daemons = [
-          yams
+          # yams
         ];
 
         editing = [
@@ -146,7 +147,7 @@
         ];
 
         media = [
-          calibre
+          #calibre
           plezy
           mpv
         ];
@@ -163,10 +164,8 @@
           # AGENTS
           #--------
           #
-          _headroom
           gemini-cli
           claude-code
-          opencode
 
           #
           # GIT TOOLS
@@ -179,7 +178,7 @@
           #
           # IDE
           #-----
-          antigravity-fhs
+          antigravity-ide-fhs
           code-cursor-fhs
 
           #
@@ -204,7 +203,6 @@
         ];
 
         social = [
-          vesktop
           discord
           dino
           signal-desktop
@@ -294,6 +292,7 @@
             nix-prefetch
             qbittorrent
             qdirstat
+            vicinae
             zathura
             zsa-udev-rules
           ];

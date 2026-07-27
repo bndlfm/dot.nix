@@ -50,15 +50,17 @@
 
     ## WINDOW MANAGER
     niri.url = "github:sodiboo/niri-flake";
-    noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
     ## VIRTUALIZATION
     microvm = {
       url = "github:astro/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    ## JOVIAN
+    jovian-nixos = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -82,6 +84,7 @@
 
       microvm,
 
+      jovian-nixos,
       spicetify-nix,
       sops-nix,
       stylix,
@@ -142,18 +145,15 @@
 
             ## PROGRAMS
             ./blocks/programs.home.nix
-            claude-cowork-nix.homeManagerModules.default
-            ./blocks/claude-cowork.home.nix
             ./blocks/email.home.nix
-            ./blocks/shell/default.nix
-            ./blocks/shell/zellij.home.nix
-            ./blocks/twitch.home.nix
             ./blocks/firefox.home.nix
             ./blocks/git.home.nix
-            # ./blocks/neovim.home.nix
             ./blocks/nixcats/nixcats.home.nix
             ./blocks/password-store.home.nix
             ./blocks/ranger.home.nix
+            ./blocks/shell/default.nix
+            ./blocks/shell/zellij.home.nix
+            ./blocks/twitch.home.nix
             ./blocks/yazi.home.nix
 
             ## SECRETS
@@ -236,7 +236,7 @@
             ## MODULES
             ./blocks/caddy-tailscale.sys.nix
             ./blocks/mympd.sys.nix
-            ./blocks/gaming.sys.nix
+            ./blocks/gaming
             inputs.nixarr.nixosModules.default
             ./blocks/nixarr.sys.nix
 
@@ -263,6 +263,24 @@
             ## IMPORTS
             ./hosts/server/default.nix
             ./hosts/server/hardware.nix
+          ];
+        };
+        "ally" = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ({ nixpkgs.overlays = overlays; })
+            ## CACHES
+            ./cachix.nix
+            ## JOVIAN
+            jovian-nixos.nixosModules.default
+            ## SECRETS
+            inputs.sops-nix.nixosModules.sops
+            ./sops/sops.sys.nix
+            ## MODULES
+            ./blocks/gaming/gaming.sys.nix
+            ## IMPORTS
+            ./hosts/ally/default.nix
+            ./hosts/ally/hardware.nix
           ];
         };
       };

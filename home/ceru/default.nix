@@ -38,7 +38,7 @@
     libqalculate
     nix-index
     ripgrep
-    silver-searcher
+    silver-searcher-ng
     trashy
     wireguard-tools
     zip
@@ -67,21 +67,6 @@
     podman-compose
     winetricks
     wineWow64Packages.staging
-
-    ### OPENCLAW
-    _nullclaw
-    _bird
-    _blogwatcher
-    _camsnap
-    _clawdhub
-    _gifgrep
-    _gogcli
-    _goplaces
-    _mcporter
-    _nano-pdf
-    _songsee
-    _summarize
-    _sag
 
     ### UTILITIES
     appimage-run

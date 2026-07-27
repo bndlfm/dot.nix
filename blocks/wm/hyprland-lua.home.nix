@@ -22,11 +22,9 @@ in
   ];
 
   home.packages = with pkgs; [
-    copyq
     hdrop
     hyprpaper
     hyprshot
-    rofi
     hypridle
     hyprlock
     swaynotificationcenter
@@ -150,7 +148,7 @@ in
       hl.on("hyprland.start", function()
         hl.exec_cmd("waypaper --restore")
         hl.exec_cmd("swaync")
-        hl.exec_cmd("copyq --start-server")
+        hl.exec_cmd("vicinae server")
         hl.exec_cmd("${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect")
         hl.exec_cmd("kdeconnect-indicator")
         hl.exec_cmd("blueman-applet")
@@ -264,8 +262,8 @@ in
       --- }}}
 
       --- Launchers --- {{{
-      hl.bind(mainMod .. " + D",           hl.dsp.exec_cmd("rofi -show combi -combi-modes window,drun,ssh,run,filebrowser,recursivebrowser"))
-      hl.bind(mainMod .. " + CONTROL + V", hl.dsp.exec_cmd("copyq show"))
+      hl.bind(mainMod .. " + D",           hl.dsp.exec_cmd("vicinae open"))
+      hl.bind(mainMod .. " + CONTROL + V", hl.dsp.exec_cmd("vicinae 'vicinae://launch/clipboard/history'"))
       --- }}}
 
       --- Groups --- {{{
@@ -281,7 +279,6 @@ in
       --- }}}
 
       --- Cycle Floating Windows --- {{{
-      --- cyclenext + bringactivetotop combined (was two separate bind= lines)
       hl.bind(mainMod .. " + Tab", function()
         hl.dispatch(hl.dsp.window.cycle_next())
         hl.dispatch(hl.dsp.window.bring_to_top())

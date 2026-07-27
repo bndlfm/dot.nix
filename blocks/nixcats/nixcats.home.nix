@@ -76,7 +76,7 @@ let
           shellcheck
           shfmt
           stylua
-          ueberzugpp
+          # ueberzugpp
           unzip
           viu
           yarn

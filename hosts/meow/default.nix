@@ -42,6 +42,7 @@ in
         };
       };
       permittedInsecurePackages = [
+        "electron-40.10.5"
       ];
     };
     overlays = [ ];
@@ -462,12 +463,6 @@ in
 
   # --- Bootloader --- {{{
   boot = {
-    # INTEL BLUETOOTH BROKEN
-    blacklistedKernelModules = [ "btintel" ];
-    extraModprobeConfig = ''
-      install btintel /bin/false
-    '';
-
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
@@ -479,12 +474,10 @@ in
       "nvidia_drm"
     ];
     kernelParams = [
-      #"nvidia.NVreg_PreserveVideoMemoryAllocations=1"
       "nvidia_drm.modeset=1"
       "nvidia_drm.fbdev=1"
       "nvidia.hdmi_deepcolor=1"
       "amd_pstate=active"
-      "modprobe.blacklist=btintel"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {

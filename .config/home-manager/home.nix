@@ -98,7 +98,7 @@ in
     upscayl
     vulkan-tools
     yadm
-    yams
+    # yams
     ydotool
     zoxide
   ];

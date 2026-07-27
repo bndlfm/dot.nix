@@ -24,6 +24,18 @@
       useDHCP = false;
       wakeOnLan.enable = true;
     };
+    networkmanager.dispatcherScripts = [
+      {
+        source = pkgs.writeText "tailscale-ethtool" ''
+          #!/bin/sh
+          if [ "$1" = "enp6s0" ] && [ "$2" = "up" ]; then
+            ${pkgs.lib.getExe pkgs.ethtool} -K enp6s0 rx-udp-gro-forwarding on rx-gro-list off
+            echo "Tailscale ethtool udp-gro-forwarding on!"
+          fi
+        '';
+        type = "basic";
+      }
+    ];
   };
 
   services = {
@@ -41,17 +53,6 @@
         bind tailscale/homeassistant:443
         reverse_proxy localhost:8123
       '';
-    };
-    networkd-dispatcher = {
-      enable = true;
-      rules = {
-        "50-tailscale" = {
-          onState = [ "routable" ];
-          script = ''
-            ${pkgs.lib.getExe pkgs.ethtool} -K enp6s0 rx-udp-gro-forwarding on rx-gro-list off
-          '';
-        };
-      };
     };
     tailscale = {
       enable = true;

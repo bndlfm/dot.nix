@@ -13,7 +13,7 @@ let
       ps: with pkgs; [
         pynvim
         jupyter-client
-        ueberzug
+        # ueberzug
         pillow
         cairosvg
         pkgs.stable.python3Packages.plotly
@@ -56,7 +56,7 @@ in
           pnglatex
           pyperclip
           pynvim
-          ueberzug
+          # ueberzug
         ];
       extraPackages = with pkgs; [
         bash-language-server
@@ -78,7 +78,7 @@ in
         shellcheck
         shfmt
         stylua
-        ueberzugpp
+        # ueberzugpp
         unzip
         viu
         yarn

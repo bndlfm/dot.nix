@@ -7,7 +7,13 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
+    ### FIXES
+    ucx = prev.ucx.override { enableCuda = false; };
+    
     ### RANDOM
+    hermes-agent = inputs.hermes-agent.packages.${prev.system}.default.overrideAttrs (old: {
+      patches = (old.patches or [ ]) ++ [ ./google-code-assist.patch ];
+    });
     code-cursor = prev.code-cursor.overrideAttrs (oldAttrs: {
       postBuild = ''
         wrapProgram $out/bin/cursor --set ELECTRON_OZONE_PLATFORM_HINT X11
