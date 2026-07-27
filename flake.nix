@@ -189,6 +189,7 @@
             ./blocks/shell/default.nix
             # ./blocks/neovim.home.nix
             ./blocks/nixcats/nixcats.home.nix
+            ./blocks/yazi.home.nix
 
             ## CONTAINERS
             ./containers/homeassistant.home.nix

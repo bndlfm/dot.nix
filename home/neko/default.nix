@@ -28,6 +28,7 @@
         "ventoy-gtk3-1.1.10"
         "pnpm-10.29.2"
         "electron-40.10.5"
+        "openclaw-2026.6.33"
       ];
     };
     overlays = [ inputs.nur.overlays.default ];
@@ -66,6 +67,7 @@
         ];
 
         ai = [
+          openclaw
           sillytavern
           warp-terminal
         ];

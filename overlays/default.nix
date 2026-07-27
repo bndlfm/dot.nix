@@ -9,6 +9,11 @@
   modifications = final: prev: {
     ### FIXES
     ucx = prev.ucx.override { enableCuda = false; };
+    openclaw = prev.openclaw.overrideAttrs (oldAttrs: {
+      pnpmDeps = oldAttrs.pnpmDeps.overrideAttrs (_: {
+        outputHash = "sha256-k+vO+D4tj/uRuMsKTUEgYLjvEgzMMh8F4fQ7DhIROMw=";
+      });
+    });
     
     ### RANDOM
     hermes-agent = inputs.hermes-agent.packages.${prev.system}.default.overrideAttrs (old: {

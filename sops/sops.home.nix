@@ -4,7 +4,7 @@
     defaultSopsFile = ../sops/secrets.home.yaml;
     defaultSopsFormat = "yaml";
 
-    age.keyFile = "/home/neko/.config/sops/age/keys.txt";
+    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 
     secrets = {
       "ai_keys/ANTHROPIC_API_KEY" = { };
