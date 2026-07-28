@@ -13,6 +13,7 @@
   news.display = "silent";
 
   imports = [
+    ../../blocks/home-manager/hermes.home.nix
   ];
   # }}}
 
@@ -67,7 +68,6 @@
         ];
 
         ai = [
-          openclaw
           sillytavern
           warp-terminal
         ];
@@ -166,8 +166,8 @@
           # AGENTS
           #--------
           #
-          gemini-cli
           claude-code
+          hermes-agent
 
           #
           # GIT TOOLS
