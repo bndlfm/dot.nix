@@ -226,9 +226,26 @@
             lsfg-vk.nixosModules.default
             ## FLATPAK
             nix-flatpak.nixosModules.nix-flatpak
+
+            ## MODULES
+            ./blocks/caddy-tailscale.sys.nix
+            ./blocks/gaming
+            inputs.nixarr.nixosModules.default
+            ./blocks/nixarr.sys.nix
+
             ## THEMING
             stylix.nixosModules.stylix
             ./blocks/theme/nxStylix.nix
+
+            ## SECRETS
+            inputs.sops-nix.nixosModules.sops
+            ./sops/sops.sys.nix
+
+            ## SERVICES
+            ./blocks/sunshine.sys.nix
+            ./blocks/vaultwarden.sys.nix
+            ./blocks/synergy.sys.nix
+
             ## WINDOW MANAGERS
             niri.nixosModules.niri
             (
@@ -241,29 +258,12 @@
                 niri-flake.cache.enable = true;
               }
             )
-
-            ## MODULES
-            ./blocks/caddy-tailscale.sys.nix
-            ./blocks/mympd.sys.nix
-            ./blocks/gaming
-            inputs.nixarr.nixosModules.default
-            ./blocks/nixarr.sys.nix
-
-            ## SECRETS
-            inputs.sops-nix.nixosModules.sops
-            ./sops/sops.sys.nix
-
-            ## SERVICES
-            ./blocks/sunshine.sys.nix
-            ./blocks/vaultwarden.sys.nix
-            ./blocks/synergy.sys.nix
-
-            ## WINDOW MANAGERS
             ./blocks/wm/hyprland.sys.nix
 
             ## IMPORTS
             ./hosts/meow/default.nix
             ./hosts/meow/hardware.nix
+            ./blocks/kernel/ogc-kernel.nix
           ];
         };
         "server" = nixpkgs.lib.nixosSystem {

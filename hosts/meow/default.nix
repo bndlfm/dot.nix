@@ -247,7 +247,7 @@ in
       package = pkgs.usbmuxd2;
     };
     ollama = {
-      enable = true; # ## SEE PODMAN + HARBOR
+      enable = false;
       host = "0.0.0.0";
       openFirewall = true;
     };
