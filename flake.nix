@@ -29,6 +29,7 @@
     spicetify-nix.url = "github:Gerg-L/spicetify-nix?rev=f0595e3b59260457042450749eaec00a5a47db35";
 
     ## PROGRAMS
+    hermes-agent.url = "github:NousResearch/hermes-agent";
     claude-cowork-nix.url = "github:Reginleif88/claude-cowork-nix";
     #deejavu.url = "github:bndlfm/deejavu";
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
@@ -63,6 +64,12 @@
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    ## CACHY / HANDHELD KERNEL
+    chaotic = {
+      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -79,6 +86,7 @@
       hyprland,
       niri,
 
+      hermes-agent,
       claude-cowork-nix,
       nixCats,
 
@@ -274,6 +282,8 @@
             ./cachix.nix
             ## JOVIAN
             jovian-nixos.nixosModules.default
+            ## CHAOTIC / CACHY KERNEL
+            inputs.chaotic.nixosModules.default
             ## SECRETS
             inputs.sops-nix.nixosModules.sops
             ./sops/sops.sys.nix

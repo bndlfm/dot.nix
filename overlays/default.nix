@@ -16,8 +16,31 @@
     });
     
     ### RANDOM
-    hermes-agent = inputs.hermes-agent.packages.${prev.system}.default.overrideAttrs (old: {
-      patches = (old.patches or [ ]) ++ [ ./google-code-assist.patch ];
+    hermes-agent = (inputs.hermes-agent.packages.${prev.system}.default.override {
+      extraPythonPackages = [
+        (final.python312Packages.buildPythonPackage {
+          pname = "hermes-agent-manifests";
+          version = "1.0.0";
+          src = inputs.hermes-agent.outPath;
+          format = "other";
+          installPhase = ''
+            site_packages=$out/lib/python3.12/site-packages
+            find plugins -name "plugin.yaml" -o -name "plugin.yml" | while read -r f; do
+              dest="$site_packages/$(dirname "$f")"
+              mkdir -p "$dest"
+              cp "$f" "$dest/"
+            done
+          '';
+        })
+      ];
+    }).overrideAttrs (old: {
+      postInstall = (old.postInstall or "") + ''
+        rm $out/share/hermes-agent/plugins
+        cp -r ${inputs.hermes-agent.outPath}/plugins $out/share/hermes-agent/plugins
+        chmod -R +w $out/share/hermes-agent/plugins
+        substituteInPlace $out/share/hermes-agent/plugins/platforms/discord/adapter.py \
+          --replace-fail 'opus_path = ctypes.util.find_library("opus")' 'opus_path = "${final.libopus}/lib/libopus.so"'
+      '';
     });
     code-cursor = prev.code-cursor.overrideAttrs (oldAttrs: {
       postBuild = ''

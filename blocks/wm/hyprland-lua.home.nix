@@ -154,6 +154,7 @@ in
         hl.exec_cmd("blueman-applet")
         hl.exec_cmd("${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/GoogleDrive")
         hl.exec_cmd("xrandr --output DP-1 --primary")
+        hl.exec_cmd("uwsm app -- sunshine")
       end)
       --- }}}
 

@@ -17,8 +17,18 @@ in
 
   # --- Boot --- {{{
   boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelModules = [ "uinput" "hid_asus" "hid_asus_ally" "asus_wmi" ];
     kernelParams = [ "amd_pstate=active" ];
   };
+  # }}}
+
+  # --- Hardware --- {{{
+  hardware.uinput.enable = true;
   # }}}
 
   # --- Nix Settings --- {{{
@@ -41,6 +51,9 @@ in
   nixpkgs = {
     config = {
       allowUnfree = true;
+      permittedInsecurePackages = [
+        "pnpm-9.15.9"
+      ];
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
           inherit pkgs;
@@ -55,7 +68,12 @@ in
   environment.systemPackages = with pkgs; [
     git
     home-manager
+    inputplumber
   ];
+  # }}}
+
+  # --- InputPlumber Service --- {{{
+  # Handled by services.inputplumber.enable = true;
   # }}}
 
   # --- Users --- {{{
@@ -81,8 +99,21 @@ in
         "wheel"
       ];
       linger = true;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEtaOcYbrAwdYzin91EJHQhdDgnanuGDqdkLVMXFmaGc neko@meow"
+      ];
     };
   };
+  # }}}
+
+  # --- Gamescope Session (Alternative to Jovian) --- {{{
+  # programs = {
+  #   gamescope = {
+  #     enable = true;
+  #     capSysNice = true;
+  #   };
+  #   steam.gamescopeSession.enable = true;
+  # };
   # }}}
 
   # --- Jovian (Steam UI) --- {{{
@@ -90,7 +121,8 @@ in
     steam = {
       enable = true;
       autoStart = true;
-      desktopSession = "hyprland";
+      desktopSession = "plasma";
+      user = "neko";
     };
     decky-loader = {
       enable = true;
@@ -101,6 +133,19 @@ in
 
   # --- Services --- {{{
   services = {
+    fprintd = {
+      enable = true;
+    };
+    inputplumber = {
+      enable = true;
+    };
+    udev = {
+      packages = [ pkgs.inputplumber ];
+      extraRules = ''
+        # ASUS ROG Xbox Ally Controller (Vendor: 0b05) hidraw uaccess permissions
+        SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0b05", MODE="0660", TAG+="uaccess"
+      '';
+    };
     desktopManager = {
       plasma6.enable = true;
     };

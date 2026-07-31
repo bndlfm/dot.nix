@@ -14,15 +14,16 @@
   boot.extraModulePackages = [ ];
 
   # Note: Add your filesystem mounts below!
-  # fileSystems."/" =
-  #   { device = "/dev/disk/by-uuid/your-uuid-here";
-  #     fsType = "ext4";
-  #   };
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/352db958-b601-496d-92ce-45dc04a9182e";
+      fsType = "ext4";
+    };
 
-  # fileSystems."/boot" =
-  #   { device = "/dev/disk/by-uuid/your-uuid-here";
-  #     fsType = "vfat";
-  #   };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/DDB0-0A10";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
 
   swapDevices = [ ];
 

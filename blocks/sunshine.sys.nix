@@ -3,7 +3,7 @@
     sunshine = {
       enable = true;
       package = pkgs.sunshine;
-      autoStart = true;
+      autoStart = false;
       capSysAdmin = true;
       openFirewall = true;
     };
