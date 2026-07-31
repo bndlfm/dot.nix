@@ -1,17 +1,16 @@
 {
   config,
-  inputs,
-  lib,
   pkgs,
   ...
 }:
 let
   _g = import ../../lib/globals.nix { inherit config; }; # My global variables
+  gameUser = "neko";
 in
 {
   # --- Imports --- {{{
   imports = [
-    # Main imports moved to flake.nix
+    ./ogc-kernel.nix
   ];
   # }}}
 
@@ -22,7 +21,12 @@ in
       efi.canTouchEfiVariables = true;
     };
     kernelPackages = pkgs.linuxPackages_cachyos;
-    kernelModules = [ "uinput" "hid_asus" "hid_asus_ally" "asus_wmi" ];
+    kernelModules = [
+      "uinput"
+      "hid_asus"
+      "hid_asus_ally"
+      "asus_wmi"
+    ];
     kernelParams = [ "amd_pstate=active" ];
   };
   # }}}
@@ -68,12 +72,7 @@ in
   environment.systemPackages = with pkgs; [
     git
     home-manager
-    inputplumber
   ];
-  # }}}
-
-  # --- InputPlumber Service --- {{{
-  # Handled by services.inputplumber.enable = true;
   # }}}
 
   # --- Users --- {{{
@@ -82,15 +81,15 @@ in
   ##########################
   users = {
     groups.neko = {
-      name = "neko";
+      name = "${gameUser}";
       gid = 10000;
     };
-    users.neko = {
+    users.${gameUser} = {
       isNormalUser = true;
-      description = "neko";
-      group = "neko";
+      description = "${gameUser}";
+      group = "${gameUser}";
       uid = 10000;
-      home = "/home/neko";
+      home = "/home/${gameUser}";
       extraGroups = [
         "audio"
         "input"
@@ -98,22 +97,8 @@ in
         "networkmanager"
         "wheel"
       ];
-      linger = true;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEtaOcYbrAwdYzin91EJHQhdDgnanuGDqdkLVMXFmaGc neko@meow"
-      ];
     };
   };
-  # }}}
-
-  # --- Gamescope Session (Alternative to Jovian) --- {{{
-  # programs = {
-  #   gamescope = {
-  #     enable = true;
-  #     capSysNice = true;
-  #   };
-  #   steam.gamescopeSession.enable = true;
-  # };
   # }}}
 
   # --- Jovian (Steam UI) --- {{{
@@ -155,9 +140,6 @@ in
     openssh = {
       enable = true;
       openFirewall = true;
-      settings = {
-        PasswordAuthentication = false;
-      };
     };
   };
   # }}}
