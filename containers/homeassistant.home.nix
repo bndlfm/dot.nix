@@ -3,7 +3,7 @@
 {
   services = {
     # Caddy vhost for Home Assistant is configured at the system level in
-    # blocks/caddy-tailscale.sys.nix
+    # modules/caddy-tailscale.sys.nix
     podman = {
       enable = true;
       containers.homeassistant = {

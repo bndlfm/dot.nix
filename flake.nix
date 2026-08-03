@@ -136,50 +136,48 @@
             ./cachix.nix
             ## FLATPAK
             nix-flatpak.homeManagerModules.nix-flatpak
-            ./blocks/flatpak.home.nix
-            ## NIRI
-            niri.homeModules.niri
+            ./modules/home-manager/flatpak.home.nix
             ## THEMING
             stylix.homeModules.stylix
-            ./blocks/theme/hmStylix.nix
+            ./modules/theme/hmStylix.nix
+
             ## ZEN BROWSER
             inputs.zen-browser.homeModules.twilight
-            ./blocks/zen-browser.home.nix
+            ./modules/home-manager/zen-browser.home.nix
 
             ## MODULES
             outputs.homeManagerModules.wlr-which-key
-            ./blocks/music.home.nix
-            #./blocks/notes.home.nix
+            ./modules/home-manager/music.home.nix
+            #./modules/notes.home.nix
 
             ## PROGRAMS
-            ./blocks/programs.home.nix
-            ./blocks/email.home.nix
-            ./blocks/firefox.home.nix
-            ./blocks/git.home.nix
-            ./blocks/nixcats/nixcats.home.nix
-            ./blocks/password-store.home.nix
-            ./blocks/ranger.home.nix
-            ./blocks/shell/default.nix
-            ./blocks/shell/zellij.home.nix
-            ./blocks/twitch.home.nix
-            ./blocks/yazi.home.nix
+            ./modules/home-manager/programs.home.nix
+            ./modules/home-manager/email.home.nix
+            ./modules/home-manager/firefox.home.nix
+            ./modules/home-manager/git.home.nix
+            ./modules/home-manager/nixcats/nixcats.home.nix
+            ./modules/home-manager/password-store.home.nix
+            ./modules/home-manager/ranger.home.nix
+            ./modules/home-manager/shell/default.nix
+            ./modules/home-manager/twitch.home.nix
+            ./modules/home-manager/yazi.home.nix
 
             ## SECRETS
             inputs.sops-nix.homeManagerModules.sops
             ./sops/sops.home.nix
 
             ## SERVICES
-            ./blocks/espanso.home.nix
-            ./blocks/services.home.nix
+            ./modules/home-manager/espanso.home.nix
+            ./modules/home-manager/services.home.nix
 
             ## SPOTIFY
             inputs.spicetify-nix.homeManagerModules.default
 
             ## WINDOW MANAGERS
-            ./blocks/gnome-shell.home.nix
-            ./blocks/wm/hyprland-lua.home.nix
-            ./blocks/wm/niri.home.nix
-            ./blocks/wm/wlr-which-key.home.nix
+            niri.homeModules.niri
+            ./modules/wm/hyprland-lua.home.nix
+            ./modules/wm/niri.home.nix
+            ./modules/wm/wlr-which-key.home.nix
 
             ## CONTAINERS
             ./containers/gluetun.home.nix
@@ -194,10 +192,9 @@
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ## PROGRAMS
-            ./blocks/shell/default.nix
-            # ./blocks/neovim.home.nix
-            ./blocks/nixcats/nixcats.home.nix
-            ./blocks/yazi.home.nix
+            ./modules/home-manager/shell/default.nix
+            ./modules/home-manager/nixcats/nixcats.home.nix
+            ./modules/home-manager/yazi.home.nix
 
             ## CONTAINERS
             ./containers/homeassistant.home.nix
@@ -228,23 +225,23 @@
             nix-flatpak.nixosModules.nix-flatpak
 
             ## MODULES
-            ./blocks/caddy-tailscale.sys.nix
-            ./blocks/gaming
+            ./modules/nixos/caddy-tailscale.sys.nix
+            ./modules/nixos/gaming
             inputs.nixarr.nixosModules.default
-            ./blocks/nixarr.sys.nix
+            ./modules/nixos/nixarr.sys.nix
 
             ## THEMING
             stylix.nixosModules.stylix
-            ./blocks/theme/nxStylix.nix
+            ./modules/theme/nxStylix.nix
 
             ## SECRETS
             inputs.sops-nix.nixosModules.sops
             ./sops/sops.sys.nix
 
             ## SERVICES
-            ./blocks/sunshine.sys.nix
-            ./blocks/vaultwarden.sys.nix
-            ./blocks/synergy.sys.nix
+            ./modules/nixos/sunshine.sys.nix
+            ./modules/nixos/vaultwarden.sys.nix
+            ./modules/nixos/synergy.sys.nix
 
             ## WINDOW MANAGERS
             niri.nixosModules.niri
@@ -258,12 +255,11 @@
                 niri-flake.cache.enable = true;
               }
             )
-            ./blocks/wm/hyprland.sys.nix
+            ./modules/wm/hyprland.sys.nix
 
             ## IMPORTS
             ./hosts/meow/default.nix
             ./hosts/meow/hardware.nix
-            ./blocks/kernel/ogc-kernel.nix
           ];
         };
         "server" = nixpkgs.lib.nixosSystem {
@@ -280,6 +276,19 @@
             ({ nixpkgs.overlays = overlays; })
             ## CACHES
             ./cachix.nix
+            ## HOME MANAGER / NEOVIM
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = { inherit inputs outputs; };
+                users.neko = {
+                  imports = [ ./modules/home-manager/nixcats/nixcats.home.nix ];
+                  home.stateVersion = "23.11";
+                };
+              };
+            }
             ## JOVIAN
             jovian-nixos.nixosModules.default
             ## CHAOTIC / CACHY KERNEL
@@ -288,7 +297,9 @@
             inputs.sops-nix.nixosModules.sops
             ./sops/sops.sys.nix
             ## MODULES
-            ./blocks/gaming/gaming.sys.nix
+            ./modules/nixos/gaming/gaming.sys.nix
+            ./modules/nixos/sunshine.sys.nix
+            ./modules/nixos/tailscale.sys.nix
             ## IMPORTS
             ./hosts/ally/default.nix
             ./hosts/ally/hardware.nix

@@ -6,12 +6,12 @@
   ...
 }:
 {
+  imports = [ ./tailscale.sys.nix ];
+
   sops.secrets."internet/CADDY_TS_AUTHKEY" = { };
 
   environment.systemPackages = with pkgs; [
     ethtool
-    tailscale
-    trayscale
     networkd-dispatcher
   ];
 
@@ -54,12 +54,7 @@
         reverse_proxy localhost:8123
       '';
     };
-    tailscale = {
-      enable = true;
-      openFirewall = true;
-      permitCertUid = "caddy";
-      useRoutingFeatures = "client";
-    };
+    tailscale.permitCertUid = "caddy";
   };
 
   systemd.services.caddy.serviceConfig = lib.mkIf config.services.caddy.enable {

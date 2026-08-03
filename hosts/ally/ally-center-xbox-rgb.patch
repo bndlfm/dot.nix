@@ -1,0 +1,106 @@
+diff --git a/main.py b/main.py
+--- a/main.py
++++ b/main.py
+@@ -260,6 +260,90 @@ class Plugin:
+         self.effect_thread = None
+-
++
++    def _is_xbox_ally(self) -> bool:
++        try:
++            with open(os.path.join(DMI_PATH, "product_name"), "r") as f:
++                return "ROG Xbox Ally" in f.read()
++        except Exception:
++            return False
++
++    def _find_xbox_rgb_hidraw(self) -> str:
++        """Find the vendor HID interface backing the joystick-ring LED device."""
++        led_device = os.path.realpath(os.path.join(ALLY_LED_PATH, "device"))
++        hidraw_class = "/sys/class/hidraw"
++
++        if not led_device or not os.path.isdir(hidraw_class):
++            return ""
++
++        for name in os.listdir(hidraw_class):
++            sysfs_device = os.path.join(hidraw_class, name, "device")
++            if os.path.realpath(sysfs_device) != led_device:
++                continue
++
++            try:
++                with open(os.path.join(sysfs_device, "uevent"), "r") as f:
++                    uevent = f.read()
++            except OSError:
++                continue
++
++            if "HID_ID=0003:00000B05:00001B4C" in uevent:
++                return os.path.join("/dev", name)
++
++        return ""
++
++    def _write_xbox_rgb(self, colors: list, brightness: int) -> bool:
++        """Write HHD's ASUS Aura HID sequence without starting HHD itself."""
++        if not self._is_xbox_ally():
++            return False
++
++        hidraw = self._find_xbox_rgb_hidraw()
++        if not hidraw:
++            decky.logger.warning("Xbox Ally RGB HID interface not found")
++            return False
++
++        def report(data):
++            return bytes(data) + bytes(64 - len(data))
++
++        brightness = max(0, min(255, brightness))
++        scaled = []
++        for r, g, b in colors:
++            scaled.append((
++                int(r * brightness / 255),
++                int(g * brightness / 255),
++                int(b * brightness / 255),
++            ))
++
++        reports = [
++            report([0x5A, 0xD1, 0x09, 0x01, 0x02]),
++            report([0x5A] + list(b"ASUS Tech.Inc.")),
++            report([0x5A, 0xBA, 0xC5, 0xC4, 0x03 if brightness else 0x00]),
++        ]
++
++        if len(scaled) == 1:
++            r, g, b = scaled[0]
++            reports.append(report([0x5A, 0xB3, 0x00, 0x00, r, g, b, 0, 0, 0, 0, 0, 0]))
++        else:
++            for zone, (r, g, b) in enumerate(scaled[:4], start=1):
++                reports.append(report([0x5A, 0xB3, zone, 0x00, r, g, b, 0, 0, 0, 0, 0, 0]))
++
++        reports.extend([report([0x5A, 0xB5]), report([0x5A, 0xB4])])
++
++        try:
++            fd = os.open(hidraw, os.O_WRONLY | os.O_NONBLOCK)
++            try:
++                for payload in reports:
++                    written = os.write(fd, payload)
++                    if written != len(payload):
++                        raise OSError(f"short HID write: {written}/{len(payload)}")
++            finally:
++                os.close(fd)
++            return True
++        except OSError as e:
++            decky.logger.error(f"Xbox Ally RGB HID write failed: {e}")
++            return False
++
+     def _set_led_color(self, r: int, g: int, b: int, brightness: int = 255):
++        if self._write_xbox_rgb([(r, g, b)], brightness):
++            return
+         try:
+             brightness_path = os.path.join(ALLY_LED_PATH, "brightness")
+             multi_intensity_path = os.path.join(ALLY_LED_PATH, "multi_intensity")
+@@ -280,6 +364,9 @@ class Plugin:
+             pass  # Silently fail during animations
+-
++
+     def _set_led_zones(self, colors: list, brightness: int = 255):
++        if self._write_xbox_rgb(colors, brightness):
++            return
++
+         try:
+             brightness_path = os.path.join(ALLY_LED_PATH, "brightness")
+             multi_intensity_path = os.path.join(ALLY_LED_PATH, "multi_intensity")

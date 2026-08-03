@@ -1,6 +1,7 @@
 keys:
   - &user_age_key age177snhrqfd422qgm8425pzhrzzc9tt3asymt96mmrlmfg784casrs27frau
-  - &host_ssh_key age1sc0kpgelt969f8vcrnft060cccxwpp25pmz58vzts85ukepnkezszg0a2q
+  - &meow_host_ssh_key age1sc0kpgelt969f8vcrnft060cccxwpp25pmz58vzts85ukepnkezszg0a2q
+  - &ally_host_ssh_key age1z07dxtrau58htprcgh9jypt0suqa5zdpl6dzwn5xetfs8aqh8gdq9nruyf
 
 creation_rules:
   - path_regex: sops/secrets.home.yaml$
@@ -11,5 +12,18 @@ creation_rules:
   - path_regex: sops/secrets.sys.yaml$
     key_groups:
       - age:
-        - *host_ssh_key
+        - *meow_host_ssh_key
+        - *user_age_key
+
+  - path_regex: sops/secrets.ally.yaml$
+    key_groups:
+      - age:
+        - *ally_host_ssh_key
+        - *user_age_key
+
+  - path_regex: sops/secrets.shared.yaml$
+    key_groups:
+      - age:
+        - *meow_host_ssh_key
+        - *ally_host_ssh_key
         - *user_age_key

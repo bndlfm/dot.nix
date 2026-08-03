@@ -154,7 +154,9 @@ in
         hl.exec_cmd("blueman-applet")
         hl.exec_cmd("${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse ~/GoogleDrive")
         hl.exec_cmd("xrandr --output DP-1 --primary")
-        hl.exec_cmd("uwsm app -- sunshine")
+        --- Sunshine's user service can start before Hyprland has exported the
+        --- complete UWSM session environment. Restart it inside the session.
+        hl.exec_cmd("${pkgs.runtimeShell} -lc 'sleep 2; ${pkgs.systemd}/bin/systemctl --user stop sunshine.service; ${pkgs.procps}/bin/pkill -x sunshine || true; exec ${pkgs.uwsm}/bin/uwsm app -- ${pkgs.sunshine}/bin/sunshine'")
         hl.exec_cmd("trayscale --hide-window")
       end)
       --- }}}

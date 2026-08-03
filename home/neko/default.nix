@@ -13,7 +13,7 @@
   news.display = "silent";
 
   imports = [
-    ../../blocks/home-manager/hermes.home.nix
+    ../../modules/home-manager/hermes.home.nix
   ];
   # }}}
 
@@ -167,7 +167,6 @@
           #--------
           #
           claude-code
-          hermes-agent
 
           #
           # GIT TOOLS

@@ -1,9 +1,8 @@
 { config, ... }:
 {
   sops = {
-    defaultSopsFile = ../sops/secrets.sys.yaml;
+    defaultSopsFile = ../../sops/secrets.sys.yaml;
     defaultSopsFormat = "yaml";
-
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
     secrets = {

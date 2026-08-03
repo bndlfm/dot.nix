@@ -19,22 +19,21 @@ rec {
 
   #--- BIN ---#
   _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix { };
-  _schaltwerk = cPkg ./schaltwerk/default.nix { };
-  _codex-desktop-linux = cPkg ./codex-desktop-linux/default.nix {
-    electron = pkgs.electron_40;
-  };
 
   #--- M O D E L  C O N T E X T  P R O T O C O L ---#
   _mpd-mcp-server = cPkg ./mcp/mpd-mcp-server/default.nix { };
   _jellyseerr-mcp = cPkg ./mcp/jellyseerr-mcp/default.nix { };
-  _mcp-arr = cPkg ./mcp/mcp-arr/default.nix { };
   _screenpipe = cPkg ./screenpipe/package.nix { };
-  _jules = cPkg ./jules.nix { };
-  _claude-cowork = cPkg ./claude-cowork.nix { electron = pkgs.electron_41; };
-  _claude-cowork-linux = cPkg ./claude-cowork-linux/default.nix { };
 
   #--- Programming ---#
   fennelPackages._antifennel = cPkg ./antifennel.nix { };
+
+  #--- Kernels ---#
+  # Import directly so callPackage does not replace the kernel derivation's
+  # own `override` method, which linuxPackagesFor and NixOS rely on.
+  linux-ogc = import ./kernel/ogc-kernel {
+    inherit (pkgs) fetchFromGitHub lib linuxPackages_7_1;
+  };
 
   #--- Proton Versions ---#
   _dwproton = cPkg ./proton-dw.nix { };
