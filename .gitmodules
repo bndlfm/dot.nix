@@ -10,3 +10,6 @@
 [submodule "theme/wallpapers/nordic"]
 	path = theme/wallpapers/nordic
 	url = https://github.com/linuxdotexe/nordic-wallpapers
+[submodule "modules/home-manager/nixcats"]
+	path = modules/home-manager/nixcats
+	url = https://github.com/bndlfm/nixcats.git

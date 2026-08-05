@@ -1,4 +1,0 @@
-return {
-  "emilyst/vim-xray"
-}
-
