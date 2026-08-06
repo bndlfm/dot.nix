@@ -1,0 +1,38 @@
+From 07f6f79d2d064246dc9ba1b06dd6af85a97de1f5 Mon Sep 17 00:00:00 2001
+From: Iordanis Petkakis <12776461+dpetka2001@users.noreply.github.com>
+Date: Mon, 26 May 2025 13:03:51 +0300
+Subject: [PATCH] fix(scope): allow user to disable keys
+
+---
+ lua/snacks/scope.lua | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/lua/snacks/scope.lua b/lua/snacks/scope.lua
+index 718a7f52d..f8d10159f 100644
+--- a/lua/snacks/scope.lua
++++ b/lua/snacks/scope.lua
+@@ -774,14 +774,18 @@ end
+ function M.setup()
+   local keys = Snacks.config.get("scope", defaults).keys
+   for key, opts in pairs(keys.textobject) do
+-    vim.keymap.set({ "x", "o" }, key, function()
+-      M.textobject(opts)
+-    end, { silent = true, desc = opts.desc })
++    if opts then
++      vim.keymap.set({ "x", "o" }, key, function()
++        M.textobject(opts)
++      end, { silent = true, desc = opts.desc })
++    end
+   end
+   for key, opts in pairs(keys.jump) do
+-    vim.keymap.set({ "n", "x", "o" }, key, function()
+-      M.jump(opts)
+-    end, { silent = true, desc = opts.desc })
++    if opts then
++      vim.keymap.set({ "n", "x", "o" }, key, function()
++        M.jump(opts)
++      end, { silent = true, desc = opts.desc })
++    end
+   end
+ end
+ 
