@@ -1,107 +1,54 @@
 { pkgs, ... }:
-let
-  magma-nvim = pkgs.vimUtils.buildVimPlugin {
-    pname = "magma";
-    version = "6.6.6";
-    src = pkgs.fetchFromGitHub {
-      owner = "dccsillag";
-      repo = "magma-nvim";
-      rev = "ff3deba8a879806a51c005e50782130246143d06";
-      sha256 = "sha256-IrMR57gk9iCk73esHO24KZeep9VrlkV5sOC4PzGexyo=";
-    };
-    passthru.python3Dependencies =
-      ps: with pkgs; [
-        pynvim
-        jupyter-client
-        # ueberzug
-        pillow
-        cairosvg
-        pkgs.stable.python3Packages.plotly
-        ipykernel
-        pyperclip
-        pnglatex
-      ];
-    meta.homepage = "https://github.com/dccsillag/magma-nvim";
-  };
-
-in
 {
   programs = {
     neovim = {
-      enable = true;
+      enable = false; # Disabled in favor of nixcats
       defaultEditor = true;
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
       withRuby = true;
+      withNodeJs = true;
       withPython3 = true;
-      initLua = /* lua */ ''
-        if vim.g.started_by_firenvim == true then
-          require("config.lazy")
-        else
-          require("config.lazy")
-        end
+      
+      initLua = ''
+        vim.cmd([[source ~/.config/nvim/init-real.vim]])
+        vim.g.python3_host_prog = "${pkgs.python3.withPackages (ps: with ps; [ pynvim ])}/bin/python3"
       '';
-      extraLuaPackages = ps: [
-        ps.magick
+      
+      extraWrapperArgs = [
+        "--add-flags" "--cmd 'set rtp^=${pkgs.vimPlugins.nvim-treesitter.withAllGrammars}'"
       ];
-      extraPython3Packages =
-        ps: with ps; [
-          cairosvg
-          ipykernel
-          jupyter-client
-          pillow
-          pip
-          pkgs.stable.python3Packages.plotly
-          pnglatex
-          pyperclip
-          pynvim
-          # ueberzug
-        ];
+      
+      plugins = [
+      ];
+      
       extraPackages = with pkgs; [
-        bash-language-server
-        cargo
+        (python3.withPackages (ps: with ps; [ pynvim ]))
+        # Required for theniceboy/nvim
+        nodejs
+        python3
+        xclip
+        wl-clipboard
+        ripgrep
         fzf
         gcc
-        git
         gnumake
-        highlight
-        imagemagick
+        git
+        curl
+        wget
+        unzip
+        
+        # LSPs and formatters
+        bash-language-server
+        cargo
         lua-language-server
-        texlivePackages.latex
-        lazygit
-        lua51Packages.lua
-        lua51Packages.luarocks
         nil
-        nodejs
         pyright
         shellcheck
         shfmt
         stylua
-        # ueberzugpp
-        unzip
-        viu
         yarn
-      ];
-      plugins = with pkgs.vimPlugins; [
-        vim-nix
-        molten-nvim
-        (nvim-treesitter.withPlugins (
-          ps: with ps; [
-            bash
-            c
-            cpp
-            kdl
-            lua
-            ocaml
-            nix
-            python
-            regex
-            rust
-            scheme
-            typescript
-          ]
-        ))
       ];
     };
   };

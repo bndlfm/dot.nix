@@ -201,6 +201,12 @@
           # OTHER DEV TOOLS
           #----------------
           meld
+
+          #
+          # NODEJS
+          #-------
+          nodejs
+          yarn
         ];
 
         social = [

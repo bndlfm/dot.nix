@@ -9,6 +9,7 @@ let
 in
 {
   imports = [
+    ./autostart.home.nix
   ];
 
   config = {
@@ -135,41 +136,14 @@ in
           # }}}
 
           # --- Startup --- {{{
-          spawn-at-startup = [
-            { command = [ "vicinae" "server" ]; }
-            { command = [ "blueman-applet" ]; }
-            { command = [ "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect" ]; }
-            { command = [ "kdeconnect-indicator" ]; }
-            { command = [ "homeassistant-desktop" ]; }
-            {
-              command = [
-                "trayscale"
-                "--hide-window"
-              ];
-            }
-            {
-              command = [
-                "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse"
-                "/home/neko/Documents/GoogleDrive/"
-              ];
-            }
-            {
-              command = [
-                "xrandr"
-                "--output"
-                "DP-1"
-                "--primary"
-              ];
-            }
-            #{
-            #  ## POWER SAVINGS
-            #  command = [
-            #    "sh"
-            #    "-c"
-            #    "swayidle -w timeout 1201 'niri msg action power-off-monitors' timeout 1200 'swaylock-fancy -f' before-sleep 'swaylock-fancy -f'"
-            #  ];
-            #}
-          ]; # }}}
+          spawn-at-startup = map (cmd: {
+            command = [
+              "sh"
+              "-c"
+              cmd
+            ];
+          }) config.wm.autostart;
+          # }}}
 
           # --- Binds --- {{{
           binds =

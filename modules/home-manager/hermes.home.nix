@@ -4,13 +4,52 @@
   pkgs,
   ...
 }: let
+  hermesAgentBase = inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+  # One patched source tree feeds the Python gateway, Ink TUI, Discord plugin,
+  # and Electron renderer. The upstream flake builds those as separate
+  # derivations, so patching only the final agent wrapper cannot affect TUI or
+  # Desktop source.
+  hermesPatchedSource = pkgs.applyPatches {
+    name = "hermes-agent-patched-source";
+    src = inputs.hermes-agent.outPath;
+    patches = [./hermes-discord-shell-context.patch];
+    postPatch = ''
+      substituteInPlace plugins/platforms/discord/adapter.py \
+        --replace-fail 'opus_path = ctypes.util.find_library("opus")' 'opus_path = "${pkgs.libopus}/lib/libopus.so"'
+    '';
+  };
+
+  # Reuse upstream's locked npm dependency set, but compile each frontend from
+  # the patched source rather than the original flake input.
+  hermesPatchedNpmLib =
+    hermesAgentBase.hermesNpmLib
+    // {
+      mkNpmPassthru = args:
+        (hermesAgentBase.hermesNpmLib.mkNpmPassthru args)
+        // {
+          src = hermesPatchedSource;
+        };
+    };
+
+  hermesTui = pkgs.callPackage "${inputs.hermes-agent.outPath}/nix/tui.nix" {
+    hermesNpmLib = hermesPatchedNpmLib;
+  };
+
+  # Python imports prefer this source overlay, letting tui_gateway/server.py be
+  # patched without rebuilding or forking upstream's sealed uv2nix environment.
+  hermesPythonOverrides = pkgs.runCommand "hermes-agent-python-overrides" {} ''
+    mkdir -p $out
+    cp -r ${hermesPatchedSource}/tui_gateway $out/
+  '';
+
   hermesAgent =
-    (inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
+    (hermesAgentBase.override {
       extraPythonPackages = [
         (pkgs.python312Packages.buildPythonPackage {
           pname = "hermes-agent-manifests";
           version = "1.0.0";
-          src = inputs.hermes-agent.outPath;
+          src = hermesPatchedSource;
           format = "other";
           installPhase = ''
             site_packages=$out/${pkgs.python312.sitePackages}
@@ -28,15 +67,35 @@
         (old.postInstall or "")
         + ''
           rm $out/share/hermes-agent/plugins
-          cp -r ${inputs.hermes-agent.outPath}/plugins $out/share/hermes-agent/plugins
-          chmod -R +w $out/share/hermes-agent/plugins
-          patch -d $out/share/hermes-agent -p1 < ${./hermes-discord-shell-context.patch}
-          substituteInPlace $out/share/hermes-agent/plugins/platforms/discord/adapter.py \
-            --replace-fail 'opus_path = ctypes.util.find_library("opus")' 'opus_path = "${pkgs.libopus}/lib/libopus.so"'
+          cp -r ${hermesPatchedSource}/plugins $out/share/hermes-agent/plugins
+
+          rm $out/ui-tui
+          ln -s ${hermesTui}/lib/hermes-tui $out/ui-tui
+
+          for exe in hermes hermes-agent hermes-acp; do
+            wrapProgram $out/bin/$exe \
+              --prefix PYTHONPATH : ${hermesPythonOverrides}
+          done
         '';
     });
 
-  hermesDesktop = hermesAgent.hermesDesktop;
+  # Upstream desktop.nix fetches a versioned Electron header tarball with a
+  # hash tied to its own nixpkgs revision. Repack this nixpkgs revision's
+  # matching headers so node-pty is always built against electron_40 exactly.
+  electronHeadersTarball = pkgs.runCommand "electron-${pkgs.electron_40.version}-headers.tar.gz" {} ''
+    mkdir -p headers/node-v${pkgs.electron_40.version}
+    cp -r ${pkgs.electron_40.headers}/* headers/node-v${pkgs.electron_40.version}/
+    tar -czf $out -C headers node-v${pkgs.electron_40.version}
+  '';
+
+  hermesDesktopPkgs = pkgs // {fetchurl = _: electronHeadersTarball;};
+
+  hermesDesktop = pkgs.callPackage "${inputs.hermes-agent.outPath}/nix/desktop.nix" {
+    electron = pkgs.electron_40;
+    hermesAgent = hermesAgent;
+    hermesNpmLib = hermesPatchedNpmLib;
+    pkgs = hermesDesktopPkgs;
+  };
 in {
   sops = {
     defaultSopsFile = ../../sops/secrets.home.yaml;
@@ -48,6 +107,10 @@ in {
       "hermes/BRAVE_SEARCH_API_KEY" = {};
       "hermes/HASS_TOKEN" = {};
       "hermes/HERMES_SPOTIFY_CLIENT_ID" = {};
+      "hermes/SONARR_API_KEY" = {};
+      "hermes/RADARR_API_KEY" = {};
+      "hermes/LIDARR_API_KEY" = {};
+      "hermes/PROWLARR_API_KEY" = {};
     };
     templates."hermes.env".content = ''
       VERTEX_CREDENTIALS_PATH="~/.config/gcloud/application_default_credentials.json"
@@ -60,6 +123,15 @@ in {
 
       HASS_TOKEN=${config.sops.placeholder."hermes/HASS_TOKEN"}
       HASS_URL=https://homeassistant.munchkin-sun.ts.net
+
+      SONARR_URL=http://127.0.0.1:8989
+      SONARR_API_KEY=${config.sops.placeholder."hermes/SONARR_API_KEY"}
+      RADARR_URL=http://127.0.0.1:7878
+      RADARR_API_KEY=${config.sops.placeholder."hermes/RADARR_API_KEY"}
+      LIDARR_URL=http://127.0.0.1:8686
+      LIDARR_API_KEY=${config.sops.placeholder."hermes/LIDARR_API_KEY"}
+      PROWLARR_URL=http://127.0.0.1:9696
+      PROWLARR_API_KEY=${config.sops.placeholder."hermes/PROWLARR_API_KEY"}
 
       HERMES_SPOTIFY_CLIENT_ID=${config.sops.placeholder."hermes/HERMES_SPOTIFY_CLIENT_ID"}
 
@@ -85,8 +157,8 @@ in {
     name = "Hermes Desktop";
     genericName = "AI Agent";
     comment = "Native desktop client for Hermes Agent";
-    exec = "${hermesDesktop}/bin/hermes-desktop";
-    icon = "${hermesDesktop}/share/hermes-desktop/dist/hermes.png";
+    exec = "${config.home.profileDirectory}/bin/hermes-desktop";
+    icon = "${config.home.profileDirectory}/share/hermes-desktop/dist/hermes.png";
     terminal = false;
     categories = [
       "Development"

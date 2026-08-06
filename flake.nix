@@ -156,6 +156,7 @@
             ./modules/home-manager/firefox.home.nix
             ./modules/home-manager/git.home.nix
             ./modules/home-manager/nixcats/nixcats.home.nix
+            ./modules/home-manager/neovim.home.nix
             ./modules/home-manager/password-store.home.nix
             ./modules/home-manager/ranger.home.nix
             ./modules/home-manager/shell/default.nix
@@ -194,6 +195,7 @@
             ## PROGRAMS
             ./modules/home-manager/shell/default.nix
             ./modules/home-manager/nixcats/nixcats.home.nix
+            ./modules/home-manager/neovim.home.nix
             ./modules/home-manager/yazi.home.nix
 
             ## CONTAINERS
@@ -284,7 +286,10 @@
                 useUserPackages = true;
                 extraSpecialArgs = { inherit inputs outputs; };
                 users.neko = {
-                  imports = [ ./modules/home-manager/nixcats/nixcats.home.nix ];
+                  imports = [ 
+                    ./modules/home-manager/nixcats/nixcats.home.nix 
+                    ./modules/home-manager/neovim.home.nix
+                  ];
                   home.stateVersion = "23.11";
                 };
               };

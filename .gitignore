@@ -23,24 +23,19 @@ containers/grimoire
 .config/litellm
 #NIX HANDLES THIS
 .config/environment.d
-#NVIM SETUP IS SEPERATE REPO
-.config/nvim/
-.config/nvim-vscode/
-#DONT EVEN USE THIS ANYMORE
-.config/nvimFnl/
-.config/nvimWithoutLazy/
+#Don't track nvim plugged or nvim /tmp/
+./modules/home-manager/nixcats/plugged/
+./modules/home-manager/nixcats/tmp/
+
 #IF I EVER CUSTOMIZE THIS ILL STAGE/PUSH
 .config/page/
 .config/systemd/
 
-#HAS MY FIREFOX PROFILES
-.mozilla/
 publickey
 
 #RICE
 .fonts/
-theme/wallpapers/
-windowManagers/quickshell/
+./modules/theme/wallpapers/
 
 # ignore nix build
 result
@@ -48,7 +43,3 @@ result
 ## secrets
 # SOPS
 secrets/
-
-# tailscale
-meow.munchkin-sun.ts.net.crt
-meow.munchkin-sun.ts.net.key

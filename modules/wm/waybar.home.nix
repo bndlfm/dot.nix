@@ -4,6 +4,7 @@
     pkgs.nerd-fonts.terminess-ttf
     pkgs.nerd-fonts.symbols-only
   ];
+  fonts.fontconfig.enable = true;
   programs.waybar = {
     enable = true;
     settings =
@@ -205,8 +206,10 @@
               "${_g.monitors.center.output}"
               "${_g.monitors.right.output}"
             ];
-            height = 32;
-            spacing = 5;
+            margin-top = 4;
+            margin-left = 12;
+            margin-right = 12;
+            spacing = 6;
             align = 0;
             modules-left = [
               "niri/workspaces"
@@ -232,8 +235,10 @@
             position = "top";
             output = [
             ];
-            height = 32;
-            spacing = 5;
+            margin-top = 4;
+            margin-left = 12;
+            margin-right = 12;
+            spacing = 6;
             modules-left = [
               "niri/workspaces"
               "hyprland/workspaces"
@@ -246,103 +251,138 @@
         )
       ];
     style = /* css */ ''
+      @define-color bg #2e3440;
+      @define-color bg-alt #3b4252;
+      @define-color bg-hover #4c566a;
+      @define-color fg #eceff4;
+      @define-color fg-alt #d8dee9;
+      @define-color accent #88c0d0;
+      @define-color red #bf616a;
+      @define-color green #a3be8c;
+      @define-color yellow #ebcb8b;
+      @define-color blue #81a1c1;
+      @define-color purple #b48ead;
+
+      * {
+        border: none;
+        border-radius: 0;
+        min-height: 0;
+      }
+
       window#waybar {
+        font-family: "Symbols Nerd Font", "Terminess Nerd Font", monospace;
         font-size: 18px;
-        font-family: "Terminess Nerd Font Mono", "Symbols Nerd Font";
-        background: #2e3440;
-        color: #fdf6e3;
+        background-color: transparent;
+        color: @fg;
       }
 
-      #custom-right-arrow-dark,
-      #custom-left-arrow-dark {
-        color: #1a1a1a;
-      }
-      #custom-right-arrow-light,
-      #custom-left-arrow-light {
-        color: #292b2e;
-        background: #1a1a1a;
+      tooltip {
+        background: @bg;
+        border: 2px solid @bg-alt;
+        border-radius: 12px;
       }
 
-      #workspaces,
-      #clock.1,
-      #clock.2,
-      #clock.3,
+      tooltip label {
+        color: @fg;
+      }
+
+      #clock,
       #pulseaudio,
+      #wireplumber,
       #memory,
       #cpu,
+      #temperature,
       #battery,
       #disk,
-      #tray {
-        background-color: #2e3440;
+      #tray,
+      #idle_inhibitor {
+        background-color: @bg;
+        color: @fg-alt;
+        border-radius: 16px;
+        padding: 0px 14px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
       }
+
+      #workspaces {
+        background-color: @bg;
+        border-radius: 16px;
+        padding: 0;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+      }
+
+      #workspaces button {
+        padding: 0px 8px;
+        color: @fg-alt;
+        border-radius: 16px;
+        transition: all 0.2s ease;
+      }
+
+      #workspaces button:hover {
+        background-color: @bg-hover;
+        box-shadow: inherit;
+        text-shadow: inherit;
+      }
+
+      #workspaces button.active {
+        color: @bg;
+        background-color: @accent;
+        font-weight: bold;
+      }
+
+      #workspaces button.visible:not(.active) {
+        color: @fg;
+        background-color: @bg-alt;
+      }
+
+      #clock {
+        color: @fg;
+        font-weight: bold;
+        background-color: @bg-alt;
+      }
+
+      #pulseaudio, #wireplumber {
+        color: @blue;
+      }
+
+      #memory {
+        color: @purple;
+      }
+
+      #cpu {
+        color: @green;
+      }
+
+      #temperature {
+        color: @yellow;
+      }
+
+      #temperature.critical {
+        background-color: @red;
+        color: @bg;
+      }
+
+      #tray {
+        padding: 0px 8px;
+      }
+
       #tray > .passive {
         -gtk-icon-effect: dim;
       }
+
       #tray > .needs-attention {
         -gtk-icon-effect: highlight;
       }
 
-      #workspaces button {
-        padding: 0 0px;
-        background-color: #434c5e;
-        color: #fdf6e3;
-      }
-      #workspaces button.active {
-        color: #ffffff;
-        background: #5e81ac;
-      }
-      #workspaces button.visible:not(.active) {
-        color: #ffffff;
-        background: gray;
-      }
-      #workspaces button:hover {
-        box-shadow: inherit;
-        text-shadow: inherit;
-        text-shadow: inherit;
-      }
-      #workspaces button:hover {
-        background: #1a1a1a;
-        border: #1a1a1a;
-        padding: 0 0px;
-      }
-      #workspaces button.visible {
-        background: gray;
-        color: #ffffff;
+      #idle_inhibitor {
+        color: @fg-alt;
       }
 
-      #pulseaudio {
-        color: #268bd2;
-      }
-      #memory {
-        color: #2aa198;
-      }
-      #cpu {
-        color: #6c71c4;
-      }
-      #battery {
-        color: #859900;
-      }
-      #disk {
-        color: #b58900;
-      }
-
-      #clock,
-      #pulseaudio {
-        margin-left: 4px;
-      }
-      #memory {
-        margin-right: 3px;
-      }
-      #cpu {
-        margin-right: 3px;
-      }
-      #battery,
-      #disk {
-        padding: 0 10px;
+      #idle_inhibitor.activated {
+        color: @accent;
       }
     '';
     systemd = {
-      enable = true;
+      enable = false;
       targets = [ "graphical-session.target" ];
     };
   };

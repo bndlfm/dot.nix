@@ -128,3 +128,449 @@
 +            if pending_shell:
 +                shell_context = "\n\n".join(pending_shell)
 +                event_text = f"{shell_context}\n\n{event_text}" if event_text else shell_context
+
+diff --git a/apps/desktop/src/app/session/hooks/use-prompt-actions/index.ts b/apps/desktop/src/app/session/hooks/use-prompt-actions/index.ts
+index 681ef8d..abc27a6 100644
+--- a/apps/desktop/src/app/session/hooks/use-prompt-actions/index.ts
++++ b/apps/desktop/src/app/session/hooks/use-prompt-actions/index.ts
+@@ -8,6 +8,7 @@ import { stripAnsi } from '@/lib/ansi'
+ import { type ChatMessage, textPart } from '@/lib/chat-messages'
+ import { pathLabel, SLASH_COMMAND_RE } from '@/lib/chat-runtime'
+ import { sanitizeComposerInput } from '@/lib/composer-input-sanitize'
++import { runDesktopShellEscape, shellCommandFromInput } from '@/lib/shell-escape'
+ import { triggerHaptic } from '@/lib/haptics'
+ import { setMutableRef } from '@/lib/mutable-ref'
+ import { normalize } from '@/lib/text'
+@@ -517,6 +518,43 @@ export function usePromptActions({
+     async (rawText: string, options?: SubmitTextOptions) => {
+       const visibleText = sanitizeComposerInput(rawText).trim()
+       const attachments = options?.attachments ?? $composerAttachments.get()
++      const shellCommand = attachments.length ? null : shellCommandFromInput(visibleText)
++
++      if (shellCommand !== null) {
++        triggerHaptic('selection')
++        let sessionId = options?.sessionId ?? activeSessionIdRef.current
++
++        if (!sessionId) {
++          sessionId = await createBackendSessionForSend(visibleText)
++        }
++        if (!sessionId) {
++          notify({ kind: 'error', message: copy.sessionUnavailable })
++
++          return false
++        }
++        if (!shellCommand) {
++          appendSessionTextMessage(sessionId, 'user', '!', options?.storedSessionId)
++          appendSessionTextMessage(sessionId, 'system', 'usage: !<command>', options?.storedSessionId)
++
++          return true
++        }
++
++        try {
++          await runDesktopShellEscape(shellCommand, sessionId, {
++            appendMessage: (role, text) => appendSessionTextMessage(sessionId, role, text, options?.storedSessionId),
++            requestGateway: (method, params) => requestGateway(method, params)
++          })
++        } catch (err) {
++          appendSessionTextMessage(
++            sessionId,
++            'system',
++            inlineErrorMessage(err, 'shell command failed'),
++            options?.storedSessionId
++          )
++        }
++
++        return true
++      }
+ 
+       if (!attachments.length && SLASH_COMMAND_RE.test(visibleText)) {
+         triggerHaptic('selection')
+@@ -529,7 +567,15 @@ export function usePromptActions({
+ 
+       return await submitPromptText(rawText, options)
+     },
+-    [executeSlashCommand, submitPromptText]
++    [
++      activeSessionIdRef,
++      appendSessionTextMessage,
++      copy.sessionUnavailable,
++      createBackendSessionForSend,
++      executeSlashCommand,
++      requestGateway,
++      submitPromptText
++    ]
+   )
+ 
+   const transcribeVoiceAudio = useCallback(
+diff --git a/apps/desktop/src/components/assistant-ui/thread/system-message.tsx b/apps/desktop/src/components/assistant-ui/thread/system-message.tsx
+index 5763176..fb7ed6f 100644
+--- a/apps/desktop/src/components/assistant-ui/thread/system-message.tsx
++++ b/apps/desktop/src/components/assistant-ui/thread/system-message.tsx
+@@ -7,6 +7,7 @@ import { LinkifiedText } from '@/lib/external-link'
+ import { cn } from '@/lib/utils'
+ 
+ const SLASH_STATUS_RE = /^slash:(?<command>\/[^\n]+)\n(?<output>[\s\S]*)$/
++const SHELL_STATUS_RE = /^shell:(?<command>[^\n]+)\n(?<output>[\s\S]*)$/
+ const STEER_NOTE_RE = /^steer:(?<text>[\s\S]+)$/
+ 
+ export const SystemMessage: FC = () => {
+@@ -33,6 +34,26 @@ export const SystemMessage: FC = () => {
+     )
+   }
+ 
++  const shellStatus = text.match(SHELL_STATUS_RE)
++
++  if (shellStatus?.groups) {
++    return (
++      <MessagePrimitive.Root
++        className="w-[86%] max-w-[56rem] self-center overflow-hidden rounded-md border border-border/60 bg-muted/25 shadow-sm"
++        data-role="system"
++        data-slot="aui_system-message-root"
++      >
++        <div className="flex items-center gap-2 border-b border-border/50 bg-muted/35 px-3 py-1.5 text-xs text-muted-foreground">
++          <Codicon name="terminal" size="0.875rem" />
++          <span className="truncate font-mono">$ {shellStatus.groups.command}</span>
++        </div>
++        <pre className="max-h-[32rem] overflow-auto whitespace-pre p-3 font-mono text-[0.8125rem] leading-5 text-foreground/90">
++          {shellStatus.groups.output.trimEnd()}
++        </pre>
++      </MessagePrimitive.Root>
++    )
++  }
++
+   const slashStatus = text.match(SLASH_STATUS_RE)
+ 
+   if (slashStatus?.groups) {
+diff --git a/apps/desktop/src/lib/shell-escape.test.ts b/apps/desktop/src/lib/shell-escape.test.ts
+new file mode 100644
+index 0000000..5b6185c
+--- /dev/null
++++ b/apps/desktop/src/lib/shell-escape.test.ts
+@@ -0,0 +1,33 @@
++import { describe, expect, it, vi } from 'vitest'
++
++import { runDesktopShellEscape, shellCommandFromInput } from './shell-escape'
++
++describe('shellCommandFromInput', () => {
++  it('recognizes a leading bang as a shell escape', () => {
++    expect(shellCommandFromInput('! ls -la')).toBe('ls -la')
++  })
++
++  it('does not treat an embedded bang as a shell escape', () => {
++    expect(shellCommandFromInput('explain ! ls')).toBeNull()
++  })
++
++  it('returns an empty command for a bare bang so the caller can show usage', () => {
++    expect(shellCommandFromInput('!')).toBe('')
++  })
++})
++
++describe('runDesktopShellEscape', () => {
++  it('executes against the active session and renders the result without invoking the model', async () => {
++    const requestGateway = vi.fn(async () => ({ code: 0, stdout: 'alpha\nbeta\n', stderr: '', cwd: '/work' }))
++    const appendMessage = vi.fn()
++
++    await runDesktopShellEscape('ls', 'ui-session', { requestGateway, appendMessage })
++
++    expect(requestGateway).toHaveBeenCalledWith('shell.exec', {
++      command: 'ls',
++      session_id: 'ui-session'
++    })
++    expect(appendMessage).toHaveBeenNthCalledWith(1, 'user', '!ls')
++    expect(appendMessage).toHaveBeenNthCalledWith(2, 'system', 'shell:ls\nalpha\nbeta')
++  })
++})
+diff --git a/apps/desktop/src/lib/shell-escape.ts b/apps/desktop/src/lib/shell-escape.ts
+new file mode 100644
+index 0000000..4bf6bfe
+--- /dev/null
++++ b/apps/desktop/src/lib/shell-escape.ts
+@@ -0,0 +1,33 @@
++export interface DesktopShellExecResponse {
++  code: number
++  stderr?: string
++  stdout?: string
++  cwd?: string
++}
++
++interface DesktopShellEscapeDeps {
++  requestGateway: (method: string, params: { command: string; session_id: string }) => Promise<DesktopShellExecResponse>
++  appendMessage: (role: 'user' | 'system', text: string) => void
++}
++
++export function shellCommandFromInput(text: string): string | null {
++  if (!text.startsWith('!')) {
++    return null
++  }
++
++  return text.slice(1).trim()
++}
++
++export async function runDesktopShellEscape(
++  command: string,
++  sessionId: string,
++  { requestGateway, appendMessage }: DesktopShellEscapeDeps
++): Promise<void> {
++  appendMessage('user', `!${command}`)
++  const result = await requestGateway('shell.exec', { command, session_id: sessionId })
++  const output = [result.stdout, result.stderr].filter(Boolean).join('\n').trim()
++  const status = result.code !== 0 || !output ? [output, `exit ${result.code}`].filter(Boolean).join('\n') : output
++  const displayCommand = command.replace(/\s+/g, ' ').trim()
++
++  appendMessage('system', `shell:${displayCommand}\n${status}`)
++}
+diff --git a/tests/tui_gateway/test_shell_context.py b/tests/tui_gateway/test_shell_context.py
+new file mode 100644
+index 0000000..8d90201
+--- /dev/null
++++ b/tests/tui_gateway/test_shell_context.py
+@@ -0,0 +1,90 @@
++from __future__ import annotations
++
++import json
++import threading
++
++import tools.terminal_tool as terminal_module
++from tui_gateway import server
++
++
++def test_pending_shell_context_is_added_to_model_message_once():
++    session = {}
++    server._queue_shell_context(
++        session,
++        command="ls",
++        stdout="alpha\nbeta\n",
++        stderr="",
++        exit_code=0,
++        cwd="/workspace",
++    )
++
++    first = server._take_shell_context_for_run(session, "what files are there?")
++    second = server._take_shell_context_for_run(session, "and now?")
++
++    assert first.startswith("[LOCAL SHELL COMMAND RESULT")
++    assert "Working directory: /workspace" in first
++    assert "Command: ls" in first
++    assert "Exit code: 0" in first
++    assert "alpha\nbeta" in first
++    assert first.endswith("what files are there?")
++    assert second == "and now?"
++
++
++def test_pending_shell_context_preserves_native_image_message_shape():
++    session = {}
++    server._queue_shell_context(
++        session,
++        command="pwd",
++        stdout="/workspace\n",
++        stderr="",
++        exit_code=0,
++        cwd="/workspace",
++    )
++    message = [
++        {"type": "text", "text": "describe this"},
++        {"type": "image_url", "image_url": {"url": "data:image/png;base64,abc"}},
++    ]
++
++    enriched = server._take_shell_context_for_run(session, message)
++
++    assert isinstance(enriched, list)
++    assert enriched[0]["type"] == "text"
++    assert enriched[0]["text"].startswith("[LOCAL SHELL COMMAND RESULT")
++    assert enriched[1:] == message
++
++
++def test_shell_exec_uses_session_terminal_and_queues_context(monkeypatch, tmp_path):
++    sid = "ui-shell-session"
++    session = {
++        "session_key": "stored-shell-session",
++        "cwd": str(tmp_path),
++        "history_lock": threading.RLock(),
++    }
++    calls = []
++
++    def fake_terminal_tool(**kwargs):
++        calls.append(kwargs)
++        return json.dumps({"output": "alpha\nbeta\n", "exit_code": 0, "error": None})
++
++    monkeypatch.setattr(terminal_module, "terminal_tool", fake_terminal_tool)
++    server._sessions[sid] = session
++    try:
++        response = server.handle_request(
++            {"id": "shell-1", "method": "shell.exec", "params": {"command": "ls", "session_id": sid}}
++        )
++    finally:
++        server._sessions.pop(sid, None)
++
++    assert response["result"]["stdout"] == "alpha\nbeta\n"
++    assert response["result"]["code"] == 0
++    assert response["result"]["cwd"] == str(tmp_path)
++    assert calls == [
++        {
++            "command": "ls",
++            "timeout": 30,
++            "task_id": "stored-shell-session",
++            "session_id": "stored-shell-session",
++            "force": True,
++        }
++    ]
++    assert "Command: ls" in session["pending_shell_context"][0]
+diff --git a/tui_gateway/server.py b/tui_gateway/server.py
+index 5ab0dd4..fb19eb6 100644
+--- a/tui_gateway/server.py
++++ b/tui_gateway/server.py
+@@ -11824,6 +11824,11 @@ def _run_prompt_submit(
+                 else:
+                     run_message = _enrich_with_attached_images(prompt, images)
+ 
++            # User-invoked ! commands are not conversation turns. Their output
++            # is queued by shell.exec and consumed once as hidden model context,
++            # while persist_user_message below remains the user's visible prompt.
++            run_message = _take_shell_context_for_run(session, run_message)
++
+             # Streaming TTS: voice-mode replies are spoken sentence-by-sentence
+             # as tokens arrive (CLI parity) instead of after the full turn.
+             # begin() first — it cuts any still-speaking previous turn, and
+@@ -18493,6 +18498,42 @@ def _(rid, params: dict) -> dict:
+         return _err(rid, 5026, str(e))
+ 
+ 
++def _queue_shell_context(
++    session: dict,
++    *,
++    command: str,
++    stdout: str,
++    stderr: str,
++    exit_code: int,
++    cwd: str,
++) -> None:
++    """Queue a user-run shell transcript for the session's next model turn."""
++    output = "\n".join(part for part in (stdout, stderr) if part).strip() or "(no output)"
++    block = (
++        "[LOCAL SHELL COMMAND RESULT — executed by the user outside the model]\n"
++        f"Working directory: {cwd}\n"
++        f"Command: {command}\n"
++        f"Exit code: {exit_code}\n"
++        "Output:\n"
++        f"{output}\n"
++        "[END LOCAL SHELL COMMAND RESULT]"
++    )
++    session.setdefault("pending_shell_context", []).append(block)
++
++
++def _take_shell_context_for_run(session: dict, run_message: Any) -> Any:
++    """Consume queued shell transcripts and prepend them only to model input."""
++    blocks = session.pop("pending_shell_context", [])
++    if not blocks:
++        return run_message
++    context = "\n\n".join(str(block) for block in blocks)
++    if isinstance(run_message, str):
++        return f"{context}\n\n{run_message}"
++    if isinstance(run_message, list):
++        return [{"type": "text", "text": context}, *run_message]
++    return run_message
++
++
+ @method("shell.exec")
+ def _(rid, params: dict) -> dict:
+     cmd = params.get("command", "")
+@@ -18513,6 +18554,47 @@ def _(rid, params: dict) -> dict:
+             )
+     except ImportError:
+         return _err(rid, 5001, "shell.exec unavailable: approval safety module not importable")
++    session = None
++    if params.get("session_id"):
++        session, err = _sess_nowait(params, rid)
++        if err:
++            return err
++
++    if session is not None:
++        try:
++            from tools.terminal_tool import terminal_tool
++
++            _register_session_cwd(session)
++            session_key = str(session.get("session_key") or params["session_id"])
++            raw_result = terminal_tool(
++                command=cmd,
++                timeout=30,
++                task_id=session_key,
++                session_id=session_key,
++                force=True,
++            )
++            result = json.loads(raw_result)
++            stdout = str(result.get("output") or "")[-4000:]
++            stderr = str(result.get("error") or "")[-2000:]
++            exit_code = int(result.get("exit_code", -1))
++            _reconcile_session_cwd_from_terminal(session)
++            cwd = _session_cwd(session)
++            with session["history_lock"]:
++                _queue_shell_context(
++                    session,
++                    command=cmd,
++                    stdout=stdout,
++                    stderr=stderr,
++                    exit_code=exit_code,
++                    cwd=cwd,
++                )
++            return _ok(
++                rid,
++                {"stdout": stdout, "stderr": stderr, "code": exit_code, "cwd": cwd},
++            )
++        except Exception as e:
++            return _err(rid, 5003, str(e))
++
+     try:
+         from hermes_cli._subprocess_compat import windows_hide_flags
+ 
+@@ -18530,6 +18612,7 @@ def _(rid, params: dict) -> dict:
+                 "stdout": r.stdout[-4000:],
+                 "stderr": r.stderr[-2000:],
+                 "code": r.returncode,
++                "cwd": os.getcwd(),
+             },
+         )
+     except subprocess.TimeoutExpired:
+diff --git a/ui-tui/src/app/useSubmission.test.ts b/ui-tui/src/app/useSubmission.test.ts
+index 3420210..dcf2857 100644
+--- a/ui-tui/src/app/useSubmission.test.ts
++++ b/ui-tui/src/app/useSubmission.test.ts
+@@ -1,10 +1,16 @@
+ import { describe, expect, it } from 'vitest'
+ 
+ import type { PasteSnippet } from './interfaces.js'
+-import { expandSnips } from './useSubmission.js'
++import { expandSnips, shellExecParams } from './useSubmission.js'
+ 
+ const snip = (label: string, text: string): PasteSnippet => ({ label, text })
+ 
++describe('shellExecParams', () => {
++  it('binds a shell escape to the active UI session', () => {
++    expect(shellExecParams('ls', 'ui-session')).toEqual({ command: 'ls', session_id: 'ui-session' })
++  })
++})
++
+ describe('expandSnips (paste history recall)', () => {
+   it('replaces a collapsed paste label with its full content', () => {
+     const label = '[[ hello.. [3 lines] .. world ]]'
+diff --git a/ui-tui/src/app/useSubmission.ts b/ui-tui/src/app/useSubmission.ts
+index a70b1fd..95e0084 100644
+--- a/ui-tui/src/app/useSubmission.ts
++++ b/ui-tui/src/app/useSubmission.ts
+@@ -30,6 +30,9 @@ export const expandSnips = (snips: PasteSnippet[]) => {
+ const spliceMatches = (text: string, matches: RegExpMatchArray[], results: string[]) =>
+   matches.reduceRight((acc, m, i) => acc.slice(0, m.index!) + results[i] + acc.slice(m.index! + m[0].length), text)
+ 
++export const shellExecParams = (command: string, sessionId?: string | null) =>
++  sessionId ? { command, session_id: sessionId } : { command }
++
+ export function useSubmission(opts: UseSubmissionOptions) {
+   const { appendMessage, composerActions, composerRefs, composerState, gw, setLastUserMsg, slashRef, submitRef, sys } =
+     opts
+@@ -91,7 +94,7 @@ export function useSubmission(opts: UseSubmissionOptions) {
+       appendMessage({ role: 'user', text: `!${cmd}` })
+       patchUiState({ busy: true, status: 'running…' })
+ 
+-      gw.request<ShellExecResponse>('shell.exec', { command: cmd })
++      gw.request<ShellExecResponse>('shell.exec', shellExecParams(cmd, getUiState().sid))
+         .then(raw => {
+           const r = asRpcResult<ShellExecResponse>(raw)

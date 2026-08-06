@@ -5,7 +5,7 @@
   ...
 }:
 let
-  _g = import ../../lib/globals.nix { inherit config; }; # My global variables
+  _g = import ../../lib/globals.nix { inherit config; };
   gameUser = "neko";
   mkDeckyPlugin =
     {
@@ -43,7 +43,9 @@ let
   installDeckyPlugins =
     plugins:
     let
-      managedPluginPatterns = lib.concatMapStringsSep "|" (plugin: lib.escapeShellArg plugin.name) plugins;
+      managedPluginPatterns = lib.concatMapStringsSep "|" (
+        plugin: lib.escapeShellArg plugin.name
+      ) plugins;
     in
     ''
       for candidate in "$pluginsDir"/*; do
@@ -97,6 +99,7 @@ let
         ''
       ) plugins}
     '';
+
   deckyLsfgVk = mkDeckyPlugin {
     name = "Decky LSFG-VK";
     pname = "decky-lsfg-vk";
@@ -110,6 +113,7 @@ let
         --replace-fail '"#!/bin/bash"' '"#!/usr/bin/env bash"'
     '';
   };
+
   simpleDeckyTdp = mkDeckyPlugin {
     name = "SimpleDeckyTDP";
     pname = "simple-decky-tdp";
@@ -119,6 +123,7 @@ let
       hash = "sha256-0D02/F8XDCJi/hq+hlPp/d38n4kKPY68ODMCHdOpHAM=";
     };
   };
+
   allyCenter = mkDeckyPlugin {
     name = "Ally Center";
     pname = "ally-center";
@@ -129,34 +134,25 @@ let
       stripRoot = false;
     };
     patches = [ ./ally-center-xbox-rgb.patch ];
-    # SimpleDeckyTDP remains the sole TDP owner, so Ally Center starts with
-    # its upstream external-TDP mode enabled.
-    postPatch = ''
-      substituteInPlace defaults/defaults.json \
-        --replace-fail \
-          '"charge_limit": 100' \
-          '"charge_limit": 100, "use_external_tdp": true'
-      substituteInPlace main.py \
-        --replace-fail \
-          '"charge_limit": 100' \
-          '"charge_limit": 100, "use_external_tdp": True'
-    '';
   };
 
-  deckyLsfgVkRuntime = pkgs.runCommand "decky-lsfg-vk-runtime-0.12.5" {
-    nativeBuildInputs = [
-      pkgs.jq
-      pkgs.unzip
-    ];
-  } ''
-    unzip -q ${deckyLsfgVk.package}/bin/lsfg-vk_noui.zip -d "$out"
-    jq --arg library "$out/lib/liblsfg-vk.so" \
-      '.layer.library_path = $library' \
-      "$out/share/vulkan/implicit_layer.d/VkLayer_LS_frame_generation.json" \
-      > layer.json
-    mv layer.json \
-      "$out/share/vulkan/implicit_layer.d/VkLayer_LS_frame_generation.json"
-  '';
+  deckyLsfgVkRuntime =
+    pkgs.runCommand "decky-lsfg-vk-runtime-0.12.5"
+      {
+        nativeBuildInputs = [
+          pkgs.jq
+          pkgs.unzip
+        ];
+      }
+      ''
+        unzip -q ${deckyLsfgVk.package}/bin/lsfg-vk_noui.zip -d "$out"
+        jq --arg library "$out/lib/liblsfg-vk.so" \
+          '.layer.library_path = $library' \
+          "$out/share/vulkan/implicit_layer.d/VkLayer_LS_frame_generation.json" \
+          > layer.json
+        mv layer.json \
+          "$out/share/vulkan/implicit_layer.d/VkLayer_LS_frame_generation.json"
+      '';
   lsfgLauncher = pkgs.writeShellScript "lsfg" ''
     export LSFG_PROCESS=decky-lsfg-vk
     exec "$@"
