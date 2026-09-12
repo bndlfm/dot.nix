@@ -6,20 +6,22 @@
   xdg.configFile."hypr/hypridle.conf" = {
     source = pkgs.writeText "hypridle.conf" ''
       general {
-        lock_cmd = "${pkgs.hyprlock}/bin/hyprlock"
-        before_sleep_cmd = "loginctl lock-session"
-        after_sleep_cmd = "${pkgs.hyprland}/bin/hyprctl dispatch 'dpms on'"
+        lock_cmd = ${pkgs.hyprlock}/bin/hyprlock
+        before_sleep_cmd = loginctl lock-session
+        after_sleep_cmd = ${pkgs.hyprland}/bin/hyprctl dispatch 'dpms on'
       }
 
       listener {
+        # Lock while the outputs are still rendering.  DPMS-off before
+        # hyprlock can leave NVIDIA sessions with only the cursor visible.
         timeout = 300
-        on-timeout = "${pkgs.hyprland}/bin/hyprctl dispatch 'dpms off'"
-        on-resume = "${pkgs.hyprland}/bin/hyprctl dispatch 'dpms on'"
+        on-timeout = ${pkgs.hyprlock}/bin/hyprlock
       }
 
       listener {
-        timeout = 600
-        on-timeout = "${pkgs.hyprlock}/bin/hyprlock"
+        timeout = 330
+        on-timeout = ${pkgs.hyprland}/bin/hyprctl dispatch 'dpms off'
+        on-resume = ${pkgs.hyprland}/bin/hyprctl dispatch 'dpms on'
       }
     '';
     force = true;
@@ -27,7 +29,7 @@
 
   xdg.configFile."hypr/hyprlock.conf" = {
     source = pkgs.writeText "hyprlock.conf" /* sh */ ''
-      $font = Monospace
+      $font = Inconsolata Nerd Font
 
       general {
         hide_cursor = false
@@ -41,12 +43,15 @@
       }
 
       background {
-        monitor = ""
-        color = rgba(25, 20, 20, 1)
+        monitor =
+        blur_passes = 1
+        blur_size = 7
+        noise = 0.011700
+        path = ~/Pictures/Iceland/adam-jang-MLKrf51NV8w-unsplash.jpg
       }
 
       input-field {
-        monitor = ""
+        monitor =
         size = 300, 60
         outline_thickness = 2
         inner_color = rgba(00000000)
@@ -54,6 +59,7 @@
         check_color = rgba(99c0d0ff)
         fail_color = rgba(f38ba8ff)
         font_color = rgba(ffffffff)
+        font_family = "Inconsolata Nerd Font"
         placeholder_text = "Password..."
         hide_input = true
         rounding = 8
@@ -64,22 +70,22 @@
       }
 
       label {
-        monitor = ""
+        monitor =
         text = "Hi, $USER"
         color = rgba(ffffffff)
         font_size = 32
-        font_family = $font
+        font_family = "Inconsolata Nerd Font"
         position = 0, -100
         halign = center
         valign = center
       }
 
       label {
-        monitor = ""
-        text = "$HOST - $TIME"
+        monitor =
+        text = cmd[update:60000] hostname
         color = rgba(99c0d0ff)
         font_size = 18
-        font_family = $font
+        font_family = "Inconsolata Nerd Font"
         position = 0, 50
         halign = center
         valign = center

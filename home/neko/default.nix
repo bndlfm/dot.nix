@@ -36,27 +36,6 @@
   };
   # }}}
 
-  # --- Flatpak / Services --- {{{
-  services = {
-    flatpak = {
-      enable = true;
-      packages = [
-        "com.google.EarthPro"
-        "com.github.tchx84.Flatseal"
-        "org.jdownloader.JDownloader"
-      ];
-      uninstallUnmanaged = true;
-      update = {
-        auto = {
-          enable = true;
-          onCalendar = "weekly";
-        };
-        onActivation = true;
-      };
-    };
-  };
-  # }}}
-
   # --- Home Packages --- {{{
   home = {
     packages =
@@ -73,7 +52,6 @@
         ];
 
         apple = [
-          uxplay
         ];
 
         browsers = [
@@ -86,6 +64,7 @@
           age
           bat
           chafa
+          ddgr
           duf
           eza
           fd
@@ -138,8 +117,9 @@
 
           # LAUNCHERS
           _gamma-launcher
+          _vr-cyberdeck
           heroic
-          #lutris
+          lutris
           prismlauncher
 
           # MISC
@@ -179,8 +159,7 @@
           #
           # IDE
           #-----
-          antigravity-ide-fhs
-          code-cursor-fhs
+          #antigravity-ide-fhs
 
           #
           # PYTHON
@@ -210,14 +189,14 @@
         ];
 
         social = [
-          discord
           dino
           signal-desktop
-          hexchat
           telegram-desktop
         ];
 
         system = [
+          cloudflare-warp
+          eddie
           nwg-look
           openrgb
           file-roller
@@ -288,8 +267,11 @@
 
           other = [
             appimage-run
+            cabextract
             copyq
             easyeffects
+            jack2
+            qpwgraph
             gnome-tweaks
             google-drive-ocamlfuse
             gparted
@@ -358,6 +340,7 @@
       GMAIL_APP_PASS = "$(cat ${config.sops.secrets."internet/GMAIL_APP_PASS".path})";
       TWITCH_IRC_OAUTH = "$(cat ${config.sops.secrets."internet/TWITCH_IRC_OAUTH".path})";
       OBSIDIAN_REST_API_KEY = "$(cat ${config.sops.secrets."local/OBSIDIAN_REST_API_KEY".path})";
+      PARCEL_17TRACK_API_TOKEN = "$(cat ${config.sops.secrets."hermes/PARCEL_17TRACK_API_TOKEN".path})";
 
       ## EDITOR
       EDITOR = "nvim";

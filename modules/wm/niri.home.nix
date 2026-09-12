@@ -21,6 +21,9 @@ in
       swayidle
       swaylock-effects
       wlprop
+      # WALLPAPER
+      awww
+      waypaper
     ];
 
     gtk = {
@@ -135,6 +138,15 @@ in
           };
           # }}}
 
+          # --- Window Effects --- {{{
+          blur = {
+            passes = 2;
+            offset = 3;
+            noise = 0.02;
+            saturation = 1.5;
+          };
+          # }}}
+
           # --- Startup --- {{{
           spawn-at-startup = map (cmd: {
             command = [
@@ -167,7 +179,7 @@ in
             {
               # --- BASIC KEYBINDS --- {{{
               ## QUIT NIRI/TURN OFF MONITORS
-              "${Mod}+Shift+Escape".action = quit;
+              "${Mod}+Alt+Escape".action = quit;
               "${Mod}+Shift+P".action = power-off-monitors;
               "${Mod}+Shift+Backslash".action = show-hotkey-overlay;
               "${Mod}+Shift+Grave".action = toggle-overview;
@@ -314,15 +326,12 @@ in
               colors = config.lib.stylix.colors.withHashtag;
             in
             [
-              {
-                matches = [ { app-id = "vgtrans-overlay"; } ];
-                open-floating = true;
-                opacity = 1.0;
-                block-out-from = "screencast"; # Optional: keeps translations private
-              }
-
               # ══════════════════════════════════ GLOBAL ══════════════════════════════════ {{{
+              # Defaults...
               {
+                background-effect = {
+                  blur = true;
+                };
                 clip-to-geometry = true;
                 geometry-corner-radius = {
                   top-right = 12.0;
@@ -331,47 +340,20 @@ in
                   bottom-left = 12.0;
                 };
               }
-              {
-                matches = [ { is-focused = false; } ];
-                opacity = 0.90;
-              }
-              {
-                ## THIS PREVENTS NIRI WM HELP MENU FROM BEING TRANSPARENT I THINK
-                matches = [ { app-id = "^niri$"; } ];
-                opacity = 1.0;
-              }
               # }}}
 
               # ══════════════════════════════════ BROWSER ══════════════════════════════════ {{{
+              {
+                matches = [ { app-id = "^zen-twilight$"; } ];
+                draw-border-with-background = false;
+                opacity = null;
+              }
               {
                 matches = [
                   {
                     app-id = "^firefox$";
                     title = "^Picture-in-Picture$";
                   }
-                ];
-                opacity = 0.9;
-                open-floating = true;
-                open-focused = false;
-                default-column-width.fixed = 425;
-                default-window-height.fixed = 250;
-                default-floating-position = {
-                  relative-to = "top-right";
-                  x = 75;
-                  y = 50;
-                };
-              }
-              {
-                matches = [
-                  {
-                    app-id = "^firefox$";
-                    title = "Private Browsing";
-                  }
-                ];
-                border.active.color = colors.base0E;
-              }
-              {
-                matches = [
                   {
                     app-id = "^zen-twilight$";
                     title = "^Picture-in-Picture$";
@@ -387,6 +369,15 @@ in
                   x = 75;
                   y = 50;
                 };
+              }
+              {
+                matches = [
+                  {
+                    app-id = "^zen-twilight$";
+                    title = "Private Browsing";
+                  }
+                ];
+                border.active.color = colors.base0E;
               }
               # }}}
 
@@ -404,32 +395,29 @@ in
               # }}}
 
               # ══════════════════════════════════ TERMINAL ══════════════════════════════════ {{{
-              #{
-              #  matches = [
-              #    {
-              #      app-id = "^kitty$";
-              #      is-focused = true;
-              #    }
-              #  ];
-              #  opacity = 0.93;
-              #}
-              #{
-              #  matches = [ { app-id = "^kitty_dropdown$"; } ];
-              #  opacity = 0.85;
-              #  open-floating = true;
-              #}
+              {
+                matches = [
+                  { is-focused = true; }
+                  { app-id = "^kitty$"; }
+                ];
+                draw-border-with-background = false;
+                opacity = 0.97;
+              }
+              {
+                matches = [
+                  { is-focused = false; }
+                  { app-id = "^kitty$"; }
+                ];
+                opacity = 0.90;
+              }
+              {
+                matches = [ { app-id = "^kitty_dropdown$"; } ];
+                opacity = 0.85;
+                open-floating = true;
+              }
               # }}}
 
               # ══════════════════════════════════════ MISC ══════════════════════════════════════ {{{
-              {
-                matches = [ { app-id = "^com.github.hluk.copyq$"; } ];
-                open-floating = true;
-              }
-              {
-                matches = [ { app-id = "moe.nyarchlinux.assistant"; } ];
-                open-floating = true;
-                open-focused = true;
-              }
               {
                 matches = [
                   {
@@ -438,10 +426,6 @@ in
                   }
                 ];
                 opacity = 1.0;
-              }
-              {
-                matches = [ { app-id = "^org.gnome.NautiliusPreviewer"; } ];
-                open-floating = true;
               }
               {
                 matches = [ { app-id = "^signal$"; } ];

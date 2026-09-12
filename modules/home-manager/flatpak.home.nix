@@ -3,7 +3,8 @@
     flatpak = {
       enable = true;
       packages = [
-	"com.google.EarthPro"
+        "com.discordapp.Discord"
+        "com.google.EarthPro"
         "com.github.tchx84.Flatseal"
         "org.jdownloader.JDownloader"
         "com.heroicgameslauncher.hgl"

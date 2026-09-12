@@ -37,7 +37,7 @@
               offset_y = 0.0;
             }
           ];
-          openvr-compat-path = "${pkgs.xrizer}";
+          openvr-compat-path = "${pkgs.xrizer}/lib/xrizer";
         };
       };
     };

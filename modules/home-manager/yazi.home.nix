@@ -56,7 +56,7 @@
       };
       open = {
         rules = [
-          { name = "*/"; use = [ "edit" "open" "reveal" ]; }
+          { url = "*/"; use = [ "edit" "open" "reveal" ]; }
           { mime = "text/*"; use = [ "edit" "reveal" ]; }
           { mime = "image/*"; use = [ "open" "reveal" ]; }
           { mime = "video/*"; use = [ "play" "reveal" ]; }
@@ -85,14 +85,14 @@
       };
       plugin = {
         preloaders = [
-          { name = "*"; cond = "!mime"; run = "mime"; multi = true; prio = "high"; }
+          { url = "*"; cond = "!mime"; run = "mime"; multi = true; prio = "high"; }
           { mime = "image/vnd.djvu"; run = "noop"; }
           { mime = "image/*"; run = "image"; }
           { mime = "video/*"; run = "video"; }
           { mime = "application/pdf"; run = "pdf"; }
         ];
         previewers = [
-          { name = "*/"; run = "folder"; sync = true; }
+          { url = "*/"; run = "folder"; sync = true; }
           { mime = "text/*"; run = "code"; }
           { mime = "*/xml"; run = "code"; }
           { mime = "*/javascript"; run = "code"; }
@@ -110,7 +110,7 @@
           { mime = "application/x-7z-compressed"; run = "archive"; }
           { mime = "application/x-rar"; run = "archive"; }
           { mime = "application/xz"; run = "archive"; }
-          { name = "*"; run = "file"; }
+          { url = "*"; run = "file"; }
         ];
       };
       input = {
@@ -1690,9 +1690,9 @@
           }
 
           # Fallback
-          # { name = "*", fg = "white" },
+          # { url = "*", fg = "white" },
           {
-            name = "*/";
+            url = "*/";
             fg = "blue";
           }
         ];
@@ -1701,621 +1701,621 @@
         rules = [
           # Programming
           {
-            name = "*.c";
+            url = "*.c";
             text = "";
             fg = "#599eff";
           }
           {
-            name = "*.cpp";
+            url = "*.cpp";
             text = "";
             fg = "#519aba";
           }
           {
-            name = "*.class";
+            url = "*.class";
             text = "";
             fg = "#cc3e44";
           }
           {
-            name = "*.cs";
+            url = "*.cs";
             text = "󰌛";
             fg = "#596706";
           }
           {
-            name = "*.css";
+            url = "*.css";
             text = "";
             fg = "#42a5f5";
           }
           {
-            name = "*.elm";
+            url = "*.elm";
             text = "";
             fg = "#4391d2";
           }
           {
-            name = "*.fish";
+            url = "*.fish";
             text = "";
             fg = "#4d5a5e";
           }
           {
-            name = "*.go";
+            url = "*.go";
             text = "";
             fg = "#519aba";
           }
           {
-            name = "*.h";
+            url = "*.h";
             text = "";
             fg = "#a074c4";
           }
           {
-            name = "*.hpp";
+            url = "*.hpp";
             text = "";
             fg = "#a074c4";
           }
           {
-            name = "*.html";
+            url = "*.html";
             text = "";
             fg = "#e44d26";
           }
           {
-            name = "*.jar";
+            url = "*.jar";
             text = "";
             fg = "#cc3e44";
           }
           {
-            name = "*.java";
+            url = "*.java";
             text = "";
             fg = "#cc3e44";
           }
           {
-            name = "*.js";
+            url = "*.js";
             text = "";
             fg = "#F1F134";
           }
           {
-            name = "*.jsx";
+            url = "*.jsx";
             text = "";
             fg = "#20c2e3";
           }
           {
-            name = "*.lua";
+            url = "*.lua";
             text = "";
             fg = "#51a0cf";
           }
           {
-            name = "*.nix";
+            url = "*.nix";
             text = "";
             fg = "#7ebae4";
           }
           {
-            name = "*.nu";
+            url = "*.nu";
             text = ">";
             fg = "#3aa675";
           }
           {
-            name = "*.php";
+            url = "*.php";
             text = "";
             fg = "#a074c4";
           }
           {
-            name = "*.py";
+            url = "*.py";
             text = "";
             fg = "#ffbc03";
           }
           {
-            name = "*.rb";
+            url = "*.rb";
             text = "";
             fg = "#701516";
           }
           {
-            name = "*.rs";
+            url = "*.rs";
             text = "";
             fg = "#dea584";
           }
           {
-            name = "*.sbt";
+            url = "*.sbt";
             text = "";
             fg = "#4d5a5e";
           }
           {
-            name = "*.scala";
+            url = "*.scala";
             text = "";
             fg = "#cc463e";
           }
           {
-            name = "*.scss";
+            url = "*.scss";
             text = "";
             fg = "#f55385";
           }
           {
-            name = "*.sh";
+            url = "*.sh";
             text = "";
             fg = "#4d5a5e";
           }
           {
-            name = "*.swift";
+            url = "*.swift";
             text = "";
             fg = "#e37933";
           }
           {
-            name = "*.ts";
+            url = "*.ts";
             text = "";
             fg = "#519aba";
           }
           {
-            name = "*.tsx";
+            url = "*.tsx";
             text = "";
             fg = "#1354bf";
           }
           {
-            name = "*.vim";
+            url = "*.vim";
             text = "";
             fg = "#019833";
           }
           {
-            name = "*.vue";
+            url = "*.vue";
             text = "󰡄";
             fg = "#8dc149";
           }
 
           # Text
           {
-            name = "*.conf";
+            url = "*.conf";
             text = "";
             fg = "#6d8086";
           }
           {
-            name = "*.ini";
+            url = "*.ini";
             text = "";
             fg = "#6d8086";
           }
           {
-            name = "*.json";
+            url = "*.json";
             text = "";
             fg = "#cbcb41";
           }
           {
-            name = "*.kdl";
+            url = "*.kdl";
             text = "";
             fg = "#6d8086";
           }
           {
-            name = "*.md";
+            url = "*.md";
             text = "";
             fg = "#ffffff";
           }
           {
-            name = "*.toml";
+            url = "*.toml";
             text = "";
             fg = "#ffffff";
           }
           {
-            name = "*.txt";
+            url = "*.txt";
             text = "";
             fg = "#89e051";
           }
           {
-            name = "*.yaml";
+            url = "*.yaml";
             text = "";
             fg = "#6d8086";
           }
           {
-            name = "*.yml";
+            url = "*.yml";
             text = "";
             fg = "#6d8086";
           }
 
           # Archives
           {
-            name = "*.7z";
+            url = "*.7z";
             text = "";
           }
           {
-            name = "*.bz2";
+            url = "*.bz2";
             text = "";
           }
           {
-            name = "*.gz";
+            url = "*.gz";
             text = "";
           }
           {
-            name = "*.rar";
+            url = "*.rar";
             text = "";
           }
           {
-            name = "*.tar";
+            url = "*.tar";
             text = "";
           }
           {
-            name = "*.xz";
+            url = "*.xz";
             text = "";
           }
           {
-            name = "*.zip";
+            url = "*.zip";
             text = "";
           }
 
           # Images
           {
-            name = "*.HEIC";
+            url = "*.HEIC";
             text = "";
             fg = "#a074c4";
           }
           {
-            name = "*.avif";
+            url = "*.avif";
             text = "";
             fg = "#a074c4";
           }
           {
-            name = "*.bmp";
+            url = "*.bmp";
             text = "";
             fg = "#a074c4";
           }
           {
-            name = "*.gif";
+            url = "*.gif";
             text = "";
             fg = "#a074c4";
           }
           {
-            name = "*.ico";
+            url = "*.ico";
             text = "";
             fg = "#cbcb41";
           }
           {
-            name = "*.jpeg";
+            url = "*.jpeg";
             text = "";
             fg = "#a074c4";
           }
           {
-            name = "*.jpg";
+            url = "*.jpg";
             text = "";
             fg = "#a074c4";
           }
           {
-            name = "*.png";
+            url = "*.png";
             text = "";
             fg = "#a074c4";
           }
           {
-            name = "*.svg";
+            url = "*.svg";
             text = "";
             fg = "#FFB13B";
           }
           {
-            name = "*.webp";
+            url = "*.webp";
             text = "";
             fg = "#a074c4";
           }
 
           # Movies
           {
-            name = "*.avi";
+            url = "*.avi";
             text = "";
             fg = "#FD971F";
           }
           {
-            name = "*.mkv";
+            url = "*.mkv";
             text = "";
             fg = "#FD971F";
           }
           {
-            name = "*.mov";
+            url = "*.mov";
             text = "";
             fg = "#FD971F";
           }
           {
-            name = "*.mp4";
+            url = "*.mp4";
             text = "";
             fg = "#FD971F";
           }
           {
-            name = "*.webm";
+            url = "*.webm";
             text = "";
             fg = "#FD971F";
           }
 
           # Audio
           {
-            name = "*.aac";
+            url = "*.aac";
             text = "";
             fg = "#66D8EF";
           }
           {
-            name = "*.flac";
+            url = "*.flac";
             text = "";
             fg = "#66D8EF";
           }
           {
-            name = "*.m4a";
+            url = "*.m4a";
             text = "";
             fg = "#66D8EF";
           }
           {
-            name = "*.mp3";
+            url = "*.mp3";
             text = "";
             fg = "#66D8EF";
           }
           {
-            name = "*.ogg";
+            url = "*.ogg";
             text = "";
             fg = "#66D8EF";
           }
           {
-            name = "*.wav";
+            url = "*.wav";
             text = "";
             fg = "#66D8EF";
           }
 
           # Documents
           {
-            name = "*.csv";
+            url = "*.csv";
             text = "";
             fg = "#89e051";
           }
           {
-            name = "*.doc";
+            url = "*.doc";
             text = "";
             fg = "#185abd";
           }
           {
-            name = "*.doct";
+            url = "*.doct";
             text = "";
             fg = "#185abd";
           }
           {
-            name = "*.docx";
+            url = "*.docx";
             text = "";
             fg = "#185abd";
           }
           {
-            name = "*.dot";
+            url = "*.dot";
             text = "";
             fg = "#185abd";
           }
           {
-            name = "*.ods";
+            url = "*.ods";
             text = "";
             fg = "#207245";
           }
           {
-            name = "*.ots";
+            url = "*.ots";
             text = "";
             fg = "#207245";
           }
           {
-            name = "*.pdf";
+            url = "*.pdf";
             text = "";
             fg = "#b30b00";
           }
           {
-            name = "*.pom";
+            url = "*.pom";
             text = "";
             fg = "#cc3e44";
           }
           {
-            name = "*.pot";
+            url = "*.pot";
             text = "";
             fg = "#cb4a32";
           }
           {
-            name = "*.potx";
+            url = "*.potx";
             text = "";
             fg = "#cb4a32";
           }
           {
-            name = "*.ppm";
+            url = "*.ppm";
             text = "";
             fg = "#a074c4";
           }
           {
-            name = "*.ppmx";
+            url = "*.ppmx";
             text = "";
             fg = "#cb4a32";
           }
           {
-            name = "*.pps";
+            url = "*.pps";
             text = "";
             fg = "#cb4a32";
           }
           {
-            name = "*.ppsx";
+            url = "*.ppsx";
             text = "";
             fg = "#cb4a32";
           }
           {
-            name = "*.ppt";
+            url = "*.ppt";
             text = "";
             fg = "#cb4a32";
           }
           {
-            name = "*.pptx";
+            url = "*.pptx";
             text = "";
             fg = "#cb4a32";
           }
           {
-            name = "*.xlc";
+            url = "*.xlc";
             text = "";
             fg = "#207245";
           }
           {
-            name = "*.xlm";
+            url = "*.xlm";
             text = "";
             fg = "#207245";
           }
           {
-            name = "*.xls";
+            url = "*.xls";
             text = "";
             fg = "#207245";
           }
           {
-            name = "*.xlsm";
+            url = "*.xlsm";
             text = "";
             fg = "#207245";
           }
           {
-            name = "*.xlsx";
+            url = "*.xlsx";
             text = "";
             fg = "#207245";
           }
           {
-            name = "*.xlt";
+            url = "*.xlt";
             text = "";
             fg = "#207245";
           }
 
           # Lockfiles
           {
-            name = "*.lock";
+            url = "*.lock";
             text = "";
             fg = "#bbbbbb";
           }
 
           # Misc
           {
-            name = "*.bin";
+            url = "*.bin";
             text = "";
             fg = "#9F0500";
           }
           {
-            name = "*.exe";
+            url = "*.exe";
             text = "";
             fg = "#9F0500";
           }
           {
-            name = "*.pkg";
+            url = "*.pkg";
             text = "";
             fg = "#9F0500";
           }
 
           # Dotfiles
           {
-            name = ".DS_Store";
+            url = ".DS_Store";
             text = "";
             fg = "#41535b";
           }
           {
-            name = ".bashprofile";
+            url = ".bashprofile";
             text = "";
             fg = "#89e051";
           }
           {
-            name = ".bashrc";
+            url = ".bashrc";
             text = "";
             fg = "#89e051";
           }
           {
-            name = ".gitattributes";
+            url = ".gitattributes";
             text = "";
             fg = "#41535b";
           }
           {
-            name = ".gitignore";
+            url = ".gitignore";
             text = "";
             fg = "#41535b";
           }
           {
-            name = ".gitmodules";
+            url = ".gitmodules";
             text = "";
             fg = "#41535b";
           }
           {
-            name = ".vimrc";
+            url = ".vimrc";
             text = "";
             fg = "#019833";
           }
           {
-            name = ".zprofile";
+            url = ".zprofile";
             text = "";
             fg = "#89e051";
           }
           {
-            name = ".zshenv";
+            url = ".zshenv";
             text = "";
             fg = "#89e051";
           }
           {
-            name = ".zshrc";
+            url = ".zshrc";
             text = "";
             fg = "#89e051";
           }
 
           # Named files
           {
-            name = "COPYING";
+            url = "COPYING";
             text = "󰿃";
             fg = "#cbcb41";
           }
           {
-            name = "Containerfile";
+            url = "Containerfile";
             text = "󰡨";
             fg = "#458ee6";
           }
           {
-            name = "Dockerfile";
+            url = "Dockerfile";
             text = "󰡨";
             fg = "#458ee6";
           }
           {
-            name = "LICENSE";
+            url = "LICENSE";
             text = "󰿃";
             fg = "#d0bf41";
           }
 
           # Directories
           {
-            name = ".config/";
+            url = ".config/";
             text = "";
           }
           {
-            name = ".git/";
+            url = ".git/";
             text = "";
           }
           {
-            name = "Desktop/";
+            url = "Desktop/";
             text = "";
           }
           {
-            name = "Development/";
+            url = "Development/";
             text = "";
           }
           {
-            name = "Documents/";
+            url = "Documents/";
             text = "";
           }
           {
-            name = "Downloads/";
+            url = "Downloads/";
             text = "";
           }
           {
-            name = "Library/";
+            url = "Library/";
             text = "";
           }
           {
-            name = "Movies/";
+            url = "Movies/";
             text = "";
           }
           {
-            name = "Music/";
+            url = "Music/";
             text = "";
           }
           {
-            name = "Pictures/";
+            url = "Pictures/";
             text = "";
           }
           {
-            name = "Public/";
+            url = "Public/";
             text = "";
           }
           {
-            name = "Videos/";
+            url = "Videos/";
             text = "";
           }
 
           # Default
           {
-            name = "*";
+            url = "*";
             text = "";
           }
           {
-            name = "*/";
+            url = "*/";
             text = "";
           }
         ];

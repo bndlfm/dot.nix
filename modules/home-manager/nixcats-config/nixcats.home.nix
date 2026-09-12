@@ -10,40 +10,6 @@ let
   utils = if nixCats ? utils then nixCats.utils else nixCats;
   luaPath = ./.;
 
-  mkVimPlugin =
-    {
-      name,
-      repo,
-      owner,
-      rev,
-      hash ? "",
-    }:
-    pkgs.vimUtils.buildVimPlugin {
-      pname = name;
-      version = rev;
-      src = pkgs.fetchFromGitHub {
-        inherit owner repo rev;
-        hash = if hash != "" then hash else "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      };
-      doCheck = false;
-      dontCheckNeovim = true;
-    };
-
-  patched-snacks = pkgs.vimUtils.buildVimPlugin {
-    pname = "snacks.nvim";
-    version = "master";
-    src = pkgs.fetchFromGitHub {
-      owner = "folke";
-      repo = "snacks.nvim";
-      rev = "main";
-      hash = "sha256-gU0XjCcnmZNwZ/erukA8miBiMKaSsSiInLtiv+OyEJI=";
-    };
-    # Patch was: patches = [ ./patches/snacksScope.patch ];
-    # But it is already upstreamed in the main branch.
-    doCheck = false;
-    dontCheckNeovim = true;
-  };
-
   categoryDefinitions =
     {
       pkgs,
@@ -101,8 +67,6 @@ let
 
       startupPlugins = {
         general = [
-          patched-snacks
-          pkgs.vimPlugins.lazy-nvim
         ];
       };
 

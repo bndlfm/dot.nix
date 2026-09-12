@@ -9,6 +9,7 @@ rec {
   _beatSaberModManager = cPkg ./BeatSaberModManager/BeatSaberModManager.nix { };
   _fish-ai = cPkg ./fishPlugins/fish-ai.nix { };
   _gamma-launcher = cPkg ./gamma-launcher.nix { };
+  _vr-cyberdeck = cPkg ./vr-cyberdeck.nix { };
   _anchorr = cPkg ./anchorr/default.nix { };
   _homeassistant-desktop = cPkg ./homeassistant-desktop/default.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };

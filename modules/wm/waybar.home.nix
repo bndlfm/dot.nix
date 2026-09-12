@@ -126,9 +126,7 @@
               "critical-threshold": 80,
               "format": "{temperatureC}{icon}",
               "format-icons": [
-                "",
-                "",
-                ""
+                ""
               ]
             },
             "network": {

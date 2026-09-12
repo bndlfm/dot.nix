@@ -190,7 +190,6 @@ in
         "$mainMod ALT, ESCAPE, exit, "
         "$mainMod CONTROL, F, exec, nautilus"
 
-        "$mainMod ALT, L, exec, ~/hypr/swayidle-swaylock-hypr.sh"
 
         # Whisper STT
         "$mainMod CONTROL ALT SHIFT, D, exec, ~/.local/state/nix/profiles/imperative/bin/xhisper"

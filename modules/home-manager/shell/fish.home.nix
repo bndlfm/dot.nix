@@ -32,6 +32,7 @@
       enable = true;
       interactiveShellInit = /* sh */ ''
         set PATH $PATH /home/neko/.local/bin
+        set -gx POND_EVENTS_PATH $HOME/.local/share/pond/events.jsonl
         set pisces_only_insert_at_eol 1
 
         function fish_greeting --description "Prints To-do.md as Shell Greeting"
@@ -64,12 +65,8 @@
               bind -s --preset -M insert \cy "commandline -f accept-autosuggestion execute"
 
           # FISH_AI // POND
-            set -g FISH_AI_KEYMAP_1 'ctrl-q'
-            #bind -M insert ctrl-a _fish_ai_codify_or_explain
-            set -g FISH_AI_KEYMAP_2 'ctrl-/'
-            #bind -M insert ctrl-/ _fish_ai_autocomplete_or_fix
-            set -g FISH_AI_KEYMAP_3 'ctrl-a'
-            #bind -M insert ctrl-x _fish_ai_agent
+            bind -M insert ctrl-a _pond_agent
+            bind -M insert ctrl-x _pond_codify_or_explain
 
             bind -M insert \cp up-or-search # fixes fish-ai keybind
             bind -M insert \cn down-or-search # fixes fish-ai keybind

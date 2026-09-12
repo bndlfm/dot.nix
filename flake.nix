@@ -26,7 +26,7 @@
 
     ## MEDIA
     nixarr.url = "github:bndlfm/nixarr/main";
-    spicetify-nix.url = "github:Gerg-L/spicetify-nix?rev=f0595e3b59260457042450749eaec00a5a47db35";
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
     ## PROGRAMS
     hermes-agent.url = "github:NousResearch/hermes-agent";
@@ -34,7 +34,7 @@
     #deejavu.url = "github:bndlfm/deejavu";
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
     lsfg-vk = {
-      url = "github:pabloaul/lsfg-vk-flake/main";
+      url = "path:/home/neko/Projects/lsfg-vk-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     openmw-vr.url = "github:bndlfm/openmw-vr.nix";
@@ -50,8 +50,8 @@
     caddy-nix.url = "github:vincentbernat/caddy-nix";
 
     ## WINDOW MANAGER
-    niri.url = "github:sodiboo/niri-flake";
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    niri.url = "github:epireyn/niri-flake";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1&ref=refs/tags/v0.55.4";
 
     ## VIRTUALIZATION
     microvm = {
@@ -146,7 +146,6 @@
             ./modules/home-manager/zen-browser.home.nix
 
             ## MODULES
-            outputs.homeManagerModules.wlr-which-key
             ./modules/home-manager/music.home.nix
             #./modules/notes.home.nix
 
@@ -155,8 +154,7 @@
             ./modules/home-manager/email.home.nix
             ./modules/home-manager/firefox.home.nix
             ./modules/home-manager/git.home.nix
-            ./modules/home-manager/nixcats/nixcats.home.nix
-            ./modules/home-manager/neovim.home.nix
+            ./modules/home-manager/nixcats-config/nixcats.home.nix
             ./modules/home-manager/password-store.home.nix
             ./modules/home-manager/ranger.home.nix
             ./modules/home-manager/shell/default.nix
@@ -194,8 +192,7 @@
           modules = [
             ## PROGRAMS
             ./modules/home-manager/shell/default.nix
-            ./modules/home-manager/nixcats/nixcats.home.nix
-            ./modules/home-manager/neovim.home.nix
+            ./modules/home-manager/nixcats-config/nixcats.home.nix
             ./modules/home-manager/yazi.home.nix
 
             ## CONTAINERS
@@ -286,9 +283,8 @@
                 useUserPackages = true;
                 extraSpecialArgs = { inherit inputs outputs; };
                 users.neko = {
-                  imports = [ 
-                    ./modules/home-manager/nixcats/nixcats.home.nix 
-                    ./modules/home-manager/neovim.home.nix
+                  imports = [
+                    ./modules/home-manager/nixcats-config/nixcats.home.nix
                   ];
                   home.stateVersion = "23.11";
                 };

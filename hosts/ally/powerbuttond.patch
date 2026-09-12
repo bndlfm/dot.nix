@@ -1,0 +1,99 @@
+--- a/powerbuttond.c
++++ b/powerbuttond.c
+@@ -10,15 +10,30 @@
+ #include <poll.h>
+ #include <signal.h>
+ #include <spawn.h>
++#include <stdint.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/wait.h>
++#include <time.h>
+ #include <unistd.h>
+ 
+ #define MAX_DEVS 10
+ 
++/*
++ * Some Ally firmware/EC combinations emit KEY_POWER while the userspace
++ * session is thawing after suspend. Steam's power-button handler treats it
++ * as a fresh press and immediately asks logind to suspend again.
++ *
++ * Detect the resume at the poll boundary: CLOCK_BOOTTIME includes time spent
++ * suspended whereas CLOCK_MONOTONIC does not. Then consume one full power
++ * button press/release in a short post-resume window. Normal short and long
++ * presses outside that window retain upstream behaviour unchanged.
++ */
++#define RESUME_DETECT_MS 100
++#define RESUME_GUARD_MS 10000
++
+ #define MOD_LSHIFT 0x01
+ #define MOD_RSHIFT 0x02
+ #define MOD_SHIFT 0x03
+@@ -36,6 +51,18 @@
+ static bool got_alarm = false;
+ static bool got_hup = false;
+ 
++static uint64_t clock_ms(clockid_t id) {
++	struct timespec ts;
++	if (clock_gettime(id, &ts) < 0) {
++		return 0;
++	}
++	return (uint64_t) ts.tv_sec * 1000 + (uint64_t) ts.tv_nsec / 1000000;
++}
++
++static bool is_before(uint64_t now, uint64_t deadline) {
++	return now < deadline;
++}
++
+ struct evdev_context {
+ 	struct libevdev* dev;
+ 	int modifiers;
+@@ -199,6 +226,8 @@
+ 	}
+ 
+ 	bool press_active = false;
++	bool ignore_power_until_release = false;
++	uint64_t resume_guard_until_ms = 0;
+ 	while (true) {
+ 		if (got_hup) {
+ 			got_hup = false;
+@@ -214,7 +243,18 @@
+ 			pfds[i].revents = 0;
+ 		}
+ 
++		uint64_t monotonic_before_ms = clock_ms(CLOCK_MONOTONIC);
++		uint64_t boottime_before_ms = clock_ms(CLOCK_BOOTTIME);
+ 		int res = poll(pfds, num_devs, -1);
++		uint64_t monotonic_after_ms = clock_ms(CLOCK_MONOTONIC);
++		uint64_t boottime_after_ms = clock_ms(CLOCK_BOOTTIME);
++		int64_t suspended_ms =
++			(int64_t) (boottime_after_ms - boottime_before_ms) -
++			(int64_t) (monotonic_after_ms - monotonic_before_ms);
++		if (suspended_ms >= RESUME_DETECT_MS) {
++			resume_guard_until_ms = boottime_after_ms + RESUME_GUARD_MS;
++		}
++
+ 		if (res < 0 && errno == EINTR && press_active && got_alarm) {
+ 			press_active = false;
+ 			steam_message("longpowerpress");
+@@ -243,7 +283,17 @@
+ 				if (ev.type == EV_KEY) {
+ 					switch (ev.code) {
+ 					case KEY_POWER:
+-						if (ev.value == 1) {
++						if (ignore_power_until_release) {
++							if (ev.value == 0) {
++								ignore_power_until_release = false;
++							}
++							break;
++						}
++						if (ev.value == 1 && is_before(clock_ms(CLOCK_BOOTTIME), resume_guard_until_ms)) {
++							press_active = false;
++							alarm(0);
++							ignore_power_until_release = true;
++						} else if (ev.value == 1) {
+ 							press_active = true;
+ 							alarm(1);
+ 						} else if (ev.value == 0 && press_active) {

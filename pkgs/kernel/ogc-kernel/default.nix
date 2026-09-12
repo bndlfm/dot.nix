@@ -4,8 +4,8 @@
   linuxPackages_7_1,
 }:
 
-assert lib.assertMsg (linuxPackages_7_1.kernel.version == "7.1.5") ''
-  OGC kernel v7.1.5-ogc2 expects nixpkgs linuxPackages_7_1 at 7.1.5,
+assert lib.assertMsg (linuxPackages_7_1.kernel.version == "7.1.8") ''
+  OGC kernel v7.1.8-ogc1 expects nixpkgs linuxPackages_7_1 at 7.1.8,
   but found ${linuxPackages_7_1.kernel.version}. Update the pinned OGC source
   and package definition deliberately instead of inheriting version drift.
 '';
@@ -15,11 +15,11 @@ linuxPackages_7_1.kernel.override {
     src = fetchFromGitHub {
       owner = "OpenGamingCollective";
       repo = "linux";
-      rev = "e5f0343e484d49258c70e9c128570cb93195ce21"; # tag v7.1.5-ogc2
-      hash = "sha256-T3BPgb5utVa+F5ZCUUDEV+ae0AnB0Pmz8JMu+Jv5Qk8=";
+      rev = "86a4e13f16fb876282a12cc7680b3eb73d990e6b"; # tag v7.1.8-ogc1
+      hash = "sha256-QAFl1QKkEJJ2j79LFXhOmnVRgN9LlGiDCFzYDx5f7tE=";
     };
-    version = "7.1.5-ogc2";
-    modDirVersion = "7.1.5";
+    version = "7.1.8-ogc1";
+    modDirVersion = "7.1.8";
   };
 
   structuredExtraConfig = with lib.kernel; {

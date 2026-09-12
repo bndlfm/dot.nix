@@ -221,13 +221,14 @@ in
       openFirewall = true;
     };
     blueman.enable = true;
+    cloudflare-warp.enable = true;
     gnome.sushi.enable = false;
     desktopManager = {
       gnome.enable = false;
       plasma6.enable = true;
     };
     displayManager = {
-      defaultSession = "hyprland";
+      defaultSession = "niri";
       sddm.enable = false;
       gdm.enable = true;
     };
@@ -512,6 +513,7 @@ in
     mime = {
       defaultApplications = {
         "application/pdf" = [ "zathura" ];
+        "inode/directory" = [ "org.kde.dolphin.desktop" ];
         "text/html" = [ "firefox.desktop" ];
         "x-scheme-handler/http" = [ "firefox.desktop" ];
         "x-scheme-handler/https" = [ "firefox.desktop" ];

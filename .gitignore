@@ -3,6 +3,7 @@
 ./.aider*
 GEMINI.md
 CLAUDE.md
+.hermes/
 
 architecture.mmd
 container-networking.mmd

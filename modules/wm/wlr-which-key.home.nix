@@ -16,8 +16,7 @@
       margin_bottom = 0;
       inhibit_compositor_keyboard_shortcuts = true;
       auto_kbd_layout = true;
-    };
-    menus = [
+      menu = [
       {
         key = "a";
         desc = "Apps";
@@ -128,6 +127,7 @@
           { key = "h"; desc = "Hotkey Overlay"; cmd = "niri msg action show-hotkey-overlay"; }
         ];
       }
-    ];
+      ];
+    };
   };
 }
