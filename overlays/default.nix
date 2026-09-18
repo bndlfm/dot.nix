@@ -10,7 +10,7 @@
       pondSource = builtins.fetchGit {
         url = "https://github.com/bndlfm/pond.fish.git";
         ref = "refs/heads/feat/pond-3-acp-rewrite";
-        rev = "a6dbfc54c97ffbea2c20fb5ae83206924fc52846";
+        rev = "7917f58d92ea10eec94fffefd946aba5c7a6b068";
       };
     in
     {
