@@ -6,13 +6,14 @@
   pkg-config,
   openssl,
   usrsctp,
-  libsrtp,
-  ffmpeg,
+  srtp,
+  ffmpeg-full,
   opus,
   libpulseaudio,
   libpcap,
-  libX11,
-  libXtst,
+  libx11,
+  libxi,
+  libxtst,
   pipewire,
   dbus,
   wayland,
@@ -37,13 +38,14 @@ stdenv.mkDerivation rec {
   buildInputs = [
     openssl
     usrsctp
-    libsrtp
-    ffmpeg
+    srtp
+    ffmpeg-full
     opus
     libpulseaudio
     libpcap
-    libX11
-    libXtst
+    libx11
+    libxi
+    libxtst
     pipewire
     dbus
   ];

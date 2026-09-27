@@ -123,7 +123,8 @@
       ];
     in
     {
-      packages = forAllSystems (system:
+      packages = forAllSystems (
+        system:
         import ./pkgs {
           pkgs = nixpkgs.legacyPackages.${system};
           wnv-src = inputs.waydroid-nvidia-src;
@@ -249,7 +250,6 @@
             ## SERVICES
             ./modules/nixos/sunshine.sys.nix
             ./modules/nixos/vaultwarden.sys.nix
-            ./modules/nixos/synergy.sys.nix
 
             ## WINDOW MANAGERS
             niri.nixosModules.niri
