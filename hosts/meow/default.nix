@@ -142,9 +142,31 @@ in
       };
     };
     spiceUSBRedirection.enable = true;
-    waydroid.enable = true;
+    waydroid = {
+      enable = true;
+      package = pkgs.waydroid-nvidia-full;
+    };
+
   };
   # }}}
+
+  # waydroid-nvidia host integration: the user-session Venus renderer and
+  # the udev/tmpfiles payload shipped by the custom package.
+  services.udev.packages = [ pkgs.waydroid-nvidia-full ];
+  systemd.tmpfiles.packages = [ pkgs.waydroid-nvidia-full ];
+  systemd.user.services.wd-venus = {
+    description = "Venus vtest render server for waydroid-nvidia";
+    wantedBy = [ "default.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.waydroid-nvidia-full}/lib/waydroid-nvidia/virgl_test_server --venus --multi-clients --socket-path /run/waydroid-venus/venus.sock";
+      Environment = [
+        "RENDER_SERVER_EXEC_PATH=${pkgs.waydroid-nvidia-full}/lib/waydroid-nvidia/virgl_render_server"
+        "LD_LIBRARY_PATH=${pkgs.waydroid-nvidia-full}/lib/waydroid-nvidia:${pkgs.vulkan-loader}/lib"
+      ];
+      Restart = "on-failure";
+      RestartSec = 1;
+    };
+  };
 
   # --- Groups --- {{{
   users.groups = {
@@ -221,7 +243,6 @@ in
       openFirewall = true;
     };
     blueman.enable = true;
-    cloudflare-warp.enable = true;
     gnome.sushi.enable = false;
     desktopManager = {
       gnome.enable = false;
@@ -503,6 +524,12 @@ in
       ];
       config = {
         common = {
+          default = [
+            "gnome"
+            "gtk"
+          ];
+        };
+        niri = {
           default = [
             "gnome"
             "gtk"

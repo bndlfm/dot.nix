@@ -1,6 +1,9 @@
 { inputs, ... }: {
   # This one brings our custom packages from the 'pkgs' directory
-  additions = final: _prev: import ../pkgs final.pkgs;
+  additions = final: _prev: import ../pkgs {
+    pkgs = final.pkgs;
+    wnv-src = inputs.waydroid-nvidia-src;
+  };
 
   # This one contains whatever you want to overlay
   # You can change versions, add patches, set compilation flags, anything really.
@@ -22,7 +25,37 @@
         wrapProgram $out/bin/cursor --set ELECTRON_OZONE_PLATFORM_HINT X11
       '';
     });
-    wivrn = prev.wivrn.overrideAttrs (old: {
+    wivrn = prev.wivrn.overrideAttrs (old: let
+      wivrnVersion = "26.9";
+      wivrnSource = final.fetchFromGitHub {
+        owner = "wivrn";
+        repo = "wivrn";
+        rev = "v${wivrnVersion}";
+        hash = "sha256-/kXgbku/4EeYY5YTwtY71csgxOP8bRACLqOvKXolg5g=";
+      };
+    in {
+      version = wivrnVersion;
+      src = wivrnSource;
+      monado = final.applyPatches {
+        src = final.fetchFromGitLab {
+          domain = "gitlab.freedesktop.org";
+          owner = "monado";
+          repo = "monado";
+          rev = "f037264d23e2472a444a157370647fcd601ed81b";
+          hash = "sha256-exHbecudAy57szL7kut7/fBYCoekEs3riZzhMtFWS/c=";
+        };
+        postPatch = ''
+          ${wivrnSource}/patches/apply.sh ${wivrnSource}/patches/monado/*
+        '';
+      };
+      buildInputs = final.lib.filter (input: input != final.libpulseaudio) old.buildInputs;
+      cmakeFlags = (final.lib.filter (flag:
+        !(final.lib.hasPrefix "-DGIT_DESC:" flag)
+        && !(final.lib.hasPrefix "-DGIT_COMMIT:" flag)
+        && !(final.lib.hasPrefix "-DWIVRN_USE_PULSEAUDIO:" flag)
+      ) old.cmakeFlags) ++ [
+        (final.lib.cmakeFeature "GIT_TAG" "v${wivrnVersion}")
+      ];
       postFixup = (old.postFixup or "") + ''
         for bin in wivrnctl wivrn-dashboard wivrn-server; do
           if [ -e $out/bin/$bin ]; then

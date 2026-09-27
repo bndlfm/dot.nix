@@ -1,9 +1,14 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   options.wm.autostart = lib.mkOption {
     type = lib.types.listOf lib.types.str;
-    default = [];
+    default = [ ];
     description = "List of commands to execute on startup for the window managers.";
   };
 
@@ -17,7 +22,7 @@
       "${pkgs.kdePackages.kdeconnect-kde}/libexec/kdeconnect"
       "kdeconnect-indicator"
       "blueman-applet"
-      "homeassistant-desktop"
+      #"homeassistant-desktop"
       "${pkgs.google-drive-ocamlfuse}/bin/google-drive-ocamlfuse /home/neko/Documents/GoogleDrive/"
       "trayscale --hide-window"
       "xrandr --output DP-1 --primary"

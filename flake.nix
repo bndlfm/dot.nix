@@ -54,6 +54,10 @@
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1&ref=refs/tags/v0.55.4";
 
     ## VIRTUALIZATION
+    waydroid-nvidia-src = {
+      url = "github:Shiro836/waydroid-nvidia/v0.1.2";
+      flake = false;
+    };
     microvm = {
       url = "github:astro/microvm.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -119,7 +123,12 @@
       ];
     in
     {
-      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      packages = forAllSystems (system:
+        import ./pkgs {
+          pkgs = nixpkgs.legacyPackages.${system};
+          wnv-src = inputs.waydroid-nvidia-src;
+        }
+      );
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;

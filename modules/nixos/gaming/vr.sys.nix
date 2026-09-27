@@ -2,6 +2,7 @@
 {
   environment = {
     systemPackages = with pkgs; [
+      wayvr
       xrizer
     ];
   };
@@ -40,6 +41,17 @@
           openvr-compat-path = "${pkgs.xrizer}/lib/xrizer";
         };
       };
+    };
+  };
+
+  systemd.user.services.wayvr = {
+    description = "WayVR desktop overlay for OpenXR/OpenVR";
+    partOf = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    wantedBy = [ "graphical-session.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.wayvr}/bin/wayvr --replace";
+      Restart = "on-failure";
     };
   };
 

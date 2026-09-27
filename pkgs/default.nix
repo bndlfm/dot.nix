@@ -1,6 +1,9 @@
 # Custom packages, that can be defined similarly to ones from nixpkgs
 # You can build them using 'nix build .#example'
-pkgs:
+{
+  pkgs,
+  wnv-src,
+}:
 let
   cPkg = pkgs.callPackage;
   fonts = import ./fonts { inherit pkgs; };
@@ -13,6 +16,7 @@ rec {
   _anchorr = cPkg ./anchorr/default.nix { };
   _homeassistant-desktop = cPkg ./homeassistant-desktop/default.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };
+  _bsdrx = cPkg ./bsdrx/default.nix { };
 
   #--- APPEARANCE ---#
   inherit fonts;
@@ -20,6 +24,19 @@ rec {
 
   #--- BIN ---#
   _waydroid-hide-desktop-entries = cPkg ./bin/waydroid-hide-desktop-entries.nix { };
+
+  #--- WAYDROID NVIDIA ---#
+  waydroid-nvidia = cPkg ./waydroid-nvidia/default.nix { inherit wnv-src; };
+  waydroid-nvidia-virglrenderer = cPkg ./waydroid-nvidia/virglrenderer.nix { inherit wnv-src; };
+  waydroid-nvidia-guest = cPkg ./waydroid-nvidia/guest-payload.nix { kind = "guest"; };
+  waydroid-nvidia-guest-prebuilts = cPkg ./waydroid-nvidia/guest-payload.nix { kind = "prebuilts"; };
+  waydroid-nvidia-full = cPkg ./waydroid-nvidia/full.nix {
+    waydroid-nvidia = waydroid-nvidia;
+    virglrenderer-nvidia = waydroid-nvidia-virglrenderer;
+    guest-nvidia = waydroid-nvidia-guest;
+    guest-prebuilts-nvidia = waydroid-nvidia-guest-prebuilts;
+    inherit wnv-src;
+  };
 
   #--- M O D E L  C O N T E X T  P R O T O C O L ---#
   _mpd-mcp-server = cPkg ./mcp/mpd-mcp-server/default.nix { };

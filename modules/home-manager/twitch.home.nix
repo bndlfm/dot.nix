@@ -1,19 +1,16 @@
 {
-config,
-pkgs,
-...
+  config,
+  pkgs,
+  ...
 }:
 {
   sops.secrets."internet/TWITCH_IRC_OAUTH" = { };
 
-  home.packages =
-    with pkgs;
-    [
-      mpv
-      streamlink
-      streamlink-twitch-gui-bin
-      twitch-tui
-    ];
+  home.packages = with pkgs; [
+    mpv
+    streamlink
+    twitch-tui
+  ];
 
   xdg = {
     configFile = {

@@ -26,7 +26,6 @@ in
     };
     templates."hermes.env".content = ''
       VERTEX_CREDENTIALS_PATH="~/.config/gcloud/application_default_credentials.json"
-      MESSAGING_CWD=~/.hermes/workspace
       DISCORD_BOT_TOKEN=${config.sops.placeholder."hermes/DISCORD_BOT_TOKEN"}
       HERMES_GATEWAY_TOKEN=${config.sops.placeholder."hermes/HERMES_GATEWAY_TOKEN"}
       GOOGLE_API_KEY=${config.sops.placeholder."hermes/GOOGLE_API_KEY"}
@@ -91,7 +90,7 @@ in
       After = [ "network.target" ];
     };
     Service = {
-      ExecStart = "${hermesAgent}/bin/hermes gateway run";
+      ExecStart = "${hermesAgent}/bin/hermes gateway run --replace";
       Restart = "always";
       RestartSec = "5";
       EnvironmentFile = config.sops.templates."hermes.env".path;

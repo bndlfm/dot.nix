@@ -94,12 +94,13 @@
         ];
 
         editing = [
-          gimp
+          #gimp
           inkscape
           libreoffice-qt
         ];
 
         gaming = [
+          _bsdrx
           crawlTiles
           glfw3-minecraft
           #inputs.openmw-vr.packages.x86_64-linux.default
@@ -179,6 +180,7 @@
           #
           # OTHER DEV TOOLS
           #----------------
+          android-tools
           meld
 
           #
@@ -195,11 +197,11 @@
         ];
 
         system = [
-          cloudflare-warp
           eddie
+          file-roller
           nwg-look
           openrgb
-          file-roller
+          scrcpy
 
           # Wine/Proton
           wineWow64Packages.stable
