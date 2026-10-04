@@ -53,9 +53,9 @@ appimageTools.wrapType2 {
     install -Dm644 ${appimageContents}/${pname}.desktop \
       $out/share/applications/${pname}.desktop
     substituteInPlace $out/share/applications/${pname}.desktop \
-      --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=${pname} --no-sandbox --disable-gpu %U'
+      --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=${pname} --no-sandbox --disable-gpu --ozone-platform=x11 %U'
     wrapProgram $out/bin/${pname} \
-      --add-flags "--disable-gpu"
+      --add-flags "--disable-gpu --ozone-platform=x11"
   '';
 
   meta = {

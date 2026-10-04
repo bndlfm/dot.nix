@@ -42,7 +42,7 @@
     anchorr = {
       enable = true;
       environmentFiles = [ config.sops.templates."anchorr.env".path ];
-      userMappings = [
+      configuration.USER_MAPPINGS = [
         {
           discordUserId = "127618789448613888";
           jellyseerrUserId = "1";
@@ -55,7 +55,6 @@
     lidarr.enable = true;
     prowlarr.enable = true;
     radarr.enable = true;
-    readarr.enable = true;
     sonarr.enable = true;
 
     vpn = {

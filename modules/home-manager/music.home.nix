@@ -538,8 +538,10 @@ in
     mpdris2 = {
       enable = true;
       mpd = { };
-      multimediaKeys = true;
-      notifications = true;
+      settings.Bling = {
+        mmkeys = true;
+        notify = true;
+      };
     };
     mpdscribble = {
       enable = true;

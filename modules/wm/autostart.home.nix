@@ -14,7 +14,7 @@
 
   config = {
     wm.autostart = [
-      "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE"
+      "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE && systemctl --user reset-failed polkit-kde-agent-1.service && systemctl --user restart polkit-kde-agent-1.service"
       "waypaper --restore"
       "swaync"
       "vicinae server"

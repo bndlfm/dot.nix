@@ -7,6 +7,35 @@
 let
   hermesAgent = inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default;
   hermesDesktop = inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.desktop;
+  hermesRuntimeLibraries = pkgs.lib.makeLibraryPath (with pkgs; [
+    glib
+    nspr
+    nss
+    atk
+    at-spi2-atk
+    at-spi2-core
+    dbus
+    cups
+    expat
+    libgbm
+    cairo
+    pango
+    systemd
+    alsa-lib
+    libxcb
+    libx11
+    libxcomposite
+    libxcursor
+    libxdamage
+    libxext
+    libxfixes
+    libxi
+    libxinerama
+    libxkbcommon
+    libxrandr
+    libxrender
+    libxtst
+  ]);
 in
 {
   sops = {
@@ -97,7 +126,8 @@ in
       Environment = [
         "PATH=${hermesAgent}/bin:${config.home.profileDirectory}/bin:/run/current-system/sw/bin:/usr/local/bin:/usr/bin:/bin"
         "HERMES_HOME=${config.home.homeDirectory}/.hermes"
-        "LD_LIBRARY_PATH=${pkgs.libopus}/lib"
+        "CUA_DRIVER_RS_ENABLE_WAYLAND=1"
+        "LD_LIBRARY_PATH=${hermesRuntimeLibraries}:${pkgs.libopus}/lib"
       ];
     };
     Install = {

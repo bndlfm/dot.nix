@@ -242,7 +242,7 @@
           # SYSTEM MONITORS
           btop
           iotop
-          nvtopPackages.nvidia
+          #nvtopPackages.nvidia
           ## FILE MANAGERS AND UTILITIES
           page
           pulsemixer

@@ -190,6 +190,9 @@ in
       "media"
       "networkmanager"
       "tss"
+      "uinput"
+      "video"
+      "render"
       "wheel"
     ];
     linger = true;
@@ -343,6 +346,8 @@ in
     firewall = {
       enable = true;
       allowedTCPPorts = [
+        8088 # bsdrX web UI on its dedicated LAN address
+        45678 # bsdrX pairing/control
         2234 # Soulseek
         5173 # Grimoire
         # UxPlay
@@ -360,6 +365,10 @@ in
         }
       ];
       allowedUDPPorts = [
+        45000 # bsdrX headset discovery
+        45002 # bsdrX video
+        45003 # bsdrX audio
+        45004 # bsdrX input/data
         2234 # Soulseek
         5173 # Grimoire
         # UxPlay
@@ -379,6 +388,38 @@ in
           to = 1764;
         }
       ];
+    };
+  };
+  # Give the rootless Podman port forwarder a separate LAN address, so its
+  # Bigscreen ports do not occupy the host's regular addresses.
+  networking.networkmanager.dispatcherScripts = [
+    {
+      source = pkgs.writeShellScript "bsdrx-secondary-lan-address" ''
+        interface="$1"
+        action="$2"
+        if [ "$interface" = "enp6s0" ]; then
+          case "$action" in
+            up|dhcp4-change)
+              ${pkgs.iproute2}/bin/ip address replace 192.168.1.247/24 dev enp6s0 noprefixroute
+              ;;
+            down|pre-down)
+              ${pkgs.iproute2}/bin/ip address del 192.168.1.247/24 dev enp6s0 2>/dev/null || true
+              ;;
+          esac
+        fi
+      '';
+    }
+  ];
+  systemd.services.bsdrx-secondary-lan-address = {
+    description = "Assign the dedicated bsdrX LAN address";
+    wantedBy = [ "multi-user.target" ];
+    wants = [ "NetworkManager-wait-online.service" ];
+    after = [ "NetworkManager-wait-online.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.iproute2}/bin/ip address replace 192.168.1.247/24 dev enp6s0 noprefixroute";
+      ExecStop = "-${pkgs.iproute2}/bin/ip address del 192.168.1.247/24 dev enp6s0";
     };
   };
   # }}}
@@ -494,6 +535,7 @@ in
       "nvidia_modeset"
       "nvidia_uvm"
       "nvidia_drm"
+      "ntsync"
     ];
     kernelParams = [
       "nvidia_drm.modeset=1"

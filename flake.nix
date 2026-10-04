@@ -25,7 +25,7 @@
     };
 
     ## MEDIA
-    nixarr.url = "github:bndlfm/nixarr/main";
+    nixarr.url = "github:nix-media-server/nixarr";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
     ## PROGRAMS
@@ -34,7 +34,7 @@
     #deejavu.url = "github:bndlfm/deejavu";
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
     lsfg-vk = {
-      url = "path:/home/neko/Projects/lsfg-vk-flake";
+      url = "github:pabloaul/lsfg-vk-flake/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     openmw-vr.url = "github:bndlfm/openmw-vr.nix";
@@ -250,6 +250,7 @@
             ## SERVICES
             ./modules/nixos/sunshine.sys.nix
             ./modules/nixos/vaultwarden.sys.nix
+            ./containers/bsdrx.nix
 
             ## WINDOW MANAGERS
             niri.nixosModules.niri

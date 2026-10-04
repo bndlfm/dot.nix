@@ -287,6 +287,7 @@ in
           # Scheme by arcticicestudio
           background #2E3440
           background_opacity 0.88
+          background_blur 1
           foreground #E5E9F0
           selection_background #E5E9F0
           selection_foreground #2E3440

@@ -17,6 +17,7 @@ rec {
   _homeassistant-desktop = cPkg ./homeassistant-desktop/default.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };
   _bsdrx = cPkg ./bsdrx/default.nix { };
+  vrchat-neko-nvenc = cPkg ./vrchat-neko-image.nix { };
 
   #--- APPEARANCE ---#
   inherit fonts;
