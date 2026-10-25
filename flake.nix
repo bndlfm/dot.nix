@@ -38,6 +38,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     openmw-vr.url = "github:bndlfm/openmw-vr.nix";
+    optiscaler-client = {
+      url = "github:Optiscaler-Client/Optiscaler-Client";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";

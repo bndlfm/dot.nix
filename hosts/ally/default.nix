@@ -79,9 +79,10 @@ in
 
   # --- System Packages --- {{{
   environment.systemPackages = with pkgs; [
-    chromium
+    firefox
     git
     home-manager
+    inputs.optiscaler-client.packages.${pkgs.system}.default
     p7zip
   ];
   # }}}
