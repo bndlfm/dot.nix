@@ -9,6 +9,7 @@
   home.packages = with pkgs; [
     mpv
     streamlink
+    streamlink-twitch-gui-bin
     twitch-tui
   ];
 

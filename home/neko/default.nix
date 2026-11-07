@@ -41,12 +41,23 @@
     packages =
       with pkgs;
       let
+        chromium-cdp = chromium.override {
+          commandLineArgs = [
+            "--remote-debugging-address=127.0.0.1"
+            "--remote-debugging-port=9222"
+            "--remote-allow-origins=http://127.0.0.1:9222"
+            "--remote-allow-origins=http://localhost:9222"
+            "--user-data-dir=${config.home.homeDirectory}/.config/chromium-cdp"
+          ];
+        };
+
         # --- Categories --- {{{
         patched = [
           #inputs.deejavu.packages.x86_64-linux.default
         ];
 
         ai = [
+          chatgpt-bin
           sillytavern
           warp-terminal
         ];
@@ -57,7 +68,7 @@
         browsers = [
           #zen browser: ./programs/zen-browser.home.nix
           tor-browser
-          chromium
+          chromium-cdp
         ];
 
         cli = [
@@ -103,6 +114,8 @@
           _bsdrx
           crawlTiles
           glfw3-minecraft
+          oversteer
+          inputs.optiscaler-client.packages.${pkgs.system}.default
           #inputs.openmw-vr.packages.x86_64-linux.default
 
           # DECOMP
@@ -119,11 +132,13 @@
           # LAUNCHERS
           _gamma-launcher
           _vr-cyberdeck
+          jackify
           heroic
           lutris
           prismlauncher
 
           # MISC
+          moonlight-qt
           mangohud
           protontricks
           steamtinkerlaunch
@@ -197,7 +212,7 @@
         ];
 
         system = [
-          eddie
+          #eddie - powershell 7.0 broken as of oct 21
           file-roller
           nwg-look
           openrgb
@@ -330,20 +345,6 @@
 
     # --- Session Variables --- {{{
     sessionVariables = {
-      ## SECRETS
-      ANTHROPIC_API_KEY = "$(cat ${config.sops.secrets."ai_keys/ANTHROPIC_API_KEY".path})";
-      COMPOSIO_API_KEY = "$(cat ${config.sops.secrets."ai_keys/COMPOSIO_API_KEY".path})";
-      GEMINI_SECRET_KEY = "$(cat ${config.sops.secrets."ai_keys/GEMINI_SECRET_KEY".path})";
-      GROQ_SECRET_KEY = "$(cat ${config.sops.secrets."ai_keys/GROQ_SECRET_KEY".path})";
-      HUGGINGFACE_API_KEY = "$(cat ${config.sops.secrets."ai_keys/HUGGINGFACE_API_KEY".path})";
-      HUGGINGFACE_PASSWD = "$(cat ${config.sops.secrets."ai_keys/HUGGINGFACE_PASSWD".path})";
-
-      DUCKDNS_TOKEN = "$(cat ${config.sops.secrets."internet/DUCKDNS_TOKEN".path})";
-      GMAIL_APP_PASS = "$(cat ${config.sops.secrets."internet/GMAIL_APP_PASS".path})";
-      TWITCH_IRC_OAUTH = "$(cat ${config.sops.secrets."internet/TWITCH_IRC_OAUTH".path})";
-      OBSIDIAN_REST_API_KEY = "$(cat ${config.sops.secrets."local/OBSIDIAN_REST_API_KEY".path})";
-      PARCEL_17TRACK_API_TOKEN = "$(cat ${config.sops.secrets."hermes/PARCEL_17TRACK_API_TOKEN".path})";
-
       ## EDITOR
       EDITOR = "nvim";
       SUDOEDITOR = "nvim";

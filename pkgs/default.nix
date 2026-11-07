@@ -15,6 +15,9 @@ rec {
   _vr-cyberdeck = cPkg ./vr-cyberdeck.nix { };
   _anchorr = cPkg ./anchorr/default.nix { };
   _homeassistant-desktop = cPkg ./homeassistant-desktop/default.nix { };
+  chatgpt-bin = cPkg ./chatgpt-bin.nix { };
+  streamlink-twitch-gui-bin = cPkg ./streamlink-twitch-gui.nix { };
+  jackify = cPkg ./jackify.nix { };
   _openmw-vr = cPkg ./openmw-vr/openmw-vr.nix { };
   _bsdrx = cPkg ./bsdrx/default.nix { };
   vrchat-neko-nvenc = cPkg ./vrchat-neko-image.nix { };

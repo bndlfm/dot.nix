@@ -54,6 +54,7 @@
     caddy-nix.url = "github:vincentbernat/caddy-nix";
 
     ## WINDOW MANAGER
+    domicile.url = "github:bndlfm/domicile/nvidia-egl-gbm";
     niri.url = "github:epireyn/niri-flake";
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1&ref=refs/tags/v0.55.4";
 
@@ -187,6 +188,8 @@
             inputs.spicetify-nix.homeManagerModules.default
 
             ## WINDOW MANAGERS
+            inputs.domicile.homeManagerModules.default
+            ./modules/wm/domicile/domicile.home.nix
             niri.homeModules.niri
             ./modules/wm/hyprland-lua.home.nix
             ./modules/wm/niri.home.nix
@@ -257,6 +260,8 @@
             ./containers/bsdrx.nix
 
             ## WINDOW MANAGERS
+            inputs.domicile.nixosModules.default
+            ./modules/wm/domicile/domicile.sys.nix
             niri.nixosModules.niri
             (
               { pkgs, ... }:

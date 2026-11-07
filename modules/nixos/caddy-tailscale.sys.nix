@@ -46,7 +46,7 @@
           "github.com/tailscale/caddy-tailscale@v0.0.0-20250207163903-69a970c84556"
           "github.com/jasonlovesdoggo/caddy-defender@v0.8.5"
         ];
-        hash = "sha256-50+faoz45Wb0cRpzkgFL49keKVBTU7i7VsuBLnWzia8=";
+        hash = "sha256-rShYGZFEoiHI7RUa2mXth6oRNoDjIXzIu6OJqnDxjYc=";
       };
 
       virtualHosts."homeassistant.munchkin-sun.ts.net".extraConfig = ''
